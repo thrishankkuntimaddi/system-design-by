@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Design Mastery Notes</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d40;
+  --border:#2a3450;--border2:#344060;
+  --text:#e8eaf0;--text2:#9aa3b8;--text3:#6b748a;
+  --accent:#4f8ef7;--accent2:#7c6af5;--accent3:#34d399;--accent4:#f59e0b;--accent5:#f472b6;
+  --red:#ef4444;--green:#34d399;--yellow:#f59e0b;
+  --radius:10px;--radius-lg:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+.app{display:flex;min-height:100vh}
+.sidebar{width:255px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding-bottom:40px}
+.main{flex:1;overflow-y:auto;max-width:920px;margin:0 auto;padding:32px 40px}
+.sidebar-header{padding:20px 20px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.sidebar-header h1{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase}
+.sidebar-header p{font-size:11px;color:var(--text3);margin-top:3px}
+.nav-section{padding:8px 12px 4px 20px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 12px 7px 20px;cursor:pointer;font-size:13px;color:var(--text2);border-left:2px solid transparent;transition:all .15s;border-radius:0 6px 6px 0;margin-right:8px}
+.nav-item:hover{background:var(--bg3);color:var(--text);border-left-color:var(--border2)}
+.nav-item.active{background:var(--bg3);color:var(--accent);border-left-color:var(--accent);font-weight:500}
+.nav-item i{font-size:15px;width:17px;flex-shrink:0}
+.nav-badge{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:20px;background:var(--bg4);color:var(--text3)}
+.search-wrap{padding:12px 16px;border-bottom:1px solid var(--border);position:relative}
+.search-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:7px 12px 7px 34px;font-size:13px;color:var(--text);outline:none;transition:border .15s}
+.search-input:focus{border-color:var(--accent)}
+.search-icon{position:absolute;left:26px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px}
+.topic{display:none}
+.topic.visible{display:block}
+.page-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px}
+.tag-blue{background:rgba(79,142,247,.15);color:#7db3ff}
+.tag-purple{background:rgba(124,106,245,.15);color:#a89cf7}
+.tag-green{background:rgba(52,211,153,.15);color:#34d399}
+.tag-amber{background:rgba(245,158,11,.15);color:#f59e0b}
+.tag-pink{background:rgba(244,114,182,.15);color:#f472b6}
+.tag-red{background:rgba(239,68,68,.15);color:#ef4444}
+.page-title{font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.3}
+.page-subtitle{font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.6}
+.divider{height:1px;background:var(--border);margin:28px 0}
+.section{margin-bottom:28px}
+.section-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.section-title i{font-size:14px}
+.def-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:16px 18px;font-size:14px;line-height:1.8;color:var(--text2)}
+.def-card strong{color:var(--text)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.card h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.card h3 i{font-size:15px;color:var(--accent)}
+.card p{font-size:13.5px;color:var(--text2);line-height:1.7}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.pros,.cons{border-radius:var(--radius);padding:14px 16px}
+.pros{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2)}
+.cons{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2)}
+.col-title{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.pros .col-title{color:var(--green)}
+.cons .col-title{color:var(--red)}
+.pros ul,.cons ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.pros li,.cons li{font-size:13px;padding-left:16px;position:relative;line-height:1.5}
+.pros li{color:rgba(52,211,153,.9)}
+.cons li{color:rgba(239,100,100,.9)}
+.pros li::before{content:"✓";position:absolute;left:0;font-size:12px;font-weight:700}
+.cons li::before{content:"✗";position:absolute;left:0;font-size:12px;font-weight:700}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0}
+.flow-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:var(--text);font-weight:500}
+.flow-arrow{color:var(--accent);font-size:18px;font-weight:700}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px}
+.tag-chip{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);background:var(--bg3)}
+.tag-chip.blue{border-color:rgba(79,142,247,.4);color:#7db3ff;background:rgba(79,142,247,.08)}
+.tag-chip.green{border-color:rgba(52,211,153,.4);color:#34d399;background:rgba(52,211,153,.08)}
+.tag-chip.amber{border-color:rgba(245,158,11,.4);color:#f59e0b;background:rgba(245,158,11,.08)}
+.tag-chip.purple{border-color:rgba(124,106,245,.4);color:#a89cf7;background:rgba(124,106,245,.08)}
+.tag-chip.pink{border-color:rgba(244,114,182,.4);color:#f472b6;background:rgba(244,114,182,.08)}
+.related-chip{font-size:13px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;background:var(--bg2)}
+.related-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,.08)}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.metric{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.metric-val{font-size:22px;font-weight:700;color:var(--accent)}
+.metric-lbl{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4}
+.latency-table{width:100%;border-collapse:collapse;font-size:13px}
+.latency-table th{padding:10px 14px;text-align:left;background:var(--bg3);color:var(--text3);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--border)}
+.latency-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)}
+.latency-table tr:hover td{background:var(--bg3);color:var(--text)}
+.latency-table .fast{color:var(--green);font-weight:600}
+.latency-table .medium{color:var(--yellow);font-weight:600}
+.latency-table .slow{color:var(--red);font-weight:600}
+.schema-table{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;font-size:13px}
+.schema-table-title{background:var(--bg3);padding:8px 14px;font-weight:700;color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+.schema-table table{width:100%;border-collapse:collapse}
+.schema-table th{padding:8px 12px;text-align:left;background:var(--bg4);color:var(--text3);font-size:11px;font-weight:700;text-transform:uppercase}
+.schema-table td{padding:8px 12px;border-top:1px solid var(--border);color:var(--text2)}
+.schema-table .pk{color:var(--yellow);font-weight:700}
+.schema-table .fk{color:var(--accent);font-style:italic}
+.estimate-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
+.estimate-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.estimate-row:last-child{border-bottom:none;font-weight:700;font-size:15px;margin-top:6px;padding-top:10px}
+.estimate-row .label{color:var(--text2)}
+.estimate-row .value{color:var(--accent);font-weight:600;font-family:monospace}
+.estimate-row .value.highlight{color:var(--green);font-size:16px}
+.highlight-box{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.25);border-radius:var(--radius);padding:14px 16px;font-size:13.5px;color:var(--text2);line-height:1.7}
+.highlight-box strong{color:var(--accent)}
+.warning-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:var(--radius);padding:14px 16px;font-size:13.5px;color:#d4a943;line-height:1.7}
+.success-box{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-radius:var(--radius);padding:14px 16px;font-size:13.5px;color:var(--green);line-height:1.7}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-family:'SF Mono',Consolas,'Courier New',monospace;font-size:12.5px;color:#9cdcfe;line-height:1.7;overflow-x:auto}
+.tip-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.tip-item:last-child{border-bottom:none}
+.tip-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.tip-icon.do{background:rgba(52,211,153,.15);color:var(--green)}
+.tip-icon.dont{background:rgba(239,68,68,.15);color:var(--red)}
+.tip-text{font-size:13.5px;color:var(--text2);line-height:1.6;padding-top:6px}
+.tip-text strong{color:var(--text)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h1>System Design</h1>
+    <p>Complete Mastery Notes</p>
+  </div>
+  <div class="search-wrap">
+    <i class="ti ti-search search-icon"></i>
+    <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+  </div>
+  <div class="nav-section">Fundamentals</div>
+  <div class="nav-item active" onclick="show('intro')" id="nav-intro"><i class="ti ti-home"></i>Introduction</div>
+  <div class="nav-item" onclick="show('scaling')" id="nav-scaling"><i class="ti ti-arrow-up"></i>Scaling</div>
+  <div class="nav-item" onclick="show('latency')" id="nav-latency"><i class="ti ti-clock"></i>Latency Numbers</div>
+  <div class="nav-item" onclick="show('cap')" id="nav-cap"><i class="ti ti-triangle"></i>CAP Theorem</div>
+  <div class="nav-section">Core Concepts</div>
+  <div class="nav-item" onclick="show('lb')" id="nav-lb"><i class="ti ti-adjustments-horizontal"></i>Load Balancing</div>
+  <div class="nav-item" onclick="show('hashing')" id="nav-hashing"><i class="ti ti-circle-dashed"></i>Consistent Hashing</div>
+  <div class="nav-item" onclick="show('caching')" id="nav-caching"><i class="ti ti-stack"></i>Caching</div>
+  <div class="nav-item" onclick="show('msgqueue')" id="nav-msgqueue"><i class="ti ti-list"></i>Message Queues</div>
+  <div class="nav-item" onclick="show('pubsub')" id="nav-pubsub"><i class="ti ti-broadcast"></i>Pub / Sub</div>
+  <div class="nav-item" onclick="show('sharding')" id="nav-sharding"><i class="ti ti-cut"></i>DB Sharding</div>
+  <div class="nav-item" onclick="show('replication')" id="nav-replication"><i class="ti ti-copy"></i>Replication</div>
+  <div class="nav-item" onclick="show('cdn')" id="nav-cdn"><i class="ti ti-world"></i>CDN</div>
+  <div class="nav-item" onclick="show('microservices')" id="nav-microservices"><i class="ti ti-puzzle"></i>Microservices</div>
+  <div class="nav-item" onclick="show('eventdriven')" id="nav-eventdriven"><i class="ti ti-bolt"></i>Event Driven Arch</div>
+  <div class="nav-item" onclick="show('spof')" id="nav-spof"><i class="ti ti-alert-triangle"></i>Single Point of Failure</div>
+  <div class="nav-item" onclick="show('api')" id="nav-api"><i class="ti ti-code"></i>API Design</div>
+  <div class="nav-item" onclick="show('dbinternals')" id="nav-dbinternals"><i class="ti ti-database"></i>DB Internals</div>
+  <div class="nav-item" onclick="show('nosqlsql')" id="nav-nosqlsql"><i class="ti ti-table"></i>SQL vs NoSQL</div>
+  <div class="nav-item" onclick="show('location')" id="nav-location"><i class="ti ti-map-pin"></i>Location Systems</div>
+  <div class="nav-section">Case Studies</div>
+  <div class="nav-item" onclick="show('instagram')" id="nav-instagram"><i class="ti ti-brand-instagram"></i>Instagram<span class="nav-badge">HLD</span></div>
+  <div class="nav-item" onclick="show('whatsapp')" id="nav-whatsapp"><i class="ti ti-message-2"></i>WhatsApp<span class="nav-badge">HLD</span></div>
+  <div class="nav-item" onclick="show('youtube')" id="nav-youtube"><i class="ti ti-brand-youtube"></i>YouTube<span class="nav-badge">HLD</span></div>
+  <div class="nav-item" onclick="show('tinder')" id="nav-tinder"><i class="ti ti-heart"></i>Tinder<span class="nav-badge">HLD</span></div>
+  <div class="nav-item" onclick="show('netflix')" id="nav-netflix"><i class="ti ti-device-tv"></i>Netflix<span class="nav-badge">HLD</span></div>
+  <div class="nav-section">Estimation & Interview</div>
+  <div class="nav-item" onclick="show('estimation')" id="nav-estimation"><i class="ti ti-calculator"></i>Back-of-Envelope</div>
+  <div class="nav-item" onclick="show('interview')" id="nav-interview"><i class="ti ti-user-check"></i>Interview Tips</div>
+</div>
+<div class="main">
+
+<!-- INTRO -->
+<div class="topic visible" id="topic-intro">
+  <div class="page-tag tag-blue"><i class="ti ti-home"></i>Start Here</div>
+  <h1 class="page-title">System Design Mastery</h1>
+  <p class="page-subtitle">A complete reference built from your course notes, whiteboard sessions, and case study images. Every concept defined. Every trade-off explained. Every case study dissected.</p>
+  <div class="card-grid">
+    <div class="card"><h3><i class="ti ti-layers"></i>Three Levels of Design</h3><p><strong>High-Level Design (HLD):</strong> How systems interact — servers, databases, APIs, protocols, data flow.<br><br><strong>Low-Level Design (LLD):</strong> Classes, functions, data structures, algorithms, code-level decisions.<br><br><strong>System Principles:</strong> Scalability, fault tolerance, consistency, availability — the why behind every decision.</p></div>
+    <div class="card"><h3><i class="ti ti-target"></i>What Makes a Good System</h3><p>A production-grade system must be:<br><br>• <strong>Scalable</strong> — handles growth without degrading<br>• <strong>Fault tolerant</strong> — survives component failure<br>• <strong>Extensible</strong> — easy to add features without rewrites<br>• <strong>Observable</strong> — logs, metrics, tracing, alerting<br>• <strong>Decoupled</strong> — services don't know each other's internals</p></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-title"><i class="ti ti-route"></i>Suggested Study Path</div>
+  <div class="flow">
+    <div class="flow-box">Scaling</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Load Balancing</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Caching</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Sharding</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Microservices</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Case Studies</div>
+  </div>
+  <div style="margin-top:20px" class="highlight-box"><strong>Interview Framework:</strong> For every system, practice: (1) clarify requirements, (2) estimate scale, (3) HLD sketch, (4) deep dive on the bottleneck, (5) discuss trade-offs. That's the exact structure top candidates use.</div>
+</div>
+
+<!-- SCALING -->
+<div class="topic" id="topic-scaling">
+  <div class="page-tag tag-blue"><i class="ti ti-arrow-up"></i>Fundamentals</div>
+  <h1 class="page-title">Scaling</h1>
+  <p class="page-subtitle">The ability of a system to handle growing amounts of work by adding resources. Two directions: up or out.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card"><strong>Scalability</strong> means your system can grow to handle more users, requests, or data without degrading performance. The two core strategies have completely different tradeoffs — most mature systems use both.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-arrows-left-right"></i>Vertical vs Horizontal</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-server"></i>Vertical Scaling (Scale Up)</h3><p>Add more CPU, RAM, or faster disk to the <strong>same machine</strong>. No code changes needed. Fast inter-process communication. But has a hard hardware limit and is a single point of failure.<br><br><strong>Example:</strong> Upgrading from 16 GB RAM → 256 GB RAM on your DB server.</p></div>
+      <div class="card"><h3><i class="ti ti-server-2"></i>Horizontal Scaling (Scale Out)</h3><p>Add <strong>more machines</strong> to distribute load. Theoretically unlimited. Requires load balancers, introduces network latency, and makes data consistency harder.<br><br><strong>Example:</strong> Adding 20 more API servers behind a load balancer when traffic doubles.</p></div>
+    </div>
+  </div>
+  <div class="pros-cons">
+    <div class="pros"><div class="col-title">Vertical Wins</div><ul><li>Simple — no application changes</li><li>Fast IPC (no network hop)</li><li>Strong consistency</li><li>Great for small teams / early stage</li></ul></div>
+    <div class="cons"><div class="col-title">Horizontal Wins</div><ul><li>No single point of failure</li><li>Virtually unlimited scale</li><li>Resilient — one node dies, others continue</li><li>Cost-effective at scale (commodity hardware)</li></ul></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-bulb"></i>Hybrid Strategy (Real World)</div>
+    <div class="highlight-box"><strong>Best practice:</strong> Start vertical (simpler, fewer moving parts). Once you hit hardware limits or need fault tolerance, scale horizontally. Most companies run vertically-scaled nodes that are themselves part of a horizontally scaled cluster. Cassandra: each node is powerful, and there are 100 of them.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-clock"></i>Pre-processing at Non-Peak Hours</div>
+    <div class="card"><h3><i class="ti ti-moon"></i>Batch Work During Off-Hours</h3><p>Heavy computations (generating recommendations, pre-building news feeds) are done at low-traffic windows (e.g., 3am). Results are cached and served instantly during peak. Instagram pre-computes your feed rather than building it live on every request — this is why your feed loads in milliseconds even though it aggregates posts from hundreds of people.</p></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-link"></i>Related Topics</div>
+    <div class="tag-row">
+      <div class="related-chip" onclick="show('lb')">Load Balancing</div>
+      <div class="related-chip" onclick="show('sharding')">DB Sharding</div>
+      <div class="related-chip" onclick="show('microservices')">Microservices</div>
+      <div class="related-chip" onclick="show('spof')">Single Point of Failure</div>
+    </div>
+  </div>
+</div>
+
+<!-- LATENCY -->
+<div class="topic" id="topic-latency">
+  <div class="page-tag tag-amber"><i class="ti ti-clock"></i>Reference</div>
+  <h1 class="page-title">Latency Numbers Everyone Should Know</h1>
+  <p class="page-subtitle">Google's famous table — memorize these. They justify every architecture decision. Why cache? RAM is 300,000× faster than disk.</p>
+  <div class="section">
+    <table class="latency-table">
+      <thead><tr><th>Operation</th><th>Latency</th><th>In Human Terms</th><th>Category</th></tr></thead>
+      <tbody>
+        <tr><td>L1 cache reference</td><td class="fast">0.5 ns</td><td>Blink of an eye = 0.5 ns here</td><td class="fast">Instant</td></tr>
+        <tr><td>Branch mispredict</td><td class="fast">5 ns</td><td>10× L1</td><td class="fast">Instant</td></tr>
+        <tr><td>L2 cache reference</td><td class="fast">7 ns</td><td>14× L1</td><td class="fast">Very fast</td></tr>
+        <tr><td>Mutex lock/unlock</td><td class="fast">100 ns</td><td>—</td><td class="fast">Fast</td></tr>
+        <tr><td>Main memory (RAM) reference</td><td class="fast">100 ns</td><td>200× L1</td><td class="fast">Fast</td></tr>
+        <tr><td>Compress 1K bytes (Snappy)</td><td class="medium">10,000 ns</td><td>10 µs</td><td class="medium">Medium</td></tr>
+        <tr><td>Send 2KB over 1 Gbps network</td><td class="medium">20,000 ns</td><td>20 µs</td><td class="medium">Medium</td></tr>
+        <tr><td>Read 1MB sequentially from RAM</td><td class="medium">250,000 ns</td><td>250 µs</td><td class="medium">Medium</td></tr>
+        <tr><td>Round trip within same datacenter</td><td class="medium">500,000 ns</td><td>0.5 ms</td><td class="medium">Noticeable</td></tr>
+        <tr><td>Disk seek (HDD)</td><td class="slow">10,000,000 ns</td><td>10 ms — 20,000× RAM</td><td class="slow">Slow</td></tr>
+        <tr><td>Read 1MB sequentially from network</td><td class="slow">10,000,000 ns</td><td>10 ms</td><td class="slow">Slow</td></tr>
+        <tr><td>Read 1MB sequentially from disk</td><td class="slow">30,000,000 ns</td><td>30 ms</td><td class="slow">Slow</td></tr>
+        <tr><td>Packet: California → Netherlands → CA</td><td class="slow">150,000,000 ns</td><td>150 ms</td><td class="slow">Very slow</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"></div>
+  <div class="section-title"><i class="ti ti-bulb"></i>Key Takeaways</div>
+  <div class="card-grid">
+    <div class="card"><h3><i class="ti ti-stack"></i>Why Caching Matters</h3><p>RAM (100 ns) is <strong>300,000× faster</strong> than disk (30 ms). If your hot data fits in RAM, never let it hit disk. This is why Redis is so transformative.</p></div>
+    <div class="card"><h3><i class="ti ti-world"></i>Why CDNs Matter</h3><p>Cross-continent = 150ms. CDN edge node = 10–20ms. A <strong>10× improvement</strong> in perceived load time for static assets.</p></div>
+    <div class="card"><h3><i class="ti ti-database"></i>Why SSD Matters</h3><p>SSD eliminates disk seek: 10ms → 0.1ms. Random reads improve by 100×. Modern databases default to SSD-backed storage for this reason.</p></div>
+    <div class="card"><h3><i class="ti ti-topology-full"></i>Minimize Network Calls</h3><p>Each datacenter round trip = 0.5ms. 100 micro-calls = 50ms of pure network overhead. Batch your calls aggressively.</p></div>
+  </div>
+</div>
+
+<!-- CAP -->
+<div class="topic" id="topic-cap">
+  <div class="page-tag tag-purple"><i class="ti ti-triangle"></i>Theory</div>
+  <h1 class="page-title">CAP Theorem</h1>
+  <p class="page-subtitle">In any distributed system, you can guarantee at most 2 of 3: Consistency, Availability, Partition Tolerance.</p>
+  <div class="def-card" style="margin-bottom:20px">Eric Brewer's CAP theorem (2000): a distributed data store can only guarantee two of the three properties simultaneously. Since network partitions are inevitable in real distributed systems, you are always effectively choosing between <strong>Consistency</strong> and <strong>Availability</strong> during a partition.</div>
+  <div class="card-grid-3" style="margin-bottom:20px">
+    <div class="card" style="border-top:3px solid var(--accent)"><h3><i class="ti ti-equal"></i>Consistency</h3><p>Every read receives the most recent write or an error. All nodes see the same data at the same time.</p></div>
+    <div class="card" style="border-top:3px solid var(--green)"><h3><i class="ti ti-check"></i>Availability</h3><p>Every request receives a response — not necessarily the latest data. The system stays up even when some nodes fail.</p></div>
+    <div class="card" style="border-top:3px solid var(--yellow)"><h3><i class="ti ti-network"></i>Partition Tolerance</h3><p>The system operates even when network messages between nodes are dropped. Required in all real distributed systems.</p></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-arrows-split-2"></i>CP vs AP — The Real Choice</div>
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--accent)"><h3><i class="ti ti-equal"></i>CP Systems</h3><p>Return errors during network partitions rather than stale data. Strong consistency guaranteed.<br><br><strong>Examples:</strong> HBase, ZooKeeper, MongoDB (default), etcd, Redis (single master)<br><br><strong>Use when:</strong> Financial transactions, inventory management, anything where stale data causes real harm.</p></div>
+      <div class="card" style="border-left:3px solid var(--green)"><h3><i class="ti ti-check"></i>AP Systems</h3><p>Return potentially stale data during partitions but never return errors. Eventual consistency.<br><br><strong>Examples:</strong> Cassandra, DynamoDB, CouchDB, DNS<br><br><strong>Use when:</strong> Social feeds, product catalogs, user profiles — anything tolerant of momentary staleness.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-lock"></i>ACID vs BASE</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-lock"></i>ACID (SQL Databases)</h3><p><strong>Atomicity</strong> — all or nothing<br><strong>Consistency</strong> — valid state before and after every transaction<br><strong>Isolation</strong> — concurrent transactions don't interfere<br><strong>Durability</strong> — committed data survives crashes</p></div>
+      <div class="card"><h3><i class="ti ti-cloud"></i>BASE (NoSQL Databases)</h3><p><strong>Basically Available</strong> — system is available most of the time<br><strong>Soft state</strong> — state may change without input (replication lag)<br><strong>Eventual consistency</strong> — data will converge to consistency eventually</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-git-branch"></i>2-Phase Commit (2PC)</div>
+    <div class="def-card">Distributed transaction protocol. <strong>Phase 1 (Prepare):</strong> coordinator sends PREPARE to all nodes; nodes lock resources and reply OK. <strong>Phase 2 (Commit):</strong> if all replied OK, coordinator sends COMMIT; nodes commit and release locks. If any node fails in Phase 1, coordinator sends ROLLBACK. <strong>Problem:</strong> coordinator is a SPOF; protocol blocks if coordinator crashes after Phase 1 but before Phase 2.</div>
+  </div>
+</div>
+
+<!-- PLACEHOLDER TOPICS - to avoid JS errors when nav items are clicked -->
+<div class="topic" id="topic-lb">
+  <div class="page-tag tag-blue"><i class="ti ti-adjustments-horizontal"></i>Core Concepts</div>
+  <h1 class="page-title">Load Balancing</h1>
+  <p class="page-subtitle">Distributes incoming traffic across multiple servers to maximize throughput, minimize latency, and ensure no single server is overwhelmed.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card"><strong>Load Balancing</strong> is the process of distributing network or application traffic across a cluster of servers. It improves responsiveness and increases availability of applications.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>Algorithms</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-rotate-clockwise"></i>Round Robin</h3><p>Requests distributed sequentially. Simple, works well when servers have equal capacity and requests are similar in weight.</p></div>
+      <div class="card"><h3><i class="ti ti-weight"></i>Weighted Round Robin</h3><p>Servers with higher capacity get more requests. Useful when servers have different hardware specs.</p></div>
+      <div class="card"><h3><i class="ti ti-chart-bar"></i>Least Connections</h3><p>New requests go to the server with fewest active connections. Best for variable-length requests.</p></div>
+      <div class="card"><h3><i class="ti ti-hash"></i>IP Hash</h3><p>Client's IP is hashed to always route to the same server. Good for session stickiness without session storage.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-layers"></i>L4 vs L7 Load Balancing</div>
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--accent)"><h3><i class="ti ti-network"></i>L4 (Transport Layer)</h3><p>Routes based on IP and TCP/UDP port. Fast but no content inspection. Can't route based on URL path or HTTP headers.</p></div>
+      <div class="card" style="border-left:3px solid var(--accent2)"><h3><i class="ti ti-world"></i>L7 (Application Layer)</h3><p>Routes based on HTTP headers, URL, cookies, content. Slower but powerful — route /api/* to API servers, /static/* to CDN.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Health Checks:</strong> Load balancers continuously ping backend servers. If a server fails to respond, it's removed from the rotation automatically — this is how zero-downtime failover works.</div>
+</div>
+
+<div class="topic" id="topic-hashing">
+  <div class="page-tag tag-purple"><i class="ti ti-circle-dashed"></i>Core Concepts</div>
+  <h1 class="page-title">Consistent Hashing</h1>
+  <p class="page-subtitle">A hashing technique that minimizes key remapping when nodes are added or removed from a distributed system.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>The Problem</div>
+    <div class="def-card">With simple modular hashing (key % N servers), adding or removing a server causes <strong>almost all keys to remap</strong> — catastrophic for cache systems. Consistent hashing solves this: only K/N keys need remapping when a node is added/removed (K = keys, N = nodes).</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-circle"></i>How It Works</div>
+    <div class="card"><h3><i class="ti ti-topology-ring"></i>The Hash Ring</h3><p>Arrange all possible hash values in a circle (0 to 2³²). Each server is placed at a point on the ring via its hash. Each key is also hashed and assigned to the <strong>nearest server clockwise</strong>. When a server is added, only keys between the new server and its predecessor need to move.</p></div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Virtual Nodes:</strong> Each physical server is placed at multiple points on the ring (virtual nodes). This ensures even distribution even with heterogeneous servers, and further reduces hotspots. Used by Cassandra, DynamoDB, and Riak.</div>
+</div>
+
+<div class="topic" id="topic-caching">
+  <div class="page-tag tag-green"><i class="ti ti-stack"></i>Core Concepts</div>
+  <h1 class="page-title">Caching</h1>
+  <p class="page-subtitle">Storing frequently accessed data in fast storage (RAM) to avoid repeated expensive computations or database queries.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">A <strong>cache</strong> is a high-speed data storage layer that stores a subset of data, typically transient, so that future requests for that data are served faster. Cache hit = data found. Cache miss = must fetch from source.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-refresh"></i>Cache Strategies</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-writing"></i>Write-Through</h3><p>Write to cache AND database simultaneously. Data always consistent but higher write latency. Good for read-heavy workloads.</p></div>
+      <div class="card"><h3><i class="ti ti-writing-off"></i>Write-Back (Write-Behind)</h3><p>Write to cache only; async flush to DB later. Low write latency but risk of data loss on cache crash.</p></div>
+      <div class="card"><h3><h3><i class="ti ti-clock-off"></i>Cache-Aside (Lazy Loading)</h3><p>App checks cache first. On miss, app fetches from DB and populates cache. Most common pattern. Cache only holds accessed data.</p></div>
+      <div class="card"><h3><i class="ti ti-refresh"></i>Read-Through</h3><p>Cache sits in front of DB. On miss, cache fetches from DB automatically. Transparent to application.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-trash"></i>Eviction Policies</div>
+    <div class="tag-row">
+      <div class="tag-chip blue">LRU — Least Recently Used</div>
+      <div class="tag-chip green">LFU — Least Frequently Used</div>
+      <div class="tag-chip amber">FIFO — First In First Out</div>
+      <div class="tag-chip purple">Random Replacement</div>
+      <div class="tag-chip pink">TTL — Time To Live</div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Redis vs Memcached:</strong> Redis supports rich data structures (lists, sets, sorted sets, hashes), persistence, pub/sub, and Lua scripting. Memcached is simpler but faster for pure key-value. Redis is the industry standard for most use cases.</div>
+</div>
+
+<div class="topic" id="topic-msgqueue">
+  <div class="page-tag tag-amber"><i class="ti ti-list"></i>Core Concepts</div>
+  <h1 class="page-title">Message Queues</h1>
+  <p class="page-subtitle">Asynchronous communication buffers that decouple producers from consumers, enabling independent scaling and fault tolerance.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">A <strong>message queue</strong> stores messages sent by producers until consumers are ready to process them. This decouples services — the producer doesn't need to wait for the consumer to be available. Classic examples: RabbitMQ, Amazon SQS, ActiveMQ.</div>
+  </div>
+  <div class="pros-cons">
+    <div class="pros"><div class="col-title">Advantages</div><ul><li>Decouples producer and consumer</li><li>Handles traffic spikes gracefully</li><li>Messages persisted until consumed</li><li>Retry logic built in</li></ul></div>
+    <div class="cons"><div class="col-title">Trade-offs</div><ul><li>Added latency (async)</li><li>Ordering not guaranteed (usually)</li><li>Message duplication possible</li><li>Operational complexity</li></ul></div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Use cases:</strong> Order processing, email sending, image resizing, video transcoding, payment processing — any task that can be done asynchronously and shouldn't block the user response.</div>
+</div>
+
+<div class="topic" id="topic-pubsub">
+  <div class="page-tag tag-pink"><i class="ti ti-broadcast"></i>Core Concepts</div>
+  <h1 class="page-title">Pub / Sub</h1>
+  <p class="page-subtitle">A messaging pattern where publishers send events to topics, and multiple subscribers independently consume those events.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">In <strong>Pub/Sub</strong>, publishers emit events without knowing who will consume them. Subscribers express interest in topics and receive all matching events. Unlike message queues (one consumer per message), pub/sub delivers each event to <strong>all subscribers</strong>. Examples: Apache Kafka, Google Pub/Sub, Redis Pub/Sub.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-arrows-split-2"></i>Pub/Sub vs Message Queue</div>
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--accent)"><h3><i class="ti ti-list"></i>Message Queue</h3><p>One message → one consumer. Message deleted after consumed. Used for task distribution — work is shared among workers.</p></div>
+      <div class="card" style="border-left:3px solid var(--accent5)"><h3><i class="ti ti-broadcast"></i>Pub/Sub</h3><p>One message → all subscribers. Each subscriber gets their own copy. Used for event broadcasting — notifications, analytics, cache invalidation.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Kafka:</strong> Kafka is technically a distributed log that supports both patterns. Messages are retained (not deleted after consumption) and consumers track their own offset. This enables replay, multiple consumer groups, and extremely high throughput (millions of events/second).</div>
+</div>
+
+<div class="topic" id="topic-sharding">
+  <div class="page-tag tag-blue"><i class="ti ti-cut"></i>Core Concepts</div>
+  <h1 class="page-title">Database Sharding</h1>
+  <p class="page-subtitle">Horizontally partitioning a database into smaller, independent pieces (shards) each stored on a separate server.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card"><strong>Sharding</strong> splits a large database into smaller shards, each responsible for a subset of data. Each shard is an independent database that can be queried independently. Enables horizontal scaling of databases beyond what any single machine can handle.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>Sharding Strategies</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-hash"></i>Hash-Based Sharding</h3><p>Hash the shard key (e.g., user_id % N). Even distribution but makes range queries hard and resharding painful.</p></div>
+      <div class="card"><h3><i class="ti ti-sort-ascending"></i>Range-Based Sharding</h3><p>Shard by key ranges (A-M, N-Z). Easy range queries but can create hotspots if data isn't uniformly distributed.</p></div>
+      <div class="card"><h3><i class="ti ti-map"></i>Geographic Sharding</h3><p>Shard by user region. Keeps data close to users, helps with data residency regulations.</p></div>
+      <div class="card"><h3><i class="ti ti-table"></i>Directory-Based Sharding</h3><p>A lookup table maps keys to shards. Flexible but the lookup table becomes a bottleneck and SPOF.</p></div>
+    </div>
+  </div>
+  <div class="warning-box" style="margin-top:16px">⚠️ <strong>Hotspot Problem:</strong> If one shard gets disproportionate traffic (celebrity user, trending content), it becomes overloaded. Mitigate with consistent hashing, virtual nodes, or application-level load awareness.</div>
+</div>
+
+<div class="topic" id="topic-replication">
+  <div class="page-tag tag-green"><i class="ti ti-copy"></i>Core Concepts</div>
+  <h1 class="page-title">Replication</h1>
+  <p class="page-subtitle">Maintaining copies of data across multiple nodes for fault tolerance, read scaling, and geographic distribution.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card"><strong>Replication</strong> keeps identical copies of data on multiple servers. If one server fails, others serve requests. Also allows reads to be distributed across replicas for higher throughput.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-git-branch"></i>Replication Patterns</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-crown"></i>Primary-Replica (Master-Slave)</h3><p>All writes go to primary. Replicas sync async and serve reads. Simple, but primary is a SPOF. Failover requires promoting a replica.</p></div>
+      <div class="card"><h3><i class="ti ti-crown"></i>Multi-Primary (Multi-Master)</h3><p>Multiple nodes accept writes. Higher availability but introduces write conflicts — requires conflict resolution strategy.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-clock"></i>Sync vs Async Replication</div>
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--accent)"><h3><i class="ti ti-clock"></i>Synchronous</h3><p>Write doesn't return success until all replicas confirm. Zero data loss but higher latency. Used in financial systems.</p></div>
+      <div class="card" style="border-left:3px solid var(--yellow)"><h3><i class="ti ti-clock-off"></i>Asynchronous</h3><p>Write returns immediately after primary confirms. Replicas catch up later. Low latency but potential data loss on primary crash.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="topic-cdn">
+  <div class="page-tag tag-blue"><i class="ti ti-world"></i>Core Concepts</div>
+  <h1 class="page-title">Content Delivery Network (CDN)</h1>
+  <p class="page-subtitle">A geographically distributed network of servers that caches and serves content from locations close to users.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">A <strong>CDN</strong> caches static content (images, CSS, JS, videos) at edge servers worldwide. User requests are routed to the nearest edge node — reducing latency from 150ms (cross-continent) to 10–20ms. Examples: Cloudflare, AWS CloudFront, Akamai, Fastly.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-arrows-split-2"></i>Push vs Pull CDN</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-upload"></i>Push CDN</h3><p>You proactively push content to edge nodes. Full control over what's cached. Good for known, large assets (videos). Must manage cache invalidation yourself.</p></div>
+      <div class="card"><h3><i class="ti ti-download"></i>Pull CDN</h3><p>Edge fetches from origin on first miss, caches with TTL. Simpler. Cache fills organically with popular content. Risk of cache miss storms on new content.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>CDN for dynamic content:</strong> Modern CDNs can also accelerate dynamic content via persistent connections, TCP optimization, and smart routing — not just static files. Cloudflare Workers lets you run code at the edge.</div>
+</div>
+
+<div class="topic" id="topic-microservices">
+  <div class="page-tag tag-purple"><i class="ti ti-puzzle"></i>Architecture</div>
+  <h1 class="page-title">Microservices</h1>
+  <p class="page-subtitle">Architectural style where a large application is built as a suite of small, independently deployable services.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">In <strong>microservices</strong>, each service owns a specific business capability, has its own database, and communicates via well-defined APIs (REST, gRPC, events). Services are independently deployable, scalable, and replaceable.</div>
+  </div>
+  <div class="pros-cons">
+    <div class="pros"><div class="col-title">Advantages</div><ul><li>Independent deployment and scaling</li><li>Technology diversity per service</li><li>Fault isolation</li><li>Easier to understand small codebases</li><li>Parallel development by multiple teams</li></ul></div>
+    <div class="cons"><div class="col-title">Trade-offs</div><ul><li>Network latency between services</li><li>Distributed system complexity</li><li>Data consistency challenges</li><li>Operational overhead (many services)</li><li>Hard to trace requests across services</li></ul></div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>vs Monolith:</strong> Start with a monolith. Extract microservices when a specific component has different scaling requirements or team boundaries emerge. Don't start with microservices on day one — the overhead kills small teams.</div>
+</div>
+
+<div class="topic" id="topic-eventdriven">
+  <div class="page-tag tag-amber"><i class="ti ti-bolt"></i>Architecture</div>
+  <h1 class="page-title">Event-Driven Architecture</h1>
+  <p class="page-subtitle">A design pattern where services communicate by producing and consuming events, enabling loose coupling and high scalability.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">In <strong>event-driven architecture</strong>, services emit events when something happens (order placed, user signed up). Other services subscribe to relevant events and react. The event broker (Kafka, SNS) is the central nervous system.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-route"></i>Event Flow Example</div>
+    <div class="flow">
+      <div class="flow-box">User Places Order</div><div class="flow-arrow">→</div>
+      <div class="flow-box">order.created event</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Kafka Topic</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Inventory Service</div>
+    </div>
+    <div class="flow" style="margin-top:4px">
+      <div class="flow-box" style="opacity:0;pointer-events:none">spacer</div><div class="flow-arrow" style="opacity:0">→</div>
+      <div class="flow-box" style="opacity:0;pointer-events:none">spacer</div><div class="flow-arrow" style="opacity:0">→</div>
+      <div class="flow-box" style="opacity:0;pointer-events:none">spacer</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Email Service</div>
+    </div>
+  </div>
+  <div class="highlight-box"><strong>CQRS + Event Sourcing:</strong> Command Query Responsibility Segregation separates read and write models. Event Sourcing stores every state change as an event — the current state is derived by replaying events. Powerful but complex.</div>
+</div>
+
+<div class="topic" id="topic-spof">
+  <div class="page-tag tag-red"><i class="ti ti-alert-triangle"></i>Reliability</div>
+  <h1 class="page-title">Single Point of Failure</h1>
+  <p class="page-subtitle">A component whose failure causes the entire system to fail. Eliminating SPOFs is the foundation of high availability.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Definition</div>
+    <div class="def-card">A <strong>Single Point of Failure (SPOF)</strong> is any component that, if it fails, takes down the entire system. High-availability design is fundamentally the exercise of identifying and eliminating SPOFs through redundancy.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>Common SPOFs and Solutions</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-server"></i>Single DB Server</h3><p>Solution: Primary-replica setup with automatic failover. Use managed services (RDS Multi-AZ) that handle failover automatically.</p></div>
+      <div class="card"><h3><i class="ti ti-adjustments-horizontal"></i>Single Load Balancer</h3><p>Solution: Active-active or active-passive LB pairs. DNS failover. Use cloud-managed LBs (AWS ALB) with built-in redundancy.</p></div>
+      <div class="card"><h3><i class="ti ti-building"></i>Single Data Center</h3><p>Solution: Multi-region deployment. Active-active or active-passive across regions. DNS routing via latency/health checks.</p></div>
+      <div class="card"><h3><i class="ti ti-network"></i>Single Network Provider</h3><p>Solution: Multi-homing — connect to multiple ISPs. BGP routing for automatic failover.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Five Nines (99.999%):</strong> Only 5.26 minutes of downtime per year. Achieving this requires redundancy at every layer — compute, network, storage, DNS — with automated health checks and failover.</div>
+</div>
+
+<div class="topic" id="topic-api">
+  <div class="page-tag tag-blue"><i class="ti ti-code"></i>Core Concepts</div>
+  <h1 class="page-title">API Design</h1>
+  <p class="page-subtitle">Principles and patterns for designing robust, scalable, and developer-friendly application programming interfaces.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>REST vs GraphQL vs gRPC</div>
+    <div class="card-grid-3">
+      <div class="card" style="border-top:3px solid var(--accent)"><h3><i class="ti ti-api"></i>REST</h3><p>Resource-based, HTTP verbs, stateless, JSON. Universal client support. Over-fetching/under-fetching is the main pain. Use for public APIs.</p></div>
+      <div class="card" style="border-top:3px solid var(--accent5)"><h3><i class="ti ti-circle-dot"></i>GraphQL</h3><p>Client specifies exact data needed. Single endpoint. No over/under-fetching. Complex queries can be expensive server-side. Great for mobile clients.</p></div>
+      <div class="card" style="border-top:3px solid var(--accent3)"><h3><i class="ti ti-bolt"></i>gRPC</h3><p>Binary protocol (Protocol Buffers). 5–10× faster than REST. Strongly typed. Bi-directional streaming. Used for internal microservice communication.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-shield"></i>Rate Limiting</div>
+    <div class="card"><h3><i class="ti ti-traffic-lights"></i>Rate Limiting Algorithms</h3><p><strong>Token Bucket:</strong> Tokens added at fixed rate; each request consumes a token. Allows bursts.<br><br><strong>Leaky Bucket:</strong> Requests processed at fixed rate regardless of input. Smooths bursts.<br><br><strong>Fixed Window Counter:</strong> Count requests per time window. Simple but vulnerable to boundary attacks.<br><br><strong>Sliding Window Log:</strong> Track timestamps of each request. Precise but memory-intensive.</p></div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px"><strong>Idempotency:</strong> Design mutating API endpoints to be idempotent — calling them multiple times produces the same result. Use idempotency keys (unique request IDs) to deduplicate retried requests. Critical for payment APIs.</div>
+</div>
+
+<div class="topic" id="topic-dbinternals">
+  <div class="page-tag tag-purple"><i class="ti ti-database"></i>Deep Dive</div>
+  <h1 class="page-title">Database Internals</h1>
+  <p class="page-subtitle">Understanding how databases store, index, and retrieve data — essential for making informed schema and query decisions.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-tree"></i>B-Tree Index</div>
+    <div class="def-card">The most common index structure. A balanced tree where all leaves are at the same depth. Supports equality and range queries. Read-optimized: O(log n) lookups. Used by PostgreSQL, MySQL (InnoDB), SQLite. <strong>B+ Tree variant:</strong> data only in leaf nodes, leaves linked for efficient range scans.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-writing"></i>LSM Tree (Log-Structured Merge-Tree)</div>
+    <div class="def-card">Write-optimized structure. Writes go to in-memory buffer (MemTable), flushed to sorted files (SSTables) on disk. Background compaction merges SSTables. Reads may check multiple levels — mitigated by Bloom filters. Used by: Cassandra, RocksDB, LevelDB, HBase. <strong>Trade-off:</strong> faster writes than B-tree, slower reads without optimization.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>WAL — Write-Ahead Log</div>
+    <div class="def-card">Before modifying data, the database writes the change to a WAL (append-only log). If the system crashes, the WAL is replayed to restore consistency. This is how ACID durability is implemented without flushing every write to disk immediately.</div>
+  </div>
+</div>
+
+<div class="topic" id="topic-nosqlsql">
+  <div class="page-tag tag-amber"><i class="ti ti-table"></i>Core Concepts</div>
+  <h1 class="page-title">SQL vs NoSQL</h1>
+  <p class="page-subtitle">Choosing the right database type is one of the most impactful architectural decisions. Neither is universally better.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-arrows-left-right"></i>Comparison</div>
+    <div class="card-grid">
+      <div class="card" style="border-top:3px solid var(--accent)"><h3><i class="ti ti-table"></i>SQL (Relational)</h3><p><strong>Examples:</strong> PostgreSQL, MySQL, SQLite, SQL Server<br><br>• Structured schema, enforced relationships<br>• ACID transactions<br>• Powerful JOIN queries<br>• Vertical scaling primarily<br>• Best for: financial data, inventory, user accounts, anything with complex relationships</p></div>
+      <div class="card" style="border-top:3px solid var(--accent3)"><h3><i class="ti ti-database"></i>NoSQL</h3><p><strong>Examples:</strong> MongoDB, Cassandra, DynamoDB, Redis<br><br>• Flexible schema, horizontal scaling<br>• Eventual consistency (usually)<br>• Designed for specific access patterns<br>• Massive scale<br>• Best for: social graphs, product catalogs, real-time analytics, IoT data, caching</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list"></i>NoSQL Types</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-key"></i>Key-Value</h3><p>Redis, DynamoDB. Fastest. Perfect for sessions, caches, leaderboards.</p></div>
+      <div class="card"><h3><i class="ti ti-file"></i>Document</h3><p>MongoDB, Firestore. JSON documents. Great for content, user profiles, catalogs.</p></div>
+      <div class="card"><h3><i class="ti ti-columns"></i>Wide-Column</h3><p>Cassandra, HBase. Optimized for time-series, write-heavy workloads at massive scale.</p></div>
+      <div class="card"><h3><i class="ti ti-topology-star"></i>Graph</h3><p>Neo4j, Amazon Neptune. Nodes and edges. Best for social networks, recommendations, fraud detection.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="topic-location">
+  <div class="page-tag tag-green"><i class="ti ti-map-pin"></i>Systems</div>
+  <h1 class="page-title">Location-Based Systems</h1>
+  <p class="page-subtitle">Designing systems that store, query, and serve geospatial data efficiently — used in Uber, Tinder, Google Maps, and Yelp.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Core Challenge</div>
+    <div class="def-card">Finding all points within a radius of a given location efficiently. Naive approach (scan all records and compute distance) doesn't scale. Solution: spatial indexing — partition space so only nearby candidates are checked.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-grid"></i>Spatial Indexing Techniques</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-hash"></i>Geohash</h3><p>Encodes (lat, lng) as a base-32 string. Nearby locations share a common prefix. Easy to implement, supported natively by Redis GEOSEARCH. Limitations at cell boundaries.</p></div>
+      <div class="card"><h3><i class="ti ti-grid-dots"></i>Quadtree</h3><p>Recursively subdivides space into 4 quadrants. Dynamically adapts to data density. Used internally by many mapping systems.</p></div>
+      <div class="card"><h3><i class="ti ti-triangle"></i>S2 Library (Google)</h3><p>Maps sphere to 1D curve using Hilbert curve. Preserves locality. Used by Google Maps, Uber, and many others.</p></div>
+      <div class="card"><h3><i class="ti ti-circle"></i>R-Tree</h3><p>Index for rectangles and polygons. Standard in PostGIS/PostgreSQL spatial extensions. Good for arbitrary shapes.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="topic" id="topic-instagram">
+  <div class="page-tag tag-pink"><i class="ti ti-brand-instagram"></i>Case Study</div>
+  <h1 class="page-title">Design Instagram</h1>
+  <p class="page-subtitle">A photo/video sharing platform with 2B+ users. Core challenges: photo storage at scale, feed generation, follow graph.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-check"></i>Functional</h3><p>Upload photos/videos · Follow users · View feed of followed users · Like & comment · Stories (24h expiry)</p></div>
+      <div class="card"><h3><i class="ti ti-settings"></i>Non-Functional</h3><p>500M DAU · Read-heavy (100:1 read/write) · Photo uploads must be durable · Feed load &lt;200ms · Eventual consistency OK for feed</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-calculator"></i>Estimates</div>
+    <div class="estimate-box">
+      <div class="estimate-row"><span class="label">DAU</span><span class="value">500M</span></div>
+      <div class="estimate-row"><span class="label">Photos uploaded / day</span><span class="value">100M</span></div>
+      <div class="estimate-row"><span class="label">Avg photo size</span><span class="value">200 KB</span></div>
+      <div class="estimate-row"><span class="label">Storage / day</span><span class="value">20 TB</span></div>
+      <div class="estimate-row"><span class="label">10-year storage</span><span class="value highlight">73 PB</span></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-route"></i>Photo Upload Flow</div>
+    <div class="flow">
+      <div class="flow-box">Client</div><div class="flow-arrow">→</div>
+      <div class="flow-box">API Gateway</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Upload Service</div><div class="flow-arrow">→</div>
+      <div class="flow-box">S3 / Object Store</div>
+    </div>
+    <div class="flow" style="margin-top:4px">
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow" style="visibility:hidden">→</div>
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow">↓</div>
+      <div class="flow-box">Message Queue</div><div class="flow-arrow">→</div>
+      <div class="flow-box">CDN Invalidation + Feed Update</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-rss"></i>Feed Generation: Push vs Pull</div>
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--accent)"><h3><i class="ti ti-upload"></i>Fan-out on Write (Push)</h3><p>When user posts, pre-populate feed for all followers. Feed reads are instant. But celebrity with 100M followers = 100M writes per post. Instagram uses hybrid — fan-out for regular users, pull for celebrities.</p></div>
+      <div class="card" style="border-left:3px solid var(--accent3)"><h3><i class="ti ti-download"></i>Fan-out on Read (Pull)</h3><p>Build feed at read time by fetching posts from all followed users. No write amplification. But high read latency. Works well for low-follower accounts.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="topic-whatsapp">
+  <div class="page-tag tag-green"><i class="ti ti-message-2"></i>Case Study</div>
+  <h1 class="page-title">Design WhatsApp</h1>
+  <p class="page-subtitle">A global messaging platform with 2B users, 100B+ messages/day. Core challenges: message delivery guarantees, online presence, E2E encryption.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-check"></i>Functional</h3><p>1:1 and group messaging · Media sharing (photos, video, audio) · Message delivery receipts (sent/delivered/read) · Online presence · End-to-end encryption</p></div>
+      <div class="card"><h3><i class="ti ti-settings"></i>Non-Functional</h3><p>2B users · 100B msgs/day ≈ 1.2M msg/sec · Low latency (&lt;500ms delivery) · High availability · Messages must not be lost</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-route"></i>Message Delivery Flow</div>
+    <div class="flow">
+      <div class="flow-box">Sender App</div><div class="flow-arrow">→</div>
+      <div class="flow-box">WebSocket Server</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Message Service</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Message Store (Cassandra)</div>
+    </div>
+    <div class="flow" style="margin-top:4px">
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow" style="visibility:hidden">→</div>
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow">↓</div>
+      <div class="flow-box">Presence Service</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Recipient WebSocket / Push Notification</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-wifi"></i>WebSockets for Real-Time</div>
+    <div class="def-card">WhatsApp maintains a <strong>persistent WebSocket connection</strong> per user. This enables bidirectional, low-latency messaging without polling. When a user is offline, messages are queued in Cassandra and delivered when they reconnect. Each WebSocket server handles ~1M concurrent connections.</div>
+  </div>
+  <div class="highlight-box"><strong>Delivery Receipts:</strong> Message server sends ACK to sender (✓ sent). When recipient's device receives it (✓✓ delivered). When recipient opens it (✓✓ blue = read). All receipts are separate messages flowing back through the same WebSocket infrastructure.</div>
+</div>
+
+<div class="topic" id="topic-youtube">
+  <div class="page-tag tag-red"><i class="ti ti-brand-youtube"></i>Case Study</div>
+  <h1 class="page-title">Design YouTube</h1>
+  <p class="page-subtitle">A video platform with 2B users, 500 hours of video uploaded per minute. Core challenges: video transcoding at scale, global video delivery.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-check"></i>Functional</h3><p>Upload videos · Stream videos at multiple resolutions · Search · Subscribe and recommended feed · Like/comment</p></div>
+      <div class="card"><h3><i class="ti ti-settings"></i>Non-Functional</h3><p>2B MAU · 500hrs video/min uploaded · Read-heavy (100:1) · Smooth streaming globally · Video must never be lost</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-route"></i>Video Upload & Processing Pipeline</div>
+    <div class="flow">
+      <div class="flow-box">Creator Upload</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Raw Storage (S3)</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Message Queue</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Transcoding Workers</div>
+    </div>
+    <div class="flow" style="margin-top:4px">
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow" style="visibility:hidden">→</div>
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow" style="visibility:hidden">→</div>
+      <div class="flow-box" style="visibility:hidden">x</div><div class="flow-arrow">↓</div>
+      <div class="flow-box">Multiple Resolutions (360p, 720p, 1080p, 4K) → CDN</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-video"></i>Adaptive Bitrate Streaming</div>
+    <div class="def-card">Video is split into small chunks (2-10 seconds). Each chunk is encoded at multiple bitrates. The player downloads a manifest file listing all available qualities and dynamically selects chunks based on current bandwidth. This is <strong>HLS (HTTP Live Streaming)</strong> or <strong>DASH</strong>. Why it matters: smooth playback even on variable connections.</div>
+  </div>
+</div>
+
+<div class="topic" id="topic-tinder">
+  <div class="page-tag tag-pink"><i class="ti ti-heart"></i>Case Study</div>
+  <h1 class="page-title">Design Tinder</h1>
+  <p class="page-subtitle">A location-based matchmaking app. Core challenges: proximity search, swipe mechanics, real-time matching, recommendation quality.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-check"></i>Functional</h3><p>Create profile with photos · See profiles of nearby users · Swipe left/right · Match when both swipe right · Chat between matches</p></div>
+      <div class="card"><h3><i class="ti ti-settings"></i>Non-Functional</h3><p>50M DAU · 1B swipes/day ≈ 12K swipes/sec · Profile recommendations &lt;100ms · Geo-proximity within configurable radius · Eventual consistency for matches OK</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-map-pin"></i>Proximity Search</div>
+    <div class="card"><h3><i class="ti ti-hash"></i>Geohash-Based Discovery</h3><p>User location encoded as geohash. Stored in Redis (GEOSEARCH). To find nearby profiles: search current geohash + 8 neighbors (to handle boundaries). Filter by age, gender preferences. Return candidate pool. Profiles ranked by recommendation ML model (Elo-like scoring).</p></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-heart"></i>Swipe & Match System</div>
+    <div class="flow">
+      <div class="flow-box">User Swipes Right</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Write to Swipe DB</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Check if Other Swiped Right</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Match! → Notify Both</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="topic-netflix">
+  <div class="page-tag tag-red"><i class="ti ti-device-tv"></i>Case Study</div>
+  <h1 class="page-title">Design Netflix</h1>
+  <p class="page-subtitle">A global video streaming service with 250M subscribers. Core challenges: content delivery at global scale, personalization, encoding pipeline.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-check"></i>Functional</h3><p>Stream videos globally · Personalized recommendations · Multiple profiles per account · Download for offline · Continue watching across devices</p></div>
+      <div class="card"><h3><i class="ti ti-settings"></i>Non-Functional</h3><p>250M subscribers · 15% of global internet traffic · 4K HDR streaming · &lt;200ms startup time · 99.99% availability</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-world"></i>Netflix Open Connect CDN</div>
+    <div class="def-card">Netflix operates its own CDN called <strong>Open Connect</strong>. They place servers (OCAs) directly inside ISP networks globally. During off-peak hours, Netflix proactively pushes popular content to OCAs close to viewers. Result: 95%+ of traffic served from local ISP caches — dramatically reducing costs and improving quality.</div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-brain"></i>Recommendations</div>
+    <div class="card"><h3><i class="ti ti-stars"></i>Collaborative Filtering</h3><p>Users similar to you watched X → recommend X. Powered by offline ML training on massive viewing history. Netflix A/B tests every UI element — even the thumbnail shown for each title is personalized per user to maximize click rate.</p></div>
+  </div>
+  <div class="highlight-box"><strong>Chaos Engineering:</strong> Netflix created Chaos Monkey — a tool that randomly kills production services to ensure the system handles failures gracefully. This is how they achieve extreme resilience: by practicing failure constantly.</div>
+</div>
+
+<!-- ESTIMATION -->
+<div class="topic" id="topic-estimation">
+  <div class="page-tag tag-amber"><i class="ti ti-calculator"></i>Interview Skill</div>
+  <h1 class="page-title">Back-of-Envelope Estimation</h1>
+  <p class="page-subtitle">The ability to quickly estimate scale requirements. Interviewers use this to see if you understand the magnitude of the problem before designing.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-book"></i>Key Numbers to Memorize</div>
+    <div class="metric-row-4">
+      <div class="metric"><div class="metric-val">1M</div><div class="metric-lbl">seconds in 12 days</div></div>
+      <div class="metric"><div class="metric-val">86K</div><div class="metric-lbl">seconds in a day</div></div>
+      <div class="metric"><div class="metric-val">8KB</div><div class="metric-lbl">average tweet storage</div></div>
+      <div class="metric"><div class="metric-val">1PB</div><div class="metric-lbl">= 1,000 TB = 1M GB</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-calculator"></i>Twitter Estimation Example</div>
+    <div class="estimate-box">
+      <div class="estimate-row"><span class="label">Monthly Active Users</span><span class="value">300M</span></div>
+      <div class="estimate-row"><span class="label">Daily Active Users (30%)</span><span class="value">90M</span></div>
+      <div class="estimate-row"><span class="label">Tweets per user per day</span><span class="value">2</span></div>
+      <div class="estimate-row"><span class="label">Tweets per day</span><span class="value">180M</span></div>
+      <div class="estimate-row"><span class="label">Tweets per second (QPS)</span><span class="value">~2,100</span></div>
+      <div class="estimate-row"><span class="label">Tweet size (text + metadata)</span><span class="value">~1 KB</span></div>
+      <div class="estimate-row"><span class="label">Storage per day</span><span class="value">180 GB</span></div>
+      <div class="estimate-row"><span class="label">Storage per year</span><span class="value highlight">~65 TB</span></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-bulb"></i>Estimation Framework</div>
+    <div class="card"><h3><i class="ti ti-list-numbers"></i>Steps</h3><p>1. <strong>Users:</strong> MAU → DAU (usually 10-30% of MAU)<br>2. <strong>Actions:</strong> How many per user per day?<br>3. <strong>QPS:</strong> Total actions ÷ 86,400 seconds<br>4. <strong>Peak QPS:</strong> 2-3× average QPS<br>5. <strong>Storage:</strong> Size of one unit × count per day × retention period<br>6. <strong>Bandwidth:</strong> Avg request size × QPS</p></div>
+  </div>
+</div>
+
+<!-- INTERVIEW TIPS -->
+<div class="topic" id="topic-interview">
+  <div class="page-tag tag-green"><i class="ti ti-user-check"></i>Interview</div>
+  <h1 class="page-title">Interview Tips & Framework</h1>
+  <p class="page-subtitle">A structured approach to system design interviews. The difference between senior and staff-level candidates is almost entirely in how they structure their thinking.</p>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-list-numbers"></i>The 5-Step Framework</div>
+    <div class="card-grid">
+      <div class="card"><h3><i class="ti ti-question-mark"></i>1. Clarify Requirements (5 min)</h3><p>Don't assume. Ask: Who are the users? What's the scale? Read vs write heavy? Any specific constraints? Latency requirements? Global or regional? Active users vs registered?</p></div>
+      <div class="card"><h3><i class="ti ti-calculator"></i>2. Estimate Scale (3 min)</h3><p>QPS, storage, bandwidth. This drives your architectural choices. A system serving 1K users vs 1B users is completely different. Do this out loud — show your math.</p></div>
+      <div class="card"><h3><i class="ti ti-layout"></i>3. High-Level Design (10 min)</h3><p>Draw the major components: clients, load balancers, API servers, databases, caches, queues, CDN. Don't go deep yet — get the full picture down first.</p></div>
+      <div class="card"><h3><i class="ti ti-zoom-in"></i>4. Deep Dive (15 min)</h3><p>The interviewer will guide you to the interesting part. Common deep dives: database schema, feed generation algorithm, consistency model, handling failures.</p></div>
+      <div class="card"><h3><i class="ti ti-scale"></i>5. Trade-offs (5 min)</h3><p>Every decision has a cost. Acknowledge them: "We chose Cassandra for writes but this makes JOINs impossible." Senior engineers always discuss what they gave up.</p></div>
+      <div class="card"><h3><i class="ti ti-arrow-up"></i>Wrap Up</h3><p>Discuss bottlenecks, monitoring strategy, how the system evolves with 10× more traffic, any open issues you'd address with more time.</p></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><i class="ti ti-thumb-up"></i>Do's and Don'ts</div>
+    <div class="card">
+      <div class="tip-item">
+        <div class="tip-icon do"><i class="ti ti-check"></i></div>
+        <div class="tip-text"><strong>Think out loud.</strong> Interviewers want to see your thought process, not just the answer. A great wrong answer with good reasoning beats a lucky right answer with no explanation.</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon do"><i class="ti ti-check"></i></div>
+        <div class="tip-text"><strong>Drive the conversation.</strong> Don't wait to be asked. Lead with: "I'm going to start with requirements, then estimate scale, then sketch the HLD. Does that sound good?"</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon dont"><i class="ti ti-x"></i></div>
+        <div class="tip-text"><strong>Don't jump to solutions.</strong> Designing before clarifying requirements is the #1 interview mistake. You'll solve the wrong problem and waste everyone's time.</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon dont"><i class="ti ti-x"></i></div>
+        <div class="tip-text"><strong>Don't say "use Kafka" without reasoning.</strong> Every technology choice needs a why. "Kafka because it handles high throughput and message replay" beats "Kafka" alone.</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon do"><i class="ti ti-check"></i></div>
+        <div class="tip-text"><strong>Acknowledge trade-offs explicitly.</strong> "We could use PostgreSQL here for strong consistency, but at 1M writes/sec we'd need heavy sharding. Cassandra trades consistency for write throughput — that's acceptable here because..."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+<script>
+function show(id){
+  document.querySelectorAll('.topic').forEach(t=>t.classList.remove('visible'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const t=document.getElementById('topic-'+id);
+  const n=document.getElementById('nav-'+id);
+  if(t){t.classList.add('visible');}
+  if(n){n.classList.add('active');n.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  document.querySelector('.main').scrollTop=0;
+}
+function filterNav(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.style.display=(!q||n.textContent.toLowerCase().includes(q))?'flex':'none';
+  });
+}
+</script>
+</body>
+</html>
