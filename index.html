@@ -771,39 +771,35 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
       height: 56px;
       background: var(--bg2);
       border-bottom: 1px solid var(--border);
       align-items: center;
       padding: 0 16px;
       gap: 12px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .hamburger-btn {
       background: none;
       border: none;
       cursor: pointer;
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text2);
+      color: var(--text);
       font-size: 22px;
       flex-shrink: 0;
-      transition: background .15s, color .15s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: background .15s;
     }
-
-    .hamburger-btn:hover,
-    .hamburger-btn:active {
-      background: var(--bg3);
-      color: var(--text)
-    }
+    .hamburger-btn:active { background: var(--bg3); }
 
     .mobile-nav-title {
       font-size: 14px;
@@ -822,6 +818,7 @@
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--accent);
+      flex-shrink: 0;
     }
 
     /* ── Sidebar overlay (mobile) ──────────────────────────── */
@@ -829,53 +826,82 @@
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 298;
-      background: rgba(0, 0, 0, .55);
+      z-index: 399;
+      background: rgba(0,0,0,.6);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       opacity: 0;
       transition: opacity .25s;
+      pointer-events: none;
     }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all; }
 
-    .sidebar-overlay.active {
-      opacity: 1
+    /* ── Prev / Next bottom bar ────────────────────────────── */
+    .topic-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding: 16px 0 8px;
+      border-top: 1px solid var(--border);
+      gap: 12px;
     }
+    .topic-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .18s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      min-width: 110px;
+    }
+    .topic-nav-btn:hover, .topic-nav-btn:active {
+      background: var(--bg3);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .topic-nav-btn.prev { justify-content: flex-start; }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto; }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0; }
+    .topic-nav-label { display: flex; flex-direction: column; }
+    .topic-nav-hint { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; }
+    .topic-nav-name { font-size: 13px; font-weight: 600; }
 
     /* ── Responsive breakpoints ────────────────────────────── */
     @media(max-width:768px) {
-      .mobile-nav {
-        display: flex
-      }
+      .mobile-nav { display: flex }
 
       .sidebar {
         position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 299;
+        top: 0; left: 0; bottom: 0;
+        z-index: 400;
         width: min(300px, 85vw);
         transform: translateX(-100%);
-        transition: transform .28s cubic-bezier(.4, 0, .2, 1);
+        transition: transform .28s cubic-bezier(.4,0,.2,1);
         height: 100dvh;
         overflow-y: auto;
       }
-
-      .sidebar.open {
-        transform: translateX(0)
-      }
-
-      .sidebar-overlay {
-        display: block
-      }
+      .sidebar.open { transform: translateX(0) }
+      .sidebar-overlay { display: block }
 
       .main {
-        padding: 80px 16px 32px;
+        padding: 72px 16px 32px;
         max-width: 100%;
       }
+      .app { display: block }
 
-      .app {
-        display: block
-      }
+      /* Prev/Next on mobile */
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px; }
+      .topic-nav-hint { display: none; }
 
       /* Grids collapse to 1 column */
       .card-grid,
@@ -2360,35 +2386,79 @@
     </div><!-- end main -->
   </div><!-- end app -->
   <script>
-    // Nav-item label map for mobile title
+    // ── Topic order for Prev / Next ─────────────────────────────
+    const TOPIC_ORDER = [
+      'intro','scaling','latency','cap',
+      'lb','hashing','caching','msgqueue','pubsub','sharding',
+      'replication','cdn','microservices','eventdriven','spof',
+      'api','dbinternals','nosqlsql','location',
+      'instagram','whatsapp','youtube','tinder','netflix',
+      'estimation','interview'
+    ];
+
     const NAV_LABELS = {
-      intro: 'Introduction', scaling: 'Scaling', latency: 'Latency Numbers', cap: 'CAP Theorem',
-      lb: 'Load Balancing', hashing: 'Consistent Hashing', caching: 'Caching',
-      msgqueue: 'Message Queues', pubsub: 'Pub / Sub', sharding: 'DB Sharding',
-      replication: 'Replication', cdn: 'CDN', microservices: 'Microservices',
-      eventdriven: 'Event-Driven Arch', spof: 'Single Point of Failure',
-      api: 'API Design', dbinternals: 'DB Internals', nosqlsql: 'SQL vs NoSQL',
-      location: 'Location Systems', instagram: 'Instagram', whatsapp: 'WhatsApp',
-      youtube: 'YouTube', tinder: 'Tinder', netflix: 'Netflix',
-      estimation: 'Back-of-Envelope', interview: 'Interview Tips'
+      intro:'Introduction', scaling:'Scaling', latency:'Latency Numbers', cap:'CAP Theorem',
+      lb:'Load Balancing', hashing:'Consistent Hashing', caching:'Caching',
+      msgqueue:'Message Queues', pubsub:'Pub / Sub', sharding:'DB Sharding',
+      replication:'Replication', cdn:'CDN', microservices:'Microservices',
+      eventdriven:'Event-Driven Arch', spof:'Single Point of Failure',
+      api:'API Design', dbinternals:'DB Internals', nosqlsql:'SQL vs NoSQL',
+      location:'Location Systems', instagram:'Instagram', whatsapp:'WhatsApp',
+      youtube:'YouTube', tinder:'Tinder', netflix:'Netflix',
+      estimation:'Back-of-Envelope', interview:'Interview Tips'
     };
+
+    let currentId = 'intro';
 
     function show(id) {
       document.querySelectorAll('.topic').forEach(t => t.classList.remove('visible'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       const t = document.getElementById('topic-' + id);
       const n = document.getElementById('nav-' + id);
-      if (t) { t.classList.add('visible'); }
+      if (t) t.classList.add('visible');
       if (n) { n.classList.add('active'); n.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-      // Update mobile title
+      // Update mobile navbar title
       const titleEl = document.getElementById('mobileNavTitle');
-      if (titleEl && NAV_LABELS[id]) { titleEl.textContent = NAV_LABELS[id]; }
-      // Scroll main to top
+      if (titleEl && NAV_LABELS[id]) titleEl.textContent = NAV_LABELS[id];
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
       const main = document.querySelector('.main');
       if (main) main.scrollTop = 0;
-      window.scrollTo(0, 0);
-      // Close sidebar on mobile after selection
-      if (window.innerWidth <= 768) { closeSidebar(); }
+      // Update arrows and track current
+      currentId = id;
+      updateNavArrows(id);
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function updateNavArrows(id) {
+      const idx = TOPIC_ORDER.indexOf(id);
+      const prevId = idx > 0 ? TOPIC_ORDER[idx - 1] : null;
+      const nextId = idx < TOPIC_ORDER.length - 1 ? TOPIC_ORDER[idx + 1] : null;
+      document.querySelectorAll('.topic-nav-bar').forEach(bar => {
+        const prevBtn = bar.querySelector('.prev');
+        const nextBtn = bar.querySelector('.next');
+        if (prevBtn) {
+          if (prevId) {
+            prevBtn.style.visibility = 'visible';
+            prevBtn.onclick = () => show(prevId);
+            const nm = prevBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[prevId] || prevId;
+          } else {
+            prevBtn.style.visibility = 'hidden';
+          }
+        }
+        if (nextBtn) {
+          if (nextId) {
+            nextBtn.style.visibility = 'visible';
+            nextBtn.onclick = () => show(nextId);
+            const nm = nextBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[nextId] || nextId;
+          } else {
+            nextBtn.style.visibility = 'hidden';
+          }
+        }
+      });
     }
 
     function filterNav(q) {
@@ -2398,21 +2468,16 @@
       });
     }
 
-    function toggleNav() {
+    function openSidebar() {
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('sidebarOverlay');
       const btn = document.getElementById('hamburgerBtn');
       const icon = document.getElementById('hamburgerIcon');
-      const isOpen = sidebar.classList.contains('open');
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        sidebar.classList.add('open');
-        overlay.classList.add('active');
-        btn.setAttribute('aria-expanded', 'true');
-        icon.className = 'ti ti-x';
-        document.body.style.overflow = 'hidden';
-      }
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      icon.className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
     }
 
     function closeSidebar() {
@@ -2427,15 +2492,61 @@
       document.body.style.overflow = '';
     }
 
-    // Close sidebar on Escape key
+    function toggleNav() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    // ── Wire everything up after DOM is ready ───────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger — addEventListener so it works on all platforms
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+        btn.addEventListener('touchend', e => { e.preventDefault(); e.stopPropagation(); toggleNav(); }, { passive: false });
+      }
+      // Overlay tap closes sidebar
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('touchend', e => { e.preventDefault(); closeSidebar(); }, { passive: false });
+      }
+
+      // ── Inject Prev / Next bar into every topic ───────────────
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.topic').forEach(topic => {
+        topic.insertAdjacentHTML('beforeend', navBarHTML);
+      });
+
+      // Init arrows for the first visible topic
+      updateNavArrows('intro');
+    });
+
+    // Escape key closes sidebar
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeSidebar();
     });
 
-    // Register service worker for PWA
+    // Register service worker for PWA offline support
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => { });
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
   </script>
