@@ -1,0 +1,45 @@
+{
+  "name": "System Design Mastery Notes",
+  "short_name": "SD Notes",
+  "description": "Complete system design reference for software engineering interviews — every concept, trade-off, and case study.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#0f1117",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Introduction",
+      "url": "./#intro",
+      "description": "Start here — overview and study path"
+    },
+    {
+      "name": "CAP Theorem",
+      "url": "./#cap",
+      "description": "Consistency, Availability, Partition Tolerance"
+    },
+    {
+      "name": "Interview Tips",
+      "url": "./#interview",
+      "description": "The 5-step interview framework"
+    }
+  ]
+}
