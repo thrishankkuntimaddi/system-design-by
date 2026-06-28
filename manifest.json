@@ -1,12 +1,12 @@
 {
-  "name": "System Design Mastery Notes",
-  "short_name": "SD Notes",
-  "description": "Complete system design reference for software engineering interviews — every concept, trade-off, and case study.",
+  "name": "CS Notes — Study Hub",
+  "short_name": "CS Notes",
+  "description": "Complete CS interview prep — System Design, OOP, DSA, Computer Networks, OS, and more.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f1117",
-  "theme_color": "#0f1117",
+  "background_color": "#0a0d14",
+  "theme_color": "#0a0d14",
   "orientation": "portrait-primary",
   "categories": ["education", "productivity"],
   "lang": "en",
@@ -27,19 +27,19 @@
   "screenshots": [],
   "shortcuts": [
     {
-      "name": "Introduction",
-      "url": "./#intro",
-      "description": "Start here — overview and study path"
+      "name": "System Design",
+      "url": "./subjects/system_design/",
+      "description": "Scalability, caching, microservices, case studies"
     },
     {
-      "name": "CAP Theorem",
-      "url": "./#cap",
-      "description": "Consistency, Availability, Partition Tolerance"
+      "name": "OOP",
+      "url": "./subjects/oops/",
+      "description": "Classes, inheritance, polymorphism, abstraction"
     },
     {
-      "name": "Interview Tips",
-      "url": "./#interview",
-      "description": "The 5-step interview framework"
+      "name": "DSA Basics",
+      "url": "./subjects/dsa_basics/",
+      "description": "Arrays, trees, sorting, Big O"
     }
   ]
 }

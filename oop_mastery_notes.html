@@ -1,0 +1,625 @@
+
+<h2 class="sr-only">Object-Oriented Programming mastery notes — interactive reference covering all core OOP concepts with definitions, examples, and visualizations.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{display:flex;min-height:580px;gap:0;font-family:var(--font-sans)}
+.sb{width:200px;flex-shrink:0;border-right:0.5px solid var(--border);padding:12px 0;background:var(--surface-1)}
+.sb-hd{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:6px 14px 4px}
+.ni{display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;font-size:12.5px;color:var(--text-secondary);border-left:2px solid transparent;transition:all .12s}
+.ni:hover{background:var(--surface-2);color:var(--text-primary)}
+.ni.on{background:var(--surface-2);color:var(--text-accent);border-left-color:var(--border-accent);font-weight:500}
+.ni i{font-size:14px;width:15px}
+.ct{flex:1;overflow-y:auto;padding:24px 28px}
+.pg{display:none}
+.pg.on{display:block}
+.ptag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;margin-bottom:8px}
+.t-pu{background:var(--bg-pro);color:var(--text-pro)}
+.t-bl{background:var(--bg-accent);color:var(--text-accent)}
+.t-gr{background:var(--bg-success);color:var(--text-success)}
+.t-am{background:var(--bg-warning);color:var(--text-warning)}
+.t-re{background:var(--bg-danger);color:var(--text-danger)}
+.ptitle{font-size:20px;font-weight:500;color:var(--text-primary);margin-bottom:4px}
+.psub{font-size:13.5px;color:var(--text-secondary);margin-bottom:20px;line-height:1.6}
+.def{background:var(--surface-1);border:0.5px solid var(--border);border-left:3px solid var(--border-accent);border-radius:0;padding:13px 15px;font-size:13.5px;line-height:1.75;color:var(--text-secondary);margin-bottom:18px}
+.def strong{color:var(--text-primary)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:13px 15px}
+.card h3{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card h3 i{font-size:14px;color:var(--text-accent)}
+.card p{font-size:12.5px;color:var(--text-secondary);line-height:1.65}
+.sec-hd{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;margin-top:18px;display:flex;align-items:center;gap:5px}
+.code{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-accent);line-height:1.7;overflow-x:auto;margin:10px 0}
+.code .cm{color:var(--text-muted)}
+.code .kw{color:var(--text-pro)}
+.code .ty{color:var(--text-success)}
+.code .fn{color:var(--text-warning)}
+.code .st{color:var(--text-danger)}
+.pros{background:var(--bg-success);border:0.5px solid var(--border-success);border-radius:12px;padding:12px 14px}
+.cons{background:var(--bg-danger);border:0.5px solid var(--border-danger);border-radius:12px;padding:12px 14px}
+.pros .ch{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-success);margin-bottom:8px}
+.cons .ch{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-danger);margin-bottom:8px}
+.pros ul,.cons ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.pros li{font-size:12.5px;color:var(--text-success);padding-left:14px;position:relative;line-height:1.5}
+.cons li{font-size:12.5px;color:var(--text-danger);padding-left:14px;position:relative;line-height:1.5}
+.pros li::before{content:"✓";position:absolute;left:0;font-size:11px;font-weight:700}
+.cons li::before{content:"✗";position:absolute;left:0;font-size:11px;font-weight:700}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hl{background:var(--bg-accent);border:0.5px solid var(--border-accent);border-radius:var(--radius);padding:12px 14px;font-size:12.5px;color:var(--text-secondary);line-height:1.7;margin:10px 0}
+.hl strong{color:var(--text-accent)}
+.warn{background:var(--bg-warning);border:0.5px solid var(--border-warning);border-radius:var(--radius);padding:12px 14px;font-size:12.5px;color:var(--text-warning);line-height:1.7;margin:10px 0}
+.divider{height:0.5px;background:var(--border);margin:18px 0}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.fb{background:var(--surface-2);border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:5px 11px;font-size:12px;color:var(--text-primary);font-weight:500}
+.fa{color:var(--text-accent);font-size:16px;font-weight:700}
+.chip{font-size:11px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-2)}
+.chip.bl{border-color:var(--border-accent);color:var(--text-accent);background:var(--bg-accent)}
+.chip.pu{border-color:var(--border-pro);color:var(--text-pro);background:var(--bg-pro)}
+.chip.gr{border-color:var(--border-success);color:var(--text-success);background:var(--bg-success)}
+.chip.am{border-color:var(--border-warning);color:var(--text-warning);background:var(--bg-warning)}
+.row-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.inh-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+.inh-table th{padding:8px 12px;text-align:center;background:var(--surface-1);color:var(--text-muted);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;border-bottom:0.5px solid var(--border);border-right:0.5px solid var(--border)}
+.inh-table td{padding:8px 12px;border-bottom:0.5px solid var(--border);border-right:0.5px solid var(--border);text-align:center;color:var(--text-secondary)}
+.inh-table td:first-child{font-weight:500;color:var(--text-primary);text-align:left}
+.inh-table tr:last-child td{border-bottom:none}
+.inh-table .ni-{color:var(--text-danger)}
+.inh-table .pr{color:var(--text-pro)}
+.inh-table .pu-{color:var(--text-warning)}
+.inh-table .pb{color:var(--text-success)}
+.inh-tree{display:flex;flex-direction:column;align-items:center;gap:0;margin:12px 0}
+.tree-row{display:flex;align-items:center;justify-content:center;gap:12px}
+.tree-box{background:var(--surface-1);border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:6px 14px;font-size:12px;font-weight:500;color:var(--text-primary);text-align:center}
+.tree-box.base{background:var(--bg-pro);border-color:var(--border-pro);color:var(--text-pro)}
+.tree-box.derived{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)}
+.tree-box.leaf{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.tree-arr{color:var(--text-muted);font-size:14px;margin:2px auto;text-align:center}
+.vline{width:0.5px;height:16px;background:var(--border-strong);margin:0 auto}
+.hcon{display:flex;align-items:flex-start;justify-content:center;gap:0}
+.hcon-mid{display:flex;flex-direction:column;align-items:center}
+.hcon-line{height:0.5px;background:var(--border-strong);margin-top:8px}
+.poly-tab{display:flex;gap:6px;margin-bottom:12px}
+.poly-btn{padding:5px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .12s}
+.poly-btn.on{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent);font-weight:500}
+.poly-panel{display:none}
+.poly-panel.on{display:block}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge.new{background:var(--bg-success);color:var(--text-success)}
+.badge.key{background:var(--bg-pro);color:var(--text-pro)}
+.mem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.mem-box{border-radius:var(--radius);padding:10px 12px;text-align:center}
+.mem-box .mv{font-size:18px;font-weight:500;color:var(--text-primary)}
+.mem-box .ml{font-size:11px;color:var(--text-muted);margin-top:2px}
+.mem-box.bl{background:var(--bg-accent)}
+.mem-box.pu{background:var(--bg-pro)}
+.mem-box.am{background:var(--bg-warning)}
+</style>
+
+<div class="app">
+<div class="sb">
+  <div class="sb-hd">Core OOP</div>
+  <div class="ni on" onclick="show('intro')" id="n-intro"><i class="ti ti-home" aria-hidden="true"></i>Overview</div>
+  <div class="ni" onclick="show('classes')" id="n-classes"><i class="ti ti-box" aria-hidden="true"></i>Classes & Objects</div>
+  <div class="ni" onclick="show('access')" id="n-access"><i class="ti ti-lock" aria-hidden="true"></i>Access Modifiers</div>
+  <div class="ni" onclick="show('encap')" id="n-encap"><i class="ti ti-shield" aria-hidden="true"></i>Encapsulation</div>
+  <div class="ni" onclick="show('ctor')" id="n-ctor"><i class="ti ti-hammer" aria-hidden="true"></i>Constructors</div>
+  <div class="ni" onclick="show('dtor')" id="n-dtor"><i class="ti ti-trash" aria-hidden="true"></i>Destructors</div>
+  <div class="ni" onclick="show('ptr')" id="n-ptr"><i class="ti ti-arrow-right" aria-hidden="true"></i>this Pointer</div>
+  <div class="ni" onclick="show('inh')" id="n-inh"><i class="ti ti-hierarchy" aria-hidden="true"></i>Inheritance</div>
+  <div class="ni" onclick="show('poly')" id="n-poly"><i class="ti ti-transform" aria-hidden="true"></i>Polymorphism</div>
+  <div class="ni" onclick="show('abs')" id="n-abs"><i class="ti ti-eye-off" aria-hidden="true"></i>Abstraction</div>
+  <div class="ni" onclick="show('static')" id="n-static"><i class="ti ti-variable" aria-hidden="true"></i>Static Keyword</div>
+  <div class="ni" onclick="show('friend')" id="n-friend"><i class="ti ti-users" aria-hidden="true"></i>Friend</div>
+  <div class="sb-hd" style="margin-top:8px">Quick Ref</div>
+  <div class="ni" onclick="show('pillars')" id="n-pillars"><i class="ti ti-layout-columns" aria-hidden="true"></i>4 Pillars</div>
+  <div class="ni" onclick="show('copy')" id="n-copy"><i class="ti ti-copy" aria-hidden="true"></i>Deep vs Shallow</div>
+</div>
+
+<div class="ct">
+
+<!-- OVERVIEW -->
+<div class="pg on" id="p-intro">
+  <div class="ptag t-pu"><i class="ti ti-star" aria-hidden="true"></i>Start here</div>
+  <div class="ptitle">Object-Oriented Programming</div>
+  <p class="psub">A programming paradigm based on the concept of objects that contain data (attributes) and behavior (methods). Built on four pillars.</p>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-box" aria-hidden="true"></i>Class</h3><p>A blueprint or template that defines properties and behaviors. Like a house plan — it describes structure but isn't a house itself.</p></div>
+    <div class="card"><h3><i class="ti ti-cube" aria-hidden="true"></i>Object</h3><p>An instance of a class. The actual house built from the plan. Has its own state. One class can produce many objects.</p></div>
+  </div>
+  <div class="sec-hd"><i class="ti ti-layout-columns" aria-hidden="true"></i>The 4 Pillars</div>
+  <div class="g2" style="gap:8px">
+    <div class="card" style="border-left:3px solid var(--border-accent)"><h3><i class="ti ti-shield" aria-hidden="true"></i>Encapsulation</h3><p>Bundle data + methods in one class. Hide sensitive data with access modifiers.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-pro)"><h3><i class="ti ti-hierarchy" aria-hidden="true"></i>Inheritance</h3><p>Child class inherits properties and methods from parent class. Enables code reuse.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-success)"><h3><i class="ti ti-transform" aria-hidden="true"></i>Polymorphism</h3><p>Same interface, different behavior. One function name, many implementations.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-eye-off" aria-hidden="true"></i>Abstraction</h3><p>Show only what's necessary. Hide complexity. Use abstract classes and interfaces.</p></div>
+  </div>
+  <div class="sec-hd" style="margin-top:16px"><i class="ti ti-route" aria-hidden="true"></i>Suggested order</div>
+  <div class="flow">
+    <div class="fb">Classes</div><div class="fa">→</div>
+    <div class="fb">Access</div><div class="fa">→</div>
+    <div class="fb">Encapsulation</div><div class="fa">→</div>
+    <div class="fb">Constructors</div><div class="fa">→</div>
+    <div class="fb">Inheritance</div><div class="fa">→</div>
+    <div class="fb">Polymorphism</div>
+  </div>
+</div>
+
+<!-- CLASSES & OBJECTS -->
+<div class="pg" id="p-classes">
+  <div class="ptag t-pu"><i class="ti ti-box" aria-hidden="true"></i>Foundation</div>
+  <div class="ptitle">Classes & Objects</div>
+  <p class="psub">A class is a blueprint. An object is a real instance of that blueprint with its own state.</p>
+  <div class="def"><strong>Class</strong> — a user-defined data type that groups together data members (attributes) and member functions (methods) that operate on that data. Think of it as a cookie cutter.<br><br><strong>Object</strong> — a specific instance of a class. If <code>Teacher</code> is the class, then <code>t1</code> is an object with name="Rahul", subject="C++", salary=25000.</div>
+  <div class="sec-hd"><i class="ti ti-code" aria-hidden="true"></i>C++ example</div>
+  <div class="code">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">string</span> name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">string</span> subject;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> salary;<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">display</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt; name &lt;&lt; <span class="st">" teaches "</span> &lt;&lt; subject;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="cm">// Creating objects</span><br>
+<span class="ty">Teacher</span> t1;          <span class="cm">// t1 is an object</span><br>
+t1.name = <span class="st">"Rahul"</span>;   <span class="cm">// dot operator</span><br>
+t1.subject = <span class="st">"C++"</span>;<br>
+t1.<span class="fn">display</span>();
+  </div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-point" aria-hidden="true"></i>Dot Operator (.)</h3><p>Used to access members of an object. <code>t1.name</code> reads the <code>name</code> member from object <code>t1</code>. The bridge between object and its data.</p></div>
+    <div class="card"><h3><i class="ti ti-memory-2" aria-hidden="true"></i>Memory Allocation</h3><p>Memory is allocated when the object is created (when the constructor is called). Each object gets its own copy of data members. Static members are shared.</p></div>
+  </div>
+</div>
+
+<!-- ACCESS MODIFIERS -->
+<div class="pg" id="p-access">
+  <div class="ptag t-bl"><i class="ti ti-lock" aria-hidden="true"></i>Encapsulation</div>
+  <div class="ptitle">Access Modifiers</div>
+  <p class="psub">Control who can see and use which data members and methods. The primary tool for data hiding.</p>
+  <div class="g3">
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-globe" aria-hidden="true"></i>public</h3><p>Accessible from anywhere — inside the class, outside the class, in derived classes. Least restrictive.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-lock" aria-hidden="true"></i>private</h3><p>Accessible only inside the class itself. Not even derived classes can access. Most restrictive. Default in C++ classes.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-lock-open" aria-hidden="true"></i>protected</h3><p>Accessible inside the class AND in derived classes. Not accessible from outside. Middle ground.</p></div>
+  </div>
+  <div class="sec-hd"><i class="ti ti-table" aria-hidden="true"></i>Inheritance access table (from your image)</div>
+  <table class="inh-table">
+    <thead>
+      <tr>
+        <th style="text-align:left">Base class</th>
+        <th>Derived: private mode</th>
+        <th>Derived: protected mode</th>
+        <th>Derived: public mode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>private</td><td class="ni-">Not inherited</td><td class="ni-">Not inherited</td><td class="ni-">Not inherited</td></tr>
+      <tr><td>protected</td><td class="pr">→ private</td><td class="pu-">→ protected</td><td class="pu-">→ protected</td></tr>
+      <tr><td>public</td><td class="pr">→ private</td><td class="pu-">→ protected</td><td class="pb">→ public</td></tr>
+    </tbody>
+  </table>
+  <div class="hl"><strong>Key rule:</strong> Private members are NEVER inherited regardless of inheritance mode. Protected and public members are inherited, but their visibility in the derived class is determined by the inheritance mode — it can only become more restrictive, never less.</div>
+  <div class="sec-hd"><i class="ti ti-settings" aria-hidden="true"></i>Getters and Setters (Access Specifiers)</div>
+  <div class="def">Since private data can't be accessed directly from outside, we use <strong>getter</strong> functions (to read private data) and <strong>setter</strong> functions (to write private data with validation). This gives controlled access.</div>
+  <div class="code">
+<span class="kw">class</span> <span class="ty">Student</span> {<br>
+&nbsp;&nbsp;<span class="kw">private</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> age;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">setAge</span>(<span class="ty">int</span> a) {     <span class="cm">// setter — validates before setting</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(a &gt; 0) age = a;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> <span class="fn">getAge</span>() {           <span class="cm">// getter — read-only access</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> age;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};
+  </div>
+</div>
+
+<!-- ENCAPSULATION -->
+<div class="pg" id="p-encap">
+  <div class="ptag t-bl"><i class="ti ti-shield" aria-hidden="true"></i>Pillar 1</div>
+  <div class="ptitle">Encapsulation</div>
+  <p class="psub">Wrapping data and member functions together in a single unit (class). Like a capsule that hides the medicine inside.</p>
+  <div class="def"><strong>Encapsulation</strong> = bundling data (attributes) + methods (behaviors) that operate on that data into a single unit called a class. The internal implementation is hidden — users only interact through the public interface.<br><br><strong>Data hiding</strong> is achieved by marking sensitive members as <code>private</code>. External code cannot accidentally or maliciously corrupt the internal state.</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-pill" aria-hidden="true"></i>The Capsule Analogy</h3><p>A medicine capsule hides its complex chemical formula inside. You just swallow it — you don't need to know the internals. Similarly, a class exposes a clean public interface and hides implementation details.</p></div>
+    <div class="card"><h3><i class="ti ti-shield-check" aria-hidden="true"></i>Why Encapsulate?</h3><p>Protects data integrity (validation in setters), reduces coupling between components, easier to change internals without breaking external code, and makes debugging simpler.</p></div>
+  </div>
+  <div class="code">
+<span class="cm">// Bad — no encapsulation</span><br>
+<span class="ty">Student</span> s; s.age = -5;  <span class="cm">// invalid, but allowed</span><br><br>
+<span class="cm">// Good — encapsulated</span><br>
+s.<span class="fn">setAge</span>(-5);  <span class="cm">// setter rejects invalid value</span><br>
+s.<span class="fn">setAge</span>(20);  <span class="cm">// valid, stored safely</span>
+  </div>
+</div>
+
+<!-- CONSTRUCTORS -->
+<div class="pg" id="p-ctor">
+  <div class="ptag t-am"><i class="ti ti-hammer" aria-hidden="true"></i>Object Lifecycle</div>
+  <div class="ptitle">Constructors</div>
+  <p class="psub">A special method invoked automatically when an object is created. Used for initialization. Never has a return type.</p>
+  <div class="def"><strong>Constructor</strong> — a special member function with the same name as the class. Automatically called at object creation. No return type (not even void). Used to initialize data members. Memory is allocated when the constructor runs.</div>
+  <div class="sec-hd"><i class="ti ti-list" aria-hidden="true"></i>Types of constructors</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="card"><h3><i class="ti ti-number-1" aria-hidden="true"></i>Default (non-parameterized) constructor</h3><p>No parameters. Gives default values. Called automatically when you write <code>Teacher t1;</code></p>
+    <div class="code"><span class="ty">Teacher</span>() {<br>&nbsp;&nbsp;name = <span class="st">"Unknown"</span>; salary = 0;<br>}</div></div>
+    <div class="card"><h3><i class="ti ti-number-2" aria-hidden="true"></i>Parameterized constructor</h3><p>Accepts arguments to initialize with specific values. You pass values at object creation.</p>
+    <div class="code"><span class="ty">Teacher</span>(<span class="ty">string</span> n, <span class="ty">int</span> s) {<br>&nbsp;&nbsp;name = n; salary = s;<br>}<br><span class="cm">// Usage:</span><br><span class="ty">Teacher</span> t1(<span class="st">"Rahul"</span>, 25000);</div></div>
+    <div class="card"><h3><i class="ti ti-number-3" aria-hidden="true"></i>Copy constructor</h3><p>Creates a new object as a copy of an existing one. Passed by reference to avoid infinite recursion.</p>
+    <div class="code"><span class="ty">Teacher</span>(<span class="ty">Teacher</span> &orig) {<br>&nbsp;&nbsp;name = orig.name;<br>&nbsp;&nbsp;salary = orig.salary;<br>}<br><span class="cm">// Usage: Teacher t2(t1); — copies t1 into t2</span></div></div>
+  </div>
+  <div class="sec-hd"><i class="ti ti-arrows-up-down" aria-hidden="true"></i>Constructor overloading</div>
+  <div class="hl"><strong>Constructor overloading</strong> — multiple constructors in the same class, each with different parameters. C++ picks the right one based on what arguments you pass. This is compile-time polymorphism.</div>
+  <div class="sec-hd"><i class="ti ti-layers-difference" aria-hidden="true"></i>Shallow vs Deep Copy</div>
+  <div class="pc">
+    <div class="pros" style="background:var(--bg-warning);border-color:var(--border-warning)">
+      <div class="ch" style="color:var(--text-warning)">Shallow copy</div>
+      <ul><li style="color:var(--text-warning)">Copies all member values as-is</li><li style="color:var(--text-warning)">Pointers are copied — both objects point to the same memory</li><li style="color:var(--text-warning)">Default copy constructor does this</li><li style="color:var(--text-warning)">Dangerous with dynamic memory — double-free crash</li></ul>
+    </div>
+    <div class="pros">
+      <div class="ch">Deep copy</div>
+      <ul><li>Copies values AND allocates new memory</li><li>Pointers point to separate independent copies</li><li>Must write custom copy constructor</li><li>Safe — no shared memory between objects</li></ul>
+    </div>
+  </div>
+  <div class="code">
+<span class="cm">// Deep copy — allocate new memory</span><br>
+<span class="ty">Teacher</span>(<span class="ty">Teacher</span> &orig) {<br>
+&nbsp;&nbsp;name = orig.name;<br>
+&nbsp;&nbsp;data = <span class="kw">new</span> <span class="ty">int</span>[size];  <span class="cm">// new allocation!</span><br>
+&nbsp;&nbsp;<span class="fn">copy</span>(orig.data, orig.data+size, data);<br>
+}
+  </div>
+</div>
+
+<!-- DESTRUCTORS -->
+<div class="pg" id="p-dtor">
+  <div class="ptag t-re"><i class="ti ti-trash" aria-hidden="true"></i>Object Lifecycle</div>
+  <div class="ptitle">Destructors</div>
+  <p class="psub">The opposite of a constructor. Called automatically when an object goes out of scope to free allocated memory.</p>
+  <div class="def"><strong>Destructor</strong> — a special member function prefixed with <code>~</code> that runs automatically when an object is destroyed (goes out of scope or is explicitly deleted). Its job: release any dynamic memory the object owns to prevent memory leaks.</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-lifecycle" aria-hidden="true"></i>Constructor → Destructor order</h3><p>Objects are constructed in order. Destroyed in reverse order (LIFO). In inheritance: base constructor → derived constructor → ... → derived destructor → base destructor.</p></div>
+    <div class="card"><h3><i class="ti ti-trash" aria-hidden="true"></i>delete keyword</h3><p><code>delete ptr</code> — frees heap memory for a single object.<br><code>delete[] arr</code> — frees heap memory for an array.<br>Always pair <code>new</code> with <code>delete</code> to avoid leaks.</p></div>
+  </div>
+  <div class="code">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="ty">int</span>* data;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">Teacher</span>() { data = <span class="kw">new</span> <span class="ty">int</span>[100]; } <span class="cm">// alloc</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;~<span class="ty">Teacher</span>() { <span class="kw">delete</span>[] data; }       <span class="cm">// free — ~symbol</span><br>
+};<br><br>
+<span class="cm">// Manual delete for heap objects:</span><br>
+<span class="ty">Teacher</span>* t = <span class="kw">new</span> <span class="ty">Teacher</span>();<br>
+<span class="kw">delete</span> t;  <span class="cm">// calls destructor + frees memory</span>
+  </div>
+  <div class="hl"><strong>Static objects</strong> live for the entire lifetime of the program. Their destructor is called only when the program exits — not when a function returns.</div>
+</div>
+
+<!-- THIS POINTER -->
+<div class="pg" id="p-ptr">
+  <div class="ptag t-bl"><i class="ti ti-arrow-right" aria-hidden="true"></i>Memory</div>
+  <div class="ptitle">The <code>this</code> Pointer</div>
+  <p class="psub">A special hidden pointer in every member function that points to the object that called the function.</p>
+  <div class="def"><strong>this</strong> is an implicit pointer available inside every non-static member function. It holds the address of the current object. Used to disambiguate when a local variable shadows a member variable, or to return the current object from a method.</div>
+  <div class="code">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="ty">string</span> name;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">setName</span>(<span class="ty">string</span> name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 'name' (param) shadows 'name' (member)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">this</span>-&gt;name = name;  <span class="cm">// this->name = member</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="cm">// this->prop is the same as (*this).prop</span><br>
+<span class="cm">// Used in copy constructor to avoid ambiguity</span>
+  </div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-arrow-right" aria-hidden="true"></i>this->prop</h3><p>Accesses the current object's member. Equivalent to <code>(*this).prop</code>. Arrow operator dereferences the pointer and accesses the member in one step.</p></div>
+    <div class="card"><h3><i class="ti ti-refresh" aria-hidden="true"></i>Return *this</h3><p>Return the current object by reference to enable method chaining: <code>obj.setName("A").setSalary(100)</code>. Each method returns <code>*this</code> (the object itself).</p></div>
+  </div>
+</div>
+
+<!-- INHERITANCE -->
+<div class="pg" id="p-inh">
+  <div class="ptag t-pu"><i class="ti ti-hierarchy" aria-hidden="true"></i>Pillar 2</div>
+  <div class="ptitle">Inheritance</div>
+  <p class="psub">A derived class acquires properties and behavior from a base class. Enables code reuse — write once, inherit everywhere.</p>
+  <div class="def"><strong>Inheritance</strong> — when a child (derived) class inherits the data members and member functions of a parent (base) class. The child can use, extend, or override inherited behavior without rewriting it.</div>
+  <div class="sec-hd"><i class="ti ti-tree" aria-hidden="true"></i>Constructor / Destructor call order</div>
+  <div class="flow">
+    <div class="fb" style="background:var(--bg-pro);border-color:var(--border-pro);color:var(--text-pro)">Base constructor</div>
+    <div class="fa">→</div>
+    <div class="fb" style="background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)">Derived constructor</div>
+    <span style="font-size:11px;color:var(--text-muted);align-self:center">| Destructor: reverse ↓</span>
+  </div>
+  <div class="flow" style="margin-top:4px">
+    <div class="fb" style="background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)">Derived destructor</div>
+    <div class="fa">→</div>
+    <div class="fb" style="background:var(--bg-pro);border-color:var(--border-pro);color:var(--text-pro)">Base destructor</div>
+  </div>
+  <div class="sec-hd"><i class="ti ti-layout-board" aria-hidden="true"></i>Types of inheritance</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="card">
+      <h3><i class="ti ti-arrow-down" aria-hidden="true"></i>1. Single inheritance</h3>
+      <p>One parent, one child. Simplest form.</p>
+      <div class="inh-tree">
+        <div class="tree-box base">Person</div><div class="vline"></div><div class="tree-box derived">Student</div>
+      </div>
+      <div class="code"><span class="kw">class</span> <span class="ty">Student</span> : <span class="kw">public</span> <span class="ty">Person</span> { };</div>
+    </div>
+    <div class="card">
+      <h3><i class="ti ti-arrows-down" aria-hidden="true"></i>2. Multi-level inheritance</h3>
+      <p>Chain of inheritance: grandparent → parent → child.</p>
+      <div class="inh-tree">
+        <div class="tree-box base">Person</div><div class="vline"></div>
+        <div class="tree-box" style="background:var(--bg-warning);border-color:var(--border-warning);color:var(--text-warning)">Teacher</div><div class="vline"></div>
+        <div class="tree-box derived">MathTeacher</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3><i class="ti ti-arrows-split-2" aria-hidden="true"></i>3. Multiple inheritance</h3>
+      <p>One child, multiple parents.</p>
+      <div class="inh-tree">
+        <div style="display:flex;gap:40px">
+          <div class="tree-box base">Student</div>
+          <div class="tree-box base">Employee</div>
+        </div>
+        <div style="position:relative;height:24px;width:120px;margin:0 auto">
+          <div style="position:absolute;left:50%;top:0;width:0.5px;height:24px;background:var(--border-strong)"></div>
+        </div>
+        <div class="tree-box derived">Intern</div>
+      </div>
+      <div class="code"><span class="kw">class</span> <span class="ty">Intern</span> : <span class="kw">public</span> <span class="ty">Student</span>, <span class="kw">public</span> <span class="ty">Employee</span> { };</div>
+    </div>
+    <div class="card">
+      <h3><i class="ti ti-git-branch" aria-hidden="true"></i>4. Hierarchical inheritance</h3>
+      <p>One parent, multiple children.</p>
+      <div class="inh-tree">
+        <div class="tree-box base">Person</div>
+        <div style="display:flex;gap:40px;margin-top:16px">
+          <div class="tree-box derived">Student</div>
+          <div class="tree-box derived">Teacher</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3><i class="ti ti-topology-full" aria-hidden="true"></i>5. Hybrid inheritance</h3>
+      <p>Mix of multiple inheritance types. Example: Person → Student + Teacher → TA.</p>
+      <div class="warn">Hybrid with multiple inheritance can create the <strong>Diamond Problem</strong> — ambiguity about which base class member to use. C++ solves this with <code>virtual</code> base classes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- POLYMORPHISM -->
+<div class="pg" id="p-poly">
+  <div class="ptag t-gr"><i class="ti ti-transform" aria-hidden="true"></i>Pillar 3</div>
+  <div class="ptitle">Polymorphism</div>
+  <p class="psub">"Many forms." Same function name, different behavior depending on context. Two kinds: compile-time and runtime.</p>
+  <div class="def"><strong>Polymorphism</strong> — the ability of objects to take on different forms or behave differently depending on context. One interface, multiple implementations.</div>
+  <div class="poly-tab">
+    <div class="poly-btn on" onclick="polyTab('compile',this)">Compile-time (static)</div>
+    <div class="poly-btn" onclick="polyTab('runtime',this)">Run-time (dynamic)</div>
+  </div>
+  <div class="poly-panel on" id="poly-compile">
+    <div class="hl"><strong>Compile-time polymorphism</strong> — the compiler resolves which function to call at compile time. No runtime overhead. Two forms: function overloading and operator overloading.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card">
+        <h3><i class="ti ti-stack-2" aria-hidden="true"></i>Function overloading</h3>
+        <p>Same function name, different parameter list (count or type). Compiler picks the right version based on arguments.</p>
+        <div class="code">
+<span class="ty">int</span> <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b) { <span class="kw">return</span> a+b; }<br>
+<span class="ty">float</span> <span class="fn">add</span>(<span class="ty">float</span> a, <span class="ty">float</span> b) { <span class="kw">return</span> a+b; }<br>
+<span class="ty">int</span> <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b, <span class="ty">int</span> c) { <span class="kw">return</span> a+b+c; }<br><br>
+<span class="fn">add</span>(1, 2);       <span class="cm">// calls version 1</span><br>
+<span class="fn">add</span>(1.1f, 2.2f); <span class="cm">// calls version 2</span><br>
+<span class="fn">add</span>(1, 2, 3);    <span class="cm">// calls version 3</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-math-symbols" aria-hidden="true"></i>Operator overloading</h3>
+        <p>Redefine how standard operators (<code>+</code>, <code>-</code>, <code>==</code>) work with custom objects.</p>
+        <div class="code">
+<span class="kw">class</span> <span class="ty">Complex</span> {<br>
+&nbsp;&nbsp;<span class="ty">int</span> real, imag;<br>
+&nbsp;&nbsp;<span class="ty">Complex</span> <span class="kw">operator</span>+(<span class="ty">Complex</span> c2) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">Complex</span> res;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;res.real = real + c2.real;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> res;<br>
+&nbsp;&nbsp;}<br>
+};<br><span class="ty">Complex</span> c3 = c1 + c2; <span class="cm">// calls operator+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="poly-panel" id="poly-runtime">
+    <div class="hl"><strong>Run-time polymorphism</strong> — function to call is decided at runtime via virtual function tables. Requires inheritance. Enables flexible, extensible designs.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card">
+        <h3><i class="ti ti-arrow-merge" aria-hidden="true"></i>Function overriding</h3>
+        <p>Parent and child both define the same function. Child's version replaces parent's. Depends on inheritance.</p>
+        <div class="code">
+<span class="kw">class</span> <span class="ty">Animal</span> {<br>
+&nbsp;&nbsp;<span class="kw">virtual</span> <span class="ty">void</span> <span class="fn">speak</span>() { cout &lt;&lt; <span class="st">"..."</span>; }<br>
+};<br>
+<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {<br>
+&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">speak</span>() { cout &lt;&lt; <span class="st">"Woof!"</span>; }  <span class="cm">// overrides</span><br>
+};<br>
+<span class="ty">Animal</span>* a = <span class="kw">new</span> <span class="ty">Dog</span>();<br>
+a-&gt;<span class="fn">speak</span>();  <span class="cm">// prints "Woof!" — runtime dispatch</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-bolt" aria-hidden="true"></i>Virtual functions</h3>
+        <p>Declared with <code>virtual</code> in the base class. C++ uses a vtable (virtual function table) to resolve the correct override at runtime. Must be overridden in derived class.</p>
+        <div class="code">
+<span class="kw">virtual</span> <span class="ty">void</span> <span class="fn">draw</span>() = 0;  <span class="cm">// pure virtual — must override</span><br>
+<span class="cm">// Class with pure virtual = abstract class</span><br>
+<span class="cm">// Cannot instantiate abstract class directly</span>
+        </div>
+        <div class="warn" style="margin-top:8px">Without <code>virtual</code>, the base class version is always called regardless of the actual object type (static binding). With <code>virtual</code>, the correct override is called at runtime (dynamic binding).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABSTRACTION -->
+<div class="pg" id="p-abs">
+  <div class="ptag t-am"><i class="ti ti-eye-off" aria-hidden="true"></i>Pillar 4</div>
+  <div class="ptitle">Abstraction</div>
+  <p class="psub">Hide unnecessary implementation details. Expose only what the user of your class needs to know.</p>
+  <div class="def"><strong>Abstraction</strong> — showing only the essential features while hiding the complex implementation. You drive a car without knowing how the engine works. You use <code>sort()</code> without knowing the algorithm. That's abstraction.</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-eye-off" aria-hidden="true"></i>vs. Encapsulation</h3><p><strong>Encapsulation</strong> is the mechanism (bundling + private). <strong>Abstraction</strong> is the design principle (hiding complexity). Encapsulation implements abstraction.<br><br>Abstraction: what to hide. Encapsulation: how to hide it.</p></div>
+    <div class="card"><h3><i class="ti ti-box" aria-hidden="true"></i>Abstract classes</h3><p>A class with at least one pure virtual function. Cannot be instantiated directly. Meant to be a base class — defines the interface that derived classes must implement.</p></div>
+  </div>
+  <div class="code">
+<span class="kw">class</span> <span class="ty">Shape</span> {   <span class="cm">// abstract class</span><br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">virtual</span> <span class="ty">float</span> <span class="fn">area</span>() = 0;  <span class="cm">// pure virtual</span><br>
+};<br><br>
+<span class="kw">class</span> <span class="ty">Circle</span> : <span class="kw">public</span> <span class="ty">Shape</span> {<br>
+&nbsp;&nbsp;<span class="ty">float</span> r;<br>
+&nbsp;&nbsp;<span class="ty">float</span> <span class="fn">area</span>() { <span class="kw">return</span> 3.14f * r * r; } <span class="cm">// must implement</span><br>
+};<br><br>
+<span class="cm">// Shape s; // ERROR — cannot instantiate abstract class</span><br>
+<span class="ty">Shape</span>* s = <span class="kw">new</span> <span class="ty">Circle</span>(); <span class="cm">// OK — pointer to abstract</span>
+  </div>
+</div>
+
+<!-- STATIC -->
+<div class="pg" id="p-static">
+  <div class="ptag t-bl"><i class="ti ti-variable" aria-hidden="true"></i>Memory</div>
+  <div class="ptitle">Static Keyword</div>
+  <p class="psub">Static variables exist for the entire program lifetime. Static class members are shared across all objects.</p>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-variable" aria-hidden="true"></i>Static local variable</h3><p>Declared inside a function. Created and initialized only once. Retains its value between function calls. Lives until program ends.</p>
+    <div class="code"><span class="ty">void</span> <span class="fn">counter</span>() {<br>&nbsp;&nbsp;<span class="kw">static</span> <span class="ty">int</span> count = 0; <span class="cm">// init once</span><br>&nbsp;&nbsp;count++;<br>&nbsp;&nbsp;cout &lt;&lt; count; <span class="cm">// 1, 2, 3 on each call</span><br>}</div></div>
+    <div class="card"><h3><i class="ti ti-users" aria-hidden="true"></i>Static class member</h3><p>Belongs to the class, not any specific object. Shared by all objects. Must be initialized outside the class definition. Accessed via <code>ClassName::member</code>.</p>
+    <div class="code"><span class="kw">class</span> <span class="ty">Bank</span> {<br>&nbsp;&nbsp;<span class="kw">static</span> <span class="ty">float</span> rate; <span class="cm">// shared</span><br>};<br><span class="ty">float</span> <span class="ty">Bank</span>::rate = 5.5f;<br><span class="cm">// Bank::rate — same for all objects</span></div></div>
+  </div>
+  <div class="hl"><strong>Static objects</strong> — created once, live for the entire program lifetime. Destructor called only when the program terminates. Stored in a special memory segment (BSS/data), not on the stack.</div>
+</div>
+
+<!-- FRIEND -->
+<div class="pg" id="p-friend">
+  <div class="ptag t-pu"><i class="ti ti-users" aria-hidden="true"></i>Special</div>
+  <div class="ptitle">Friend Functions & Classes</div>
+  <p class="psub">Grant specific external functions or classes access to private and protected members — without making them part of the class.</p>
+  <div class="def">A <strong>friend function</strong> is declared inside a class with the <code>friend</code> keyword. It's not a member of the class, but it can access private and protected members. Friendship is granted by the class, not claimed by the function.</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-function" aria-hidden="true"></i>Friend function</h3><p>An external function that can access private members of a class. Declared inside the class with <code>friend</code> keyword. Defined outside the class like a regular function.</p>
+    <div class="code">
+<span class="kw">class</span> <span class="ty">Box</span> {<br>
+&nbsp;&nbsp;<span class="kw">private</span>: <span class="ty">int</span> volume;<br>
+&nbsp;&nbsp;<span class="kw">friend</span> <span class="ty">void</span> <span class="fn">printVolume</span>(<span class="ty">Box</span> b);<br>
+};<br>
+<span class="ty">void</span> <span class="fn">printVolume</span>(<span class="ty">Box</span> b) {<br>
+&nbsp;&nbsp;cout &lt;&lt; b.volume; <span class="cm">// can access private</span><br>
+}
+    </div></div>
+    <div class="card"><h3><i class="ti ti-box" aria-hidden="true"></i>Friend class</h3><p>An entire class is granted access to another class's private members. Used when two closely related classes need to work intimately together (e.g., iterator + container).</p>
+    <div class="code">
+<span class="kw">class</span> <span class="ty">Engine</span>;<br>
+<span class="kw">class</span> <span class="ty">Car</span> {<br>
+&nbsp;&nbsp;<span class="kw">friend</span> <span class="kw">class</span> <span class="ty">Engine</span>; <span class="cm">// Engine can see Car's private</span><br>
+&nbsp;&nbsp;<span class="kw">private</span>: <span class="ty">int</span> fuelLevel;<br>
+};
+    </div></div>
+  </div>
+  <div class="warn">Overusing <code>friend</code> breaks encapsulation. Use sparingly — only when the external function genuinely needs deep access and can't get it through public methods.</div>
+</div>
+
+<!-- 4 PILLARS QUICK REF -->
+<div class="pg" id="p-pillars">
+  <div class="ptag t-pu"><i class="ti ti-layout-columns" aria-hidden="true"></i>Quick Reference</div>
+  <div class="ptitle">The 4 Pillars — Side by Side</div>
+  <p class="psub">What each pillar means, how to identify it, and the key mechanism that implements it.</p>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="card" style="border-left:3px solid var(--border-accent)">
+      <h3 style="font-size:15px"><i class="ti ti-shield" aria-hidden="true"></i>Encapsulation</h3>
+      <div class="g3" style="margin-top:8px">
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text-secondary)">Bundle data + methods in a class. Hide internals.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text-secondary)">Private fields with public getters/setters.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text-secondary)"><code>private</code>, <code>protected</code>, getters/setters.</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-pro)">
+      <h3 style="font-size:15px"><i class="ti ti-hierarchy" aria-hidden="true"></i>Inheritance</h3>
+      <div class="g3" style="margin-top:8px">
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text-secondary)">Child class reuses parent class code.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text-secondary)"><code>: public Parent</code> syntax. "is-a" relationship.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text-secondary)">Base/derived classes. 5 types. Mode specifiers.</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-success)">
+      <h3 style="font-size:15px"><i class="ti ti-transform" aria-hidden="true"></i>Polymorphism</h3>
+      <div class="g3" style="margin-top:8px">
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text-secondary)">Same name, different behavior per context.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text-secondary)">Overloading (compile) or overriding (runtime).</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text-secondary)"><code>virtual</code> functions, vtable, overloading.</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-warning)">
+      <h3 style="font-size:15px"><i class="ti ti-eye-off" aria-hidden="true"></i>Abstraction</h3>
+      <div class="g3" style="margin-top:8px">
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text-secondary)">Show only necessary parts. Hide complexity.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text-secondary)">Abstract classes, pure virtual functions, interfaces.</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text-secondary)"><code>= 0</code> pure virtual. Abstract base class pattern.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEEP VS SHALLOW -->
+<div class="pg" id="p-copy">
+  <div class="ptag t-am"><i class="ti ti-copy" aria-hidden="true"></i>Quick Reference</div>
+  <div class="ptitle">Deep vs Shallow Copy</div>
+  <p class="psub">Copying objects that contain pointers requires care. Shallow copy shares memory — dangerous. Deep copy duplicates it — safe.</p>
+  <div class="pc" style="margin-bottom:12px">
+    <div class="card" style="border-top:3px solid var(--border-warning)">
+      <h3><i class="ti ti-copy" aria-hidden="true"></i>Shallow copy</h3>
+      <p>Copies member values bit-by-bit. Pointer members are copied — both objects point to the same heap memory.</p>
+      <div class="code">
+<span class="ty">int</span>* ptr = <span class="kw">new</span> <span class="ty">int</span>(42);<br>
+<span class="ty">int</span>* copy = ptr; <span class="cm">// same address!</span><br>
+<span class="kw">delete</span> ptr;       <span class="cm">// deletes the data</span><br>
+<span class="cm">// copy now points to freed memory — crash!</span>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--border-success)">
+      <h3><i class="ti ti-copy-plus" aria-hidden="true"></i>Deep copy</h3>
+      <p>Allocates new memory and copies the data into it. Both objects are fully independent.</p>
+      <div class="code">
+<span class="ty">int</span>* ptr = <span class="kw">new</span> <span class="ty">int</span>(42);<br>
+<span class="ty">int</span>* copy = <span class="kw">new</span> <span class="ty">int</span>(*ptr); <span class="cm">// new alloc</span><br>
+<span class="kw">delete</span> ptr;  <span class="cm">// safe — copy is independent</span>
+      </div>
+    </div>
+  </div>
+  <div class="warn"><strong>Rule of Three (C++):</strong> If you define any of destructor, copy constructor, or copy assignment operator — you should define all three. This ensures deep copies everywhere dynamic memory is used.</div>
+  <div class="hl" style="margin-top:10px"><strong>When does this matter?</strong> Only when your class owns heap memory (via <code>new</code>). If all members are value types (int, string, etc.), the default copy constructor is fine.</div>
+</div>
+
+</div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  const p=document.getElementById('p-'+id);
+  const n=document.getElementById('n-'+id);
+  if(p)p.classList.add('on');
+  if(n){n.classList.add('on');n.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  document.querySelector('.ct').scrollTop=0;
+}
+function polyTab(id,btn){
+  document.querySelectorAll('.poly-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.poly-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('poly-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>OOP Mastery Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OOP Notes">
+  <meta name="description" content="Complete OOP mastery reference — classes, inheritance, polymorphism, abstraction, encapsulation with C++ examples.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #4f8ef7;
+      --accent2: #7c6af5;
+      --accent3: #34d399;
+      --accent4: #f59e0b;
+      --accent5: #f472b6;
+      --red: #ef4444;
+      --green: #34d399;
+      --yellow: #f59e0b;
+      --radius: 10px;
+      --radius-lg: 14px;
+
+      /* OOP design tokens (from original fragment) */
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'SF Mono', Consolas, 'Courier New', monospace;
+      --surface-1: #161b27;
+      --surface-2: #1e2535;
+      --text-primary: #e8eaf0;
+      --text-secondary: #9aa3b8;
+      --text-muted: #6b748a;
+      --text-accent: #7db3ff;
+      --text-pro: #c4b5fd;
+      --text-success: #34d399;
+      --text-warning: #f59e0b;
+      --text-danger: #ef4444;
+      --border-accent: rgba(79,142,247,.35);
+      --border-pro: rgba(124,106,245,.35);
+      --border-success: rgba(52,211,153,.35);
+      --border-warning: rgba(245,158,11,.35);
+      --border-danger: rgba(239,68,68,.35);
+      --border-strong: #344060;
+      --bg-accent: rgba(79,142,247,.1);
+      --bg-pro: rgba(124,106,245,.1);
+      --bg-success: rgba(52,211,153,.08);
+      --bg-warning: rgba(245,158,11,.08);
+      --bg-danger: rgba(239,68,68,.08);
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────── */
+    .app { display: flex; min-height: 100vh }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px;
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 40px;
+    }
+
+    /* ── Sidebar Header ─────────────────────────────────────── */
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+    .home-back-btn:hover { color: var(--accent); }
+    .home-back-btn i { font-size: 13px; }
+
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav-section {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2) }
+    .nav-item.active { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); font-weight: 500 }
+    .nav-item i { font-size: 15px; width: 17px; flex-shrink: 0 }
+
+    /* ── Topics ─────────────────────────────────────────────── */
+    .topic { display: none }
+    .topic.visible { display: block }
+
+    /* ── Page Typography ─────────────────────────────────────── */
+    .page-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .tag-blue  { background: rgba(79,142,247,.15);  color: #7db3ff }
+    .tag-purple{ background: rgba(124,106,245,.15); color: #a89cf7 }
+    .tag-green { background: rgba(52,211,153,.15);  color: #34d399 }
+    .tag-amber { background: rgba(245,158,11,.15);  color: #f59e0b }
+    .tag-pink  { background: rgba(244,114,182,.15); color: #f472b6 }
+    .tag-red   { background: rgba(239,68,68,.15);   color: #ef4444 }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .divider { height: 1px; background: var(--border); margin: 24px 0 }
+    .section { margin-bottom: 24px }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 10px;
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title i { font-size: 14px }
+
+    /* ── Cards / Grids ───────────────────────────────────────── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .card h3 i { font-size: 15px; color: var(--accent) }
+    .card p { font-size: 13.5px; color: var(--text2); line-height: 1.7 }
+
+    .card-grid   { display: grid; grid-template-columns: 1fr 1fr;     gap: 12px }
+    .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px }
+
+    /* ── Def card ─────────────────────────────────────────────── */
+    .def-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text2);
+      margin-bottom: 18px;
+    }
+    .def-card strong { color: var(--text) }
+
+    /* ── Code block ─────────────────────────────────────────── */
+    .code-block {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: #9cdcfe;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    .code-block .cm { color: var(--text-muted) }
+    .code-block .kw { color: var(--text-pro) }
+    .code-block .ty { color: var(--text-success) }
+    .code-block .fn { color: var(--text-warning) }
+    .code-block .st { color: var(--text-danger) }
+
+    /* ── Highlight / Warning / Success boxes ────────────────── */
+    .highlight-box {
+      background: rgba(79,142,247,.08);
+      border: 1px solid rgba(79,142,247,.25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin: 10px 0;
+    }
+    .highlight-box strong { color: var(--accent) }
+
+    .warning-box {
+      background: rgba(245,158,11,.07);
+      border: 1px solid rgba(245,158,11,.25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: #d4a943;
+      line-height: 1.7;
+      margin: 10px 0;
+    }
+
+    /* ── Pros / Cons ─────────────────────────────────────────── */
+    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+    .pros { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.2); border-radius: var(--radius); padding: 14px 16px }
+    .cons { background: rgba(239,68,68,.07);  border: 1px solid rgba(239,68,68,.2);  border-radius: var(--radius); padding: 14px 16px }
+    .col-title { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px }
+    .pros .col-title { color: var(--green) }
+    .cons .col-title { color: var(--red) }
+    .pros ul, .cons ul { list-style: none; display: flex; flex-direction: column; gap: 6px }
+    .pros li { font-size: 13px; padding-left: 16px; position: relative; line-height: 1.5; color: rgba(52,211,153,.9) }
+    .cons li { font-size: 13px; padding-left: 16px; position: relative; line-height: 1.5; color: rgba(239,100,100,.9) }
+    .pros li::before { content: "✓"; position: absolute; left: 0; font-size: 12px; font-weight: 700 }
+    .cons li::before { content: "✗"; position: absolute; left: 0; font-size: 12px; font-weight: 700 }
+
+    /* ── Flow ─────────────────────────────────────────────────── */
+    .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px 0 }
+    .flow-box { background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: var(--text); font-weight: 500 }
+    .flow-arrow { color: var(--accent); font-size: 18px; font-weight: 700 }
+
+    /* ── Inheritance table ───────────────────────────────────── */
+    .inh-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 10px 0 }
+    .inh-table th { padding: 8px 12px; text-align: center; background: var(--bg3); color: var(--text-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border) }
+    .inh-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; color: var(--text2) }
+    .inh-table td:first-child { font-weight: 500; color: var(--text); text-align: left }
+    .inh-table tr:last-child td { border-bottom: none }
+    .inh-table .ni- { color: var(--text-danger) }
+    .inh-table .pr  { color: var(--text-pro) }
+    .inh-table .pu- { color: var(--text-warning) }
+    .inh-table .pb  { color: var(--text-success) }
+
+    /* ── Inheritance tree ────────────────────────────────────── */
+    .inh-tree { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 12px 0 }
+    .tree-row  { display: flex; align-items: center; justify-content: center; gap: 12px }
+    .tree-box  { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 6px 14px; font-size: 12px; font-weight: 500; color: var(--text); text-align: center }
+    .tree-box.base    { background: var(--bg-pro);     border-color: var(--border-pro);     color: var(--text-pro) }
+    .tree-box.derived { background: var(--bg-accent);  border-color: var(--border-accent);  color: var(--text-accent) }
+    .tree-box.leaf    { background: var(--bg-success);  border-color: var(--border-success); color: var(--text-success) }
+    .vline { width: 1px; height: 16px; background: var(--border2); margin: 0 auto }
+
+    /* ── Polymorphism tabs ───────────────────────────────────── */
+    .poly-tab  { display: flex; gap: 6px; margin-bottom: 12px }
+    .poly-btn  { padding: 5px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg3); font-size: 12px; color: var(--text2); cursor: pointer; transition: all .12s }
+    .poly-btn.on { background: var(--bg-accent); border-color: var(--border-accent); color: var(--text-accent); font-weight: 500 }
+    .poly-panel    { display: none }
+    .poly-panel.on { display: block }
+
+    /* ── Mem grid ────────────────────────────────────────────── */
+    .mem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 10px 0 }
+    .mem-box  { border-radius: var(--radius); padding: 10px 12px; text-align: center }
+    .mem-box .mv { font-size: 18px; font-weight: 500; color: var(--text) }
+    .mem-box .ml { font-size: 11px; color: var(--text-muted); margin-top: 2px }
+    .mem-box.bl { background: var(--bg-accent) }
+    .mem-box.pu { background: var(--bg-pro) }
+    .mem-box.am { background: var(--bg-warning) }
+
+    /* ── Chips / Badges ──────────────────────────────────────── */
+    .chip { font-size: 11px; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border); color: var(--text2); background: var(--bg3) }
+    .chip.bl { border-color: var(--border-accent);  color: var(--text-accent);  background: var(--bg-accent) }
+    .chip.pu { border-color: var(--border-pro);     color: var(--text-pro);     background: var(--bg-pro) }
+    .chip.gr { border-color: var(--border-success); color: var(--text-success); background: var(--bg-success) }
+    .chip.am { border-color: var(--border-warning); color: var(--text-warning); background: var(--bg-warning) }
+    .row-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 }
+
+    /* ── Prev / Next nav bar ─────────────────────────────────── */
+    .topic-nav-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; padding: 16px 0 8px; border-top: 1px solid var(--border); gap: 12px }
+    .topic-nav-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all .18s; touch-action: manipulation; user-select: none; min-width: 110px }
+    .topic-nav-btn:hover, .topic-nav-btn:active { background: var(--bg3); border-color: var(--accent); color: var(--accent) }
+    .topic-nav-btn.prev { justify-content: flex-start }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0 }
+    .topic-nav-label  { display: flex; flex-direction: column }
+    .topic-nav-hint   { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em }
+    .topic-nav-name   { font-size: 13px; font-weight: 600 }
+
+    /* ── Mobile Nav ──────────────────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .hamburger-btn {
+      background: none; border: none; cursor: pointer;
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 22px; flex-shrink: 0;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .hamburger-btn:active { background: var(--bg3) }
+    .mobile-nav-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .mobile-nav-logo  { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); flex-shrink: 0 }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 399;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
+      opacity: 0; transition: opacity .25s; pointer-events: none;
+    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all }
+
+    /* ── Scrollbar ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px }
+    ::-webkit-scrollbar-track { background: var(--bg) }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media(max-width: 768px) {
+      .mobile-nav { display: flex }
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        z-index: 400; width: min(300px, 85vw);
+        transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.4,0,.2,1);
+        height: 100dvh; overflow-y: auto;
+      }
+      .sidebar.open { transform: translateX(0) }
+      .sidebar-overlay { display: block }
+      .main { padding: 72px 16px 32px; max-width: 100% }
+      .app { display: block }
+      .card-grid, .card-grid-3, .pros-cons, .mem-grid { grid-template-columns: 1fr !important }
+      .page-title { font-size: 22px }
+      .page-subtitle { font-size: 14px; margin-bottom: 20px }
+      .card { padding: 14px }
+      .def-card { padding: 14px; font-size: 13.5px }
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px }
+      .topic-nav-hint { display: none }
+    }
+    @media(max-width: 420px) {
+      .page-title { font-size: 19px }
+      .main { padding: 72px 12px 24px }
+      .card { padding: 12px }
+      .mobile-nav { padding: 0 12px }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">OOP</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">Overview</span>
+  </nav>
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>OOP Mastery</h1>
+        <p>Complete Reference Notes</p>
+      </div>
+
+      <div class="nav-section">Core OOP</div>
+      <div class="nav-item active" onclick="show('intro')"    id="nav-intro">   <i class="ti ti-home"></i>Overview</div>
+      <div class="nav-item"        onclick="show('classes')"  id="nav-classes">  <i class="ti ti-box"></i>Classes &amp; Objects</div>
+      <div class="nav-item"        onclick="show('access')"   id="nav-access">   <i class="ti ti-lock"></i>Access Modifiers</div>
+      <div class="nav-item"        onclick="show('encap')"    id="nav-encap">    <i class="ti ti-shield"></i>Encapsulation</div>
+      <div class="nav-item"        onclick="show('ctor')"     id="nav-ctor">     <i class="ti ti-hammer"></i>Constructors</div>
+      <div class="nav-item"        onclick="show('dtor')"     id="nav-dtor">     <i class="ti ti-trash"></i>Destructors</div>
+      <div class="nav-item"        onclick="show('ptr')"      id="nav-ptr">      <i class="ti ti-arrow-right"></i>this Pointer</div>
+      <div class="nav-item"        onclick="show('inh')"      id="nav-inh">      <i class="ti ti-hierarchy"></i>Inheritance</div>
+      <div class="nav-item"        onclick="show('poly')"     id="nav-poly">     <i class="ti ti-transform"></i>Polymorphism</div>
+      <div class="nav-item"        onclick="show('abs')"      id="nav-abs">      <i class="ti ti-eye-off"></i>Abstraction</div>
+      <div class="nav-item"        onclick="show('static')"   id="nav-static">   <i class="ti ti-variable"></i>Static Keyword</div>
+      <div class="nav-item"        onclick="show('friend')"   id="nav-friend">   <i class="ti ti-users"></i>Friend</div>
+
+      <div class="nav-section" style="margin-top:8px">Quick Ref</div>
+      <div class="nav-item"        onclick="show('pillars')"  id="nav-pillars">  <i class="ti ti-layout-columns"></i>4 Pillars</div>
+      <div class="nav-item"        onclick="show('copy')"     id="nav-copy">     <i class="ti ti-copy"></i>Deep vs Shallow</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+      <!-- OVERVIEW -->
+      <div class="topic visible" id="topic-intro">
+        <div class="page-tag tag-purple"><i class="ti ti-star"></i>Start here</div>
+        <h1 class="page-title">Object-Oriented Programming</h1>
+        <p class="page-subtitle">A programming paradigm based on the concept of objects that contain data (attributes) and behavior (methods). Built on four pillars.</p>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-box"></i>Class</h3><p>A blueprint or template that defines properties and behaviors. Like a house plan — it describes structure but isn't a house itself.</p></div>
+          <div class="card"><h3><i class="ti ti-cube"></i>Object</h3><p>An instance of a class. The actual house built from the plan. Has its own state. One class can produce many objects.</p></div>
+        </div>
+        <div class="section-title"><i class="ti ti-layout-columns"></i>The 4 Pillars</div>
+        <div class="card-grid" style="gap:8px">
+          <div class="card" style="border-left:3px solid var(--border-accent)"><h3><i class="ti ti-shield"></i>Encapsulation</h3><p>Bundle data + methods in one class. Hide sensitive data with access modifiers.</p></div>
+          <div class="card" style="border-left:3px solid var(--border-pro)"><h3><i class="ti ti-hierarchy"></i>Inheritance</h3><p>Child class inherits properties and methods from parent class. Enables code reuse.</p></div>
+          <div class="card" style="border-left:3px solid var(--border-success)"><h3><i class="ti ti-transform"></i>Polymorphism</h3><p>Same interface, different behavior. One function name, many implementations.</p></div>
+          <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-eye-off"></i>Abstraction</h3><p>Show only what's necessary. Hide complexity. Use abstract classes and interfaces.</p></div>
+        </div>
+        <div class="section-title" style="margin-top:16px"><i class="ti ti-route"></i>Suggested order</div>
+        <div class="flow">
+          <div class="flow-box">Classes</div><div class="flow-arrow">→</div>
+          <div class="flow-box">Access</div><div class="flow-arrow">→</div>
+          <div class="flow-box">Encapsulation</div><div class="flow-arrow">→</div>
+          <div class="flow-box">Constructors</div><div class="flow-arrow">→</div>
+          <div class="flow-box">Inheritance</div><div class="flow-arrow">→</div>
+          <div class="flow-box">Polymorphism</div>
+        </div>
+      </div>
+
+      <!-- CLASSES & OBJECTS -->
+      <div class="topic" id="topic-classes">
+        <div class="page-tag tag-purple"><i class="ti ti-box"></i>Foundation</div>
+        <h1 class="page-title">Classes &amp; Objects</h1>
+        <p class="page-subtitle">A class is a blueprint. An object is a real instance of that blueprint with its own state.</p>
+        <div class="def-card"><strong>Class</strong> — a user-defined data type that groups together data members (attributes) and member functions (methods) that operate on that data. Think of it as a cookie cutter.<br><br><strong>Object</strong> — a specific instance of a class. If <code>Teacher</code> is the class, then <code>t1</code> is an object with name="Rahul", subject="C++", salary=25000.</div>
+        <div class="section-title"><i class="ti ti-code"></i>C++ example</div>
+        <div class="code-block">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">string</span> name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">string</span> subject;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> salary;<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">display</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt; name &lt;&lt; <span class="st">" teaches "</span> &lt;&lt; subject;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="cm">// Creating objects</span><br>
+<span class="ty">Teacher</span> t1;          <span class="cm">// t1 is an object</span><br>
+t1.name = <span class="st">"Rahul"</span>;   <span class="cm">// dot operator</span><br>
+t1.subject = <span class="st">"C++"</span>;<br>
+t1.<span class="fn">display</span>();
+        </div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-point"></i>Dot Operator (.)</h3><p>Used to access members of an object. <code>t1.name</code> reads the <code>name</code> member from object <code>t1</code>. The bridge between object and its data.</p></div>
+          <div class="card"><h3><i class="ti ti-memory-2"></i>Memory Allocation</h3><p>Memory is allocated when the object is created (when the constructor is called). Each object gets its own copy of data members. Static members are shared.</p></div>
+        </div>
+      </div>
+
+      <!-- ACCESS MODIFIERS -->
+      <div class="topic" id="topic-access">
+        <div class="page-tag tag-blue"><i class="ti ti-lock"></i>Encapsulation</div>
+        <h1 class="page-title">Access Modifiers</h1>
+        <p class="page-subtitle">Control who can see and use which data members and methods. The primary tool for data hiding.</p>
+        <div class="card-grid-3">
+          <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-globe"></i>public</h3><p>Accessible from anywhere — inside the class, outside the class, in derived classes. Least restrictive.</p></div>
+          <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-lock"></i>private</h3><p>Accessible only inside the class itself. Not even derived classes can access. Most restrictive. Default in C++ classes.</p></div>
+          <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-lock-open"></i>protected</h3><p>Accessible inside the class AND in derived classes. Not accessible from outside. Middle ground.</p></div>
+        </div>
+        <div class="section-title"><i class="ti ti-table"></i>Inheritance access table</div>
+        <table class="inh-table">
+          <thead><tr><th style="text-align:left">Base class</th><th>Derived: private mode</th><th>Derived: protected mode</th><th>Derived: public mode</th></tr></thead>
+          <tbody>
+            <tr><td>private</td><td class="ni-">Not inherited</td><td class="ni-">Not inherited</td><td class="ni-">Not inherited</td></tr>
+            <tr><td>protected</td><td class="pr">→ private</td><td class="pu-">→ protected</td><td class="pu-">→ protected</td></tr>
+            <tr><td>public</td><td class="pr">→ private</td><td class="pu-">→ protected</td><td class="pb">→ public</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box"><strong>Key rule:</strong> Private members are NEVER inherited regardless of inheritance mode. Protected and public members are inherited, but their visibility in the derived class is determined by the inheritance mode — it can only become more restrictive, never less.</div>
+        <div class="section-title"><i class="ti ti-settings"></i>Getters and Setters</div>
+        <div class="def-card">Since private data can't be accessed directly from outside, we use <strong>getter</strong> functions (to read private data) and <strong>setter</strong> functions (to write private data with validation). This gives controlled access.</div>
+        <div class="code-block">
+<span class="kw">class</span> <span class="ty">Student</span> {<br>
+&nbsp;&nbsp;<span class="kw">private</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> age;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">setAge</span>(<span class="ty">int</span> a) {     <span class="cm">// setter — validates before setting</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(a &gt; 0) age = a;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> <span class="fn">getAge</span>() {           <span class="cm">// getter — read-only access</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> age;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};
+        </div>
+      </div>
+
+      <!-- ENCAPSULATION -->
+      <div class="topic" id="topic-encap">
+        <div class="page-tag tag-blue"><i class="ti ti-shield"></i>Pillar 1</div>
+        <h1 class="page-title">Encapsulation</h1>
+        <p class="page-subtitle">Wrapping data and member functions together in a single unit (class). Like a capsule that hides the medicine inside.</p>
+        <div class="def-card"><strong>Encapsulation</strong> = bundling data (attributes) + methods (behaviors) that operate on that data into a single unit called a class. The internal implementation is hidden — users only interact through the public interface.<br><br><strong>Data hiding</strong> is achieved by marking sensitive members as <code>private</code>. External code cannot accidentally or maliciously corrupt the internal state.</div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-pill"></i>The Capsule Analogy</h3><p>A medicine capsule hides its complex chemical formula inside. You just swallow it — you don't need to know the internals. Similarly, a class exposes a clean public interface and hides implementation details.</p></div>
+          <div class="card"><h3><i class="ti ti-shield-check"></i>Why Encapsulate?</h3><p>Protects data integrity (validation in setters), reduces coupling between components, easier to change internals without breaking external code, and makes debugging simpler.</p></div>
+        </div>
+        <div class="code-block">
+<span class="cm">// Bad — no encapsulation</span><br>
+<span class="ty">Student</span> s; s.age = -5;  <span class="cm">// invalid, but allowed</span><br><br>
+<span class="cm">// Good — encapsulated</span><br>
+s.<span class="fn">setAge</span>(-5);  <span class="cm">// setter rejects invalid value</span><br>
+s.<span class="fn">setAge</span>(20);  <span class="cm">// valid, stored safely</span>
+        </div>
+      </div>
+
+      <!-- CONSTRUCTORS -->
+      <div class="topic" id="topic-ctor">
+        <div class="page-tag tag-amber"><i class="ti ti-hammer"></i>Object Lifecycle</div>
+        <h1 class="page-title">Constructors</h1>
+        <p class="page-subtitle">A special method invoked automatically when an object is created. Used for initialization. Never has a return type.</p>
+        <div class="def-card"><strong>Constructor</strong> — a special member function with the same name as the class. Automatically called at object creation. No return type (not even void). Used to initialize data members. Memory is allocated when the constructor runs.</div>
+        <div class="section-title"><i class="ti ti-list"></i>Types of constructors</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card"><h3><i class="ti ti-number-1"></i>Default (non-parameterized) constructor</h3><p>No parameters. Gives default values. Called automatically when you write <code>Teacher t1;</code></p>
+          <div class="code-block"><span class="ty">Teacher</span>() {<br>&nbsp;&nbsp;name = <span class="st">"Unknown"</span>; salary = 0;<br>}</div></div>
+          <div class="card"><h3><i class="ti ti-number-2"></i>Parameterized constructor</h3><p>Accepts arguments to initialize with specific values. You pass values at object creation.</p>
+          <div class="code-block"><span class="ty">Teacher</span>(<span class="ty">string</span> n, <span class="ty">int</span> s) {<br>&nbsp;&nbsp;name = n; salary = s;<br>}<br><span class="cm">// Usage:</span><br><span class="ty">Teacher</span> t1(<span class="st">"Rahul"</span>, 25000);</div></div>
+          <div class="card"><h3><i class="ti ti-number-3"></i>Copy constructor</h3><p>Creates a new object as a copy of an existing one. Passed by reference to avoid infinite recursion.</p>
+          <div class="code-block"><span class="ty">Teacher</span>(<span class="ty">Teacher</span> &amp;orig) {<br>&nbsp;&nbsp;name = orig.name;<br>&nbsp;&nbsp;salary = orig.salary;<br>}<br><span class="cm">// Usage: Teacher t2(t1); — copies t1 into t2</span></div></div>
+        </div>
+        <div class="section-title"><i class="ti ti-arrows-up-down"></i>Constructor overloading</div>
+        <div class="highlight-box"><strong>Constructor overloading</strong> — multiple constructors in the same class, each with different parameters. C++ picks the right one based on what arguments you pass. This is compile-time polymorphism.</div>
+        <div class="section-title"><i class="ti ti-layers-difference"></i>Shallow vs Deep Copy</div>
+        <div class="pros-cons">
+          <div class="cons">
+            <div class="col-title">⚠ Shallow copy</div>
+            <ul>
+              <li>Copies all member values as-is</li>
+              <li>Pointers share the same memory</li>
+              <li>Default copy constructor does this</li>
+              <li>Dangerous with dynamic memory — double-free crash</li>
+            </ul>
+          </div>
+          <div class="pros">
+            <div class="col-title">✓ Deep copy</div>
+            <ul>
+              <li>Copies values AND allocates new memory</li>
+              <li>Pointers point to separate independent copies</li>
+              <li>Must write custom copy constructor</li>
+              <li>Safe — no shared memory between objects</li>
+            </ul>
+          </div>
+        </div>
+        <div class="code-block">
+<span class="cm">// Deep copy — allocate new memory</span><br>
+<span class="ty">Teacher</span>(<span class="ty">Teacher</span> &amp;orig) {<br>
+&nbsp;&nbsp;name = orig.name;<br>
+&nbsp;&nbsp;data = <span class="kw">new</span> <span class="ty">int</span>[size];  <span class="cm">// new allocation!</span><br>
+&nbsp;&nbsp;<span class="fn">copy</span>(orig.data, orig.data+size, data);<br>
+}
+        </div>
+      </div>
+
+      <!-- DESTRUCTORS -->
+      <div class="topic" id="topic-dtor">
+        <div class="page-tag tag-red"><i class="ti ti-trash"></i>Object Lifecycle</div>
+        <h1 class="page-title">Destructors</h1>
+        <p class="page-subtitle">The opposite of a constructor. Called automatically when an object goes out of scope to free allocated memory.</p>
+        <div class="def-card"><strong>Destructor</strong> — a special member function prefixed with <code>~</code> that runs automatically when an object is destroyed (goes out of scope or is explicitly deleted). Its job: release any dynamic memory the object owns to prevent memory leaks.</div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-lifecycle"></i>Constructor → Destructor order</h3><p>Objects are constructed in order. Destroyed in reverse order (LIFO). In inheritance: base constructor → derived constructor → ... → derived destructor → base destructor.</p></div>
+          <div class="card"><h3><i class="ti ti-trash"></i>delete keyword</h3><p><code>delete ptr</code> — frees heap memory for a single object.<br><code>delete[] arr</code> — frees heap memory for an array.<br>Always pair <code>new</code> with <code>delete</code> to avoid leaks.</p></div>
+        </div>
+        <div class="code-block">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="ty">int</span>* data;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">Teacher</span>() { data = <span class="kw">new</span> <span class="ty">int</span>[100]; } <span class="cm">// alloc</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;~<span class="ty">Teacher</span>() { <span class="kw">delete</span>[] data; }       <span class="cm">// free — ~symbol</span><br>
+};<br><br>
+<span class="cm">// Manual delete for heap objects:</span><br>
+<span class="ty">Teacher</span>* t = <span class="kw">new</span> <span class="ty">Teacher</span>();<br>
+<span class="kw">delete</span> t;  <span class="cm">// calls destructor + frees memory</span>
+        </div>
+        <div class="highlight-box"><strong>Static objects</strong> live for the entire lifetime of the program. Their destructor is called only when the program exits — not when a function returns.</div>
+      </div>
+
+      <!-- THIS POINTER -->
+      <div class="topic" id="topic-ptr">
+        <div class="page-tag tag-blue"><i class="ti ti-arrow-right"></i>Memory</div>
+        <h1 class="page-title">The <code>this</code> Pointer</h1>
+        <p class="page-subtitle">A special hidden pointer in every member function that points to the object that called the function.</p>
+        <div class="def-card"><strong>this</strong> is an implicit pointer available inside every non-static member function. It holds the address of the current object. Used to disambiguate when a local variable shadows a member variable, or to return the current object from a method.</div>
+        <div class="code-block">
+<span class="kw">class</span> <span class="ty">Teacher</span> {<br>
+&nbsp;&nbsp;<span class="ty">string</span> name;<br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">setName</span>(<span class="ty">string</span> name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 'name' (param) shadows 'name' (member)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">this</span>-&gt;name = name;  <span class="cm">// this-&gt;name = member</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="cm">// this-&gt;prop is the same as (*this).prop</span><br>
+<span class="cm">// Used in copy constructor to avoid ambiguity</span>
+        </div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-arrow-right"></i>this-&gt;prop</h3><p>Accesses the current object's member. Equivalent to <code>(*this).prop</code>. Arrow operator dereferences the pointer and accesses the member in one step.</p></div>
+          <div class="card"><h3><i class="ti ti-refresh"></i>Return *this</h3><p>Return the current object by reference to enable method chaining: <code>obj.setName("A").setSalary(100)</code>. Each method returns <code>*this</code> (the object itself).</p></div>
+        </div>
+      </div>
+
+      <!-- INHERITANCE -->
+      <div class="topic" id="topic-inh">
+        <div class="page-tag tag-purple"><i class="ti ti-hierarchy"></i>Pillar 2</div>
+        <h1 class="page-title">Inheritance</h1>
+        <p class="page-subtitle">A derived class acquires properties and behavior from a base class. Enables code reuse — write once, inherit everywhere.</p>
+        <div class="def-card"><strong>Inheritance</strong> — when a child (derived) class inherits the data members and member functions of a parent (base) class. The child can use, extend, or override inherited behavior without rewriting it.</div>
+        <div class="section-title"><i class="ti ti-tree"></i>Constructor / Destructor call order</div>
+        <div class="flow">
+          <div class="flow-box" style="background:var(--bg-pro);border-color:var(--border-pro);color:var(--text-pro)">Base constructor</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)">Derived constructor</div>
+          <span style="font-size:11px;color:var(--text-muted);align-self:center">| Destructor: reverse ↓</span>
+        </div>
+        <div class="flow" style="margin-top:4px">
+          <div class="flow-box" style="background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)">Derived destructor</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="background:var(--bg-pro);border-color:var(--border-pro);color:var(--text-pro)">Base destructor</div>
+        </div>
+        <div class="section-title"><i class="ti ti-layout-board"></i>Types of inheritance</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card">
+            <h3><i class="ti ti-arrow-down"></i>1. Single inheritance</h3>
+            <p>One parent, one child. Simplest form.</p>
+            <div class="inh-tree">
+              <div class="tree-box base">Person</div><div class="vline"></div><div class="tree-box derived">Student</div>
+            </div>
+            <div class="code-block"><span class="kw">class</span> <span class="ty">Student</span> : <span class="kw">public</span> <span class="ty">Person</span> { };</div>
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-arrows-down"></i>2. Multi-level inheritance</h3>
+            <p>Chain of inheritance: grandparent → parent → child.</p>
+            <div class="inh-tree">
+              <div class="tree-box base">Person</div><div class="vline"></div>
+              <div class="tree-box" style="background:var(--bg-warning);border-color:var(--border-warning);color:var(--text-warning)">Teacher</div><div class="vline"></div>
+              <div class="tree-box derived">MathTeacher</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-arrows-split-2"></i>3. Multiple inheritance</h3>
+            <p>One child, multiple parents.</p>
+            <div class="inh-tree">
+              <div style="display:flex;gap:40px">
+                <div class="tree-box base">Student</div>
+                <div class="tree-box base">Employee</div>
+              </div>
+              <div style="position:relative;height:24px;width:120px;margin:0 auto">
+                <div style="position:absolute;left:50%;top:0;width:1px;height:24px;background:var(--border2)"></div>
+              </div>
+              <div class="tree-box derived">Intern</div>
+            </div>
+            <div class="code-block"><span class="kw">class</span> <span class="ty">Intern</span> : <span class="kw">public</span> <span class="ty">Student</span>, <span class="kw">public</span> <span class="ty">Employee</span> { };</div>
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-git-branch"></i>4. Hierarchical inheritance</h3>
+            <p>One parent, multiple children.</p>
+            <div class="inh-tree">
+              <div class="tree-box base">Person</div>
+              <div style="display:flex;gap:40px;margin-top:16px">
+                <div class="tree-box derived">Student</div>
+                <div class="tree-box derived">Teacher</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-topology-full"></i>5. Hybrid inheritance</h3>
+            <p>Mix of multiple inheritance types. Example: Person → Student + Teacher → TA.</p>
+            <div class="warning-box">Hybrid with multiple inheritance can create the <strong>Diamond Problem</strong> — ambiguity about which base class member to use. C++ solves this with <code>virtual</code> base classes.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POLYMORPHISM -->
+      <div class="topic" id="topic-poly">
+        <div class="page-tag tag-green"><i class="ti ti-transform"></i>Pillar 3</div>
+        <h1 class="page-title">Polymorphism</h1>
+        <p class="page-subtitle">"Many forms." Same function name, different behavior depending on context. Two kinds: compile-time and runtime.</p>
+        <div class="def-card"><strong>Polymorphism</strong> — the ability of objects to take on different forms or behave differently depending on context. One interface, multiple implementations.</div>
+        <div class="poly-tab">
+          <div class="poly-btn on"  onclick="polyTab('compile',this)">Compile-time (static)</div>
+          <div class="poly-btn"     onclick="polyTab('runtime',this)">Run-time (dynamic)</div>
+        </div>
+        <div class="poly-panel on" id="poly-compile">
+          <div class="highlight-box"><strong>Compile-time polymorphism</strong> — the compiler resolves which function to call at compile time. No runtime overhead. Two forms: function overloading and operator overloading.</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="card">
+              <h3><i class="ti ti-stack-2"></i>Function overloading</h3>
+              <p>Same function name, different parameter list (count or type). Compiler picks the right version based on arguments.</p>
+              <div class="code-block">
+<span class="ty">int</span>   <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b)               { <span class="kw">return</span> a+b; }<br>
+<span class="ty">float</span> <span class="fn">add</span>(<span class="ty">float</span> a, <span class="ty">float</span> b)           { <span class="kw">return</span> a+b; }<br>
+<span class="ty">int</span>   <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b, <span class="ty">int</span> c)     { <span class="kw">return</span> a+b+c; }<br><br>
+<span class="fn">add</span>(1, 2);       <span class="cm">// calls version 1</span><br>
+<span class="fn">add</span>(1.1f, 2.2f); <span class="cm">// calls version 2</span><br>
+<span class="fn">add</span>(1, 2, 3);    <span class="cm">// calls version 3</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-math-symbols"></i>Operator overloading</h3>
+              <p>Redefine how standard operators (<code>+</code>, <code>-</code>, <code>==</code>) work with custom objects.</p>
+              <div class="code-block">
+<span class="kw">class</span> <span class="ty">Complex</span> {<br>
+&nbsp;&nbsp;<span class="ty">int</span> real, imag;<br>
+&nbsp;&nbsp;<span class="ty">Complex</span> <span class="kw">operator</span>+(<span class="ty">Complex</span> c2) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">Complex</span> res;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;res.real = real + c2.real;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> res;<br>
+&nbsp;&nbsp;}<br>
+};<br><span class="ty">Complex</span> c3 = c1 + c2; <span class="cm">// calls operator+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="poly-panel" id="poly-runtime">
+          <div class="highlight-box"><strong>Run-time polymorphism</strong> — function to call is decided at runtime via virtual function tables. Requires inheritance. Enables flexible, extensible designs.</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="card">
+              <h3><i class="ti ti-arrow-merge"></i>Function overriding</h3>
+              <p>Parent and child both define the same function. Child's version replaces parent's. Depends on inheritance.</p>
+              <div class="code-block">
+<span class="kw">class</span> <span class="ty">Animal</span> {<br>
+&nbsp;&nbsp;<span class="kw">virtual</span> <span class="ty">void</span> <span class="fn">speak</span>() { cout &lt;&lt; <span class="st">"..."</span>; }<br>
+};<br>
+<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {<br>
+&nbsp;&nbsp;<span class="ty">void</span> <span class="fn">speak</span>() { cout &lt;&lt; <span class="st">"Woof!"</span>; }  <span class="cm">// overrides</span><br>
+};<br>
+<span class="ty">Animal</span>* a = <span class="kw">new</span> <span class="ty">Dog</span>();<br>
+a-&gt;<span class="fn">speak</span>();  <span class="cm">// prints "Woof!" — runtime dispatch</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-bolt"></i>Virtual functions</h3>
+              <p>Declared with <code>virtual</code> in the base class. C++ uses a vtable (virtual function table) to resolve the correct override at runtime. Must be overridden in derived class.</p>
+              <div class="code-block">
+<span class="kw">virtual</span> <span class="ty">void</span> <span class="fn">draw</span>() = 0;  <span class="cm">// pure virtual — must override</span><br>
+<span class="cm">// Class with pure virtual = abstract class</span><br>
+<span class="cm">// Cannot instantiate abstract class directly</span>
+              </div>
+              <div class="warning-box" style="margin-top:8px">Without <code>virtual</code>, the base class version is always called regardless of the actual object type (static binding). With <code>virtual</code>, the correct override is called at runtime (dynamic binding).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABSTRACTION -->
+      <div class="topic" id="topic-abs">
+        <div class="page-tag tag-amber"><i class="ti ti-eye-off"></i>Pillar 4</div>
+        <h1 class="page-title">Abstraction</h1>
+        <p class="page-subtitle">Hide unnecessary implementation details. Expose only what the user of your class needs to know.</p>
+        <div class="def-card"><strong>Abstraction</strong> — showing only the essential features while hiding the complex implementation. You drive a car without knowing how the engine works. You use <code>sort()</code> without knowing the algorithm. That's abstraction.</div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-eye-off"></i>vs. Encapsulation</h3><p><strong>Encapsulation</strong> is the mechanism (bundling + private). <strong>Abstraction</strong> is the design principle (hiding complexity). Encapsulation implements abstraction.<br><br>Abstraction: what to hide. Encapsulation: how to hide it.</p></div>
+          <div class="card"><h3><i class="ti ti-box"></i>Abstract classes</h3><p>A class with at least one pure virtual function. Cannot be instantiated directly. Meant to be a base class — defines the interface that derived classes must implement.</p></div>
+        </div>
+        <div class="code-block">
+<span class="kw">class</span> <span class="ty">Shape</span> {   <span class="cm">// abstract class</span><br>
+&nbsp;&nbsp;<span class="kw">public</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">virtual</span> <span class="ty">float</span> <span class="fn">area</span>() = 0;  <span class="cm">// pure virtual</span><br>
+};<br><br>
+<span class="kw">class</span> <span class="ty">Circle</span> : <span class="kw">public</span> <span class="ty">Shape</span> {<br>
+&nbsp;&nbsp;<span class="ty">float</span> r;<br>
+&nbsp;&nbsp;<span class="ty">float</span> <span class="fn">area</span>() { <span class="kw">return</span> 3.14f * r * r; } <span class="cm">// must implement</span><br>
+};<br><br>
+<span class="cm">// Shape s; // ERROR — cannot instantiate abstract class</span><br>
+<span class="ty">Shape</span>* s = <span class="kw">new</span> <span class="ty">Circle</span>(); <span class="cm">// OK — pointer to abstract</span>
+        </div>
+      </div>
+
+      <!-- STATIC -->
+      <div class="topic" id="topic-static">
+        <div class="page-tag tag-blue"><i class="ti ti-variable"></i>Memory</div>
+        <h1 class="page-title">Static Keyword</h1>
+        <p class="page-subtitle">Static variables exist for the entire program lifetime. Static class members are shared across all objects.</p>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-variable"></i>Static local variable</h3><p>Declared inside a function. Created and initialized only once. Retains its value between function calls. Lives until program ends.</p>
+          <div class="code-block"><span class="ty">void</span> <span class="fn">counter</span>() {<br>&nbsp;&nbsp;<span class="kw">static</span> <span class="ty">int</span> count = 0; <span class="cm">// init once</span><br>&nbsp;&nbsp;count++;<br>&nbsp;&nbsp;cout &lt;&lt; count; <span class="cm">// 1, 2, 3 on each call</span><br>}</div></div>
+          <div class="card"><h3><i class="ti ti-users"></i>Static class member</h3><p>Belongs to the class, not any specific object. Shared by all objects. Must be initialized outside the class definition. Accessed via <code>ClassName::member</code>.</p>
+          <div class="code-block"><span class="kw">class</span> <span class="ty">Bank</span> {<br>&nbsp;&nbsp;<span class="kw">static</span> <span class="ty">float</span> rate; <span class="cm">// shared</span><br>};<br><span class="ty">float</span> <span class="ty">Bank</span>::rate = 5.5f;<br><span class="cm">// Bank::rate — same for all objects</span></div></div>
+        </div>
+        <div class="highlight-box"><strong>Static objects</strong> — created once, live for the entire program lifetime. Destructor called only when the program terminates. Stored in a special memory segment (BSS/data), not on the stack.</div>
+      </div>
+
+      <!-- FRIEND -->
+      <div class="topic" id="topic-friend">
+        <div class="page-tag tag-purple"><i class="ti ti-users"></i>Special</div>
+        <h1 class="page-title">Friend Functions &amp; Classes</h1>
+        <p class="page-subtitle">Grant specific external functions or classes access to private and protected members — without making them part of the class.</p>
+        <div class="def-card">A <strong>friend function</strong> is declared inside a class with the <code>friend</code> keyword. It's not a member of the class, but it can access private and protected members. Friendship is granted by the class, not claimed by the function.</div>
+        <div class="card-grid">
+          <div class="card"><h3><i class="ti ti-function"></i>Friend function</h3><p>An external function that can access private members of a class. Declared inside the class with <code>friend</code> keyword. Defined outside the class like a regular function.</p>
+          <div class="code-block">
+<span class="kw">class</span> <span class="ty">Box</span> {<br>
+&nbsp;&nbsp;<span class="kw">private</span>: <span class="ty">int</span> volume;<br>
+&nbsp;&nbsp;<span class="kw">friend</span> <span class="ty">void</span> <span class="fn">printVolume</span>(<span class="ty">Box</span> b);<br>
+};<br>
+<span class="ty">void</span> <span class="fn">printVolume</span>(<span class="ty">Box</span> b) {<br>
+&nbsp;&nbsp;cout &lt;&lt; b.volume; <span class="cm">// can access private</span><br>
+}
+          </div></div>
+          <div class="card"><h3><i class="ti ti-box"></i>Friend class</h3><p>An entire class is granted access to another class's private members. Used when two closely related classes need to work intimately together (e.g., iterator + container).</p>
+          <div class="code-block">
+<span class="kw">class</span> <span class="ty">Engine</span>;<br>
+<span class="kw">class</span> <span class="ty">Car</span> {<br>
+&nbsp;&nbsp;<span class="kw">friend</span> <span class="kw">class</span> <span class="ty">Engine</span>; <span class="cm">// Engine can see Car's private</span><br>
+&nbsp;&nbsp;<span class="kw">private</span>: <span class="ty">int</span> fuelLevel;<br>
+};
+          </div></div>
+        </div>
+        <div class="warning-box">Overusing <code>friend</code> breaks encapsulation. Use sparingly — only when the external function genuinely needs deep access and can't get it through public methods.</div>
+      </div>
+
+      <!-- 4 PILLARS QUICK REF -->
+      <div class="topic" id="topic-pillars">
+        <div class="page-tag tag-purple"><i class="ti ti-layout-columns"></i>Quick Reference</div>
+        <h1 class="page-title">The 4 Pillars — Side by Side</h1>
+        <p class="page-subtitle">What each pillar means, how to identify it, and the key mechanism that implements it.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card" style="border-left:3px solid var(--border-accent)">
+            <h3 style="font-size:15px"><i class="ti ti-shield"></i>Encapsulation</h3>
+            <div class="card-grid-3" style="margin-top:8px">
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text2)">Bundle data + methods in a class. Hide internals.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text2)">Private fields with public getters/setters.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text2)"><code>private</code>, <code>protected</code>, getters/setters.</div></div>
+            </div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--border-pro)">
+            <h3 style="font-size:15px"><i class="ti ti-hierarchy"></i>Inheritance</h3>
+            <div class="card-grid-3" style="margin-top:8px">
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text2)">Child class reuses parent class code.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text2)"><code>: public Parent</code> syntax. "is-a" relationship.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text2)">Base/derived classes. 5 types. Mode specifiers.</div></div>
+            </div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--border-success)">
+            <h3 style="font-size:15px"><i class="ti ti-transform"></i>Polymorphism</h3>
+            <div class="card-grid-3" style="margin-top:8px">
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text2)">Same name, different behavior per context.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text2)">Overloading (compile) or overriding (runtime).</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text2)"><code>virtual</code> functions, vtable, overloading.</div></div>
+            </div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--border-warning)">
+            <h3 style="font-size:15px"><i class="ti ti-eye-off"></i>Abstraction</h3>
+            <div class="card-grid-3" style="margin-top:8px">
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">What it is</div><div style="font-size:12.5px;color:var(--text2)">Show only necessary parts. Hide complexity.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">How to identify</div><div style="font-size:12.5px;color:var(--text2)">Abstract classes, pure virtual functions, interfaces.</div></div>
+              <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Mechanism</div><div style="font-size:12.5px;color:var(--text2)"><code>= 0</code> pure virtual. Abstract base class pattern.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEEP VS SHALLOW -->
+      <div class="topic" id="topic-copy">
+        <div class="page-tag tag-amber"><i class="ti ti-copy"></i>Quick Reference</div>
+        <h1 class="page-title">Deep vs Shallow Copy</h1>
+        <p class="page-subtitle">Copying objects that contain pointers requires care. Shallow copy shares memory — dangerous. Deep copy duplicates it — safe.</p>
+        <div class="card-grid" style="margin-bottom:12px">
+          <div class="card" style="border-top:3px solid var(--border-warning)">
+            <h3><i class="ti ti-copy"></i>Shallow copy</h3>
+            <p>Copies member values bit-by-bit. Pointer members are copied — both objects point to the same heap memory.</p>
+            <div class="code-block">
+<span class="ty">int</span>* ptr = <span class="kw">new</span> <span class="ty">int</span>(42);<br>
+<span class="ty">int</span>* copy = ptr; <span class="cm">// same address!</span><br>
+<span class="kw">delete</span> ptr;       <span class="cm">// deletes the data</span><br>
+<span class="cm">// copy now points to freed memory — crash!</span>
+            </div>
+          </div>
+          <div class="card" style="border-top:3px solid var(--border-success)">
+            <h3><i class="ti ti-copy-plus"></i>Deep copy</h3>
+            <p>Allocates new memory and copies the data into it. Both objects are fully independent.</p>
+            <div class="code-block">
+<span class="ty">int</span>* ptr = <span class="kw">new</span> <span class="ty">int</span>(42);<br>
+<span class="ty">int</span>* copy = <span class="kw">new</span> <span class="ty">int</span>(*ptr); <span class="cm">// new alloc</span><br>
+<span class="kw">delete</span> ptr;  <span class="cm">// safe — copy is independent</span>
+            </div>
+          </div>
+        </div>
+        <div class="warning-box"><strong>Rule of Three (C++):</strong> If you define any of destructor, copy constructor, or copy assignment operator — you should define all three. This ensures deep copies everywhere dynamic memory is used.</div>
+        <div class="highlight-box" style="margin-top:10px"><strong>When does this matter?</strong> Only when your class owns heap memory (via <code>new</code>). If all members are value types (int, string, etc.), the default copy constructor is fine.</div>
+      </div>
+
+    </div><!-- end main -->
+  </div><!-- end app -->
+
+  <script>
+    const TOPIC_ORDER = ['intro','classes','access','encap','ctor','dtor','ptr','inh','poly','abs','static','friend','pillars','copy'];
+    const NAV_LABELS  = {
+      intro:'Overview', classes:'Classes & Objects', access:'Access Modifiers',
+      encap:'Encapsulation', ctor:'Constructors', dtor:'Destructors',
+      ptr:'this Pointer', inh:'Inheritance', poly:'Polymorphism',
+      abs:'Abstraction', static:'Static Keyword', friend:'Friend',
+      pillars:'4 Pillars', copy:'Deep vs Shallow'
+    };
+
+    let currentId = 'intro';
+
+    function show(id) {
+      document.querySelectorAll('.topic').forEach(t => t.classList.remove('visible'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const t = document.getElementById('topic-' + id);
+      const n = document.getElementById('nav-' + id);
+      if (t) t.classList.add('visible');
+      if (n) { n.classList.add('active'); n.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+      const titleEl = document.getElementById('mobileNavTitle');
+      if (titleEl && NAV_LABELS[id]) titleEl.textContent = NAV_LABELS[id];
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const main = document.querySelector('.main');
+      if (main) main.scrollTop = 0;
+      currentId = id;
+      updateNavArrows(id);
+      // Persist
+      try { localStorage.setItem('oops_topic', id); } catch(e) {}
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function polyTab(id, btn) {
+      document.querySelectorAll('.poly-panel').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('.poly-btn').forEach(b => b.classList.remove('on'));
+      document.getElementById('poly-' + id).classList.add('on');
+      btn.classList.add('on');
+    }
+
+    function updateNavArrows(id) {
+      const idx    = TOPIC_ORDER.indexOf(id);
+      const prevId = idx > 0 ? TOPIC_ORDER[idx - 1] : null;
+      const nextId = idx < TOPIC_ORDER.length - 1 ? TOPIC_ORDER[idx + 1] : null;
+      document.querySelectorAll('.topic-nav-bar').forEach(bar => {
+        const prevBtn = bar.querySelector('.prev');
+        const nextBtn = bar.querySelector('.next');
+        if (prevBtn) {
+          if (prevId) {
+            prevBtn.style.visibility = 'visible';
+            prevBtn.onclick = () => show(prevId);
+            const nm = prevBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[prevId] || prevId;
+          } else { prevBtn.style.visibility = 'hidden'; }
+        }
+        if (nextBtn) {
+          if (nextId) {
+            nextBtn.style.visibility = 'visible';
+            nextBtn.onclick = () => show(nextId);
+            const nm = nextBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[nextId] || nextId;
+          } else { nextBtn.style.visibility = 'hidden'; }
+        }
+      });
+    }
+
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'true');
+      document.getElementById('hamburgerIcon').className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('hamburgerIcon').className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+    function toggleNav() {
+      document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+        btn.addEventListener('touchend', e => { e.preventDefault(); e.stopPropagation(); toggleNav(); }, { passive: false });
+      }
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('touchend', e => { e.preventDefault(); closeSidebar(); }, { passive: false });
+      }
+
+      // Inject prev/next bars
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.topic').forEach(topic => topic.insertAdjacentHTML('beforeend', navBarHTML));
+
+      // Restore last topic
+      let startId = 'intro';
+      try {
+        const saved = localStorage.getItem('oops_topic');
+        if (saved && document.getElementById('topic-' + saved)) startId = saved;
+      } catch(e) {}
+      show(startId);
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+  </script>
+</body>
+</html>
