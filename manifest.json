@@ -1,6 +1,6 @@
 {
-  "name": "CS Notes — Study Hub",
-  "short_name": "CS Notes",
+  "name": "CNotes — Study Hub",
+  "short_name": "CNotes",
   "description": "Complete CS interview prep — System Design, OOP, DSA, Computer Networks, OS, and more.",
   "start_url": "./",
   "scope": "./",
