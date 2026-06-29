@@ -3,27 +3,1367 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>API Design — Notes</title>
+  <title>API Design Mastery Notes</title>
+  <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
   <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="API Notes">
+  <meta name="description" content="API Design mastery notes — interactive reference covering REST, GraphQL, gRPC, authentication, authorization, versioning, caching, rate limiting, webhooks, and OpenAPI.">
+  <meta name="mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:#2a3450;--text:#e8eaf0;--text2:#9aa3b8;--text3:#6b748a;--accent:#7c6af5;--radius:10px}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
-    .back{display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:40px;transition:color.15s;position:absolute;top:24px;left:24px}
-    .back:hover{color:var(--accent)}
-    .icon-wrap{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,rgba(124,106,245,.2),rgba(124,106,245,.1));border:1px solid rgba(124,106,245,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--accent)}
-    h1{font-size:28px;font-weight:700;color:var(--text);margin-bottom:10px}
-    p{font-size:15px;color:var(--text2);max-width:400px;line-height:1.7;margin-bottom:32px}
-    .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(124,106,245,.1);border:1px solid rgba(124,106,245,.25);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.05em}
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+
+    :root {
+      --bg:  #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border:  #2a3450;
+      --border2: #344060;
+      --text:  #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent:  #7c6af5;
+      --radius: 10px;
+      --radius-lg: 14px;
+
+      /* design tokens used by the embedded fragment */
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'SF Mono', Consolas, 'Courier New', monospace;
+      --surface-1: #161b27;
+      --surface-2: #1e2535;
+      --text-primary:   #e8eaf0;
+      --text-secondary: #9aa3b8;
+      --text-muted:     #6b748a;
+      --text-accent:    #a89cf7;
+      --text-pro:       #c4b5fd;
+      --text-success:   #34d399;
+      --text-warning:   #f59e0b;
+      --text-danger:    #ef4444;
+      --border-accent:  rgba(124,106,245,.35);
+      --border-pro:     rgba(167,139,250,.35);
+      --border-success: rgba(52,211,153,.35);
+      --border-warning: rgba(245,158,11,.35);
+      --border-danger:  rgba(239,68,68,.35);
+      --border-strong:  #344060;
+      --border-stronger:#3d4f70;
+      --bg-accent:  rgba(124,106,245,.1);
+      --bg-pro:     rgba(167,139,250,.1);
+      --bg-success: rgba(52,211,153,.08);
+      --bg-warning: rgba(245,158,11,.08);
+      --bg-danger:  rgba(239,68,68,.08);
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Outer shell ──────────────────────────────────────────── */
+    .shell { display: flex; min-height: 100vh }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px;
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    /* ── Sidebar header ────────────────────────────────────────── */
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+    .home-back-btn:hover { color: var(--accent) }
+    .home-back-btn i { font-size: 13px }
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    /* ── Sidebar nav ─────────────────────────────────────────── */
+    .nav-section {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* ── Mobile nav ──────────────────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .hamburger-btn {
+      background: none; border: none; cursor: pointer;
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 22px; flex-shrink: 0;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .hamburger-btn:active { background: var(--bg3) }
+    .mobile-nav-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .mobile-nav-logo  { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); flex-shrink: 0 }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 399;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
+      opacity: 0; transition: opacity .25s; pointer-events: none;
+    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all }
+
+    /* ── Scrollbar ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px }
+    ::-webkit-scrollbar-track { background: var(--bg) }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media(max-width: 768px) {
+      .mobile-nav { display: flex }
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        z-index: 400; width: min(300px, 85vw);
+        transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.4,0,.2,1);
+        height: 100dvh; overflow-y: auto;
+      }
+      .sidebar.open { transform: translateX(0) }
+      .sidebar-overlay { display: block }
+      .main { padding-top: 56px }
+      .shell { display: block }
+    }
+
+    /* ── Embedded fragment overrides ────────────────────────── */
+    /* The fragment's .app becomes a full-height content area */
+    .app {
+      display: flex;
+      min-height: calc(100vh - 0px);
+      font-family: var(--font-sans);
+    }
+    /* Hide the fragment's own sidebar — we use the outer shell sidebar */
+    .app > .sb { display: none !important }
+    /* The content area fills all space */
+    .app > .ct {
+      flex: 1;
+      padding: 28px 36px;
+      overflow-y: auto;
+      max-height: none !important;
+      height: 100%;
+    }
+
+    /* fragment nav items — styled to match outer sidebar */
+    .ni {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px;
+    }
+    .ni:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2) }
+    .ni.on { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); font-weight: 500 }
+    .ni i { font-size: 15px; width: 17px; flex-shrink: 0 }
+    .sb-hd {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    @media(max-width: 768px) {
+      .app > .ct { padding: 16px }
+    }
+
+    /* ── Prev / Next nav bar ─────────────────────────────────── */
+    .topic-nav-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; padding: 16px 0 8px; border-top: 1px solid var(--border); gap: 12px }
+    .topic-nav-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all .18s; touch-action: manipulation; user-select: none; min-width: 110px }
+    .topic-nav-btn:hover, .topic-nav-btn:active { background: var(--bg3); border-color: var(--accent); color: var(--accent) }
+    .topic-nav-btn.prev { justify-content: flex-start }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0 }
+    .topic-nav-label  { display: flex; flex-direction: column }
+    .topic-nav-hint   { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em }
+    .topic-nav-name   { font-size: 13px; font-weight: 600 }
+    @media(max-width: 768px) {
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px }
+      .topic-nav-hint { display: none }
+    }
   </style>
 </head>
+
 <body>
-  <a href="../../index.html" class="back"><i class="ti ti-arrow-left"></i> Home</a>
-  <div class="icon-wrap"><i class="ti ti-api"></i></div>
-  <h1>API Design</h1>
-  <p>REST, GraphQL, gRPC, API versioning, authentication, rate limiting, pagination, webhooks, and OpenAPI specs. Coming soon.</p>
-  <div class="badge"><i class="ti ti-clock"></i> Coming Soon</div>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">API</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">Overview</span>
+  </nav>
+  <!-- Sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <div class="shell">
+    <!-- Sidebar (outer shell) -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>API Design</h1>
+        <p>Complete Reference Notes</p>
+      </div>
+
+      <!-- Nav items injected here — they proxy to the fragment's go() function -->
+      <div class="nav-section">Foundations</div>
+      <div class="ni on" onclick="go('intro')"      id="sn-intro"><i class="ti ti-home"></i>Overview</div>
+      <div class="ni"    onclick="go('styles')"     id="sn-styles"><i class="ti ti-layout-grid"></i>API styles</div>
+      <div class="ni"    onclick="go('principles')" id="sn-principles"><i class="ti ti-stars"></i>4 key principles</div>
+
+      <div class="nav-section" style="margin-top:6px">Protocols</div>
+      <div class="ni" onclick="go('netstack')" id="sn-netstack"><i class="ti ti-layers"></i>Network stack</div>
+      <div class="ni" onclick="go('http')"     id="sn-http"><i class="ti ti-world"></i>HTTP / HTTPS</div>
+      <div class="ni" onclick="go('tcpudp')"   id="sn-tcpudp"><i class="ti ti-network"></i>TCP vs UDP</div>
+      <div class="ni" onclick="go('ws')"       id="sn-ws"><i class="ti ti-plug"></i>WebSockets</div>
+      <div class="ni" onclick="go('amqp')"     id="sn-amqp"><i class="ti ti-list"></i>AMQP</div>
+      <div class="ni" onclick="go('grpc')"     id="sn-grpc"><i class="ti ti-bolt"></i>gRPC</div>
+      <div class="ni" onclick="go('choose')"   id="sn-choose"><i class="ti ti-help"></i>Choosing a protocol</div>
+
+      <div class="nav-section" style="margin-top:6px">API Design</div>
+      <div class="ni" onclick="go('rest')"       id="sn-rest"><i class="ti ti-route"></i>RESTful APIs</div>
+      <div class="ni" onclick="go('methods')"    id="sn-methods"><i class="ti ti-arrows-exchange"></i>HTTP methods</div>
+      <div class="ni" onclick="go('status')"     id="sn-status"><i class="ti ti-alert-circle"></i>Status codes</div>
+      <div class="ni" onclick="go('graphql')"    id="sn-graphql"><i class="ti ti-circle-dot"></i>GraphQL</div>
+      <div class="ni" onclick="go('versioning')" id="sn-versioning"><i class="ti ti-versions"></i>Versioning</div>
+      <div class="ni" onclick="go('pagination')" id="sn-pagination"><i class="ti ti-layout-grid"></i>Pagination</div>
+      <div class="ni" onclick="go('caching')"    id="sn-caching"><i class="ti ti-database"></i>Caching</div>
+      <div class="ni" onclick="go('ratelimit')"  id="sn-ratelimit"><i class="ti ti-traffic-cone"></i>Rate limiting</div>
+      <div class="ni" onclick="go('gateway')"    id="sn-gateway"><i class="ti ti-topology-star"></i>API Gateway</div>
+      <div class="ni" onclick="go('webhooks')"   id="sn-webhooks"><i class="ti ti-webhook"></i>Webhooks</div>
+      <div class="ni" onclick="go('openapi')"    id="sn-openapi"><i class="ti ti-file-description"></i>OpenAPI / Swagger</div>
+
+      <div class="nav-section" style="margin-top:6px">Security</div>
+      <div class="ni" onclick="go('authn')"     id="sn-authn"><i class="ti ti-user-check"></i>Authentication</div>
+      <div class="ni" onclick="go('authz')"     id="sn-authz"><i class="ti ti-shield"></i>Authorization</div>
+      <div class="ni" onclick="go('security')"  id="sn-security"><i class="ti ti-lock"></i>Security techniques</div>
+      <div class="ni" onclick="go('checklist')" id="sn-checklist"><i class="ti ti-list-check"></i>Design checklist</div>
+    </div>
+
+    <!-- Main content: embed the fragment -->
+    <div class="main" id="mainContent">
+      <!-- api_design_mastery.html fragment embedded inline -->
+      <!-- ============================================================ -->
+      <!-- FRAGMENT START -->
+      <!-- ============================================================ -->
+      <h2 class="sr-only">API Design mastery notes — interactive reference covering fundamentals, protocols, REST, GraphQL, gRPC, authentication, authorization, versioning, caching, rate limiting, API Gateway, Webhooks, OpenAPI, and security with code examples and diagrams.</h2>
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* fragment inner app: hide the fragment sidebar, show only .ct */
+.app{display:flex;min-height:100%;font-family:var(--font-sans)}
+.sb{display:none!important}
+.ct{flex:1;padding:28px 36px;overflow-y:visible;max-height:none!important}
+.pg{display:none}
+.pg.on{display:block}
+.ptag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;margin-bottom:7px}
+.t-bl{background:var(--bg-accent);color:var(--text-accent)}
+.t-pu{background:var(--bg-pro);color:var(--text-pro)}
+.t-gr{background:var(--bg-success);color:var(--text-success)}
+.t-am{background:var(--bg-warning);color:var(--text-warning)}
+.t-re{background:var(--bg-danger);color:var(--text-danger)}
+.ptitle{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em}
+.psub{font-size:13.5px;color:var(--text-secondary);margin-bottom:20px;line-height:1.65}
+.def{background:var(--surface-1);border:0.5px solid var(--border);border-left:3px solid var(--border-accent);padding:14px 16px;font-size:13.5px;line-height:1.75;color:var(--text-secondary);margin-bottom:18px;border-radius:var(--radius)}
+.def strong{color:var(--text-primary)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px}
+.card h3{font-size:13.5px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.card h3 i{font-size:15px;color:var(--text-accent)}
+.card p{font-size:13px;color:var(--text-secondary);line-height:1.65}
+.sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:18px 0 10px;display:flex;align-items:center;gap:6px}
+.code{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-accent);line-height:1.7;overflow-x:auto;margin:10px 0}
+.code .cm{color:var(--text-muted)}
+.code .kw{color:var(--text-pro)}
+.code .st{color:var(--text-success)}
+.code .re{color:var(--text-danger)}
+.code .am{color:var(--text-warning)}
+.hl{background:var(--bg-accent);border:0.5px solid var(--border-accent);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-secondary);line-height:1.7;margin:10px 0}
+.hl strong{color:var(--text-accent)}
+.warn{background:var(--bg-warning);border:0.5px solid var(--border-warning);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-warning);line-height:1.7;margin:10px 0}
+.danger{background:var(--bg-danger);border:0.5px solid var(--border-danger);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-danger);line-height:1.7;margin:10px 0}
+.ok{background:var(--bg-success);border:0.5px solid var(--border-success);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-success);line-height:1.7;margin:10px 0}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.fb{background:var(--surface-2);border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:6px 12px;font-size:12.5px;color:var(--text-primary);font-weight:500}
+.fa{color:var(--text-accent);font-size:16px;font-weight:600}
+.chip{font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-2)}
+.chip.bl{border-color:var(--border-accent);color:var(--text-accent);background:var(--bg-accent)}
+.chip.gr{border-color:var(--border-success);color:var(--text-success);background:var(--bg-success)}
+.chip.re{border-color:var(--border-danger);color:var(--text-danger);background:var(--bg-danger)}
+.chip.am{border-color:var(--border-warning);color:var(--text-warning);background:var(--bg-warning)}
+.chip.pu{border-color:var(--border-pro);color:var(--text-pro);background:var(--bg-pro)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.method{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 9px;border-radius:4px;margin-right:6px;font-family:var(--font-mono)}
+.GET{background:var(--bg-success);color:var(--text-success)}
+.POST{background:var(--bg-accent);color:var(--text-accent)}
+.PUT{background:var(--bg-warning);color:var(--text-warning)}
+.PATCH{background:var(--bg-pro);color:var(--text-pro)}
+.DEL{background:var(--bg-danger);color:var(--text-danger)}
+.sc-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.sc-row:last-child{border-bottom:none}
+.sc-num{font-family:var(--font-mono);font-size:13px;font-weight:600;min-width:36px}
+.sc-desc{color:var(--text-secondary);font-size:12.5px}
+.layer-row{display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:var(--radius);margin:5px 0;font-size:13px;font-weight:500}
+.divider{height:0.5px;background:var(--border);margin:18px 0}
+.tab-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tb{padding:5px 13px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:all .12s}
+.tb.on{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent);font-weight:600}
+.tp{display:none}
+.tp.on{display:block}
+.compare-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+.compare-table th{background:var(--surface-1);color:var(--text-muted);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 11px;text-align:left;border-bottom:0.5px solid var(--border)}
+.compare-table td{padding:8px 11px;color:var(--text-secondary);border-bottom:0.5px solid var(--border)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:var(--surface-1)}
+.step-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.step-row:last-child{border-bottom:none}
+.step-num{min-width:24px;height:24px;border-radius:50%;background:var(--bg-accent);color:var(--text-accent);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-body{flex:1}
+.step-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+.step-desc{font-size:12.5px;color:var(--text-secondary);line-height:1.6}
+@media(max-width:768px){
+  .ct{padding:16px}
+  .g2,.g3,.g4{grid-template-columns:1fr!important}
+}
+</style>
+
+<div class="app">
+<div class="sb"></div>
+<div class="ct">
+
+<!-- OVERVIEW -->
+<div class="pg on" id="p-intro">
+  <div class="ptag t-bl"><i class="ti ti-home" aria-hidden="true"></i>Start here</div>
+  <div class="ptitle">API Design — complete reference</div>
+  <p class="psub">APIs are the contracts between software components. This guide covers every layer — from transport protocols up to security patterns, versioning, and real-world design decisions.</p>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-plug"></i>What is an API?</h3><p>Application Programming Interface. A documented contract that defines what requests can be made, how to make them, and what responses to expect. The interface between client and server.</p></div>
+    <div class="card"><h3><i class="ti ti-file-description"></i>API as contract</h3><p>The API contract defines: valid requests, required parameters, authentication method, response shape, error codes. Break the contract = you break every consumer simultaneously.</p></div>
+    <div class="card"><h3><i class="ti ti-arrows-exchange"></i>Why API design matters</h3><p>A bad API is forever. Once developers integrate your API, changing it breaks them. Good design reduces support burden, improves DX, enables scaling, and prevents security holes.</p></div>
+    <div class="card"><h3><i class="ti ti-users"></i>API consumers</h3><p>Internal teams (microservices), external developers (third-party integrations), mobile apps, browsers, IoT devices, partner systems. Each has different needs and constraints.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-route"></i>Core flow</div>
+  <div class="flow">
+    <div class="fb">Client</div><div class="fa">↔</div>
+    <div class="fb">API (contract)</div><div class="fa">↔</div>
+    <div class="fb">Server / data</div>
+  </div>
+  <div class="sec"><i class="ti ti-map"></i>Topics in this guide</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-layout-grid"></i>API styles</h3><p>REST, GraphQL, gRPC — when to use which and why they exist.</p></div>
+    <div class="card"><h3><i class="ti ti-network"></i>Protocols</h3><p>HTTP, WebSockets, AMQP, gRPC, TCP/UDP — the wires your API runs on.</p></div>
+    <div class="card"><h3><i class="ti ti-versions"></i>Versioning</h3><p>URL, header, query param strategies. How to evolve APIs without breaking consumers.</p></div>
+    <div class="card"><h3><i class="ti ti-database"></i>Caching</h3><p>ETag, Cache-Control, CDN caching, and when not to cache.</p></div>
+    <div class="card"><h3><i class="ti ti-traffic-cone"></i>Rate limiting</h3><p>Token bucket, leaky bucket, sliding window — algorithms and strategies.</p></div>
+    <div class="card"><h3><i class="ti ti-lock"></i>Security</h3><p>AuthN, AuthZ, rate limiting, CORS, SQL injection, CSRF, XSS.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-trending-up"></i>API design quality spectrum</div>
+  <div class="g3">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-x"></i>Bad API</h3><p>Inconsistent naming. No versioning. 200 for all errors. No pagination. Returns entire object graph. Undocumented. No rate limiting. Changing behavior without notice.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-minus"></i>OK API</h3><p>Basic REST conventions. Some error codes correct. Some docs. No guarantees on stability. Versioning exists but inconsistent. Limited pagination support.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-check"></i>Great API</h3><p>Consistent naming. Full OpenAPI docs. Proper status codes. Versioned with deprecation policy. Cursor pagination. Rate limit headers. Idempotency keys. Predictable evolution.</p></div>
+  </div>
+</div>
+
+<!-- API STYLES -->
+<div class="pg" id="p-styles">
+  <div class="ptag t-bl"><i class="ti ti-layout-grid"></i>Foundations</div>
+  <div class="ptitle">The 4 API styles</div>
+  <p class="psub">REST for web/mobile, GraphQL for complex UIs, gRPC for microservices, WebSockets for real-time. Architecture choice shapes everything downstream.</p>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="card" style="border-left:3px solid var(--border-accent)">
+      <h3><i class="ti ti-route"></i>REST — Representational State Transfer</h3>
+      <p>Organizes APIs around <em>resources</em> (nouns) accessed via standard HTTP methods. Stateless — every request carries all information needed. Most widely used style today.</p>
+      <div class="chips" style="margin-top:8px"><span class="chip bl">Resource-based URLs</span><span class="chip bl">Stateless</span><span class="chip bl">HTTP methods = CRUD</span><span class="chip bl">JSON/XML response</span><span class="chip bl">Best for: web &amp; mobile</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-pro)">
+      <h3><i class="ti ti-circle-dot"></i>GraphQL — query language API</h3>
+      <p>Created by Facebook. Client specifies exactly what data it needs. Single endpoint. Operations: Query (read), Mutation (write), Subscription (real-time).</p>
+      <div class="chips" style="margin-top:8px"><span class="chip pu">Single endpoint</span><span class="chip pu">Client-defined shape</span><span class="chip pu">No over-fetching</span><span class="chip pu">Strongly typed schema</span><span class="chip pu">Best for: complex UIs</span></div>
+      <div class="code" style="margin-top:8px"><span class="kw">query</span> {<br>&nbsp;&nbsp;user(id: <span class="st">"123"</span>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;name<br>&nbsp;&nbsp;&nbsp;&nbsp;posts { title }<br>&nbsp;&nbsp;}<br>}</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-success)">
+      <h3><i class="ti ti-bolt"></i>gRPC — Google Remote Procedure Call</h3>
+      <p>Binary Protocol Buffers over HTTP/2. Services defined in <code>.proto</code> files. Supports unary, server streaming, client streaming, bidirectional streaming. Very high performance.</p>
+      <div class="chips" style="margin-top:8px"><span class="chip gr">Binary (not JSON)</span><span class="chip gr">HTTP/2</span><span class="chip gr">Streaming support</span><span class="chip gr">Auto-generated stubs</span><span class="chip gr">Best for: microservices</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--border-warning)">
+      <h3><i class="ti ti-plug"></i>WebSockets — persistent bidirectional</h3>
+      <p>Upgrades an HTTP connection to a persistent, full-duplex channel. Server and client push messages at any time without polling. Built on TCP.</p>
+      <div class="chips" style="margin-top:8px"><span class="chip am">Persistent connection</span><span class="chip am">Bidirectional</span><span class="chip am">Low latency push</span><span class="chip am">Best for: chat, live feeds, games</span></div>
+    </div>
+  </div>
+  <div class="sec"><i class="ti ti-arrows-left-right"></i>Full comparison</div>
+  <table class="compare-table">
+    <thead><tr><th>Criterion</th><th>REST</th><th>GraphQL</th><th>gRPC</th><th>WebSocket</th></tr></thead>
+    <tbody>
+      <tr><td>Protocol</td><td>HTTP/1.1</td><td>HTTP/1.1</td><td>HTTP/2</td><td>WS over TCP</td></tr>
+      <tr><td>Payload</td><td>JSON/XML</td><td>JSON</td><td>Binary (protobuf)</td><td>Any</td></tr>
+      <tr><td>Typing</td><td>Untyped</td><td>Schema-typed</td><td>Strongly typed</td><td>Untyped</td></tr>
+      <tr><td>Streaming</td><td>No</td><td>Subscriptions</td><td>Native 4 modes</td><td>Native</td></tr>
+      <tr><td>Caching</td><td>HTTP cache</td><td>App-level</td><td>No HTTP cache</td><td>No</td></tr>
+      <tr><td>Browser support</td><td>✓ Native</td><td>✓ Native</td><td>Needs proxy</td><td>✓ Native</td></tr>
+      <tr><td>Best use</td><td>Public APIs</td><td>Complex UIs</td><td>Internal svcs</td><td>Real-time</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 4 PRINCIPLES -->
+<div class="pg" id="p-principles">
+  <div class="ptag t-am"><i class="ti ti-stars"></i>Design</div>
+  <div class="ptitle">4 key principles of great APIs</div>
+  <p class="psub">Every lasting API decision traces back to one of these four. Violate any one and you create technical debt that compounds over time.</p>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="card" style="border-left:3px solid var(--border-accent)"><h3><i class="ti ti-equal"></i>1. Consistency</h3><p>Same naming patterns everywhere. Same error shape everywhere. Same auth mechanism everywhere. Developers build mental models from patterns; break the pattern and you break their trust.</p><div class="chips" style="margin-top:8px"><span class="chip bl">Consistent naming</span><span class="chip bl">Consistent error shapes</span><span class="chip bl">Consistent auth</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-success)"><h3><i class="ti ti-minimize"></i>2. Simplicity</h3><p>Focus on core use cases. Every extra parameter, every optional field, every implicit behavior is surface area that must be maintained forever. An API is easy to use when it's hard to misuse.</p><div class="chips" style="margin-top:8px"><span class="chip gr">One resource per endpoint</span><span class="chip gr">Minimal required params</span><span class="chip gr">Predictable behavior</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-danger)"><h3><i class="ti ti-lock"></i>3. Security</h3><p>Authentication — who are you? Authorization — what can you do? Input validation — is this data safe? Rate limiting — are you abusing the system? Security must be designed in from the start.</p><div class="chips" style="margin-top:8px"><span class="chip re">AuthN + AuthZ first</span><span class="chip re">Validate all input</span><span class="chip re">Rate limit everything</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-bolt"></i>4. Performance</h3><p>Caching — serve from cache when fresh. Pagination — never return unbounded lists. Minimize payload size. Reduce round trips. Compress responses. One slow endpoint kills perceived performance.</p><div class="chips" style="margin-top:8px"><span class="chip am">Mandatory pagination</span><span class="chip am">HTTP caching</span><span class="chip am">Minimize round trips</span></div></div>
+  </div>
+  <div class="sec"><i class="ti ti-cycle"></i>API lifecycle</div>
+  <div class="flow">
+    <div class="fb">Design &amp; document</div><div class="fa">→</div>
+    <div class="fb">Develop &amp; test</div><div class="fa">→</div>
+    <div class="fb">Deploy &amp; monitor</div><div class="fa">→</div>
+    <div class="fb">Maintain &amp; evolve</div><div class="fa">→</div>
+    <div class="fb">Deprecate gracefully</div>
+  </div>
+</div>
+
+<!-- NETWORK STACK -->
+<div class="pg" id="p-netstack">
+  <div class="ptag t-pu"><i class="ti ti-layers"></i>Protocols</div>
+  <div class="ptitle">Application protocols in the network stack</div>
+  <p class="psub">APIs live at the application layer. Understanding the stack explains why protocol choice matters — each layer has constraints the layer above must work within.</p>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+    <div class="layer-row" style="background:var(--bg-accent);color:var(--text-accent)"><i class="ti ti-api"></i> Application layer — HTTP/HTTPS, WebSockets, MQTT, AMQP, gRPC</div>
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin:-2px 0">↑ builds on</div>
+    <div class="layer-row" style="background:var(--bg-warning);color:var(--text-warning)"><i class="ti ti-network"></i> Transport layer — TCP (reliable), UDP (fast)</div>
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin:-2px 0">↑ builds on</div>
+    <div class="layer-row" style="background:var(--bg-success);color:var(--text-success)"><i class="ti ti-topology-full"></i> Network layer — IP (IPv4 / IPv6)</div>
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin:-2px 0">↑ builds on</div>
+    <div class="layer-row" style="background:var(--bg-pro);color:var(--text-pro)"><i class="ti ti-wifi"></i> Data link — Ethernet, WiFi, Bluetooth</div>
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin:-2px 0">↑ builds on</div>
+    <div class="layer-row" style="background:var(--surface-1);color:var(--text-muted);border:0.5px solid var(--border)"><i class="ti ti-plug"></i> Physical — cables, radio waves, fiber</div>
+  </div>
+  <div class="hl"><strong>Why this matters:</strong> When you choose REST over gRPC, you're choosing HTTP/1.1 vs HTTP/2. When you choose WebSockets, you're choosing a persistent TCP connection. Protocol choice shapes latency, throughput, and API design.</div>
+  <div class="sec"><i class="ti ti-arrows-right-left"></i>HTTP versions</div>
+  <table class="compare-table">
+    <thead><tr><th>Version</th><th>Transport</th><th>Multiplexing</th><th>Push</th><th>Used by</th></tr></thead>
+    <tbody>
+      <tr><td>HTTP/1.1</td><td>TCP (1 req/conn)</td><td>No (HoL blocking)</td><td>No</td><td>Most REST APIs</td></tr>
+      <tr><td>HTTP/2</td><td>TCP (multiplexed)</td><td>Yes</td><td>Server push</td><td>gRPC, modern browsers</td></tr>
+      <tr><td>HTTP/3</td><td>QUIC (UDP-based)</td><td>Yes</td><td>Yes</td><td>CDNs, future APIs</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- HTTP -->
+<div class="pg" id="p-http">
+  <div class="ptag t-bl"><i class="ti ti-world"></i>Protocols</div>
+  <div class="ptitle">HTTP / HTTPS</div>
+  <p class="psub">The foundation of data exchange on the web. Every REST API runs on HTTP. Understanding request/response structure is non-negotiable.</p>
+  <div class="def"><strong>HTTP</strong> — a stateless, text-based application protocol. Client sends a request with method + URL + headers + body. Server responds with status code + headers + body. No memory of previous requests.</div>
+  <div class="sec"><i class="ti ti-arrows-exchange"></i>Request / response anatomy</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-arrow-up"></i>HTTP request</h3><div class="code">GET /api/products/123 HTTP/1.1<br>Host: api.example.com<br>Authorization: Bearer tk9382nf...<br>Accept: application/json<br>Accept-Encoding: gzip</div></div>
+    <div class="card"><h3><i class="ti ti-arrow-down"></i>HTTP response</h3><div class="code">HTTP/1.1 200 OK<br>Content-Type: application/json<br>Cache-Control: max-age=3600<br>ETag: "abc123"<br>X-RateLimit-Remaining: 99<br><br>{ "id": 123, "price": 19.99 }</div></div>
+  </div>
+  <div class="sec"><i class="ti ti-shield-lock"></i>HTTPS = HTTP + TLS/SSL</div>
+  <div class="g2">
+    <div class="ok"><strong>Benefits:</strong> data encrypted in transit, data integrity, server authentication, SEO benefits. Required for any authentication to be secure.</div>
+    <div class="danger"><strong>Risks without:</strong> man-in-the-middle attacks, data tampering, credential exposure, session hijacking. Never ship a production API over plain HTTP.</div>
+  </div>
+  <div class="sec"><i class="ti ti-list"></i>Key headers</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-file-type"></i>Content-Type</h3><p>Format of the body. <code>application/json</code>, <code>multipart/form-data</code>. Must be set on requests with body and on all responses.</p></div>
+    <div class="card"><h3><i class="ti ti-key"></i>Authorization</h3><p><code>Bearer &lt;token&gt;</code> for JWT/OAuth, <code>Basic &lt;base64&gt;</code>. Never put credentials in URL query params.</p></div>
+    <div class="card"><h3><i class="ti ti-database"></i>Cache-Control</h3><p><code>max-age=3600</code> = cache 1hr. <code>no-store</code> = never cache. <code>stale-while-revalidate</code> = serve stale, refresh background.</p></div>
+    <div class="card"><h3><i class="ti ti-tag"></i>ETag</h3><p>Entity tag for conditional requests. Client sends <code>If-None-Match</code> → server returns 304 if unchanged. Saves bandwidth.</p></div>
+    <div class="card"><h3><i class="ti ti-traffic-cone"></i>Rate limit headers</h3><p><code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>Retry-After</code>. Always include so clients back off gracefully.</p></div>
+    <div class="card"><h3><i class="ti ti-id"></i>Idempotency-Key</h3><p>Client sends UUID. Server deduplicates. Critical for payment APIs — prevents double charges on network retries.</p></div>
+  </div>
+</div>
+
+<!-- TCP / UDP -->
+<div class="pg" id="p-tcpudp">
+  <div class="ptag t-pu"><i class="ti ti-network"></i>Transport layer</div>
+  <div class="ptitle">TCP vs UDP</div>
+  <p class="psub">These transport protocols determine how data physically moves between machines. Everything above — HTTP, WebSockets, gRPC — runs on top of one or the other.</p>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-accent)">
+      <h3><i class="ti ti-check"></i>TCP — Transmission Control Protocol</h3>
+      <p>Reliable but slower. Guarantees every packet arrives in order. Uses the 3-way handshake to establish connection.</p>
+      <div class="sec" style="margin-top:12px"><i class="ti ti-hand-stop"></i>3-way handshake</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
+        <div style="font-size:12.5px;color:var(--text-secondary)"><span class="chip bl">1. SYN</span> client → server: "I want to connect"</div>
+        <div style="font-size:12.5px;color:var(--text-secondary)"><span class="chip bl">2. SYN-ACK</span> server → client: "OK, I'm ready"</div>
+        <div style="font-size:12.5px;color:var(--text-secondary)"><span class="chip gr">3. ACK</span> client → server: "Connection established!"</div>
+      </div>
+      <div class="chips"><span class="chip gr">Banking APIs</span><span class="chip gr">Email</span><span class="chip gr">HTTP/REST</span><span class="chip gr">WebSockets</span><span class="chip gr">gRPC</span></div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--border-warning)">
+      <h3><i class="ti ti-bolt"></i>UDP — User Datagram Protocol</h3>
+      <p>Fast but unreliable. Fire-and-forget. No handshake, no delivery guarantee, no ordering. Less overhead = lower latency.</p>
+      <div class="warn" style="margin-top:12px"><strong>Packet lost?</strong> UDP says "NO RESENDING." A frame skip is acceptable; a 300ms stutter to retransmit is not.</div>
+      <div class="chips" style="margin-top:8px"><span class="chip am">Video calls</span><span class="chip am">Online gaming</span><span class="chip am">Live streaming</span><span class="chip am">DNS</span><span class="chip am">HTTP/3 (QUIC)</span></div>
+      <div class="hl" style="margin-top:8px"><strong>Rule:</strong> If losing a packet hurts less than waiting for a retransmit — use UDP. If every byte must arrive — use TCP.</div>
+    </div>
+  </div>
+  <table class="compare-table" style="margin-top:12px">
+    <thead><tr><th>Property</th><th>TCP</th><th>UDP</th></tr></thead>
+    <tbody>
+      <tr><td>Connection</td><td>Connection-oriented (handshake)</td><td>Connectionless</td></tr>
+      <tr><td>Reliability</td><td>Guaranteed delivery + ordering</td><td>No guarantees</td></tr>
+      <tr><td>Speed</td><td>Slower (overhead)</td><td>Faster</td></tr>
+      <tr><td>Header size</td><td>20 bytes minimum</td><td>8 bytes</td></tr>
+      <tr><td>Use case</td><td>HTTP, email, file transfer</td><td>Video, gaming, DNS, VoIP</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- WEBSOCKETS -->
+<div class="pg" id="p-ws">
+  <div class="ptag t-gr"><i class="ti ti-plug"></i>Protocols</div>
+  <div class="ptitle">WebSockets</div>
+  <p class="psub">Persistent, bidirectional connection. Replaces HTTP polling for real-time applications. One connection, unlimited messages in both directions.</p>
+  <div class="def"><strong>WebSocket</strong> — upgrades an HTTP connection into a persistent, full-duplex channel. Both sides push data at any time. Runs over TCP.</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-refresh"></i>HTTP polling (old way)</h3><p>Client asks "Any new data?" → "No." → asks again → "No." Wasted bandwidth, added latency, not truly real-time.</p><div class="danger" style="margin-top:8px">Always 1+ polling interval behind. Wastes bandwidth on empty responses.</div></div>
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-plug"></i>WebSocket (right way)</h3><p>One HTTP handshake → upgrades to WebSocket → stays open forever. Server pushes the instant data is available.</p><div class="ok" style="margin-top:8px">Real-time, minimal latency. Bidirectional over single connection.</div></div>
+  </div>
+  <div class="sec"><i class="ti ti-arrows-left-right"></i>WebSockets vs SSE</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-plug"></i>WebSockets (bidirectional)</h3><p>Full-duplex — both sides send. Better for chat, gaming, collaborative editing. Needs custom reconnection logic.</p></div>
+    <div class="card"><h3><i class="ti ti-arrow-down"></i>SSE — Server-Sent Events (server→client only)</h3><p>One-way server push. Automatic reconnection built-in. Works through proxies. Good for dashboards, live feeds, notifications.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-apps"></i>Use cases</div>
+  <div class="chips"><span class="chip gr">Chat apps (WhatsApp, Slack)</span><span class="chip gr">Live trading</span><span class="chip gr">Multiplayer games</span><span class="chip gr">Live collaboration (Figma)</span><span class="chip gr">Real-time notifications</span><span class="chip gr">Live sports</span></div>
+</div>
+
+<!-- AMQP -->
+<div class="pg" id="p-amqp">
+  <div class="ptag t-pu"><i class="ti ti-list"></i>Protocols</div>
+  <div class="ptitle">AMQP — Advanced Message Queuing Protocol</div>
+  <p class="psub">Enterprise messaging protocol. Producers publish to a broker; consumers pull from queues. Guaranteed delivery, async communication, service decoupling.</p>
+  <div class="def"><strong>AMQP</strong> introduces a <em>message broker</em> between producer and consumer. Producers don't talk to consumers directly.</div>
+  <div class="sec"><i class="ti ti-route"></i>AMQP flow</div>
+  <div class="flow">
+    <div class="fb">Producer<br><span style="font-size:10px;color:var(--text-muted)">Web services, payments</span></div>
+    <div class="fa">→ publish</div>
+    <div class="card" style="padding:8px 12px">
+      <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:4px;text-align:center">Message broker</div>
+      <div class="chips" style="justify-content:center"><span class="chip pu">Exchange</span><span class="chip pu">Queues</span><span class="chip pu">Routing keys</span></div>
+    </div>
+    <div class="fa">consume →</div>
+    <div class="fb">Consumer<br><span style="font-size:10px;color:var(--text-muted)">Order processing</span></div>
+  </div>
+  <div class="sec"><i class="ti ti-git-fork"></i>Exchange types</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-arrow-right"></i>Direct (1:1)</h3><p>Message goes to exactly one queue. Used when one consumer should handle each message.</p></div>
+    <div class="card"><h3><i class="ti ti-broadcast"></i>Fanout (1:N)</h3><p>Message broadcast to all bound queues. Used for notifications every service needs.</p></div>
+    <div class="card"><h3><i class="ti ti-filter"></i>Topic (pattern)</h3><p><code>order.*.placed</code> matches <code>order.uk.placed</code>. Flexible routing for complex event-driven systems.</p></div>
+  </div>
+  <div class="hl"><strong>Key benefit:</strong> Decouples producer from consumer. Messages wait in queue until consumed. Dead letter queues capture failed messages for retry.</div>
+  <div class="chips" style="margin-top:8px"><span class="chip pu">RabbitMQ</span><span class="chip pu">Azure Service Bus</span><span class="chip pu">ActiveMQ</span><span class="chip am">Apache Kafka</span><span class="chip am">AWS SQS</span></div>
+</div>
+
+<!-- gRPC -->
+<div class="pg" id="p-grpc">
+  <div class="ptag t-gr"><i class="ti ti-bolt"></i>Protocols</div>
+  <div class="ptitle">gRPC — Google Remote Procedure Call</div>
+  <p class="psub">High-performance, binary protocol for server-to-server communication. Used heavily in microservices. Up to 10x faster than JSON/REST.</p>
+  <div class="def"><strong>gRPC</strong> uses Protocol Buffers (protobuf) for serialization and HTTP/2 as transport. Services defined in <code>.proto</code> files. Client stubs auto-generated in any language.</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-file-code"></i>Protocol Buffers (.proto)</h3><p>Binary format — ~5–10x smaller than JSON, faster to parse. Type-safe — schema mismatch caught at compile time.</p>
+      <div class="code"><span class="cm">// user.proto</span><br>syntax = <span class="st">"proto3"</span>;<br><br>message <span class="kw">User</span> {<br>&nbsp;&nbsp;string id = 1;<br>&nbsp;&nbsp;string name = 2;<br>&nbsp;&nbsp;int32 age = 3;<br>}<br><br>service <span class="kw">UserService</span> {<br>&nbsp;&nbsp;rpc GetUser (UserRequest) returns (User);<br>}</div>
+    </div>
+    <div class="card"><h3><i class="ti ti-arrows-exchange-2"></i>4 communication types</h3><p><strong>Unary</strong> — 1 req, 1 res (like REST).<br><strong>Server streaming</strong> — 1 req, many res.<br><strong>Client streaming</strong> — many req, 1 res.<br><strong>Bidirectional</strong> — both sides stream simultaneously.</p></div>
+  </div>
+  <table class="compare-table" style="margin-top:12px">
+    <thead><tr><th>Property</th><th>gRPC</th><th>REST</th></tr></thead>
+    <tbody>
+      <tr><td>Protocol</td><td>HTTP/2</td><td>HTTP/1.1</td></tr>
+      <tr><td>Payload</td><td>Binary (protobuf)</td><td>Text (JSON)</td></tr>
+      <tr><td>Performance</td><td>~5-10x faster</td><td>Baseline</td></tr>
+      <tr><td>Streaming</td><td>Native 4 modes</td><td>No</td></tr>
+      <tr><td>Browser support</td><td>Needs gRPC-Web proxy</td><td>Native</td></tr>
+    </tbody>
+  </table>
+  <div class="warn" style="margin-top:8px"><strong>When NOT to use gRPC:</strong> Browser clients can't use gRPC natively. If consumers are browsers, use REST or GraphQL.</div>
+</div>
+
+<!-- CHOOSING PROTOCOL -->
+<div class="pg" id="p-choose">
+  <div class="ptag t-am"><i class="ti ti-help"></i>Protocols</div>
+  <div class="ptitle">Choosing the right protocol</div>
+  <p class="psub">Choosing the wrong protocol creates a bottleneck. Most systems use multiple protocols for different needs.</p>
+  <div class="g2">
+    <div class="card" style="border-left:3px solid var(--border-danger)"><h3><i class="ti ti-arrows-exchange"></i>Interaction pattern</h3><p><strong>Request-response</strong> → HTTP/REST<br><strong>Real-time push</strong> → WebSockets<br><strong>Async fire-and-forget</strong> → AMQP / Kafka<br><strong>Service-to-service streaming</strong> → gRPC<br><strong>Server → client only</strong> → SSE</p></div>
+    <div class="card" style="border-left:3px solid var(--border-pro)"><h3><i class="ti ti-bolt"></i>Performance</h3><p>gRPC (binary, HTTP/2) is fastest for internal. REST (text, HTTP/1.1) has more overhead. WebSockets for sustained real-time. AMQP is async — latency tolerance required.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-success)"><h3><i class="ti ti-devices"></i>Client compatibility</h3><p>Browsers → REST or GraphQL. Mobile → REST or gRPC. Internal services → gRPC. IoT → MQTT or AMQP. Third-party → REST (widest tool support).</p></div>
+    <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-database"></i>Payload characteristics</h3><p>Large binary → gRPC. Small JSON → REST. Complex nested data → GraphQL. Streaming large datasets → gRPC server streaming.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-accent)"><h3><i class="ti ti-lock"></i>Security</h3><p>Always TLS. gRPC has TLS via HTTP/2. HTTPS for REST. WSS for WebSockets. mTLS for zero-trust internal services.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-stronger)"><h3><i class="ti ti-tool"></i>Developer experience</h3><p>REST has best tooling (Postman, Swagger, curl). GraphQL has Playground. gRPC requires proto toolchain. Consider team familiarity.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-sitemap"></i>Real-world: what big apps use</div>
+  <table class="compare-table">
+    <thead><tr><th>Company</th><th>External API</th><th>Internal</th><th>Real-time</th></tr></thead>
+    <tbody>
+      <tr><td>Stripe</td><td>REST + Webhooks</td><td>gRPC</td><td>SSE</td></tr>
+      <tr><td>GitHub</td><td>REST + GraphQL</td><td>gRPC</td><td>SSE</td></tr>
+      <tr><td>Netflix</td><td>REST</td><td>gRPC</td><td>WebSockets</td></tr>
+      <tr><td>Slack</td><td>REST + Webhooks</td><td>Kafka + gRPC</td><td>WebSockets</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- REST -->
+<div class="pg" id="p-rest">
+  <div class="ptag t-bl"><i class="ti ti-route"></i>API design</div>
+  <div class="ptitle">RESTful APIs</div>
+  <p class="psub">Resource-based URL design, filtering, sorting, pagination, and versioning — the complete REST playbook.</p>
+  <div class="def"><strong>REST</strong> uses standard HTTP methods and resource-based URLs. 6 constraints: stateless, uniform interface, client-server separation, layered system, cacheable, code on demand (optional).</div>
+  <div class="sec"><i class="ti ti-folder"></i>URL patterns</div>
+  <div class="code"><span class="cm">Collection:</span><br>GET &nbsp;&nbsp;/api/v1/products<br>POST &nbsp;/api/v1/products<br><br><span class="cm">Specific resource:</span><br>GET &nbsp;&nbsp;&nbsp;/api/v1/products/:id<br>PATCH &nbsp;/api/v1/products/:id<br>DELETE /api/v1/products/:id<br><br><span class="cm">Nested (relationship):</span><br>GET /api/v1/products/:id/reviews<br><br><span class="cm">Actions (when needed):</span><br>POST /api/v1/orders/:id/cancel</div>
+  <div class="sec"><i class="ti ti-filter"></i>Filtering, sorting, field selection</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="card"><h3><i class="ti ti-filter"></i>Filtering</h3><div class="code">GET /api/v1/products?category=electronics&amp;inStock=true&amp;minPrice=10</div></div>
+    <div class="card"><h3><i class="ti ti-arrows-sort"></i>Sorting</h3><div class="code">GET /api/v1/products?sort=price_asc<br>GET /api/v1/products?sort=-created_at<span class="cm">&nbsp;&nbsp;// minus = desc</span></div></div>
+    <div class="card"><h3><i class="ti ti-eye"></i>Field selection (sparse fieldsets)</h3><div class="code">GET /api/v1/products?fields=id,name,price<br><span class="cm">// Returns only: { id, name, price }</span></div></div>
+  </div>
+  <div class="sec"><i class="ti ti-list-check"></i>REST best practices</div>
+  <div class="chips">
+    <span class="chip bl">Plural nouns (/products not /product)</span>
+    <span class="chip bl">No verbs in URLs (GET /users/:id not /getUser)</span>
+    <span class="chip bl">Version with /v1, /v2</span>
+    <span class="chip bl">Consistent response envelope</span>
+    <span class="chip bl">Return appropriate status codes</span>
+    <span class="chip re">Never return unbounded lists</span>
+    <span class="chip re">Never put credentials in URLs</span>
+    <span class="chip re">Never return 200 for errors</span>
+  </div>
+</div>
+
+<!-- HTTP METHODS -->
+<div class="pg" id="p-methods">
+  <div class="ptag t-bl"><i class="ti ti-arrows-exchange"></i>API design</div>
+  <div class="ptitle">HTTP methods</div>
+  <p class="psub">Each HTTP method maps to a CRUD operation. Safe = no state change. Idempotent = repeating has the same effect as doing it once.</p>
+  <div style="display:flex;flex-direction:column;gap:0">
+    <div class="sc-row"><span class="method GET">GET</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Read — retrieve a resource</div><div class="sc-desc">Safe and idempotent. Never change state. GET /products = all. GET /products/123 = one.</div></div></div>
+    <div class="sc-row"><span class="method POST">POST</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Create — make a new resource</div><div class="sc-desc">Not safe, not idempotent — calling twice creates two resources. Returns 201 Created + Location header.</div></div></div>
+    <div class="sc-row"><span class="method PUT">PUT</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Update (replace) — full replacement</div><div class="sc-desc">Idempotent. Replaces the entire resource. Missing fields become null/default.</div></div></div>
+    <div class="sc-row"><span class="method PATCH">PATCH</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Update (partial) — modify fields</div><div class="sc-desc">Send only the fields to change. Others remain. Preferred over PUT for most updates.</div></div></div>
+    <div class="sc-row"><span class="method DEL">DELETE</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Delete — remove a resource</div><div class="sc-desc">Idempotent — deleting something that doesn't exist is still OK. Returns 204 No Content.</div></div></div>
+    <div class="sc-row"><span class="method" style="background:var(--surface-2);color:var(--text-secondary);border:0.5px solid var(--border)">HEAD</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Like GET — no body in response</div><div class="sc-desc">Check if resource exists, get metadata, validate cache freshness.</div></div></div>
+    <div class="sc-row"><span class="method" style="background:var(--surface-2);color:var(--text-secondary);border:0.5px solid var(--border)">OPTIONS</span><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Describe available methods</div><div class="sc-desc">Returns allowed methods. Used by browsers in CORS preflight requests.</div></div></div>
+  </div>
+  <div class="sec"><i class="ti ti-info-circle"></i>Safe vs idempotent</div>
+  <table class="compare-table">
+    <thead><tr><th>Method</th><th>Safe</th><th>Idempotent</th><th>Has body</th><th>Success code</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td>✓</td><td>✓</td><td>No</td><td>200</td></tr>
+      <tr><td>POST</td><td>✗</td><td>✗</td><td>Yes</td><td>201</td></tr>
+      <tr><td>PUT</td><td>✗</td><td>✓</td><td>Yes</td><td>200</td></tr>
+      <tr><td>PATCH</td><td>✗</td><td>✗</td><td>Yes</td><td>200</td></tr>
+      <tr><td>DELETE</td><td>✗</td><td>✓</td><td>No</td><td>204</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STATUS CODES -->
+<div class="pg" id="p-status">
+  <div class="ptag t-am"><i class="ti ti-alert-circle"></i>API design</div>
+  <div class="ptitle">Status codes and error handling</div>
+  <p class="psub">Status codes are your API's communication language. Use the right code — don't return 200 for errors.</p>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-success)">200</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">OK</div><div class="sc-desc">GET success</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-success)">201</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Created</div><div class="sc-desc">POST success. Include Location header.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-success)">202</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Accepted</div><div class="sc-desc">Async processing — not yet done</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-success)">204</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">No content</div><div class="sc-desc">DELETE / PATCH success — no body</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-secondary)">301</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Moved permanently</div><div class="sc-desc">Resource URL changed forever</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-secondary)">304</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Not modified</div><div class="sc-desc">Cache valid — use cached version</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">400</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Bad request</div><div class="sc-desc">Invalid params, malformed JSON — client's fault</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">401</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Unauthorized</div><div class="sc-desc">Not authenticated — send valid credentials</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">403</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Forbidden</div><div class="sc-desc">Authenticated but not authorized</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">404</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Not found</div><div class="sc-desc">Resource doesn't exist</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">409</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Conflict</div><div class="sc-desc">Duplicate resource or optimistic lock failed</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">422</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Unprocessable entity</div><div class="sc-desc">Valid syntax but semantic validation failed</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">429</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Too many requests</div><div class="sc-desc">Rate limit exceeded. Include Retry-After.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-danger)">500</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Internal server error</div><div class="sc-desc">Unexpected server failure</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-danger)">503</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Service unavailable</div><div class="sc-desc">Overloaded or down for maintenance</div></div></div>
+    </div>
+    <div>
+      <div class="sec" style="margin-top:0"><i class="ti ti-code"></i>Good error response shape</div>
+      <div class="code">{<br>&nbsp;&nbsp;<span class="st">"error"</span>: {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"code"</span>: <span class="am">"VALIDATION_ERROR"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"message"</span>: <span class="am">"Invalid product ID"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"field"</span>: <span class="am">"productId"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"request_id"</span>: <span class="am">"req_abc123"</span><br>&nbsp;&nbsp;}<br>}</div>
+      <div class="hl" style="margin-top:8px"><strong>Rule:</strong> Always return machine-readable error code + human-readable message. Include request_id. Never raw stack traces in production.</div>
+      <div class="sec"><i class="ti ti-bulb"></i>Critical distinctions</div>
+      <div class="card"><p><strong>401 vs 403:</strong> 401 = "I don't know who you are." 403 = "I know who you are, but you can't do this."</p></div>
+      <div class="card" style="margin-top:8px"><p><strong>400 vs 422:</strong> 400 = malformed JSON or missing field. 422 = valid JSON but business logic validation failed.</p></div>
+      <div class="warn" style="margin-top:8px"><strong>Never return 200 for errors.</strong> This breaks HTTP caching, monitoring, and client error handling.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GRAPHQL -->
+<div class="pg" id="p-graphql">
+  <div class="ptag t-pu"><i class="ti ti-circle-dot"></i>API design</div>
+  <div class="ptitle">GraphQL APIs</div>
+  <p class="psub">Created by Facebook 2012, open-sourced 2015. Solves REST's over-fetching and N+1 request problems with a typed query language.</p>
+  <div class="def"><strong>GraphQL</strong> — client asks for exactly what it needs. Single endpoint handles all operations. Schema is the contract. Self-documenting via introspection.</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-x"></i>REST: 4 requests for one screen</h3><div class="code">GET /api/users/123<br>GET /api/users/123/posts<br>GET /api/users/123/comments<br>GET /api/users/123/likes<br><span class="cm">→ 4 round trips, wasted data</span></div></div>
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-check"></i>GraphQL: 1 request, exact data</h3><div class="code"><span class="kw">query</span> {<br>&nbsp;&nbsp;user(id: <span class="st">"123"</span>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;name<br>&nbsp;&nbsp;&nbsp;&nbsp;posts { title }<br>&nbsp;&nbsp;&nbsp;&nbsp;comments { text }<br>&nbsp;&nbsp;}<br>}<span class="cm"> → 1 round trip</span></div></div>
+  </div>
+  <div class="sec"><i class="ti ti-layers"></i>Operations</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-search"></i>Query (read)</h3><p>Fetch data. Client specifies exact fields. Equivalent to GET.</p></div>
+    <div class="card"><h3><i class="ti ti-edit"></i>Mutation (write)</h3><p>Create, update, or delete data. Equivalent to POST/PUT/DELETE.</p></div>
+    <div class="card"><h3><i class="ti ti-broadcast"></i>Subscription (real-time)</h3><p>WebSocket-based. Server pushes updates when data changes.</p></div>
+  </div>
+  <div class="warn">GraphQL always returns <strong>200 OK</strong> — even for errors. You must check the <code>errors</code> field. Common gotcha from REST.</div>
+  <div class="sec"><i class="ti ti-alert-triangle"></i>GraphQL pitfalls</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-alert-triangle"></i>N+1 query problem</h3><p>Resolving each user's posts individually fires N database queries. Fix: DataLoader (batching resolver).</p></div>
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-alert-triangle"></i>Query depth attacks</h3><p>Deeply nested queries cause exponential DB load. Fix: max query depth, complexity limits.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-database"></i>Caching complexity</h3><p>All goes through POST /graphql — HTTP caching doesn't work. Need app-level caching (Apollo Client, persisted queries).</p></div>
+    <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-list"></i>Over-permissive schemas</h3><p>Apply field-level authorization — not just resolver-level. Check auth per field for sensitive data.</p></div>
+  </div>
+</div>
+
+<!-- VERSIONING -->
+<div class="pg" id="p-versioning">
+  <div class="ptag t-bl"><i class="ti ti-versions"></i>API design</div>
+  <div class="ptitle">API Versioning</div>
+  <p class="psub">Once clients depend on your API, you can never break them. Versioning lets you evolve the API while keeping old consumers working.</p>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-x"></i>Breaking changes (require new version)</h3><div class="chips" style="margin-top:4px"><span class="chip re">Removing a field</span><span class="chip re">Renaming a field</span><span class="chip re">Changing field type</span><span class="chip re">Removing an endpoint</span><span class="chip re">Changing URL structure</span><span class="chip re">Changing auth mechanism</span></div></div>
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-check"></i>Non-breaking changes (safe)</h3><div class="chips" style="margin-top:4px"><span class="chip gr">Adding a new field</span><span class="chip gr">Adding a new endpoint</span><span class="chip gr">Making required optional</span><span class="chip gr">Adding new optional params</span><span class="chip gr">Performance improvements</span></div></div>
+  </div>
+  <div class="sec"><i class="ti ti-sitemap"></i>Versioning strategies</div>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('versioning','url',this)">URL path</div>
+    <div class="tb" onclick="tab('versioning','header',this)">Request header</div>
+    <div class="tb" onclick="tab('versioning','query',this)">Query param</div>
+  </div>
+  <div class="tp on" id="versioning-url">
+    <div class="card"><h3><i class="ti ti-route"></i>URL path versioning (most common)</h3><p>Version in the URL. Visible, easy to test with curl. Used by Stripe, Twitter, GitHub.</p></div>
+    <div class="code">GET /api/<span class="am">v1</span>/users/123<br>GET /api/<span class="am">v2</span>/users/123<br><span class="cm">// v1 and v2 run simultaneously</span></div>
+    <div class="ok" style="margin-top:8px">Easy to understand. Logs show which version each client uses. Simple to route in API gateway.</div>
+  </div>
+  <div class="tp" id="versioning-header">
+    <div class="card"><h3><i class="ti ti-list"></i>Custom request header</h3><p>Client sends a custom header. URL stays stable.</p></div>
+    <div class="code">GET /api/users/123<br>X-API-Version: <span class="am">2</span></div>
+    <div class="warn" style="margin-top:8px">Less visible. Harder to test. Easy to forget the header. Hard to share versioned URLs.</div>
+  </div>
+  <div class="tp" id="versioning-query">
+    <div class="card"><h3><i class="ti ti-filter"></i>Query parameter versioning</h3><p>Version as a query param. Easy to test but pollutes the URL.</p></div>
+    <div class="code">GET /api/users/123?<span class="am">version=2</span></div>
+    <div class="warn" style="margin-top:8px">Not recommended for primary strategy. Easy to accidentally omit.</div>
+  </div>
+  <div class="sec"><i class="ti ti-clock"></i>Deprecation policy</div>
+  <div class="card">
+    <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">Announce 6–12 months ahead</div><div class="step-desc">Add <code>Deprecation</code> and <code>Sunset</code> headers to v1 responses.</div></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">Document the migration</div><div class="step-desc">Write a clear migration guide. Show what changed, why, and how to update.</div></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">Reach out to heavy users</div><div class="step-desc">Monitor which API keys still hit v1. Email them directly.</div></div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">Sunset the version</div><div class="step-desc">Return 410 Gone after the sunset date.</div></div></div>
+  </div>
+</div>
+
+<!-- PAGINATION -->
+<div class="pg" id="p-pagination">
+  <div class="ptag t-bl"><i class="ti ti-layout-grid"></i>API design</div>
+  <div class="ptitle">Pagination</div>
+  <p class="psub">Never return unbounded lists. Even if there are only 10 rows today, there will be 10 million tomorrow. Pagination is non-optional.</p>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('pagination','offset',this)">Offset</div>
+    <div class="tb" onclick="tab('pagination','cursor',this)">Cursor (recommended)</div>
+    <div class="tb" onclick="tab('pagination','keyset',this)">Keyset</div>
+  </div>
+  <div class="tp on" id="pagination-offset">
+    <div class="card"><h3><i class="ti ti-numbers"></i>Offset pagination</h3><p>Skip N records, return next M. Simple. Works for small datasets. UI can jump to any page.</p></div>
+    <div class="code">GET /products?offset=40&amp;limit=20<br><span class="cm">// SQL: SELECT * FROM products LIMIT 20 OFFSET 40</span><br><br>{ "data": [...], "pagination": { "total": 1250, "offset": 40, "limit": 20 } }</div>
+    <div class="danger" style="margin-top:8px"><strong>Problems at scale:</strong> Large OFFSET scans all skipped rows. Page 10,000 requires DB to scan 200,000 rows. Also: inserts/deletes cause duplicate or skipped items.</div>
+  </div>
+  <div class="tp" id="pagination-cursor">
+    <div class="card"><h3><i class="ti ti-arrow-right"></i>Cursor pagination (Stripe, Slack, Twitter style)</h3><p>Each response includes an opaque cursor. Next request starts from there. O(1) regardless of depth. Stable under inserts/deletes.</p></div>
+    <div class="code">GET /products?limit=20<br><br><span class="cm">// Response:</span><br>{ "data": [...], "pagination": { "next_cursor": <span class="am">"eyJpZCI6MTIzfQ=="</span>, "has_more": true } }<br><br><span class="cm">// Next request:</span><br>GET /products?after=eyJpZCI6MTIzfQ==&amp;limit=20</div>
+    <div class="ok" style="margin-top:8px"><strong>Best for:</strong> Infinite scroll, feeds, high-volume datasets. Cursor is typically base64-encoded ID.</div>
+  </div>
+  <div class="tp" id="pagination-keyset">
+    <div class="card"><h3><i class="ti ti-key"></i>Keyset pagination</h3><p>Uses actual column values. <code>WHERE id &gt; last_id</code>. Performant — uses index scan not full table scan.</p></div>
+    <div class="code">GET /products?after_id=123&amp;limit=20<br><span class="cm">// SQL: WHERE id > 123 ORDER BY id ASC LIMIT 20</span></div>
+    <div class="ok" style="margin-top:8px">Transparent (no opaque cursor). Works well for time-series. Requires stable sort column with index.</div>
+  </div>
+  <div class="sec"><i class="ti ti-arrows-left-right"></i>Strategy comparison</div>
+  <table class="compare-table">
+    <thead><tr><th>Strategy</th><th>Performance</th><th>Stable under inserts?</th><th>Random access</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td>Offset</td><td>Poor (table scan)</td><td>No</td><td>Yes</td><td>Small datasets</td></tr>
+      <tr><td>Cursor</td><td>Excellent</td><td>Yes</td><td>No</td><td>Infinite scroll, feeds</td></tr>
+      <tr><td>Keyset</td><td>Excellent</td><td>Yes</td><td>No</td><td>Time-series, append-only</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CACHING -->
+<div class="pg" id="p-caching">
+  <div class="ptag t-bl"><i class="ti ti-database"></i>API design</div>
+  <div class="ptitle">API Caching</div>
+  <p class="psub">The fastest API call is the one you don't make. HTTP has built-in caching primitives — use them.</p>
+  <div class="sec"><i class="ti ti-layers"></i>Caching layers</div>
+  <div class="flow">
+    <div class="fb">Client cache</div><div class="fa">→</div>
+    <div class="fb">CDN / Edge</div><div class="fa">→</div>
+    <div class="fb">Reverse proxy</div><div class="fa">→</div>
+    <div class="fb">App cache (Redis)</div><div class="fa">→</div>
+    <div class="fb">Database</div>
+  </div>
+  <div class="sec"><i class="ti ti-list"></i>HTTP caching headers</div>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('caching','cc',this)">Cache-Control</div>
+    <div class="tb" onclick="tab('caching','etag',this)">ETag</div>
+    <div class="tb" onclick="tab('caching','vary',this)">Vary</div>
+  </div>
+  <div class="tp on" id="caching-cc">
+    <div class="code"><span class="cm">// Public — CDN + browser can cache</span><br>Cache-Control: public, max-age=<span class="am">3600</span><br><br><span class="cm">// Private — only browser caches</span><br>Cache-Control: private, max-age=<span class="am">300</span><br><br><span class="cm">// Never cache (auth endpoints, mutations)</span><br>Cache-Control: no-store<br><br><span class="cm">// stale-while-revalidate: serve stale, refresh in background</span><br>Cache-Control: public, max-age=<span class="am">60</span>, stale-while-revalidate=<span class="am">600</span></div>
+  </div>
+  <div class="tp" id="caching-etag">
+    <div class="code"><span class="cm">// Server response:</span><br>ETag: <span class="am">"v2-abc123"</span><br><br><span class="cm">// Client's next request:</span><br>If-None-Match: <span class="am">"v2-abc123"</span><br><br><span class="cm">// Unchanged → 304 Not Modified (no body = saves bandwidth)</span><br><span class="cm">// Changed → 200 OK + new ETag + new body</span></div>
+  </div>
+  <div class="tp" id="caching-vary">
+    <div class="code"><span class="cm">// Different languages = different cache entries</span><br>Vary: Accept-Language<br><br><span class="am">// NEVER do this — disables CDN caching effectively</span><br><span class="re">Vary: Authorization</span></div>
+  </div>
+  <div class="sec"><i class="ti ti-alert-triangle"></i>What to cache vs not</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-check"></i>Safe to cache</h3><div class="chips" style="margin-top:4px"><span class="chip gr">Public product listings</span><span class="chip gr">Static reference data</span><span class="chip gr">Product images</span><span class="chip gr">Public profiles</span></div></div>
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-x"></i>Never cache</h3><div class="chips" style="margin-top:4px"><span class="chip re">Auth tokens</span><span class="chip re">Payment endpoints</span><span class="chip re">POST/PUT/PATCH/DELETE</span><span class="chip re">OTP codes</span><span class="chip re">Real-time prices</span></div></div>
+  </div>
+</div>
+
+<!-- RATE LIMITING -->
+<div class="pg" id="p-ratelimit">
+  <div class="ptag t-re"><i class="ti ti-traffic-cone"></i>Security</div>
+  <div class="ptitle">Rate Limiting</div>
+  <p class="psub">Rate limiting protects your API from abuse, DDoS, and accidental over-use. Every production API must have it.</p>
+  <div class="code">HTTP/1.1 <span class="am">429 Too Many Requests</span><br>X-RateLimit-Limit: <span class="am">100</span><br>X-RateLimit-Remaining: <span class="am">0</span><br>Retry-After: <span class="am">60</span><br><br>{ "error": { "code": <span class="am">"RATE_LIMIT_EXCEEDED"</span>, "message": <span class="am">"Retry in 60s"</span> } }</div>
+  <div class="sec"><i class="ti ti-cpu"></i>Algorithms</div>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('ratelimit','token',this)">Token bucket</div>
+    <div class="tb" onclick="tab('ratelimit','leaky',this)">Leaky bucket</div>
+    <div class="tb" onclick="tab('ratelimit','sliding',this)">Sliding window</div>
+    <div class="tb" onclick="tab('ratelimit','fixed',this)">Fixed window</div>
+  </div>
+  <div class="tp on" id="ratelimit-token">
+    <div class="card"><h3><i class="ti ti-coin"></i>Token bucket</h3><p>Bucket holds tokens. Each request consumes one. Tokens refill at fixed rate. Allows bursts up to bucket size. Used by AWS, Stripe.</p></div>
+    <div class="ok" style="margin-top:8px"><strong>Best for:</strong> APIs that allow short bursts. Most flexible algorithm.</div>
+  </div>
+  <div class="tp" id="ratelimit-leaky">
+    <div class="card"><h3><i class="ti ti-droplet"></i>Leaky bucket</h3><p>Requests enter a queue processed at fixed output rate. Smooths traffic — no bursts on output. Queue full → reject.</p></div>
+    <div class="hl" style="margin-top:8px"><strong>Best for:</strong> Protecting downstream services that can't handle bursts.</div>
+  </div>
+  <div class="tp" id="ratelimit-sliding">
+    <div class="card"><h3><i class="ti ti-wave-saw-tool"></i>Sliding window (recommended)</h3><p>Track request timestamps in a rolling window. At any moment, count requests in the last N seconds. No boundary vulnerability. More accurate.</p></div>
+    <div class="ok" style="margin-top:8px"><strong>Best general-purpose algorithm.</strong> Implemented with Redis ZSET + timestamp scoring.</div>
+  </div>
+  <div class="tp" id="ratelimit-fixed">
+    <div class="card"><h3><i class="ti ti-square"></i>Fixed window</h3><p>Count requests in fixed time windows. Reset counter at window boundary. Simple but has boundary vulnerability.</p></div>
+    <div class="danger" style="margin-top:8px"><strong>Vulnerability:</strong> 100 requests at 12:00:59 + 100 more at 13:00:01 = 200 requests in 2 seconds. Not suitable for strict rate limiting.</div>
+  </div>
+  <div class="sec"><i class="ti ti-sitemap"></i>Strategies</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-user"></i>Per user</h3><p>Limits per authenticated user ID. Fair — power users can't starve others.</p></div>
+    <div class="card"><h3><i class="ti ti-key"></i>Per API key / tier</h3><p>Free: 100/min. Pro: 1000/min. Enterprise: custom. Enables monetization.</p></div>
+    <div class="card"><h3><i class="ti ti-route"></i>Per endpoint</h3><p>/login: 5/min. /search: 60/min. /export: 2/hour. Fine-grained per resource sensitivity.</p></div>
+  </div>
+</div>
+
+<!-- API GATEWAY -->
+<div class="pg" id="p-gateway">
+  <div class="ptag t-bl"><i class="ti ti-topology-star"></i>API design</div>
+  <div class="ptitle">API Gateway</div>
+  <p class="psub">The single entry point for all clients. Handles cross-cutting concerns centrally — so your services don't have to.</p>
+  <div class="def"><strong>API Gateway</strong> sits between clients and backend services. Auth, rate limiting, logging, CORS — handled once at the gateway. Services focus on business logic.</div>
+  <div class="sec"><i class="ti ti-route"></i>Architecture</div>
+  <div class="flow">
+    <div class="fb">Mobile<br>Browser<br>Partners</div><div class="fa">→</div>
+    <div class="card" style="padding:10px 14px;text-align:center"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:6px">API Gateway</div><div class="chips" style="justify-content:center"><span class="chip bl">Auth</span><span class="chip bl">Rate limit</span><span class="chip bl">SSL termination</span><span class="chip bl">Logging</span><span class="chip bl">Routing</span></div></div><div class="fa">→</div>
+    <div style="display:flex;flex-direction:column;gap:6px"><div class="fb">User service</div><div class="fb">Order service</div><div class="fb">Payment service</div></div>
+  </div>
+  <div class="sec"><i class="ti ti-list"></i>What an API Gateway does</div>
+  <div class="g2">
+    <div class="card"><h3><i class="ti ti-user-check"></i>Authentication &amp; Authorization</h3><p>Validates JWT tokens, API keys, OAuth before the request reaches any service. Services trust the gateway already verified identity.</p></div>
+    <div class="card"><h3><i class="ti ti-shield-lock"></i>SSL termination</h3><p>Handles HTTPS at the gateway. Backend services communicate over plain HTTP within the private network. Manages TLS certificates in one place.</p></div>
+    <div class="card"><h3><i class="ti ti-route"></i>Request routing</h3><p>Routes <code>/api/users/*</code> to user-service. A/B routing, canary deployments, blue-green releases at gateway level.</p></div>
+    <div class="card"><h3><i class="ti ti-chart-bar"></i>Observability</h3><p>Centralized logging, request tracing, metrics. Every request logged once. Correlation IDs added for distributed tracing.</p></div>
+  </div>
+  <div class="chips" style="margin-top:8px"><span class="chip bl">AWS API Gateway</span><span class="chip bl">Kong</span><span class="chip bl">nginx</span><span class="chip bl">Envoy</span><span class="chip bl">Apigee</span><span class="chip bl">Azure API Management</span></div>
+  <div class="warn" style="margin-top:8px"><strong>Don't:</strong> Put business logic in the gateway. Only infrastructure concerns. Logic there is hard to test, version, and debug.</div>
+</div>
+
+<!-- WEBHOOKS -->
+<div class="pg" id="p-webhooks">
+  <div class="ptag t-gr"><i class="ti ti-webhook"></i>API design</div>
+  <div class="ptitle">Webhooks</div>
+  <p class="psub">Instead of your client asking "anything new?", the server tells your client "here's what just happened." Event-driven and efficient.</p>
+  <div class="def"><strong>Webhooks</strong> are user-defined HTTP callbacks. When an event occurs, the server sends a POST to a client-registered URL.</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-refresh"></i>Polling (inefficient)</h3><p>Client asks every 30 seconds: "Did the payment complete?" 99% responses: "No." Wastes quota, adds latency.</p></div>
+    <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-webhook"></i>Webhook (event-driven)</h3><p>Client registers URL. Server fires POST when payment completes. Instant. No wasted requests.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-shield"></i>Webhook security — critical</div>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-shield-lock"></i>Verify the signature</h3><p>Any attacker can POST to your endpoint. Verify the HMAC-SHA256 signature on every request. Never skip this.</p>
+      <div class="code"><span class="cm">// Node.js:</span><br>const hmac = crypto.createHmac(<span class="st">'sha256'</span>, secret);<br>hmac.update(rawBody);<br>const sig = hmac.digest(<span class="st">'hex'</span>);<br>if (sig !== received) return res.status(<span class="am">401</span>).send();</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-repeat"></i>Handle idempotency</h3><p>Webhooks can be delivered more than once. Processing the same event twice must not cause duplicates (double charges, double emails).</p>
+      <div class="code">if (await db.events.exists(event.id)) {<br>&nbsp;&nbsp;return res.status(<span class="am">200</span>).send();<br>}<br>await processEvent(event);</div>
+    </div>
+  </div>
+  <div class="hl" style="margin-top:8px"><strong>Tip:</strong> Return 200 immediately. Enqueue the event. Process async. If handler takes &gt;5s, sender times out and retries — causing duplicates.</div>
+</div>
+
+<!-- OPENAPI -->
+<div class="pg" id="p-openapi">
+  <div class="ptag t-pu"><i class="ti ti-file-description"></i>API design</div>
+  <div class="ptitle">OpenAPI / Swagger</div>
+  <p class="psub">OpenAPI is the standard machine-readable contract for REST APIs. Write once — generate docs, SDKs, mock servers, and test suites automatically.</p>
+  <div class="def"><strong>OpenAPI Specification (OAS)</strong> is a language-agnostic interface description for REST APIs in JSON or YAML. Swagger is the tooling ecosystem.</div>
+  <div class="sec"><i class="ti ti-file-code"></i>Minimal OpenAPI spec</div>
+  <div class="code">openapi: <span class="st">"3.1.0"</span><br>info:<br>&nbsp;&nbsp;title: Product API<br>&nbsp;&nbsp;version: <span class="st">"1.0.0"</span><br><br>paths:<br>&nbsp;&nbsp;/products/{id}:<br>&nbsp;&nbsp;&nbsp;&nbsp;get:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary: Get a product by ID<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name: id<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in: path<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required: true<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schema: { type: string }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;responses:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"200"</span>: { description: Product found }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">"404"</span>: { description: Not found }</div>
+  <div class="sec"><i class="ti ti-apps"></i>What you get from an OpenAPI spec</div>
+  <div class="g3">
+    <div class="card"><h3><i class="ti ti-book"></i>Interactive docs</h3><p>Swagger UI / ReDoc auto-generated. Consumers try endpoints from browser.</p></div>
+    <div class="card"><h3><i class="ti ti-code"></i>SDK generation</h3><p>Type-safe client SDKs in 40+ languages. OpenAPI Generator.</p></div>
+    <div class="card"><h3><i class="ti ti-server"></i>Mock servers</h3><p>Frontend teams build against mocks before backend is built. Prism, Stoplight.</p></div>
+    <div class="card"><h3><i class="ti ti-test-pipe"></i>Contract testing</h3><p>Validate implementation matches spec on every commit. Dredd, Schemathesis.</p></div>
+    <div class="card"><h3><i class="ti ti-check"></i>Linting</h3><p>Spectral enforces design standards. Run in CI.</p></div>
+    <div class="card"><h3><i class="ti ti-sitemap"></i>API portal</h3><p>Host developer portal from spec. Readme.io, Stoplight.</p></div>
+  </div>
+  <div class="hl" style="margin-top:8px"><strong>Design-first workflow:</strong> Write OpenAPI spec → review → generate mock → build frontend against mock → build backend → run contract tests → ship.</div>
+</div>
+
+<!-- AUTHENTICATION -->
+<div class="pg" id="p-authn">
+  <div class="ptag t-re"><i class="ti ti-user-check"></i>Security</div>
+  <div class="ptitle">Authentication (AuthN)</div>
+  <p class="psub">Authentication answers: "Who are you?" It's the first gate before authorization.</p>
+  <div class="def"><strong>Authentication</strong> = verifying identity. Happens before authorization. Login → system confirms identity → authorization decides what they can do.</div>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('authn','basic',this)">Basic auth</div>
+    <div class="tb" onclick="tab('authn','bearer',this)">Bearer token</div>
+    <div class="tb" onclick="tab('authn','oauth',this)">OAuth2 + JWT</div>
+    <div class="tb" onclick="tab('authn','sso',this)">SSO</div>
+    <div class="tb" onclick="tab('authn','apikey',this)">API keys</div>
+    <div class="tb" onclick="tab('authn','mtls',this)">mTLS</div>
+  </div>
+  <div class="tp on" id="authn-basic">
+    <div class="card"><h3><i class="ti ti-user"></i>Basic authentication</h3><p>Username + password Base64-encoded in Authorization header on every request. Base64 is NOT encryption. Requires HTTPS.</p></div>
+    <div class="code">Authorization: Basic dXNlcjpwYXNzd29yZA==<br><span class="cm">// = base64("user:password")</span></div>
+    <div class="danger">Rarely used today. Credentials sent with every request. No token expiry.</div>
+  </div>
+  <div class="tp" id="authn-bearer">
+    <div class="card"><h3><i class="ti ti-key"></i>Bearer token</h3><p>Client receives token at login. Sends it with every request. Stateless — server doesn't look up sessions.</p></div>
+    <div class="code">Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...</div>
+    <div class="hl"><strong>Standard approach today.</strong> Tokens expire. Can be revoked. Work across microservices without shared session state.</div>
+  </div>
+  <div class="tp" id="authn-oauth">
+    <div class="card"><h3><i class="ti ti-brand-google"></i>OAuth2 + JWT</h3><p><strong>OAuth2</strong> grants apps access without sharing your password. <strong>JWT</strong> is self-contained, signed, stateless. Header.Payload.Signature.</p></div>
+    <div class="code"><span class="cm">JWT payload:</span><br>{ "user_id": <span class="am">"123"</span>, "roles": [<span class="am">"admin"</span>], "exp": <span class="am">1720000000</span> }</div>
+    <div class="g2" style="margin-top:8px">
+      <div class="card"><h3><i class="ti ti-clock"></i>Access token</h3><p>Short-lived (15–60 min). For API calls. If stolen, expires quickly.</p></div>
+      <div class="card"><h3><i class="ti ti-refresh"></i>Refresh token</h3><p>Long-lived (days/weeks). Gets new access tokens. Rotate on each use.</p></div>
+    </div>
+    <div class="warn" style="margin-top:8px"><strong>JWT caveat:</strong> Can't be invalidated before expiry without a blocklist. Keep access tokens short-lived.</div>
+  </div>
+  <div class="tp" id="authn-sso">
+    <div class="card"><h3><i class="ti ti-login"></i>SSO — Single Sign-On</h3><p>Login once, access many apps. Reduces password fatigue and attack surface.</p></div>
+    <div class="g2" style="margin-top:8px">
+      <div class="card"><h3><i class="ti ti-building"></i>SAML 2.0</h3><p>Enterprise SSO. XML-based. Okta, Azure AD. Older but dominant in enterprise.</p></div>
+      <div class="card"><h3><i class="ti ti-brand-google"></i>OpenID Connect (OIDC)</h3><p>Modern SSO. "Login with Google/GitHub." JSON-based, built on OAuth2. Provides ID token (who) + access token (what).</p></div>
+    </div>
+  </div>
+  <div class="tp" id="authn-apikey">
+    <div class="card"><h3><i class="ti ti-key"></i>API keys</h3><p>Long-lived secret tokens. Server-to-server communication. Easier than OAuth2 for simple cases.</p></div>
+    <div class="code">X-API-Key: sk_live_abc123xyz...</div>
+    <div class="g2" style="margin-top:8px">
+      <div class="ok"><strong>Good for:</strong> Server-to-server. CI/CD pipelines. Long-running integrations.</div>
+      <div class="danger"><strong>Risks:</strong> Harder to rotate. If leaked — full access until revoked. Scope them (read-only, write-only).</div>
+    </div>
+  </div>
+  <div class="tp" id="authn-mtls">
+    <div class="card"><h3><i class="ti ti-certificate"></i>mTLS — Mutual TLS</h3><p>Both client AND server authenticate with certificates. Zero-trust architecture. No passwords, no tokens — cryptographic identity only.</p></div>
+    <div class="code"><span class="cm">// Regular TLS: only server has cert</span><br><span class="cm">// mTLS: both have certs (mutual authentication)</span><br><br>Client → presents client cert → server validates<br>Server → presents server cert → client validates<br>→ Encrypted, mutually authenticated</div>
+    <div class="hl" style="margin-top:8px"><strong>Use for:</strong> Internal microservice calls. Zero-trust networks. Service mesh (Istio, Linkerd). Compliance (PCI-DSS, HIPAA).</div>
+  </div>
+</div>
+
+<!-- AUTHORIZATION -->
+<div class="pg" id="p-authz">
+  <div class="ptag t-re"><i class="ti ti-shield"></i>Security</div>
+  <div class="ptitle">Authorization (AuthZ)</div>
+  <p class="psub">Authorization answers: "What can you do?" It comes after authentication.</p>
+  <div class="def"><strong>Authorization</strong> = what actions is this authenticated user allowed to perform? Three main models — each with different trade-offs.</div>
+  <div class="tab-row">
+    <div class="tb on" onclick="tab('authz','rbac',this)">RBAC</div>
+    <div class="tb" onclick="tab('authz','abac',this)">ABAC</div>
+    <div class="tb" onclick="tab('authz','acl',this)">ACL</div>
+    <div class="tb" onclick="tab('authz','oauth2',this)">OAuth2 scopes</div>
+  </div>
+  <div class="tp on" id="authz-rbac">
+    <div class="def"><strong>RBAC — Role-Based Access Control.</strong> Assign users to roles. Roles have permissions. Simple and scalable.</div>
+    <div class="g3">
+      <div class="card" style="border-top:3px solid var(--border-danger)"><h3><i class="ti ti-crown"></i>Admin</h3><p>Full access. Read, write, delete, manage users, configure system.</p></div>
+      <div class="card" style="border-top:3px solid var(--border-warning)"><h3><i class="ti ti-edit"></i>Editor</h3><p>Create and edit content. Cannot delete. Cannot manage users.</p></div>
+      <div class="card" style="border-top:3px solid var(--border-success)"><h3><i class="ti ti-eye"></i>Viewer</h3><p>Read-only. Cannot modify anything.</p></div>
+    </div>
+    <div class="chips" style="margin-top:8px"><span class="chip bl">GitHub teams</span><span class="chip bl">CMS tools</span><span class="chip bl">Slack workspaces</span></div>
+    <div class="hl" style="margin-top:8px"><strong>Principle of least privilege:</strong> Grant only minimum permissions needed. Audit and remove unused permissions regularly.</div>
+  </div>
+  <div class="tp" id="authz-abac">
+    <div class="def"><strong>ABAC — Attribute-Based Access Control.</strong> Decisions based on attributes of user, resource, and environment. More flexible than RBAC. More complex.</div>
+    <div class="code"><span class="cm">Example policy:</span><br>user.department == <span class="st">"HR"</span><br>&amp;&amp; time &lt; <span class="am">18:00</span><br>&amp;&amp; resource.confidentiality == <span class="st">"internal"</span></div>
+    <div class="chips" style="margin-top:8px"><span class="chip pu">Healthcare</span><span class="chip pu">Financial services</span><span class="chip pu">Government</span><span class="chip pu">AWS IAM policies</span></div>
+  </div>
+  <div class="tp" id="authz-acl">
+    <div class="def"><strong>ACL — Access Control List.</strong> Each resource has its own explicit list. Maximum granularity.</div>
+    <div class="card" style="margin-top:8px">
+      <h3><i class="ti ti-file"></i>Per-file permissions (Google Drive model)</h3>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+        <div class="sc-row"><span class="chip gr">Alice</span><span class="sc-desc" style="margin-left:8px">Owner — Read + Write + Share + Delete</span></div>
+        <div class="sc-row"><span class="chip am">Bob</span><span class="sc-desc" style="margin-left:8px">Editor — Read + Write</span></div>
+        <div class="sc-row"><span class="chip re">Carol</span><span class="sc-desc" style="margin-left:8px">No access</span></div>
+      </div>
+    </div>
+    <div class="warn" style="margin-top:8px">Granular but hard to scale. Need indexing strategies. Good for user-facing sharing features.</div>
+  </div>
+  <div class="tp" id="authz-oauth2">
+    <div class="def"><strong>OAuth2 scopes.</strong> Third-party app requests specific permissions. You approve scopes — not full account access.</div>
+    <div class="code"><span class="cm">GitHub OAuth scopes:</span><br>scope: <span class="st">"read:repo"</span>&nbsp;&nbsp;&nbsp;<span class="cm">// read repos</span><br>scope: <span class="st">"write:repo"</span>&nbsp;&nbsp;<span class="cm">// push code</span><br><span class="cm">// NOT granted: delete:repo</span></div>
+    <div class="hl" style="margin-top:8px"><strong>Key:</strong> Access token = approved permissions, not a password. If app is compromised, revoke the token — not your whole account.</div>
+  </div>
+</div>
+
+<!-- SECURITY -->
+<div class="pg" id="p-security">
+  <div class="ptag t-re"><i class="ti ti-lock"></i>Security</div>
+  <div class="ptitle">Security techniques</div>
+  <p class="psub">Security is not a feature — it's a foundation. Every production API needs all of these.</p>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="card" style="border-left:3px solid var(--border-danger)"><h3><i class="ti ti-traffic-cone"></i>1. Rate limiting</h3><p>Limit requests per user/IP/key per time window. Prevents DDoS, brute-force, API abuse. Return 429 with Retry-After.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-world"></i>2. CORS</h3><p>Tells browsers which domains can call your API. Prevents malicious sites from making API calls using user's session.</p><div class="code">Access-Control-Allow-Origin: https://app.yourdomain.com<br><span class="am">// Never "*" for authenticated APIs</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-danger)"><h3><i class="ti ti-database-x"></i>3. SQL / NoSQL injection</h3><p>Attacker sends malicious input executed as DB query. Still #1 on OWASP Top 10.</p><div class="code"><span class="re">"SELECT * FROM users WHERE name='" + input + "'"</span><br><span class="cm">// VULNERABLE</span><br><br><span class="st">db.query("SELECT * FROM users WHERE name=?", [input])</span><br><span class="cm">// SAFE — parameterized</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-accent)"><h3><i class="ti ti-shield-check"></i>4. Input validation</h3><p>Validate every input. Type check, length limits, format validation, allowlists. Reject early with 400 + field-level errors.</p></div>
+    <div class="card" style="border-left:3px solid var(--border-warning)"><h3><i class="ti ti-cookie"></i>5. CSRF</h3><p>Attacker tricks logged-in user's browser into making unintended API call using session cookie.</p><div class="code">X-CSRF-Token: &lt;random_server_issued_token&gt;<br><span class="cm">// Or: SameSite=Strict cookie attribute</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-danger)"><h3><i class="ti ti-code"></i>6. XSS</h3><p>Attacker injects malicious JS into your app. Runs in other users' browsers — steals cookies, tokens.</p><div class="danger" style="margin-top:8px"><strong>Fix:</strong> Escape user input before rendering. Use CSP headers. Never <code>innerHTML</code> with user data. HttpOnly cookies.</div></div>
+    <div class="card" style="border-left:3px solid var(--border-strong)"><h3><i class="ti ti-shield-check"></i>7. HTTPS + HSTS</h3><p>Always HTTPS. HSTS forces browsers to only use HTTPS — prevents downgrade attacks.</p><div class="code">Strict-Transport-Security: max-age=<span class="am">31536000</span>; includeSubDomains; preload</div></div>
+    <div class="card" style="border-left:3px solid var(--border-strong)"><h3><i class="ti ti-firewall"></i>8. WAF</h3><p>Web Application Firewall filters malicious traffic at layer 7. Blocks OWASP Top 10 patterns, suspicious IPs, bot traffic.</p><div class="chips" style="margin-top:8px"><span class="chip am">AWS WAF</span><span class="chip am">Cloudflare WAF</span><span class="chip am">Azure Front Door</span></div></div>
+    <div class="card" style="border-left:3px solid var(--border-pro)"><h3><i class="ti ti-network"></i>9. VPN access controls</h3><p>For internal APIs, require requests from within VPN. Limits access to known networks. Critical for admin APIs.</p></div>
+  </div>
+  <div class="sec"><i class="ti ti-list"></i>OWASP API Security Top 10</div>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-danger)">1</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Broken Object Level Authorization</div><div class="sc-desc">API returns data for IDs it shouldn't. Check ownership on every request.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-danger)">2</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Broken Authentication</div><div class="sc-desc">Weak tokens, no expiry, credential stuffing.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-danger)">3</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Broken Object Property Level Auth</div><div class="sc-desc">Exposing internal fields, mass assignment (set isAdmin=true).</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">4</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Unrestricted Resource Consumption</div><div class="sc-desc">No rate limiting, no payload size limits.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">5</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Broken Function Level Authorization</div><div class="sc-desc">Admin endpoints accessible to normal users.</div></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">6</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Unrestricted Sensitive Flows</div><div class="sc-desc">No brute-force protection on login, OTP, password reset.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-warning)">7</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">SSRF</div><div class="sc-desc">API fetches URLs from user input — attacker targets internal services.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-secondary)">8</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Security Misconfiguration</div><div class="sc-desc">Debug endpoints exposed, verbose errors in prod.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-secondary)">9</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Improper Inventory Management</div><div class="sc-desc">Old API versions still live, undocumented endpoints.</div></div></div>
+      <div class="sc-row"><span class="sc-num" style="color:var(--text-secondary)">10</span><div><div style="font-weight:600;font-size:13px;color:var(--text-primary)">Unsafe API Consumption</div><div class="sc-desc">Blindly trusting third-party API data without validation.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DESIGN CHECKLIST -->
+<div class="pg" id="p-checklist">
+  <div class="ptag t-gr"><i class="ti ti-list-check"></i>Reference</div>
+  <div class="ptitle">API Design Checklist</div>
+  <p class="psub">Run through this before shipping any API to production. Most commonly missed requirements that cause pain in production.</p>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card">
+        <h3><i class="ti ti-route"></i>URL &amp; resource design</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Plural nouns for collections (/products not /product)</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">No verbs in URLs</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Consistent naming (snake_case or camelCase — pick one)</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Versioned with /v1, /v2</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Nested resources max 2 levels deep</div></div></div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-arrows-exchange"></i>HTTP correctness</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Correct HTTP method for each operation</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Correct status codes (201 for create, 204 for delete)</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Location header on 201 Created responses</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Never 200 for errors</div></div></div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-shield"></i>Security</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">All endpoints require authentication (unless explicitly public)</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Authorization checked on every request</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Rate limiting on every endpoint</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">HTTPS only — no HTTP fallback</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Input validation on every parameter</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">CORS configured correctly (not *)</div></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card">
+        <h3><i class="ti ti-layout-grid"></i>Data &amp; responses</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Consistent response envelope across all endpoints</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">All list endpoints have pagination</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Max page size enforced (cap at 100 or less)</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Machine-readable error codes in responses</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Request ID in all responses for debugging</div></div></div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-database"></i>Performance &amp; caching</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Cache-Control headers on all GET responses</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">ETag support for conditional GETs</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Gzip compression on responses &gt; 1KB</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Rate limit headers on all responses</div></div></div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-file-description"></i>Documentation</h3>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">OpenAPI spec for all endpoints</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">All error codes documented</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Request/response examples per endpoint</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Changelog for all breaking changes</div></div></div>
+        <div class="step-row"><div class="step-num">✓</div><div class="step-body"><div class="step-desc">Deprecation notices with Sunset header</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hl" style="margin-top:16px"><strong>The Stripe standard:</strong> Consistent naming, excellent docs, idempotency keys, cursor pagination, semantic versioning, and clear deprecation policy. Use it as your benchmark.</div>
+</div>
+
+</div><!-- end .ct -->
+</div><!-- end .app -->
+
+      <!-- ============================================================ -->
+      <!-- FRAGMENT END -->
+      <!-- ============================================================ -->
+    </div><!-- end .main -->
+  </div><!-- end .shell -->
+
+  <script>
+    // ── Topic page switcher ────────────────────────────────────
+    const ORDER = [
+      'intro','styles','principles',
+      'netstack','http','tcpudp','ws','amqp','grpc','choose',
+      'rest','methods','status','graphql','versioning','pagination','caching','ratelimit','gateway','webhooks','openapi',
+      'authn','authz','security','checklist'
+    ];
+
+    // Label map for prev/next button names
+    const LABELS = {
+      intro:'Overview', styles:'API Styles', principles:'4 Key Principles',
+      netstack:'Network Stack', http:'HTTP / HTTPS', tcpudp:'TCP vs UDP',
+      ws:'WebSockets', amqp:'AMQP', grpc:'gRPC', choose:'Choosing a Protocol',
+      rest:'RESTful APIs', methods:'HTTP Methods', status:'Status Codes',
+      graphql:'GraphQL', versioning:'Versioning', pagination:'Pagination',
+      caching:'Caching', ratelimit:'Rate Limiting', gateway:'API Gateway',
+      webhooks:'Webhooks', openapi:'OpenAPI / Swagger',
+      authn:'Authentication', authz:'Authorization', security:'Security', checklist:'Design Checklist'
+    };
+
+    function go(id) {
+      // hide all pages
+      document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+      // deactivate all outer nav items
+      document.querySelectorAll('.shell .ni').forEach(n => n.classList.remove('on'));
+      // show the target page
+      const page = document.getElementById('p-' + id);
+      if (page) page.classList.add('on');
+      // activate the outer nav item
+      const navItem = document.getElementById('sn-' + id);
+      if (navItem) {
+        navItem.classList.add('on');
+        navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      // scroll content to top
+      document.getElementById('mainContent').scrollTop = 0;
+      // update mobile title
+      const label = navItem ? navItem.textContent.trim() : id;
+      const mobileTitle = document.getElementById('mobileNavTitle');
+      if (mobileTitle) mobileTitle.textContent = label;
+      // save progress
+      try { localStorage.setItem('api_topic', id); } catch(e) {}
+      // close mobile sidebar
+      closeSidebar();
+
+      // ── Update prev / next buttons ──────────────────────────
+      const idx = ORDER.indexOf(id);
+      // Prev
+      const prevId = idx > 0 ? ORDER[idx - 1] : null;
+      const prevBtn = page ? page.querySelector('.topic-nav-btn.prev') : null;
+      if (prevBtn) {
+        if (prevId) {
+          prevBtn.style.visibility = 'visible';
+          prevBtn.querySelector('.topic-nav-name').textContent = LABELS[prevId] || prevId;
+          prevBtn.onclick = () => go(prevId);
+        } else {
+          prevBtn.style.visibility = 'hidden';
+        }
+      }
+      // Next — last topic loops back to Overview
+      const nextId = idx < ORDER.length - 1 ? ORDER[idx + 1] : 'intro';
+      const nextBtn = page ? page.querySelector('.topic-nav-btn.next') : null;
+      if (nextBtn) {
+        const isLast = idx === ORDER.length - 1;
+        nextBtn.querySelector('.topic-nav-hint').textContent = isLast ? 'Back to start' : 'Next';
+        nextBtn.querySelector('.topic-nav-name').textContent = LABELS[nextId] || nextId;
+        nextBtn.onclick = () => go(nextId);
+      }
+    }
+
+    function tab(page, id, btn) {
+      document.querySelectorAll('#p-' + page + ' .tp').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('#p-' + page + ' .tb').forEach(b => b.classList.remove('on'));
+      const panel = document.getElementById(page + '-' + id);
+      if (panel) panel.classList.add('on');
+      btn.classList.add('on');
+    }
+
+    // ── Mobile sidebar ─────────────────────────────────────────
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'true');
+      document.getElementById('hamburgerIcon').className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('hamburgerIcon').className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+    function toggleNav() {
+      document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // hamburger
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+        btn.addEventListener('touchend', e => { e.preventDefault(); e.stopPropagation(); toggleNav(); }, { passive: false });
+      }
+      // overlay
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('touchend', e => { e.preventDefault(); closeSidebar(); }, { passive: false });
+      }
+
+      // ── Inject prev/next nav bars into all .pg topics ───────
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.pg').forEach(pg => pg.insertAdjacentHTML('beforeend', navBarHTML));
+
+      // restore last topic
+      let startId = 'intro';
+      try {
+        const saved = localStorage.getItem('api_topic');
+        if (saved && document.getElementById('p-' + saved)) startId = saved;
+      } catch(e) {}
+      go(startId);
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+  </script>
 </body>
 </html>
