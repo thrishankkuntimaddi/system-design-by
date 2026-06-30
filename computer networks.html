@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Networks — Field Notes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --bg:#0b0d12;
+  --panel:#11141b;
+  --panel2:#161a23;
+  --line:#232838;
+  --ink:#e7e9f0;
+  --ink-dim:#8d93a6;
+  --ink-faint:#5b6075;
+  --signal:#5ee0c0;
+  --signal2:#ff9f5a;
+  --amber:#ffcf6b;
+  --danger:#ff6b7a;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+  --sans:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+@font-face{font-family:'sysfont';src:local('Inter');}
+::selection{background:var(--signal);color:#04140f;}
+
+/* ===== layout ===== */
+.shell{display:flex; min-height:100vh;}
+.sidebar{
+  width:280px; flex-shrink:0;
+  background:var(--panel);
+  border-right:1px solid var(--line);
+  position:fixed; top:0; left:0; bottom:0;
+  overflow-y:auto;
+  padding:24px 0 60px;
+  z-index:50;
+}
+.sidebar::-webkit-scrollbar{width:6px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+.brand{
+  padding:0 22px 18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.brand .tag{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em;
+  color:var(--signal); text-transform:uppercase; margin-bottom:6px; display:block;
+}
+.brand h1{font-size:19px; font-weight:700; letter-spacing:-0.01em;}
+.brand p{font-size:11.5px; color:var(--ink-faint); margin-top:4px; font-family:var(--mono);}
+
+.navgroup{margin-bottom:4px;}
+.navgroup-label{
+  font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-faint); padding:14px 22px 6px;
+}
+.navlink{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 22px; font-size:13.3px; color:var(--ink-dim);
+  cursor:pointer; border-left:2px solid transparent;
+  transition:.15s;
+}
+.navlink .n{font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); width:18px; flex-shrink:0;}
+.navlink:hover{color:var(--ink); background:rgba(255,255,255,.02);}
+.navlink.active{color:var(--signal); border-left-color:var(--signal); background:rgba(94,224,192,.06);}
+.navlink.active .n{color:var(--signal);}
+
+.main{margin-left:280px; flex:1; min-width:0;}
+.content{max-width:920px; margin:0 auto; padding:60px 56px 140px;}
+
+section{display:none; animation:fadein .35s ease;}
+section.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--signal); margin-bottom:10px; display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:''; width:22px; height:1px; background:var(--signal);}
+h2.pagetitle{font-size:34px; font-weight:800; letter-spacing:-0.02em; margin-bottom:10px;}
+.subtitle{color:var(--ink-dim); font-size:15px; max-width:640px; margin-bottom:38px;}
+
+h3.h{font-size:20px; font-weight:700; margin:42px 0 14px; padding-top:18px; border-top:1px solid var(--line); display:flex; align-items:center; gap:10px;}
+h3.h:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+h4.h4{font-size:15.5px; font-weight:700; margin:24px 0 10px; color:var(--ink);}
+p{color:var(--ink-dim); font-size:14.5px; margin-bottom:12px;}
+p strong{color:var(--ink); font-weight:600;}
+.lead{font-size:15.5px; color:var(--ink); margin-bottom:14px;}
+
+ul.plain, ol.plain{margin:10px 0 16px 0; padding-left:0; list-style:none;}
+ul.plain li, ol.plain li{
+  padding-left:18px; position:relative; margin-bottom:8px; font-size:14.5px; color:var(--ink-dim);
+}
+ul.plain li::before{content:'—'; position:absolute; left:0; color:var(--signal2);}
+ol.plain{counter-reset:item;}
+ol.plain li{counter-increment:item;}
+ol.plain li::before{content:counter(item) '.'; position:absolute; left:0; color:var(--signal); font-family:var(--mono); font-size:12.5px;}
+
+/* def box */
+.def{
+  background:var(--panel2); border:1px solid var(--line); border-left:3px solid var(--signal);
+  border-radius:6px; padding:16px 18px; margin:16px 0;
+}
+.def .label{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--signal); margin-bottom:6px;}
+.def p{margin:0; color:var(--ink); font-size:14.5px;}
+
+.example{
+  background:rgba(255,159,90,.05); border:1px solid rgba(255,159,90,.22); border-left:3px solid var(--signal2);
+  border-radius:6px; padding:14px 18px; margin:14px 0;
+}
+.example .label{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--signal2); margin-bottom:6px;}
+.example p{margin:0; font-size:14px;}
+
+code, .mono{font-family:var(--mono); font-size:13px;}
+pre{
+  background:#070809; border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+  overflow-x:auto; margin:14px 0; font-family:var(--mono); font-size:13px; color:#9ff7df; line-height:1.7;
+}
+pre .c{color:var(--ink-faint);}
+.inline-code{background:rgba(255,255,255,.06); padding:1px 6px; border-radius:4px; font-family:var(--mono); font-size:12.5px; color:var(--amber);}
+
+table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px;}
+th{
+  text-align:left; font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-faint); padding:9px 12px; border-bottom:1px solid var(--line);
+}
+td{padding:10px 12px; border-bottom:1px solid var(--line); color:var(--ink-dim);}
+tr:last-child td{border-bottom:none;}
+td strong, td .mono{color:var(--ink);}
+table.tight td, table.tight th{padding:7px 12px;}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0;}
+.grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:16px 0;}
+@media (max-width:700px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+.proscons{border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+.proscons .pc-head{padding:10px 14px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;}
+.pc-pro .pc-head{background:rgba(94,224,192,.1); color:var(--signal);}
+.pc-con .pc-head{background:rgba(255,107,122,.1); color:var(--danger);}
+.proscons ul{list-style:none; padding:12px 14px;}
+.proscons li{padding-left:16px; position:relative; font-size:13.5px; color:var(--ink-dim); margin-bottom:7px;}
+.pc-pro li::before{content:'+'; position:absolute; left:0; color:var(--signal); font-weight:700;}
+.pc-con li::before{content:'–'; position:absolute; left:0; color:var(--danger); font-weight:700;}
+
+.chip{display:inline-block; font-family:var(--mono); font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid var(--line); color:var(--ink-dim); margin:2px 4px 2px 0;}
+.chip.on{border-color:var(--signal); color:var(--signal); background:rgba(94,224,192,.07);}
+
+.layer-card{
+  border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:20px 22px; margin:16px 0;
+  border-left:3px solid var(--ink-faint);
+}
+.layer-card .lh{display:flex; align-items:baseline; gap:12px; margin-bottom:10px;}
+.layer-card .lnum{font-family:var(--mono); font-size:22px; font-weight:800; color:var(--ink-faint);}
+.layer-card .lname{font-size:18px; font-weight:700;}
+.layer-card .ltag{margin-left:auto; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint);}
+
+.scenario{
+  background:linear-gradient(135deg, rgba(94,224,192,.05), rgba(255,159,90,.04));
+  border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin:18px 0;
+}
+.scenario .label{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
+
+.flow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:14px 0;}
+.flow .node{
+  background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:8px 14px;
+  font-family:var(--mono); font-size:12.5px; color:var(--ink);
+}
+.flow .arrow{color:var(--ink-faint); font-size:14px;}
+
+.bitviz{display:flex; gap:2px; flex-wrap:wrap; margin:10px 0;}
+.bitcell{width:18px; height:18px; border:1px solid var(--line); border-radius:3px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:9px; color:var(--ink-faint);}
+
+.toc-cards{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:30px;}
+.toc-card{
+  border:1px solid var(--line); border-radius:10px; padding:18px 20px; cursor:pointer; background:var(--panel2);
+  transition:.15s;
+}
+.toc-card:hover{border-color:var(--signal); transform:translateY(-2px);}
+.toc-card .tn{font-family:var(--mono); color:var(--signal); font-size:11px; letter-spacing:.1em;}
+.toc-card h5{font-size:15px; margin:6px 0 4px;}
+.toc-card p{font-size:12.5px; margin:0; color:var(--ink-faint);}
+
+.divider-note{
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); border-left:2px solid var(--line);
+  padding:6px 0 6px 14px; margin:14px 0;
+}
+
+footer.note{margin-top:60px; padding-top:24px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11px; color:var(--ink-faint);}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%); transition:.25s;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .content{padding:60px 22px 100px;}
+  .menubtn{display:flex !important;}
+}
+.menubtn{
+  display:none; position:fixed; top:16px; left:16px; z-index:60;
+  background:var(--panel); border:1px solid var(--line); border-radius:8px;
+  width:40px; height:40px; align-items:center; justify-content:center; cursor:pointer; color:var(--ink);
+}
+</style>
+</head>
+<body>
+
+<div class="menubtn" id="menubtn">☰</div>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">Reference // v1</span>
+      <h1>Computer Networks</h1>
+      <p>foundations → OSI → TCP/IP → devices</p>
+    </div>
+
+    <div class="navgroup">
+      <div class="navgroup-label">Foundations</div>
+      <div class="navlink active" data-target="intro"><span class="n">01</span>What is a Network</div>
+      <div class="navlink" data-target="protocols"><span class="n">02</span>Protocols & Core Terms</div>
+      <div class="navlink" data-target="topology"><span class="n">03</span>Network Topologies</div>
+      <div class="navlink" data-target="structure"><span class="n">04</span>LAN / MAN / WAN & Structure</div>
+    </div>
+
+    <div class="navgroup">
+      <div class="navgroup-label">Models</div>
+      <div class="navlink" data-target="osi"><span class="n">05</span>OSI Model — Overview</div>
+      <div class="navlink" data-target="osi-upper"><span class="n">06</span>Layers 7–5 (App/Pres/Session)</div>
+      <div class="navlink" data-target="osi-transport"><span class="n">07</span>Layer 4 — Transport</div>
+      <div class="navlink" data-target="osi-network"><span class="n">08</span>Layer 3 — Network</div>
+      <div class="navlink" data-target="osi-lower"><span class="n">09</span>Layers 2–1 (Data Link/Physical)</div>
+      <div class="navlink" data-target="tcpip"><span class="n">10</span>TCP/IP Model</div>
+    </div>
+
+    <div class="navgroup">
+      <div class="navgroup-label">Deep Dives</div>
+      <div class="navlink" data-target="http"><span class="n">11</span>HTTP & the Web</div>
+      <div class="navlink" data-target="dns"><span class="n">12</span>DNS Resolution</div>
+      <div class="navlink" data-target="email"><span class="n">13</span>Email — SMTP/POP3/IMAP</div>
+      <div class="navlink" data-target="tcpudp"><span class="n">14</span>TCP vs UDP, Deep Dive</div>
+      <div class="navlink" data-target="ip"><span class="n">15</span>IP Addressing & Subnetting</div>
+      <div class="navlink" data-target="nat"><span class="n">16</span>NAT & Private Addressing</div>
+      <div class="navlink" data-target="datalink"><span class="n">17</span>MAC, ARP & Framing</div>
+    </div>
+
+    <div class="navgroup">
+      <div class="navgroup-label">Hardware & Tools</div>
+      <div class="navlink" data-target="devices"><span class="n">18</span>Networking Devices</div>
+      <div class="navlink" data-target="commands"><span class="n">19</span>Command-Line Reference</div>
+      <div class="navlink" data-target="bits"><span class="n">20</span>Bits, Bytes & Number Reference</div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="content">
+
+      <!-- 01 INTRO -->
+      <section id="intro" class="active">
+        <div class="eyebrow">Foundations</div>
+        <h2 class="pagetitle">What is a Computer Network</h2>
+        <p class="subtitle">Where the whole subject starts: machines, wires, and an agreement about how to talk to each other.</p>
+
+        <div class="def">
+          <div class="label">Definition</div>
+          <p>A <strong>computer network</strong> is a collection of computers connected together so they can exchange data. The <strong>internet</strong> is the largest example — a network of networks spanning the planet.</p>
+        </div>
+
+        <p>A playful backronym sometimes used for "computer": <strong>C</strong>ommonly <strong>O</strong>riented <strong>M</strong>achine <strong>P</strong>articularly used for <strong>T</strong>raining, <strong>E</strong>ducation and <strong>R</strong>esearch — not the literal etymology, but a useful way to remember that a computer at its core is a general-purpose machine for processing information, and a network is what happens when many of those machines are wired together to share it.</p>
+
+        <h3 class="h">A short history — how the internet started</h3>
+        <p>Before the internet, computers were isolated islands. The story of how that changed:</p>
+
+        <div class="flow">
+          <div class="node">ARPA founded</div><div class="arrow">→</div>
+          <div class="node">ARPANET (research network)</div><div class="arrow">→</div>
+          <div class="node">TCP adopted</div><div class="arrow">→</div>
+          <div class="node">More hosts join</div><div class="arrow">→</div>
+          <div class="node">World Wide Web</div>
+        </div>
+
+        <ul class="plain">
+          <li><strong>ARPA</strong> (Advanced Research Projects Agency) — a U.S. government agency that funded early research into how computers could communicate with each other over long distances.</li>
+          <li><strong>ARPANET</strong> — the first real packet-switched network ARPA built, originally linking research institutions including MIT, Stanford, UCLA, and the University of Utah, with early links partly carried over satellite connections.</li>
+          <li><strong>TCP</strong> (Transmission Control Protocol) — the rule-set invented to let independent, dissimilar computer networks reliably exchange data with each other. This is the single biggest unlock: once everyone agreed on TCP, networks could interconnect instead of staying isolated.</li>
+          <li>Over years, more institutions, companies, and eventually homes connected — the network of networks became <strong>the Internet</strong>.</li>
+          <li><strong>WWW</strong> (World Wide Web) — not the same thing as the internet. The internet is the physical/logical network of connected computers; the Web is a collection of linked documents (pages) that live on top of that network, accessed via HTTP.</li>
+        </ul>
+
+        <div class="example">
+          <div class="label">Common confusion</div>
+          <p>"Internet" and "Web" are often used interchangeably but aren't the same: the internet is the infrastructure (cables, routers, protocols); the Web is one application that runs on that infrastructure, alongside others like email, file transfer, and video calls.</p>
+        </div>
+
+        <h3 class="h">How a request actually travels</h3>
+        <p>At the simplest level, when Computer A wants to talk to Computer B — possibly on the other side of the planet — the message doesn't teleport. It is broken down, addressed, and physically carried across a chain of intermediate devices until it reaches the destination, and a reply makes the same kind of journey back.</p>
+
+        <div class="scenario">
+          <div class="label">Scenario — typing google.com</div>
+          <p>You type <span class="inline-code">google.com</span> in a browser and hit enter → your computer turns that into a <strong>request</strong> → the request is sent through your router, your ISP, and a chain of other networks → it reaches Google's <strong>server</strong> → the server sends back a <strong>response</strong> (the webpage) → your browser renders it. This client → server round trip is the basic shape of almost everything that happens on a network.</p>
+        </div>
+      </section>
+
+      <!-- 02 PROTOCOLS -->
+      <section id="protocols">
+        <div class="eyebrow">Foundations</div>
+        <h2 class="pagetitle">Protocols & Core Terminology</h2>
+        <p class="subtitle">The vocabulary you need before any of the layered models make sense.</p>
+
+        <div class="def">
+          <div class="label">Definition</div>
+          <p>A <strong>protocol</strong> is a set of rules that defines how data is formatted, transmitted, and interpreted between devices. Just like two people need a shared language to have a conversation, two computers need a shared protocol to exchange meaningful data.</p>
+        </div>
+
+        <p>Protocols aren't invented by a single company — they're standardized, often region-by-region and globally, by bodies like the <strong>Internet Society</strong>, with the actual technical specifications published as <strong>RFCs</strong> (Request For Comments) through the <strong>RFC Editor</strong>. An RFC is essentially the "spec document" engineers refer back to when implementing a protocol correctly.</p>
+
+        <h3 class="h">Client–Server model</h3>
+        <p>The dominant pattern for how applications talk over a network:</p>
+        <div class="flow">
+          <div class="node">Client</div><div class="arrow">request →</div>
+          <div class="node">Server</div>
+        </div>
+        <div class="flow">
+          <div class="node">Client</div><div class="arrow">← response</div>
+          <div class="node">Server</div>
+        </div>
+        <ul class="plain">
+          <li><strong>Client</strong> — initiates the request (your browser, your phone app).</li>
+          <li><strong>Server</strong> — a machine that's always listening, waiting to respond to requests (identified by an IP address).</li>
+        </ul>
+
+        <h3 class="h">IP Addresses</h3>
+        <div class="def">
+          <div class="label">Definition</div>
+          <p>An <strong>IP address</strong> is a numeric label assigned to every device on a network, used to identify and locate it — conceptually, the "phone book entry" of the internet.</p>
+        </div>
+        <p>Every server you talk to is identified by an IP address, even though you usually type a domain name instead (DNS bridges that gap — covered later).</p>
+
+        <div class="example">
+          <div class="label">Try it</div>
+          <p>On macOS/Linux, run <span class="inline-code">curl ifconfig.me -s</span> in a terminal — it returns your machine's public IP address as seen from the internet.</p>
+        </div>
+
+        <h3 class="h">ISPs and the chain to your device</h3>
+        <p>Your <strong>ISP</strong> (Internet Service Provider — e.g. Airtel, Jio, Comcast) is the company that actually connects your home or office to the wider internet.</p>
+        <ol class="plain">
+          <li>The ISP gives you a <strong>modem/router</strong>, which is assigned a <strong>global (public) IP address</strong> — visible to the rest of the internet.</li>
+          <li>Inside your home, the router connects to internal devices (laptop, phone, smart TV).</li>
+          <li>Each of those internal devices gets a <strong>private/local IP address</strong>, automatically handed out by <strong>DHCP</strong> (Dynamic Host Configuration Protocol).</li>
+        </ol>
+
+        <h3 class="h">Ports</h3>
+        <div class="def">
+          <div class="label">Definition</div>
+          <p>A <strong>port number</strong> identifies a specific application or service running on a device — the IP address gets you to the right machine, the port gets you to the right program on that machine.</p>
+        </div>
+        <ul class="plain">
+          <li>Ports are <strong>16-bit numbers</strong> → range from 0 to 2¹⁶−1, i.e. roughly <strong>65,535</strong> available ports.</li>
+          <li><strong>0–1023</strong> — well-known / reserved ports (e.g. HTTP = 80, HTTPS = 443, MongoDB = 27017).</li>
+          <li><strong>1024–49151</strong> — registered ports, used by specific named applications.</li>
+          <li><strong>49152–65535</strong> — dynamic/ephemeral ports, free for short-lived use (e.g. the temporary port your browser tab uses for one connection).</li>
+        </ul>
+
+        <h3 class="h">Bandwidth & speed units</h3>
+        <table class="tight">
+          <tr><th>Unit</th><th>Meaning</th><th>Value</th></tr>
+          <tr><td><strong>kbps</strong></td><td>kilobits per second</td><td>1,000 bits/sec</td></tr>
+          <tr><td><strong>Mbps</strong></td><td>megabits per second</td><td>1,000,000 bits/sec</td></tr>
+          <tr><td><strong>Gbps</strong></td><td>gigabits per second</td><td>10⁹ bits/sec</td></tr>
+        </table>
+        <p>Internet connections are described by separate <strong>upload speed</strong> and <strong>download speed</strong> — most home connections are asymmetric, with download much faster than upload, since typical usage (browsing, streaming) receives far more data than it sends.</p>
+
+        <h3 class="h">Guided vs unguided media</h3>
+        <div class="grid2">
+          <div class="def">
+            <div class="label">Guided</div>
+            <p>Data travels along a physically defined path — copper or fiber cable. Faster and more reliable because the path is fixed and shielded from interference.</p>
+          </div>
+          <div class="def">
+            <div class="label">Unguided</div>
+            <p>Data travels through open space with no single fixed path — radio waves. Used by Wi-Fi and Bluetooth (short range) and 3G/4G/LTE/5G (long range).</p>
+          </div>
+        </div>
+
+        <h3 class="h">How continents are physically connected</h3>
+        <p>Even satellite and radio aside, the backbone of global internet traffic is <strong>physical undersea cables</strong> — optical fiber laid across ocean floors connecting continents. You can see the actual global map of these at <span class="inline-code">submarinecablemap.com</span>, maintained by TeleGeography — it shows hundreds of named cables (2Africa, AEConnect-1, etc.) physically linking landing points across every continent.</p>
+        <div class="divider-note">Physical cables remain faster and more reliable than wireless long-haul links, which is why almost all intercontinental internet traffic — even from "wireless" companies — ultimately rides on undersea fiber.</div>
+      </section>
+
+      <!-- 03 TOPOLOGY -->
+      <section id="topology">
+        <div class="eyebrow">Foundations</div>
+        <h2 class="pagetitle">Network Topologies</h2>
+        <p class="subtitle">The five classic shapes you can wire a network into — and exactly why each one wins or loses in practice.</p>
+
+        <p>A <strong>topology</strong> is the arrangement/layout of how nodes (computers, devices) are connected to each other in a network. The choice of topology directly affects cost, reliability, and how a failure behaves.</p>
+
+        <h3 class="h">1. Bus Topology</h3>
+        <p>All devices are connected to a single shared central cable (the "bus" / backbone). Every device taps into this one line to send and receive data.</p>
+        <div class="proscons" style="margin-bottom:0;">
+        </div>
+        <div class="grid2">
+          <div class="proscons pc-pro"><div class="pc-head">Pros</div><ul>
+            <li>Very cheap to set up — minimal cabling</li>
+            <li>Easy to extend by adding a new tap</li>
+            <li>Good for small, simple networks</li>
+          </ul></div>
+          <div class="proscons pc-con"><div class="pc-head">Cons</div><ul>
+            <li>If the single backbone cable breaks anywhere, the entire network is split or goes down</li>
+            <li>All devices share the same line → unnecessary collisions/calls when many devices transmit at once</li>
+            <li>Hard to troubleshoot — a fault anywhere affects everyone</li>
+          </ul></div>
+        </div>
+
+        <h3 class="h">2. Ring Topology</h3>
+        <p>Each device connects to exactly two neighbors, forming a closed loop. Data travels around the ring, hop by hop, until it reaches its destination.</p>
+        <div class="grid2">
+          <div class="proscons pc-pro"><div class="pc-head">Pros</div><ul>
+            <li>Predictable, orderly data flow (token-passing variants avoid collisions entirely)</li>
+            <li>Performs consistently even with many devices, unlike a shared bus</li>
+          </ul></div>
+          <div class="proscons pc-con"><div class="pc-head">Cons</div><ul>
+            <li>A single broken link can disrupt the entire ring (unless dual-ring redundancy is used)</li>
+            <li>Adding/removing a device usually requires briefly breaking the ring</li>
+            <li>One slow or failed device can hold up the whole loop</li>
+          </ul></div>
+        </div>
+
+        <h3 class="h">3. Star Topology</h3>
+        <p>Every device connects individually to one central device (a hub or switch). All communication passes through this central point.</p>
+        <div class="grid2">
+          <div class="proscons pc-pro"><div class="pc-head">Pros</div><ul>
+            <li>One device failing doesn't affect any other — easy isolation of faults</li>
+            <li>Easy to add/remove devices without disrupting the network</li>
+            <li>Centralized management and monitoring</li>
+          </ul></div>
+          <div class="proscons pc-con"><div class="pc-head">Cons</div><ul>
+            <li>If the central device (hub/switch) fails, the <strong>entire network goes down</strong> — single point of failure</li>
+            <li>More cabling required than bus topology</li>
+          </ul></div>
+        </div>
+        <div class="example"><div class="label">In practice</div><p>Most modern home and office LANs are star topologies — every device cables back to a central Wi-Fi router or Ethernet switch.</p></div>
+
+        <h3 class="h">4. Tree Topology (Bus + Star hybrid)</h3>
+        <p>A hierarchical structure: multiple star networks are connected together along a common bus backbone — essentially "stars hanging off a bus," forming a parent-child structure of hubs.</p>
+        <div class="grid2">
+          <div class="proscons pc-pro"><div class="pc-head">Pros</div><ul>
+            <li>Scales well — easy to add new branches/departments without redesigning the whole network</li>
+            <li>Fault isolation within a branch, similar to star</li>
+            <li>Matches how real organizations are structured (HQ → departments → individual machines)</li>
+          </ul></div>
+          <div class="proscons pc-con"><div class="pc-head">Cons</div><ul>
+            <li>Still depends on the backbone bus — if that breaks, branches get isolated from each other</li>
+            <li>More complex to wire and maintain than pure star or pure bus</li>
+          </ul></div>
+        </div>
+
+        <h3 class="h">5. Mesh Topology</h3>
+        <p>Every device is connected directly to every other device. Maximum redundancy — there are multiple paths between any two nodes.</p>
+        <div class="grid2">
+          <div class="proscons pc-pro"><div class="pc-head">Pros</div><ul>
+            <li>Extremely fault-tolerant — many alternate paths if one link fails</li>
+            <li>No single point of failure</li>
+            <li>High performance, no shared-bus contention</li>
+          </ul></div>
+          <div class="proscons pc-con"><div class="pc-head">Cons</div><ul>
+            <li><strong>Expensive</strong> — cabling grows roughly with n² as devices are added</li>
+            <li><strong>Scalability issues</strong> — becomes physically impractical past a small number of nodes</li>
+          </ul></div>
+        </div>
+
+        <h3 class="h">Quick comparison</h3>
+        <table>
+          <tr><th>Topology</th><th>Single point of failure?</th><th>Cost</th><th>Best for</th></tr>
+          <tr><td><strong>Bus</strong></td><td>Yes (backbone)</td><td>Lowest</td><td>Tiny, temporary networks</td></tr>
+          <tr><td><strong>Ring</strong></td><td>Yes (any link)</td><td>Low–Medium</td><td>Predictable token-based LANs</td></tr>
+          <tr><td><strong>Star</strong></td><td>Yes (central hub)</td><td>Medium</td><td>Home/office LANs (most common today)</td></tr>
+          <tr><td><strong>Tree</strong></td><td>Partial (per branch)</td><td>Medium–High</td><td>Organizations with departments/branches</td></tr>
+          <tr><td><strong>Mesh</strong></td><td>No</td><td>Highest</td><td>Mission-critical backbones, military/ISP cores</td></tr>
+        </table>
+      </section>
+
+      <!-- 04 STRUCTURE -->
+      <section id="structure">
+        <div class="eyebrow">Foundations</div>
+        <h2 class="pagetitle">LAN, MAN, WAN & Network Structure</h2>
+        <p class="subtitle">How small local networks chain together to form the internet — and the analogy that makes layering click.</p>
+
+        <h3 class="h">Network scale classifications</h3>
+        <table>
+          <tr><th>Term</th><th>Full name</th><th>Scale</th><th>Typical medium</th></tr>
+          <tr><td><strong>LAN</strong></td><td>Local Area Network</td><td>A single home, office, or building</td><td>Ethernet cables, Wi-Fi</td></tr>
+          <tr><td><strong>MAN</strong></td><td>Metropolitan Area Network</td><td>Across a city</td><td>Fiber backbones connecting multiple LANs</td></tr>
+          <tr><td><strong>WAN</strong></td><td>Wide Area Network</td><td>Across countries / continents</td><td><strong>SONET</strong> (Synchronous Optical Network), leased lines, satellite</td></tr>
+        </table>
+        <p><strong>Frame Relay</strong> is a WAN protocol historically used to connect LANs across a wide area cost-effectively, by packaging data into variable-length "frames" sent over a shared carrier network — a precursor to many of today's WAN/VPN technologies.</p>
+        <div class="def"><div class="label">Big picture</div><p>The <strong>internet</strong> is simply the collection of all interconnected LANs, MANs, and WANs across the world — your home LAN connects to your ISP's MAN, which peers into global WAN backbones, which connect to other countries' networks.</p></div>
+
+        <h3 class="h">Modem / Router — the bridge between worlds</h3>
+        <p>A <strong>modem</strong> converts digital signals (what your computer understands) into analog signals (what travels over telephone/cable lines) and vice versa — the literal translator between your home network and your ISP's infrastructure. A <strong>router</strong> is the device that decides where to forward data packets next, both within your home network and out to the internet (in home setups, the ISP-provided device is usually a combined modem+router).</p>
+
+        <h3 class="h">Tier 1 vs Tier 2 ISPs</h3>
+        <ul class="plain">
+          <li><strong>Tier 1 ISPs</strong> — own global backbone infrastructure and don't pay anyone for transit (e.g. TATA Communications). They peer directly with each other.</li>
+          <li><strong>Tier 2 ISPs</strong> — regional/national providers (e.g. Airtel, Jio) that buy transit from Tier 1s to reach the rest of the internet, while also peering with each other locally.</li>
+        </ul>
+
+        <h3 class="h">The Amazon delivery analogy</h3>
+        <p>This is the mental model that makes the entire layered approach (OSI/TCP-IP) click: shipping a physical package mirrors exactly how data is "shipped" across a network.</p>
+        <div class="flow">
+          <div class="node">You order</div><div class="arrow">→</div>
+          <div class="node">Amazon</div><div class="arrow">→</div>
+          <div class="node">Delivery company</div><div class="arrow">→</div>
+          <div class="node">Transported (across India)</div><div class="arrow">→</div>
+          <div class="node">Local delivery</div><div class="arrow">→</div>
+          <div class="node">You receive</div>
+        </div>
+        <p>Notice each stage only cares about its own job: Amazon doesn't drive the truck, the delivery company doesn't know what's inside the box, and the truck driver doesn't know who the recipient is beyond an address label. This is exactly the idea of <strong>layering</strong> — each network layer only does its specific job and hands the package to the next layer, ignorant of what the layers above or below are doing with the contents.</p>
+        <div class="example"><div class="label">Application layer connection</div><p>In this analogy, "placing the order" and "receiving the package" are the parts <em>you</em> directly interact with — this maps to the <strong>Application Layer</strong>, the only layer that's visible to the end user. Everything else (the courier routing, the trucks, the roads) happens invisibly underneath, just like the lower OSI layers.</p></div>
+      </section>
+
+      <!-- 05 OSI OVERVIEW -->
+      <section id="osi">
+        <div class="eyebrow">Models</div>
+        <h2 class="pagetitle">The OSI Model — Overview</h2>
+        <p class="subtitle">Open Systems Interconnection: the standard mental map for every layer of networking, top to bottom.</p>
+
+        <div class="def">
+          <div class="label">Definition</div>
+          <p>The <strong>OSI model</strong> is a conceptual, standardized framework that describes how data moves through a network in 7 distinct layers, each with a specific responsibility. It's "open" because it's vendor-neutral — any system following it can interoperate with any other.</p>
+        </div>
+
+        <p>Data physically only exists as electrical/light/radio signals — the OSI model is the human-friendly abstraction layered on top so engineers can reason about "what's happening" without tracking every electron. Each layer talks logically to its counterpart layer on the other machine, but physically only ever talks to the layer directly above/below it on the same machine.</p>
+
+        <div class="toc-cards">
+          <div class="toc-card" onclick="goto('osi-upper')"><div class="tn">L7</div><h5>Application</h5><p>What the user-facing software does</p></div>
+          <div class="toc-card" onclick="goto('osi-upper')"><div class="tn">L6</div><h5>Presentation</h5><p>Formatting, encryption, translation</p></div>
+          <div class="toc-card" onclick="goto('osi-upper')"><div class="tn">L5</div><h5>Session</h5><p>Setting up & managing connections</p></div>
+          <div class="toc-card" onclick="goto('osi-transport')"><div class="tn">L4</div><h5>Transport</h5><p>TCP/UDP, segmentation, ports</p></div>
+          <div class="toc-card" onclick="goto('osi-network')"><div class="tn">L3</div><h5>Network</h5><p>IP addressing, routing</p></div>
+          <div class="toc-card" onclick="goto('osi-lower')"><div class="tn">L2</div><h5>Data Link</h5><p>MAC addresses, framing</p></div>
+          <div class="toc-card" onclick="goto('osi-lower')"><div class="tn">L1</div><h5>Physical</h5><p>Raw bits as electrical/light signals</p></div>
+        </div>
+
+        <h3 class="h">Memory aid</h3>
+        <p>A classic mnemonic, top-down: <strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing — Application, Presentation, Session, Transport, Network, Data Link, Physical.</p>
+
+        <h3 class="h">You ↔ Friend — the whole stack in one picture</h3>
+        <p>Think of two people (computers) wanting to talk. On your side, data goes <em>down</em> the stack (A→P→S→T→N→D2→Physical), gets physically transmitted, and on the friend's side it goes back <em>up</em> the stack in reverse. Each layer adds its own header as data descends (this is called <strong>encapsulation</strong>), and each corresponding layer strips its header back off as data ascends on the receiving side (<strong>decapsulation</strong>).</p>
+        <div class="flow">
+          <div class="node">App</div><div class="arrow">↓</div>
+          <div class="node">Presentation</div><div class="arrow">↓</div>
+          <div class="node">Session</div><div class="arrow">↓</div>
+          <div class="node">Transport</div><div class="arrow">↓</div>
+          <div class="node">Network</div><div class="arrow">↓</div>
+          <div class="node">Data Link</div><div class="arrow">↓</div>
+          <div class="node">Physical</div>
+        </div>
+        <div class="divider-note">...signal travels across the wire/air...</div>
+        <div class="flow">
+          <div class="node">Physical</div><div class="arrow">↑</div>
+          <div class="node">Data Link</div><div class="arrow">↑</div>
+          <div class="node">Network</div><div class="arrow">↑</div>
+          <div class="node">Transport</div><div class="arrow">↑</div>
+          <div class="node">Session</div><div class="arrow">↑</div>
+          <div class="node">Presentation</div><div class="arrow">↑</div>
+          <div class="node">App (friend receives)</div>
+        </div>
+      </section>
+
+      <!-- 06 OSI UPPER -->
+      <section id="osi-upper">
+        <div class="eyebrow">Models · OSI Layers 7–5</div>
+        <h2 class="pagetitle">Application, Presentation, Session</h2>
+        <p class="subtitle">The three top layers — closest to the human, furthest from the wire.</p>
+
+        <div class="layer-card" style="border-left-color:var(--signal);">
+          <div class="lh"><span class="lnum">L7</span><span class="lname">Application Layer</span><span class="ltag">user-facing</span></div>
+          <p>The layer the user directly interacts with — it's where applications and software live. This is the layer that's implemented inside browsers, WhatsApp, email clients, and games.</p>
+          <ul class="plain">
+            <li>Defines the protocols apps use to communicate: HTTP/S, DHCP, FTP, SMTP, POP3/IMAP, SSH, Telnet</li>
+            <li>Implements the client-server architecture at the software level</li>
+          </ul>
+          <div class="example"><div class="label">Example</div><p>When you open WhatsApp and send a message, the WhatsApp app itself — and the protocol it uses to format/send that message — is the Application Layer in action.</p></div>
+        </div>
+
+        <div class="layer-card" style="border-left-color:var(--amber);">
+          <div class="lh"><span class="lnum">L6</span><span class="lname">Presentation Layer</span><span class="ltag">translator</span></div>
+          <p>Responsible for converting data into a machine-representable binary format the receiving system can understand — essentially a translator between application-layer data and the network.</p>
+          <ul class="plain">
+            <li><strong>Translation</strong> — converting between different data formats (e.g. character encodings)</li>
+            <li><strong>Encryption / decryption</strong> — securing the data, e.g. via the <strong>SSL/TLS</strong> protocol</li>
+            <li><strong>Abstraction</strong> — hides format differences from the application layer above it</li>
+          </ul>
+        </div>
+
+        <div class="layer-card" style="border-left-color:var(--signal2);">
+          <div class="lh"><span class="lnum">L5</span><span class="lname">Session Layer</span><span class="ltag">connection manager</span></div>
+          <p>Sets up, manages, and terminates the "conversation" (session) between two devices — enabling them to send and receive data in an organized session, then properly closing it when done.</p>
+          <ul class="plain">
+            <li><strong>Authentication</strong> — verifying identity before a session starts</li>
+            <li><strong>Authorization</strong> — confirming what the authenticated party is allowed to do</li>
+          </ul>
+          <div class="example"><div class="label">Example</div><p>Logging into a video call: establishing who you are and opening the session is Layer 5's job; the actual video/audio streaming that follows belongs to lower layers.</p></div>
+        </div>
+      </section>
+
+      <!-- 07 TRANSPORT -->
+      <section id="osi-transport">
+        <div class="eyebrow">Models · OSI Layer 4</div>
+        <h2 class="pagetitle">Transport Layer</h2>
+        <p class="subtitle">The layer responsible for getting data reliably (or quickly) from one application to another.</p>
+
+        <div class="layer-card" style="border-left-color:var(--signal);">
+          <div class="lh"><span class="lnum">L4</span><span class="lname">Transport Layer</span><span class="ltag">TCP / UDP</span></div>
+          <p>Defines the protocol used to actually transport data — primarily TCP or UDP — and is responsible for several critical jobs:</p>
+          <ul class="plain">
+            <li><strong>Segmentation</strong> — breaking large chunks of application data into smaller, manageable segments</li>
+            <li><strong>Port numbers</strong> — attaching source and destination ports so the data reaches the right application</li>
+            <li><strong>Sequence numbers</strong> — labelling segments so they can be reassembled in the correct order at the destination, even if they arrive out of order</li>
+            <li><strong>Flow control</strong> — regulating how much data is sent at a time so the receiver isn't overwhelmed</li>
+            <li><strong>Checksum</strong> — a value used to verify data wasn't corrupted in transit (acknowledging integrity)</li>
+          </ul>
+        </div>
+
+        <div class="example"><div class="label">Analogy continued</div><p>Going back to the courier analogy: the Transport Layer is like the courier company deciding to split a large shipment into multiple labeled boxes, numbering each box so they can be reassembled correctly, and tracking whether each box actually arrived.</p></div>
+
+        <h3 class="h">Why Transport, not Network, does multiplexing</h3>
+        <p>Network-layer routing only gets data to the correct <em>machine</em>. It's the Transport Layer's job to then get it to the correct <em>application running on that machine</em> — this is covered in depth in the TCP vs UDP deep dive.</p>
+      </section>
+
+      <!-- 08 NETWORK -->
+      <section id="osi-network">
+        <div class="eyebrow">Models · OSI Layer 3</div>
+        <h2 class="pagetitle">Network Layer</h2>
+        <p class="subtitle">Where routers live, and where data crosses from one network to another.</p>
+
+        <div class="layer-card" style="border-left-color:var(--amber);">
+          <div class="lh"><span class="lnum">L3</span><span class="lname">Network Layer</span><span class="ltag">IP / routers</span></div>
+          <p>Handles transmission of data segments from one computer to another computer located on a <em>different</em> network — this is precisely where <strong>routers</strong> operate.</p>
+          <ul class="plain">
+            <li><strong>Logical addressing</strong> — wrapping data in an IP packet with the correct source/destination address</li>
+            <li><strong>Path selection</strong> — routers calculate the best path using algorithms like <strong>Dijkstra's shortest path algorithm</strong></li>
+            <li><strong>Load balancing</strong> — distributing traffic across multiple available paths/servers</li>
+          </ul>
+        </div>
+        <div class="divider-note">Full depth on IP addressing, classes, subnetting, packet headers, and NAT is covered in the dedicated IP Addressing and NAT sections.</div>
+      </section>
+
+      <!-- 09 OSI LOWER -->
+      <section id="osi-lower">
+        <div class="eyebrow">Models · OSI Layers 2–1</div>
+        <h2 class="pagetitle">Data Link & Physical Layer</h2>
+        <p class="subtitle">The last two layers — where logical addressing becomes electrical reality.</p>
+
+        <div class="layer-card" style="border-left-color:var(--signal2);">
+          <div class="lh"><span class="lnum">L2</span><span class="lname">Data Link Layer</span><span class="ltag">MAC / frames</span></div>
+          <p>Responsible for direct communication between two devices on the <em>same</em> local network/host — converts network-layer packets into <strong>frames</strong> ready for physical transmission.</p>
+          <ul class="plain">
+            <li><strong>MAC addresses</strong> — sender and receiver are each tagged with a unique hardware address (a 12-digit alphanumeric identifier burned into the network interface)</li>
+            <li><strong>Framing</strong> — wraps the packet with header/trailer info to form a frame</li>
+            <li><strong>Error detection</strong> — catches corrupted frames before they're passed up</li>
+          </ul>
+        </div>
+
+        <div class="layer-card" style="border-left-color:var(--ink-faint);">
+          <div class="lh"><span class="lnum">L1</span><span class="lname">Physical Layer</span><span class="ltag">raw bits</span></div>
+          <p>The actual hardware layer — where data finally becomes physical signal.</p>
+          <ul class="plain">
+            <li>Electrical signals over copper cable (bits as voltage levels)</li>
+            <li>Light signals over fiber optic cable</li>
+            <li>Radio waves for wireless transmission</li>
+          </ul>
+        </div>
+
+        <div class="def"><div class="label">Connecting the dots</div><p>By the time data reaches Layer 1, every layer above it has already wrapped its own header around the original message — what hits the wire is the original application data, plus presentation/session info, plus a transport segment header, plus a network packet header, plus a data link frame header, all nested like Russian dolls.</p></div>
+      </section>
+
+      <!-- 10 TCPIP -->
+      <section id="tcpip">
+        <div class="eyebrow">Models</div>
+        <h2 class="pagetitle">TCP/IP Model</h2>
+        <p class="subtitle">The practical, simplified model the real internet is actually built on.</p>
+
+        <p>Also called the <strong>Internet Protocol Suite</strong>. While OSI is a 7-layer <em>conceptual</em> reference model used for teaching and design, TCP/IP is the simpler <strong>5-layer practical</strong> model that real-world networking protocols actually map onto.</p>
+
+        <table>
+          <tr><th>OSI (7 layers)</th><th>TCP/IP (5 layers)</th></tr>
+          <tr><td>Application, Presentation, Session</td><td><strong>Application</strong></td></tr>
+          <tr><td>Transport</td><td><strong>Transport</strong></td></tr>
+          <tr><td>Network</td><td><strong>Network (Internet)</strong></td></tr>
+          <tr><td>Data Link</td><td><strong>Data Link</strong></td></tr>
+          <tr><td>Physical</td><td><strong>Physical</strong></td></tr>
+        </table>
+
+        <div class="def"><div class="label">Key distinction</div><p><strong>OSI is concept-based</strong> — it exists to help engineers reason about and design networking systems in clean, separated responsibilities. <strong>TCP/IP is implementation-based</strong> — it's the actual model the internet runs on, where the top three OSI layers are collapsed into one practical Application layer.</p></div>
+      </section>
+
+      <!-- 11 HTTP -->
+      <section id="http">
+        <div class="eyebrow">Deep Dives · Application Layer</div>
+        <h2 class="pagetitle">HTTP & the Web</h2>
+        <p class="subtitle">The protocol underneath every webpage you've ever loaded.</p>
+
+        <div class="def"><div class="label">Definition</div><p><strong>HTTP</strong> (HyperText Transfer Protocol) is an application-layer protocol that defines how a client requests a resource from a server, and how the server formats its response. HTTP itself runs <strong>on top of TCP</strong> — TCP guarantees the underlying bytes actually arrive, HTTP defines what those bytes mean.</p></div>
+
+        <h4 class="h4">Stateless by design</h4>
+        <p>HTTP is a <strong>stateless protocol</strong> — by default, each request is independent and the server doesn't remember anything about previous requests from the same client. This is exactly why <strong>cookies</strong> exist: to layer state on top of a fundamentally stateless protocol.</p>
+
+        <h4 class="h4">HTTP Methods</h4>
+        <table class="tight">
+          <tr><th>Method</th><th>Purpose</th></tr>
+          <tr><td class="mono">GET</td><td>Retrieve a resource, no side effects</td></tr>
+          <tr><td class="mono">POST</td><td>Create a new resource / submit data</td></tr>
+          <tr><td class="mono">PUT</td><td>Replace a resource entirely</td></tr>
+          <tr><td class="mono">PATCH</td><td>Partially update a resource</td></tr>
+          <tr><td class="mono">DELETE</td><td>Remove a resource</td></tr>
+        </table>
+
+        <h4 class="h4">Status codes</h4>
+        <table class="tight">
+          <tr><th>Range</th><th>Meaning</th></tr>
+          <tr><td class="mono">1xx</td><td>Informational</td></tr>
+          <tr><td class="mono">2xx</td><td>Success</td></tr>
+          <tr><td class="mono">3xx</td><td>Redirection</td></tr>
+          <tr><td class="mono">4xx</td><td>Client mistake (bad request, unauthorized, not found)</td></tr>
+          <tr><td class="mono">5xx</td><td>Server error</td></tr>
+        </table>
+
+        <h4 class="h4">Request & Response headers</h4>
+        <p>Both requests and responses carry metadata in <strong>headers</strong> — e.g. content type, content length, and <span class="inline-code">Keep-Alive</span> settings, which define a timeout for how long a TCP connection should stay open for reuse before being closed, avoiding the overhead of reconnecting for every single request.</p>
+
+        <h4 class="h4">Cookies</h4>
+        <div class="def"><div class="label">Definition</div><p>A <strong>cookie</strong> is a small unique string set by a server and stored in the client's browser, used to maintain state across otherwise-stateless HTTP requests (e.g. staying logged in).</p></div>
+        <ul class="plain">
+          <li>The first time you visit a site, the server sets the cookie in your browser.</li>
+          <li>On every subsequent visit, the browser automatically sends that cookie back, letting the server recognize you.</li>
+          <li>Cookies have an <strong>expiration date</strong>, after which they're discarded.</li>
+          <li><strong>Third-party cookies</strong> — cookies set for domains other than the one you're actually visiting (commonly used for cross-site tracking/ads).</li>
+        </ul>
+      </section>
+
+      <!-- 12 DNS -->
+      <section id="dns">
+        <div class="eyebrow">Deep Dives · Application Layer</div>
+        <h2 class="pagetitle">DNS — Domain Name System</h2>
+        <p class="subtitle">How a human-readable name like google.com turns into a machine-routable IP address.</p>
+
+        <div class="def"><div class="label">Definition</div><p><strong>DNS</strong> maps human-friendly domain names to the numeric IP addresses computers actually use to route data — without it, you'd need to memorize IP addresses for every website.</p></div>
+
+        <h4 class="h4">Anatomy of a domain name</h4>
+        <p>Take <span class="inline-code">mail.google.com</span>:</p>
+        <table class="tight">
+          <tr><th>Part</th><th>Example</th><th>Role</th></tr>
+          <tr><td>Sub-domain</td><td class="mono">mail</td><td>A specific service within the domain</td></tr>
+          <tr><td>Second-level domain (SLD)</td><td class="mono">google</td><td>The registered organization name</td></tr>
+          <tr><td>Top-level domain (TLD)</td><td class="mono">com</td><td>The broad category/registry (.com, .org, .io)</td></tr>
+        </table>
+        <p>The TLD-specific name servers are managed under root authority by <strong>ICANN</strong> (Internet Corporation for Assigned Names and Numbers) — note that domains are technically <em>rented</em> (registered for a renewable period), never permanently "bought."</p>
+
+        <h4 class="h4">The resolution chain — root → TLD → domain</h4>
+        <div class="flow">
+          <div class="node">Root DNS Servers</div><div class="arrow">→</div>
+          <div class="node">.io / .org / .com (TLD servers)</div><div class="arrow">→</div>
+          <div class="node">student.io / commonsense.org / google.com (SLD)</div>
+        </div>
+        <p>The <strong>root DNS servers</strong> are the first point of contact in global DNS resolution — they don't know the final IP, but they know which TLD server to point to next, which in turn points to the specific domain's name servers.</p>
+
+        <h4 class="h4">Full step-by-step lookup, typing google.com</h4>
+        <ol class="plain">
+          <li>Your computer first checks its <strong>own local cache</strong> — if you've visited recently, the IP may already be saved locally.</li>
+          <li>If not cached, the request goes to your <strong>ISP's local DNS server</strong> — the first external point of contact.</li>
+          <li>If the local DNS server doesn't have it cached either, it queries a <strong>root server</strong>.</li>
+          <li>The root server doesn't know the IP, but acknowledges and redirects to the correct <strong>TLD server</strong> (e.g. the .com server).</li>
+          <li>The TLD server returns the IP address of <span class="inline-code">google.com</span>'s actual name server.</li>
+          <li>Your computer finally connects directly to <span class="inline-code">google.com</span>'s server using the resolved IP.</li>
+        </ol>
+
+        <div class="example"><div class="label">Try it</div><p>Run <span class="inline-code">dig google.com</span> in a terminal to see the full DNS resolution trace yourself, or <span class="inline-code">man dig</span> to read the manual for all available options.</p></div>
+      </section>
+
+      <!-- 13 EMAIL -->
+      <section id="email">
+        <div class="eyebrow">Deep Dives · Application Layer</div>
+        <h2 class="pagetitle">Email — SMTP / POP3 / IMAP</h2>
+        <p class="subtitle">Three protocols, three different jobs in the lifecycle of an email.</p>
+
+        <h4 class="h4">Sending — SMTP</h4>
+        <div class="def"><div class="label">Definition</div><p><strong>SMTP</strong> (Simple Mail Transfer Protocol) is the application-layer protocol used to <em>send</em> email between mail servers, running over TCP so no data is lost in transit.</p></div>
+        <div class="flow">
+          <div class="node">Sender</div><div class="arrow">→</div>
+          <div class="node">Sender's SMTP server</div><div class="arrow">→</div>
+          <div class="node">Receiver's SMTP server</div><div class="arrow">→</div>
+          <div class="node">Receiver</div>
+        </div>
+        <p>To find which server handles mail for a domain, a special DNS record is queried — the <strong>MX (Mail Exchange) record</strong>, checkable via <span class="inline-code">dig -type=mx gmail.com</span>.</p>
+
+        <h4 class="h4">Receiving (download & delete) — POP3</h4>
+        <div class="def"><div class="label">Definition</div><p><strong>POP3</strong> (Post Office Protocol v3) runs on <strong>port 110</strong>. The client authenticates with the POP server, downloads all mail to the local device, then typically <strong>deletes it from the server</strong>, and closes the session.</p></div>
+        <div class="divider-note">Limitation: because mail is downloaded and removed, POP3 doesn't sync well across multiple devices — your inbox on your phone and laptop can end up out of sync.</div>
+
+        <h4 class="h4">Receiving (multi-device sync) — IMAP</h4>
+        <div class="def"><div class="label">Definition</div><p><strong>IMAP</strong> (Internet Message Access Protocol) allows your email to remain on the server and stay synced across multiple devices — instead of downloading and deleting, it mirrors the server-side state on every device.</p></div>
+      </section>
+
+      <!-- 14 TCP UDP -->
+      <section id="tcpudp">
+        <div class="eyebrow">Deep Dives · Transport Layer</div>
+        <h2 class="pagetitle">TCP vs UDP — Deep Dive</h2>
+        <p class="subtitle">The two transport protocols, and why an application picks one over the other.</p>
+
+        <h3 class="h">Multiplexing & demultiplexing</h3>
+        <div class="grid2">
+          <div class="def"><div class="label">Multiplexing</div><p>Allows many different streams (a message, a file, a video call) to all be sent to the destination through one shared medium/connection, by the Transport Layer combining them with distinct port numbers.</p></div>
+          <div class="def"><div class="label">Demultiplexing</div><p>The reverse process on the receiving end — using <strong>sockets</strong> (the gateway between an application and the network, identified by IP + port) to correctly route incoming data back to the right application.</p></div>
+        </div>
+
+        <h3 class="h">Checksums — how corruption is detected</h3>
+        <p>Both TCP and UDP use checksums to detect data corruption:</p>
+        <ol class="plain">
+          <li>The sender computes a checksum value from the data using a defined algorithm and attaches it alongside the data.</li>
+          <li>The data + checksum travel together across the network.</li>
+          <li>The receiver re-runs the same algorithm on the received data and compares the result against the attached checksum.</li>
+          <li>If they match, the data is assumed intact; if not, it's flagged as corrupted.</li>
+        </ol>
+
+        <h3 class="h">Reliability mechanics — timers, ACKs, sequencing</h3>
+        <ul class="plain">
+          <li>When data is sent, a <strong>timer</strong> starts.</li>
+          <li>An <strong>acknowledgement (ACK)</strong> from the receiver stops the timer, confirming successful delivery.</li>
+          <li>If no ACK arrives before the timer expires, a <strong>retransmission</strong> is triggered.</li>
+          <li><strong>Problem:</strong> if data was actually received but the ACK itself was lost, naive retransmission would cause <strong>duplicate data</strong>.</li>
+          <li><strong>Solution:</strong> <strong>sequence numbers</strong> let the receiver recognize and discard duplicates, and reassemble data in the correct order even if packets arrive out of sequence.</li>
+        </ul>
+
+        <h3 class="h">UDP — User Datagram Protocol</h3>
+        <div class="def"><div class="label">Definition</div><p>UDP is a lightweight, <strong>connectionless</strong> transport protocol. It sends data without establishing a dedicated connection first, and without guaranteeing delivery, order, or integrity beyond a basic checksum.</p></div>
+        <ul class="plain">
+          <li>Data <strong>may or may not</strong> be delivered — no acknowledgements, no retransmission</li>
+          <li>Data may be received out of order, damaged, or duplicated — UDP doesn't fix any of that itself</li>
+          <li>Still uses a checksum, but doesn't act on a failure beyond detecting it</li>
+          <li><strong>Why use it anyway:</strong> it's much faster, because it skips all the handshake/acknowledgement/retransmission overhead</li>
+        </ul>
+        <p><strong>Common uses:</strong> video conferencing, online gaming, and DNS lookups — all cases where speed matters more than guaranteed perfect delivery (a slightly garbled video frame is fine; waiting for a perfect retransmitted one isn't).</p>
+
+        <h4 class="h4">UDP Packet structure</h4>
+        <p>Total header size: <strong>8 bytes</strong>, split into four 2-byte fields:</p>
+        <table class="tight">
+          <tr><th>Field</th><th>Size</th></tr>
+          <tr><td>Source Port No.</td><td>2 bytes</td></tr>
+          <tr><td>Destination Port No.</td><td>2 bytes</td></tr>
+          <tr><td>Length of datagram</td><td>2 bytes</td></tr>
+          <tr><td>Checksum</td><td>2 bytes</td></tr>
+          <tr><td>Data (payload)</td><td>variable</td></tr>
+        </table>
+        <p class="mono" style="font-size:12.5px; color:var(--ink-faint);">4 fields × 2 bytes = 8 bytes header (16 bits each × 4 = 64 bits = 8 bytes)</p>
+
+        <div class="example"><div class="label">Try it</div><p>Run <span class="inline-code">tcpdump -c 5</span> in a terminal (with sufficient permissions) to capture and inspect the first 5 live packets crossing your network interface.</p></div>
+
+        <h3 class="h">TCP — Transmission Control Protocol</h3>
+        <div class="def"><div class="label">Definition</div><p>TCP is a <strong>connection-oriented</strong>, reliable transport protocol. Before any data is sent, both sides establish a dedicated connection, and TCP guarantees that data arrives complete, uncorrupted, and in the correct order.</p></div>
+        <ul class="plain">
+          <li>Application layer hands TCP large amounts of raw data; TCP divides it into chunks, adds headers and a checksum to each</li>
+          <li>Tracks two critical things: data that doesn't arrive (via timers/retransmission) and data order (via sequence numbers)</li>
+          <li><strong>Congestion control</strong> — dynamically adjusts how much data is sent based on network conditions, to avoid overwhelming the network</li>
+        </ul>
+
+        <h4 class="h4">The Three-Way Handshake</h4>
+        <p>Before any actual data flows, TCP establishes a connection using a three-step exchange:</p>
+        <div class="flow">
+          <div class="node">Client → SYN (seq=x)</div><div class="arrow">→</div>
+          <div class="node">Server</div>
+        </div>
+        <div class="flow">
+          <div class="node">Server → SYN-ACK (seq=y, ack=x+1)</div><div class="arrow">→</div>
+          <div class="node">Client</div>
+        </div>
+        <div class="flow">
+          <div class="node">Client → ACK (seq=x+1, ack=y+1)</div><div class="arrow">→</div>
+          <div class="node">Server</div>
+        </div>
+        <ol class="plain">
+          <li><strong>SYN</strong> — client sends a synchronization flag with an initial sequence number, requesting a connection.</li>
+          <li><strong>SYN-ACK</strong> — server acknowledges and sends its own sequence number back (a mathematically derived next value).</li>
+          <li><strong>ACK</strong> — client acknowledges the server's sequence number, and the connection is now fully established — data can now flow bidirectionally.</li>
+        </ol>
+
+        <h3 class="h">TCP vs UDP — side by side</h3>
+        <table>
+          <tr><th></th><th>TCP</th><th>UDP</th></tr>
+          <tr><td><strong>Connection</strong></td><td>Connection-oriented (handshake first)</td><td>Connectionless</td></tr>
+          <tr><td><strong>Reliability</strong></td><td>Guaranteed delivery, retransmits lost data</td><td>Best-effort, no guarantees</td></tr>
+          <tr><td><strong>Ordering</strong></td><td>Guaranteed in-order delivery</td><td>No ordering guarantee</td></tr>
+          <tr><td><strong>Speed</strong></td><td>Slower (overhead of handshake, ACKs)</td><td>Faster (minimal overhead)</td></tr>
+          <tr><td><strong>Header size</strong></td><td>20 bytes minimum</td><td>8 bytes fixed</td></tr>
+          <tr><td><strong>Use cases</strong></td><td>Web (HTTP), email, file transfer</td><td>Video calls, gaming, DNS</td></tr>
+        </table>
+      </section>
+
+      <!-- 15 IP -->
+      <section id="ip">
+        <div class="eyebrow">Deep Dives · Network Layer</div>
+        <h2 class="pagetitle">IP Addressing & Subnetting</h2>
+        <p class="subtitle">How packets get routed, classed, and divided across the global network.</p>
+
+        <h3 class="h">Routing fundamentals</h3>
+        <p>Every router maintains a <strong>routing table</strong> (a data structure mapping destination addresses to the next hop) — when computer A sends data to computer B, it doesn't go directly; it's relayed <strong>hop-by-hop</strong> through a chain of routers, each forwarding it one step closer using its own table, until it reaches the destination.</p>
+        <p>In graph terms: routers are <strong>nodes</strong>, the links between them are <strong>edges</strong> — and finding the best path through this graph is a routing/shortest-path problem.</p>
+        <div class="grid2">
+          <div class="def"><div class="label">Static routing</div><p>Routes are configured manually by an administrator — simple but doesn't adapt to network changes.</p></div>
+          <div class="def"><div class="label">Dynamic routing</div><p>Routes are computed and updated automatically as the network changes, using algorithms like Bellman-Ford or Dijkstra's algorithm.</p></div>
+        </div>
+        <p>The component that builds and maintains these routing tables is referred to as the <strong>control plane</strong> of the network.</p>
+
+        <h3 class="h">IPv4 vs IPv6</h3>
+        <table>
+          <tr><th></th><th>IPv4</th><th>IPv6</th></tr>
+          <tr><td><strong>Bit length</strong></td><td>32 bits</td><td>128 bits</td></tr>
+          <tr><td><strong>Format</strong></td><td>4 decimal "octets" (e.g. 192.168.2.30)</td><td>8 groups of hexadecimal (e.g. ABFE:F001:3210:9182:0:0:1:2)</td></tr>
+          <tr><td><strong>Address space</strong></td><td>2³² ≈ 4.3 billion unique addresses</td><td>2¹²⁸ ≈ 3.403 × 10³⁸ unique addresses</td></tr>
+          <tr><td><strong>Adoption challenge</strong></td><td>—</td><td>Not backward compatible with IPv4; requires significant ISP/hardware migration</td></tr>
+        </table>
+        <p>An IPv4 address like <span class="inline-code">192.168.2.30</span> splits into a <strong>network/subnet ID</strong> (e.g. <span class="inline-code">192.168.2</span>) identifying which network the device belongs to, and a <strong>device/host address</strong> (the final <span class="inline-code">30</span>) identifying the specific machine within that network.</p>
+
+        <h3 class="h">IPv4 address classes</h3>
+        <table class="tight">
+          <tr><th>Class</th><th>Range</th><th>Typical use</th></tr>
+          <tr><td><strong>A</strong></td><td>0.0.0.0 – 127.255.255.255</td><td>Very large networks (few networks, huge host count)</td></tr>
+          <tr><td><strong>B</strong></td><td>128.0.0.0 – 191.255.255.255</td><td>Medium-to-large networks</td></tr>
+          <tr><td><strong>C</strong></td><td>192.0.0.0 – 223.255.255.255</td><td>Small networks (most common, e.g. home routers)</td></tr>
+          <tr><td><strong>D</strong></td><td>224.0.0.0 – 239.255.255.255</td><td>Multicast addressing</td></tr>
+          <tr><td><strong>E</strong></td><td>240.0.0.0 – 255.255.255.255</td><td>Reserved, experimental use</td></tr>
+        </table>
+
+        <h3 class="h">Subnet masking</h3>
+        <div class="def"><div class="label">Definition</div><p>A <strong>subnet mask</strong> "masks" the network portion of an IP address, leaving the remaining bits to identify the specific host. It tells devices which part of an address is the network and which part is the individual device.</p></div>
+        <p>For a Class C address, the default mask is <span class="inline-code">255.255.255.0</span> — the first three octets identify the network, the last identifies the host. <strong>CIDR notation</strong> (e.g. <span class="inline-code">/24</span>) is the modern compact way to express this, where the number indicates how many leading bits are the network portion.</p>
+
+        <div class="example"><div class="label">Worked example — variable length subnetting</div>
+        <p>Given <span class="inline-code">192.0.1.0/24</span>: the network covers addresses from <strong>192.0.1.0</strong> (start) to <strong>192.0.1.255</strong> (end) — 256 total addresses, with the /24 meaning the first 24 bits are fixed as the network portion, leaving 8 bits (2⁸ = 256) for host addresses within it.</p></div>
+
+        <h3 class="h">Reserved & special addresses</h3>
+        <ul class="plain">
+          <li><span class="inline-code">127.0.0.0/8</span> — the <strong>loopback</strong> range. <span class="inline-code">127.0.0.1</span> specifically is "localhost" — it lets a device contact itself, useful for a machine acting as both client and server during local development/testing.</li>
+        </ul>
+
+        <h3 class="h">Anatomy of an IP packet header</h3>
+        <p>Every IP packet carries a 20-byte header containing:</p>
+        <div class="grid3">
+          <div class="chip on">Version (IPV)</div>
+          <div class="chip on">Header Length</div>
+          <div class="chip on">Identification</div>
+          <div class="chip on">Flags</div>
+          <div class="chip on">Protocol</div>
+          <div class="chip on">Checksum</div>
+          <div class="chip on">Source Address</div>
+          <div class="chip on">Destination Address</div>
+          <div class="chip on">TTL</div>
+        </div>
+        <div class="def"><div class="label">TTL — Time To Live</div><p>A counter that decreases by 1 at every router hop. It exists because packets can sometimes get stuck looping between routers — once TTL hits 0, the packet is dropped, preventing it from circulating forever. A typical starting TTL value is around 60–64.</p></div>
+
+        <h3 class="h">Middleboxes — Firewalls</h3>
+        <p>A <strong>firewall</strong> is an extra device sitting between your trusted internal network and the broader, untrusted internet, filtering traffic based on configurable rules.</p>
+        <ul class="plain">
+          <li>Filters by source/destination <strong>address</strong></li>
+          <li>Filters by <strong>port number</strong></li>
+          <li>Filters by <strong>protocol</strong> and packet <strong>flags</strong></li>
+        </ul>
+        <div class="grid2">
+          <div class="def"><div class="label">Stateless firewall</div><p>Examines each packet in isolation against static rules — faster but less context-aware.</p></div>
+          <div class="def"><div class="label">Stateful firewall</div><p>Tracks the state of active connections, allowing traffic that's part of a connection it already recognizes as legitimate (e.g. a response to a request you sent) — more secure but more resource-intensive.</p></div>
+        </div>
+      </section>
+
+      <!-- 16 NAT -->
+      <section id="nat">
+        <div class="eyebrow">Deep Dives · Network Layer</div>
+        <h2 class="pagetitle">NAT & Private Addressing</h2>
+        <p class="subtitle">How millions of home devices share a single public IP address.</p>
+
+        <div class="def"><div class="label">Definition</div><p><strong>NAT</strong> (Network Address Translation) is a technique that lets multiple devices on a private network share a single public IP address, by having the router rewrite source/destination addresses as packets cross between the private network and the public internet. This dramatically reduces global public IP address consumption.</p></div>
+
+        <p>Devices on a home/office network are typically assigned <strong>private IP addresses</strong> (e.g. the 192.168.x.x range), which only have meaning inside that local network — the wider internet has no idea those addresses exist.</p>
+
+        <div class="example"><div class="label">Worked example — Host ↔ Server through NAT</div>
+        <p>A host at <strong>10.0.0.1</strong> on a private network wants to reach a server at <strong>200.100.10.1</strong> on the internet, via a router whose public-facing IP is <strong>150.150.0.1</strong>:</p>
+        <table class="tight">
+          <tr><th>Hop</th><th>Source IP</th><th>Destination IP</th></tr>
+          <tr><td>Host → Router</td><td>10.0.0.1</td><td>200.100.10.1</td></tr>
+          <tr><td>Router → Internet (after NAT)</td><td><strong>150.150.0.1</strong> (rewritten)</td><td>200.100.10.1</td></tr>
+        </table>
+        <p>The server only ever sees <strong>150.150.0.1</strong> as the source — it has no visibility into the private 10.0.0.1 address behind the router. On the way back, the router reverses the translation, rewriting the destination from 150.150.0.1 back to 10.0.0.1 so the reply reaches the correct internal host.</p></div>
+
+        <div class="example"><div class="label">Two devices, one router — subnetting in practice</div>
+        <p>Device A at <strong>192.168.1.1</strong> wants to reach facebook.com, which resolves to <strong>192.168.7.1</strong> on a network with subnet range <span class="inline-code">192.2.168.1.1 – 192.168.2.1</span>. Device B sits at <strong>192.168.2.1</strong> on a separate subnet. The router/gateway in the middle is responsible for knowing which subnet a destination belongs to and routing accordingly — exactly the role subnet masks play in deciding "is this destination local, or does it need to be routed elsewhere."</p></div>
+
+        <h4 class="h4">Why private IP ranges exist</h4>
+        <p>Because IPv4 only offers ~4.3 billion addresses total — far fewer than the number of internet-connected devices worldwide — reserved private ranges (like 192.168.x.x, 10.x.x.x) can be reused identically inside millions of separate home/office networks without conflict, since NAT means only the router's single public IP needs to be globally unique.</p>
+      </section>
+
+      <!-- 17 DATALINK -->
+      <section id="datalink">
+        <div class="eyebrow">Deep Dives · Data Link Layer</div>
+        <h2 class="pagetitle">MAC Addresses, ARP & Framing</h2>
+        <p class="subtitle">The last logical hop before data becomes a raw electrical signal.</p>
+
+        <h3 class="h">DHCP — getting an address automatically</h3>
+        <div class="def"><div class="label">Definition</div><p><strong>DHCP</strong> (Dynamic Host Configuration Protocol) automatically assigns IP addresses to new devices joining a network, from a pool of available addresses managed by a DHCP server.</p></div>
+        <div class="flow">
+          <div class="node">New device joins LAN</div><div class="arrow">→</div>
+          <div class="node">DHCP server (address pool)</div><div class="arrow">→</div>
+          <div class="node">Device receives an IP address</div>
+        </div>
+
+        <h3 class="h">MAC Addresses</h3>
+        <div class="def"><div class="label">Definition</div><p>A <strong>MAC address</strong> (Media Access Control address) is a hardware identifier permanently assigned to a network interface — every network-capable device has one, distinct from its (changeable) IP address.</p></div>
+        <p>Within a LAN, devices at the Data Link layer communicate using these MAC addresses, not IP addresses.</p>
+
+        <h3 class="h">ARP — Address Resolution Protocol</h3>
+        <div class="def"><div class="label">Definition</div><p><strong>ARP</strong> bridges the gap between Layer 3 and Layer 2 — it resolves a known IP address into the corresponding MAC address needed to actually deliver a frame on the local network. Resolved mappings are cached locally in what's called the <strong>ARP cache</strong>, avoiding repeated lookups for the same address.</p></div>
+
+        <h3 class="h">Frame anatomy</h3>
+        <p>Before a network-layer packet can hit the physical wire, the Data Link Layer wraps it into a <strong>frame</strong> containing (at minimum):</p>
+        <ul class="plain">
+          <li>The sender's Data Link layer address (MAC)</li>
+          <li>The IP address of the destination, carried inside the encapsulated packet</li>
+        </ul>
+        <div class="flow">
+          <div class="node">Network-layer packet</div><div class="arrow">→ wrapped into →</div>
+          <div class="node">Data Link frame</div>
+        </div>
+      </section>
+
+      <!-- 18 DEVICES -->
+      <section id="devices">
+        <div class="eyebrow">Hardware & Tools</div>
+        <h2 class="pagetitle">Networking Devices</h2>
+        <p class="subtitle">The physical building blocks that move bits between machines, organized by the OSI layer they operate at.</p>
+
+        <table>
+          <tr><th>Device</th><th>OSI Layer</th><th>What it does</th></tr>
+          <tr>
+            <td><strong>Repeater</strong></td><td>Physical (L1)</td>
+            <td>Regenerates a weakened or corrupted signal so it can travel further over the same network, restoring its original strength/shape.</td>
+          </tr>
+          <tr>
+            <td><strong>Hub</strong></td><td>Physical (L1)</td>
+            <td>A multi-port repeater — receives data on one port and broadcasts it to <strong>all</strong> connected devices. All hosts share one <strong>collision domain</strong>. Comes in <strong>Active</strong> (regenerates signal) and <strong>Passive</strong> (just splits the signal) variants.</td>
+          </tr>
+          <tr>
+            <td><strong>Bridge</strong></td><td>Data Link (L2)</td>
+            <td>Filters traffic by reading source/destination MAC addresses, intelligently interconnecting two LAN segments instead of blindly broadcasting like a hub. Comes as <strong>transparent bridges</strong> (invisible to hosts) and <strong>source routing bridges</strong> (path chosen by the source).</td>
+          </tr>
+          <tr>
+            <td><strong>Router</strong></td><td>Network (L3)</td>
+            <td>Forwards packets between different networks based on IP addresses, using routing tables and path-selection algorithms.</td>
+          </tr>
+          <tr>
+            <td><strong>Gateway</strong></td><td>Any / multiple</td>
+            <td>A passage connecting two networks that may run on entirely different networking models/protocols — translates between them.</td>
+          </tr>
+          <tr>
+            <td><strong>Brouter</strong></td><td>L2/L3 hybrid</td>
+            <td>A combination device that behaves as both a bridge and a router, depending on the traffic.</td>
+          </tr>
+        </table>
+
+        <div class="def"><div class="label">Why hubs lost to switches</div><p>Although not explicitly named in the original notes, the practical successor to the hub is the <strong>switch</strong> — it behaves like a smarter hub that, similar to a bridge, reads MAC addresses and forwards data only to the specific port the destination device is on, rather than broadcasting to everyone. This is why switches replaced hubs in virtually all modern wired networks.</p></div>
+      </section>
+
+      <!-- 19 COMMANDS -->
+      <section id="commands">
+        <div class="eyebrow">Hardware & Tools</div>
+        <h2 class="pagetitle">Command-Line Reference</h2>
+        <p class="subtitle">Every networking command worth knowing from a terminal, with what it actually shows you.</p>
+
+        <h4 class="h4">Find your public IP address</h4>
+        <pre>$ curl ifconfig.me -s
+<span class="c"># returns your machine's public-facing IP address</span></pre>
+
+        <h4 class="h4">Ping — round-trip time & packet loss</h4>
+        <pre>$ ping google.com
+
+PING google.com (142.250.77.238): 56 data bytes
+64 bytes from 142.250.77.238: icmp_seq=0 ttl=118 time=8.518 ms
+64 bytes from 142.250.77.238: icmp_seq=1 ttl=118 time=9.610 ms
+...
+--- google.com ping statistics ---
+11 packets transmitted, 11 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 7.685/9.245/11.478/1.016 ms</pre>
+        <div class="def"><div class="label">What it measures</div><p><strong>Ping</strong> measures the round-trip time (RTT) for a small message sent from your machine to a destination and echoed straight back — it's the fastest way to check if a host is reachable and how much latency exists on the path. The <span class="inline-code">ttl=118</span> shown is the Time-To-Live value remaining when the reply arrived, and <span class="inline-code">0.0% packet loss</span> confirms every packet round-tripped successfully.</p></div>
+
+        <h4 class="h4">DNS lookup</h4>
+        <pre>$ dig google.com          <span class="c"># full DNS resolution trace</span>
+$ man dig                 <span class="c"># manual / all available flags</span>
+$ dig -type=mx gmail.com  <span class="c"># find a domain's mail servers (MX records)</span></pre>
+
+        <h4 class="h4">Packet capture</h4>
+        <pre>$ tcpdump -c 5
+<span class="c"># captures the next 5 packets crossing a network interface, live</span></pre>
+
+        <h4 class="h4">Quick reference table</h4>
+        <table class="tight">
+          <tr><th>Command</th><th>Purpose</th></tr>
+          <tr><td class="mono">curl ifconfig.me -s</td><td>Show public IP address</td></tr>
+          <tr><td class="mono">ping &lt;host&gt;</td><td>Test reachability + measure RTT</td></tr>
+          <tr><td class="mono">dig &lt;domain&gt;</td><td>DNS lookup / resolution trace</td></tr>
+          <tr><td class="mono">tcpdump -c N</td><td>Capture N live packets</td></tr>
+        </table>
+      </section>
+
+      <!-- 20 BITS -->
+      <section id="bits">
+        <div class="eyebrow">Hardware & Tools</div>
+        <h2 class="pagetitle">Bits, Bytes & Number Reference</h2>
+        <p class="subtitle">Every bit-width that shows up across the stack, and what it's actually used for.</p>
+
+        <table>
+          <tr><th>Width</th><th>Used for</th><th>Possible values</th></tr>
+          <tr><td><strong>8-bit</strong></td><td>One octet of an IPv4 address (e.g. the "192" in 192.168.1.1)</td><td>2⁸ = 256 (0–255)</td></tr>
+          <tr><td><strong>16-bit</strong></td><td>Port numbers; each field in a UDP header (source port, dest port, length, checksum)</td><td>2¹⁶ = 65,536 (0–65,535)</td></tr>
+          <tr><td><strong>32-bit</strong></td><td>An entire IPv4 address; TCP sequence/acknowledgement numbers</td><td>2³² ≈ 4.3 billion</td></tr>
+          <tr><td><strong>128-bit</strong></td><td>An entire IPv6 address</td><td>2¹²⁸ ≈ 3.403 × 10³⁸</td></tr>
+        </table>
+
+        <h4 class="h4">Visualizing a 16-bit port field</h4>
+        <div class="bitviz">
+          <!-- 16 cells -->
+          <div class="bitcell">1</div><div class="bitcell">0</div><div class="bitcell">1</div><div class="bitcell">0</div>
+          <div class="bitcell">0</div><div class="bitcell">1</div><div class="bitcell">1</div><div class="bitcell">0</div>
+          <div class="bitcell">0</div><div class="bitcell">0</div><div class="bitcell">1</div><div class="bitcell">0</div>
+          <div class="bitcell">1</div><div class="bitcell">0</div><div class="bitcell">0</div><div class="bitcell">1</div>
+        </div>
+        <p>16 binary cells, each either 0 or 1 → 2¹⁶ total combinations ≈ 65,000 usable port numbers, split across the reserved (0–1023), registered (1024–49151), and dynamic/ephemeral (49152–65535) ranges.</p>
+
+        <h4 class="h4">Header sizes worth memorizing</h4>
+        <table class="tight">
+          <tr><th>Header</th><th>Size</th></tr>
+          <tr><td>UDP header</td><td>8 bytes (4 × 16-bit fields)</td></tr>
+          <tr><td>TCP header</td><td>20 bytes minimum</td></tr>
+          <tr><td>IP packet header</td><td>20 bytes</td></tr>
+          <tr><td>MAC address</td><td>48 bits (12 hex digits)</td></tr>
+        </table>
+
+        <h4 class="h4">Data rate units</h4>
+        <table class="tight">
+          <tr><th>Unit</th><th>Value</th></tr>
+          <tr><td>1 kbps</td><td>1,000 bits/sec</td></tr>
+          <tr><td>1 Mbps</td><td>1,000,000 bits/sec</td></tr>
+          <tr><td>1 Gbps</td><td>10⁹ bits/sec</td></tr>
+        </table>
+
+        <h4 class="h4">Address space scale, side by side</h4>
+        <div class="grid2">
+          <div class="def"><div class="label">IPv4 — 32 bit</div><p>2³² ≈ <strong>4.3 billion</strong> total addresses — already exhausted globally, which is the core reason NAT and IPv6 both exist.</p></div>
+          <div class="def"><div class="label">IPv6 — 128 bit</div><p>2¹²⁸ ≈ <strong>3.4 × 10³⁸</strong> addresses — for scale, enough to assign a unique address to every grain of sand on Earth many times over.</p></div>
+        </div>
+
+        <footer class="note">computer networks · field reference · compiled from course notes + whiteboard captures</footer>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const links = document.querySelectorAll('.navlink');
+const sections = document.querySelectorAll('section');
+function goto(id){
+  links.forEach(l=>l.classList.toggle('active', l.dataset.target===id));
+  sections.forEach(s=>s.classList.toggle('active', s.id===id));
+  document.querySelector('.content').scrollTop = 0;
+  window.scrollTo(0,0);
+  document.getElementById('sidebar').classList.remove('open');
+}
+links.forEach(l=> l.addEventListener('click', ()=> goto(l.dataset.target)) );
+document.getElementById('menubtn').addEventListener('click', ()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

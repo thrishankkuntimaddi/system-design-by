@@ -1,0 +1,833 @@
+Computer Networks
+
+computer connected together 
+
+COMPUTER = Commonly Oriented Machine Particularly used for Training Education and Research 
+
+Internet = collection of computer networks 
+
+
+Computer A -> Computer B  in a wide range 
+—————————————————— 
+
+How did it start..? 
+
+Arpa - advance research projects agency 
+
+Communicate a way each other 
+
+Arpa network 
+Satellite at MIT, Standard, VCLA, Utah
+
+TCP = transmission control Protocol 
+
+Protocols = Set of rules 
+
+Years and years completed and more computers added 
+
+www = World Wide Web = collection of documents 
+
+—————————————————— 
+
+Protocols (Rules) 
+
+-> region wise and rules by internet society 
+
+RFC Editor - Request For comments 
+
+Technical Terms 
+
+Protocols = 
+
+Google.com -> enter -> request -> server -> response 
+
+Client -> server
+
+IP Addresses 
+
+TCP = transmission control protocol = gurantee 
+
+UDP = user datagram protocol 
+
+HTTP = hyper text transfer protocol
+
+Data comes in chunks 
+
+Packets 
+
+Server is identified by IP address 
+
+$curl ifconfig.me -s -> gives IP address 
+
+ISP - Airtel 
+Gives modem/Router have global IP address 
+
+Inside modem connected to internal devices 
+
+And those have Ip address by DHCP 
+
+Port numbers identifying the applications 
+—————————————————— 
+Ports are 16 bits number 
+16 cells containing 0 1 
+
+Total ~ 2^16 = 65000 available 
+
+Pages using HTTP 
+But https dont know where to send but that is done by HTTP = 80, mongoDB = 27017, 0 - 1023 (reserved ports) 
+
+1024 - 49152 (specific application) 
+
+Remaining we can use 
+
+Internet 
+
+Computer A and computer B connected via internet via ISP 
+
+mega bits per second 
+1 mbps = 1000000 bits/s 
+1 gbps = 10^9 bits/s 
+1 kbps = 1000 bits/s 
+
+Upload speed and download speed 
+
+OSI model 
+
+Communication happen in two ways between computer 
+1. Guided way 
+    1. Path is already defined 
+2. Unguided way 
+    1. Communication is happening but no single path 
+    2. Wifi and bluetooth 
+
+How are countries connected? 
+1. Via cables across ocean 
+At this Submarinecablemap.com 
+
+
+￼
+
+Bigger entities and smaller entities and internet service provider 
+
+Google also have many things 
+
+Physical connected by optical cables coaxial cables 
+
+Wireless: radio channels 
+Shorter range: 	bluetooth, wifi
+Longer range: 3G, 4G, LTE, 5G 
+
+Because physical cables are faster 
+
+——————————————————
+
+LAN : local area network : small house/ area via ethernet cables, wifi 
+
+MAN : metropolitan Area network, across a city 
+
+WAN : wide area network, across countries 
+Sonet : synchronous optical networks 
+Frame relay : local area to wide area 
+
+Internet is collections of all these LAN, PAN, MAN, WAN 
+
+—————————————————— 
+
+Modem/Router : used to convert digital signals into analog signal and viceversa 
+
+For example : digital data to electrical signal 
+
+Ip : phone book of the internet 
+
+ISP : companies that provides us access to internet 
+
+Tier 1 : TATA 
+Tier 2: Airtel, Jio 
+
+Topologies : 
+1. BUS 
+￼
+2. RING 
+3. ￼
+
+Limitations 
+1. One connection is break then we won’t able to transfer data 
+2. Unnecessary calls
+
+
+—  
+3. STAR 
+￼
+Limitations: 
+1. Centralized device fails network go down 
+
+1. TREE (BUS AND STAR) 
+
+
+￼
+
+5. MESH 
+
+Every single connected to every other 
+￼
+
+1. Expensive 
+2. Scalability issues 
+—————————————————— 
+
+Structure of the Network 
+
+Amazon order -> amazon -> ship -> local delivery company -> transported -> India -> transport -> delivery -> amazon -> received 
+￼
+
+
+Application layer : interactive layer 
+
+OSI model 
+
+=> open system interconnections model 
+
+Standard way of communication between computers 
+
+1. Application Layer 
+    1. implementation in applications/software
+2. Presentation Layer 
+    1. Convert data into machine representable binary format 
+    2. Translation - encryption/ decrypted 
+    3. Abstraction 
+    4. SSL protocol 
+3. Session Layer 
+    1. Setting up and managing the connections and enables it sending and receiving data folllowed by termination of the connected sessions  
+    2. Authentication 
+    3. Authorization 
+4. Transport Layer 
+    1. Protocol to transport data using TCP/UDP 
+    2. Segmentation - small data 
+    3. Port number (destination and sequence number) 
+    4. Sequence number basically helps to resembles the segments in the correct order  
+    5. Flow control - how much data is transferred 
+    6. Check sum - acknowledging 
+    7. TCp/UDP 
+5. Network Layer 
+    1. Transmission of thread data segments from one computer to other computer that is located in a different network 
+    2. Router leaves here 
+    3. Logical addressing : IP packet (correct destination) 
+    4. Path by Dijsktra algorithms 
+    5. Load balancing 
+6. DataLink Layer 
+    1. Directly communicate with computer host.. 
+    2. Logical addressing 
+    3. Error detection 
+    4. MAC addresses are sender and receiver are assigned to the data  
+    5. To form a frame 
+    6. 12 digit alpha numeric number of the computer interface 
+￼
+7. Physical Layer 
+    1. Hardware section 
+    2. Electrical signals bit
+    3. Light signal 
+
+RAW example 
+￼
+
+——————————————————— 
+
+Another model 
+
+TCP/IP model 
+
+Internet protocol suite 
+
+1. Application layer 
+2. Transport layer 
+3. Network layer 
+4. Datalink layer
+5. Physical layer 
+
+OSI : Concept based 
+
+——————————————————— 
+
+1. Application Layer 
+
+Responsibilities 
+1. User Interact with this 
+    1. Example : WhatsApp, browsers 
+2. Where on devices 
+3. Protocols : rules 
+4. Client server architecture 
+
+
+,
+Client <->req and res <->  server 
+
+Application parts 
+
+Client part and server part 
+
+Collections of computer are data centers - high upload speed 
+
+
+Cmd : Ping google.com 
+Having packets 
+
+￼
+
+Ping - measure the round trip time for message sent from the originating host to the destination of computer echoed back 
+
+And getting best speed 
+
+1. Pear to pear architecture 
+2. Advantage 
+    1. Scale rapidly 
+    2. Decentralized network 
+
+Networking devices 
+1. Repeater
+    1. At physical layer, regenerate the signal over same network because the signal becomes too weak or corrupted transmitted it
+2. Hub 
+    1. Multi port repeater 
+    2. Multiple wires from different branches
+    3. So the data packets will be sent to like all connected devices 
+    4. Collision domain of all host connected to HUB remain one 
+    5. Active Hub. 
+    6. Passive Hub 
+3. Bridge 
+    1. Functionlity of filtering content by reading the MAC addresses of source and destination. 
+    2. Interconnecting the two LANs 
+    3. Transparent bridges 
+    4. Source routing bridges 
+4. Gateway 
+    1. Is a passage to connect two networks together that may work upon different networking models. 
+    2. One to another 
+5. Brouter 
+    1. Combination of router and bridge 
+
+—————————————————— 
+Protocols 
+
+1. TCP/IP 
+    1. HTTP/s
+    2. DHCP 
+    3. FTP 
+    4. SMTP 
+    5. POP3 & IMAC - to receive email 
+    6. SSH 
+    7. VNC - virtual network compute 
+2. TElnet - terminal emulation 
+    1. Port 23 
+3. UDP 
+    1. Stateless 
+    2. Data is lost 
+
+
+Talk to each other? 
+
+Whatsapp 
+1. Process - running an instance 
+    1. Send a message 
+    2. Record a video
+	thread - lighter version of thread
+
+Thread - set up the page - one single job 
+
+
+Sockets: real time data transfer 
+
+Ports : 
+1. Which application we are working 
+Ephemeral ports : which browser tab 
+
+Server has to know about it.. 
+
+——————————————————— 
+
+HTTP 
+
+It tells how you request the server from client and how response is come
+
+1. Application layer protocol 
+
+PET< POST< PATCH< DELETE< PUT 
+
+HTTP uses TCP inside 
+
+TCP makes sure all data is received 
+
+HTTP - stateless protocol 
+
+
+TCP is at transport layer 
+—————————————————— 
+
+Response header and request header 
+
+Types of methods 
+
+1. GET
+2. POST 
+3. PUT
+4. PATCH 
+5. DELETE 
+
+Keep alive - Timeout settings 
+
+Status code 
+
+100 - information 
+200 - success , 
+300 - redirection 
+400 - client mistake 
+500 - server error 
+
+——————————————————— 
+
+Cookies 
+
+It is a unique string, it is stored on the client browser 
+
+First time - setup the cookie 
+And next time it is their 
+
+Expiration date is also their 
+
+Third party cookies : cookies that set for the URLs that you do not visit 
+
+—————————————————— 
+
+How email works 
+
+SMTP = simple mail transfer protocol 
+
+POP3 = post office protocol 
+
+How?? Application layer works
+
+TCP - no data loss
+Sender -> sender SMTP server -> connection -> Receiver SMTP server -> Receiver 
+
+Name server lookup 
+
+-type=mx gmail.com 
+——————————————————— 
+
+POP3 port 110 
+
+Client -> POP server by authorization and transact all the mails 
+
+Close the session 
+
+Download and delete and 
+
+IMAP - internet message access protocol 
+
+-> allow your emails on multiple devices 
+
+—————————————————— 
+
+
+How connect to google server when we type or search for google 
+
+DNS - domain name system 
+
+They are mapped to IP addresses 
+
+Http protocol is going take that domain name an d use DNS and find IP address and convert it to URL 
+
+
+ mail.google.com
+
+Sub domain - mail 
+Second level domain - google 
+Top level domain - com 
+
+Root DNS server  = first point of contact
+
+1. .io = student.io 
+2. .org = conn.org
+3. com = google.com
+
+￼
+
+root-server.org
+
+
+And these databases are handled by ICAN - Internet corporation for assigned names and numbers 
+
+Ican.org
+
+Computer -> Google.com ->  
+1. Check in own computer 
+    1. First time that cache is saves it in the local machine 
+2. ISP 
+    1. LocalDNS server - first point of contact 
+3. Root Server 
+    1. Searches here 
+    2. Acknowledge 
+4. Top level domain 
+    1. And return the IP address 
+5. And then connect to google.com server 
+
+We can rent a domain but can’t buy 
+
+Cmds 
+
+- Dig google.com
+- Man dig 
+
+——————————————————— 
+
+Transport layer 
+
+- You and your friend 
+- Message  and received
+
+Transport layer role? 
+
+NOTE: transportation is done by network 
+
+Transport layer : 
+The layer lies inside the devices 
+Role: from network to the applications 
+
+Gives the Abstraction
+
+For example 
+
+Box -> courier in your country - > courier in the another country -> friends 
+
+Where is located ? 
+
+Protocols : TCP/UDP 
+
+TCP : 
+1. Message
+2. Mail 
+3. Video call 
+
+Other side 
+1. Message 
+2. Files 
+3. Video call 
+Three types of data 
+
+Multiplexing and demultiplexing 
+
+Multiplexing: 
+1. Allows us to send the messages and all other stuff to destination just via one medium 
+
+Transport layer multiplexer 
+
+Demultiplexing: 
+1. Simple reverse of multiplexer 
+2. Sockets :
+    1. Gateway between the network 
+    2. Have port numbers 
+
+Data travels in packets 
+
+And transport layer attach these port numbers 
+And it knows sender and receiver 
+
+1. Also take care of traffic control that is congestion control 
+
+Congestion algorithms
+1. They are built in TCP 
+
+
+Maybe data corrupted 
+1. Check sums 
+    1. Data to some friend 
+        1. String values is shared ie is check sum 
+        2. Data is associated with checksum 
+        3. And another one check the value  with same algorithms 
+
+
+￼
+
+——————————————————— 
+How we know the data is received by other user?? 
+By timers 
+
+When the data is sent we start the timer 
+
+By acknowledgment we end the timer 
+
+If no acknowledgement then timer expire and retransmission timer 
+
+
+If a packet is received but acknowledging failed and then again we share the same packet and user will have the duplicate data called replication 
+
+How to solve this problem? 
+By sequence numbers
+
+ UDP :user datagram protocol 
+
+Used to transport data 
+
+But here
+1. data maybe or maybe not be delivered 
+2. Data may changed 
+3. Data may damaged 
+4. Data may not be in order
+
+It is a Connection less protocol. 
+UDP uses checksum 
+
+UDP packet 
+1. Will have port number (source and destination) length is datagram is added and checksum is added 
+2. Total size ; 2^16 
+3. Header is 8 bits 
+4. 
+5. ￼
+
+uses: Faster 
+Video conferencing 
+DNS - > UDP 
+Gaming 
+
+Cmd 
+
+- Tcpdump -c 5 
+
+TCP protocal 
+
+TCP - transmission control protocol 
+
+Tranport layer protocol 
+
+1. Application layer sends lots of raw data 
+2. TCP divides into chunks, add headers, checksum 
+3. It may also collect the data from network layer…. 
+4. Congestion control 
+5. Takes care of two things 
+    1. When data does not arrive 
+    2. Maintain thee order of data 
+        1. Using sequence number 
+6. Features 
+    1. Connection oriented
+    2. Error control 
+    3. Congestion control bidirectional 
+    4. TCP connection between computers 
+
+Sequence number and acknowledgement number 
+
+Request -> connection -> accepted 
+
+Three way handshake 
+
+Client 
+1.  Synchronization flag 
+2. Sequence number 
+-> server
+1. Acknowledging 
+2. Sequence number (mathematical calculations on 32 and other number that is sequence number) 
+-> client 
+1. Acknowledging 
+2. Sn : 33 
+-> server 
+
+Transport layer -> data in segment
+——————————————————— 
+
+Network layer : IP : internet protocol 
+
+Data in form of packets 
+
+Here we work with routers 
+
+A -> B 
+Many routers connected each other 
+
+Entire global network -> 
+Every single router has its own network address 
+
+Routing tables -> forward tables (consists of destination address) 
+
+Hop by hop forwarding 
+
+Router to router until reach destination 
+
+- Forwarding table is a data structure 
+-  
+IP adreses : 192.168.2.30 - network address of the device 
+
+Subnet ID: 192:168:2
+
+That 30 is device address 
+
+Who add these? 
+- Control plane 
+    - Built these routing tables 
+
+Routers -> nodes 
+
+Links are the Edges 
+
+1. Static routing 
+    1. Manually adding the routing 
+2. Dynamic routing 
+    1. Evolves according 
+    2. Bellan, Dijsktra algorithms 
+
+Protocols : internet protocol 
+
+IPV4 : 32 bit numbers with 4 words
+
+IPV6 : 128 bits 
+
+
+5.6.9:14 
+
+00000101 
+
+Blocks of IP addresses  - subnetting 
+
+Class of IP addresses 
+1. Class A : 0.0.0. 127.231 
+2. Class B : 128.0.0.0 - 191 255 233 
+3. Class C : 192:0.0.0 - 223 232 233 
+4. Class D : 224.0.0.0 - 239 255 233  
+5. Class E : 240.0.0.0 - 255 29 
+
+———————————————————
+Data links - frames
+
+Subnet masking 
+
+-> it is going mask the network part  IP address and leave us to deal with host ID  
+
+For example 
+
+Class C 
+
+255.233.0.0 
+Those o can be replace with 
+
+
+Category belong 
+
+Variable length subnet 
+
+12.0.0.0/31 
+
+192.0.1.0/24 
+
+Starting : 192.0.1.0 
+End : 192.0.1.255
+
+Ip address based on the regions 
+
+
+Reserved addresses 
+
+127.0..0.0./8  
+
+Localhost: 127.0.0.1  - loopback addresses - allow to contact same processes 
+
+Device act client and server 
+
+
+——————————————————
+
+Packets : header of 20 bytes 
+
+Containing 
+
+IPV, length, identification number, flags, protocols., checksum, addresses, TTL 
+
+Time to Live : 
+1. Sometimes packets are in the loop in the router network 
+2. If not reached then packet is dropped , ttl=60 
+
+IPV4 : 2^32 ~ unique IP address 
+4.3 billions 
+
+IPV6 : 2^128 ‎ = 3.403×10³⁸ 
+
+Cons : 
+1. Not Backward compatible 
+2. ISP shift, lot of hardware work 
+
+Representation: 
+Hexadecimal : 16 
+A:a:A:A:a:a:a:a::a:a:a 
+
+A = 16 bit 
+
+ABFE:Foo1: 3210:9182:0:0:1:2 
+
+Can have prefix like IPV4 
+
+/fixed 
+
+Middle boxes: 
+Extra devices interact with 
+1. Firewall 
+    1. Global internet 
+    2. Your trusteed network 
+Filter out IP addresses based on various rules 
+
+1. Address 
+2. Multiply packets 
+3. Port number 
+4. Flags 
+5. Protocols
+
+
+Stateless vs stateful firewalls 
+
+Stateless
+1. Packets store in cache 
+2. 
+
+Stateful
+1. Claude I
+
+Network address translation 
+￼
+
+All networks are considered Private ID 
+To reduce IP address use load 
+
+
+< Teach some more here >
+
+—————————————————
+
+Datalink layer 
+
+Responsible to send these packets from network layer over physical link 
+
+Router (IP) 
+
+And connected to sub devices 
+
+
+DHCP - dynamic host configuration protocol 
+
+
+New device -> DHCP server (pool of IP address)-> give the IP address  
+
+Many devices connected LAN 
+
+1. Data link layer communicates with data link layer addresses 
+
+ARP cache?? 
+
+Packet -> data link frame
+
+
+frame: 
+1. Datalink layer address of sender 
+2. IP address of destination 
+
+Address resolution protocol 
+
+-> MAC address : identify the device ? 
+
+Physical layer 
+
+Converted to electrical signals 
+1. Framing 
+2. Error detection 
