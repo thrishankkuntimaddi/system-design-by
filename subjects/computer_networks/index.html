@@ -51,7 +51,7 @@
     .shell { display: flex; min-height: 100vh; }
 
     .sidebar {
-      width: 240px;
+      width: 255px;
       flex-shrink: 0;
       background: var(--bg2);
       border-right: 1px solid var(--border);
@@ -60,6 +60,34 @@
       height: 100vh;
       overflow-y: auto;
       padding-bottom: 40px;
+    }
+
+    .search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+    .search-icon {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
     }
 
     .main {
@@ -131,16 +159,17 @@
       border-radius: 0 6px 6px 0;
       margin-right: 8px;
     }
-    .navlink .n {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text3);
-      width: 18px;
+    .navlink i {
+      font-size: 15px;
+      width: 17px;
       flex-shrink: 0;
+      color: var(--text3);
+      transition: color .15s;
     }
     .navlink:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2); }
+    .navlink:hover i { color: var(--text); }
     .navlink.active { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
-    .navlink.active .n { color: var(--accent); }
+    .navlink.active i { color: var(--accent); }
 
     /* ── Content Styling ────────────────────────────────────── */
     section { display: none; animation: fadein .35s ease; }
@@ -289,8 +318,15 @@
 
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
     .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
-    @media (max-width: 700px) {
+    @media (max-width: 900px) {
       .grid2, .grid3 { grid-template-columns: 1fr; }
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 16px 0;
+      border-radius: 8px;
     }
 
     .proscons { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 10px; }
@@ -390,7 +426,7 @@
     .toc-card .tn { font-family: var(--mono); color: var(--accent); font-size: 11px; font-weight: 600; }
     .toc-card h5 { font-size: 14.5px; margin: 4px 0 2px; color: var(--text); }
     .toc-card p { font-size: 12.5px; margin: 0; color: var(--text2); }
-    @media (max-width: 500px) { .toc-cards { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .toc-cards { grid-template-columns: 1fr; } }
 
     .divider-note {
       font-family: var(--mono);
@@ -447,15 +483,16 @@
       .mobile-nav { display: flex; }
       .sidebar {
         position: fixed; top: 0; left: 0; bottom: 0;
-        z-index: 400; width: min(280px, 85vw);
+        z-index: 400; width: min(300px, 85vw);
         transform: translateX(-100%);
         transition: transform .28s cubic-bezier(.4, 0, .2, 1);
-        height: 100vh; overflow-y: auto;
+        height: 100dvh; overflow-y: auto;
       }
       .sidebar.open { transform: translateX(0); }
       .sidebar-overlay { display: block; }
       .main { padding-top: 56px; }
       .shell { display: block; }
+      .content { padding: 24px 20px 80px; }
     }
 
     /* ── Prev / Next Navigation Bar ─────────────────────────── */
@@ -528,41 +565,41 @@
         <p>foundations → OSI → TCP/IP → devices</p>
       </div>
 
-      <div class="navgroup">
-        <div class="navgroup-label">Foundations</div>
-        <div class="navlink active" onclick="go('intro')" id="sn-intro"><span class="n">01</span>What is a Network</div>
-        <div class="navlink" onclick="go('protocols')" id="sn-protocols"><span class="n">02</span>Protocols & Core Terms</div>
-        <div class="navlink" onclick="go('topology')" id="sn-topology"><span class="n">03</span>Network Topologies</div>
-        <div class="navlink" onclick="go('structure')" id="sn-structure"><span class="n">04</span>LAN / MAN / WAN & Structure</div>
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
       </div>
 
-      <div class="navgroup">
-        <div class="navgroup-label">Models</div>
-        <div class="navlink" onclick="go('osi')" id="sn-osi"><span class="n">05</span>OSI Model — Overview</div>
-        <div class="navlink" onclick="go('osi-upper')" id="sn-osi-upper"><span class="n">06</span>Layers 7–5 (App/Pres/Session)</div>
-        <div class="navlink" onclick="go('osi-transport')" id="sn-osi-transport"><span class="n">07</span>Layer 4 — Transport</div>
-        <div class="navlink" onclick="go('osi-network')" id="sn-osi-network"><span class="n">08</span>Layer 3 — Network</div>
-        <div class="navlink" onclick="go('osi-lower')" id="sn-osi-lower"><span class="n">09</span>Layers 2–1 (Data Link/Physical)</div>
-        <div class="navlink" onclick="go('tcpip')" id="sn-tcpip"><span class="n">10</span>TCP/IP Model</div>
-      </div>
+      <div class="nav-section">Foundations</div>
+      <div class="navlink active" onclick="go('intro')" id="sn-intro"><i class="ti ti-home"></i>What is a Network</div>
+      <div class="navlink" onclick="go('protocols')" id="sn-protocols"><i class="ti ti-arrows-left-right"></i>Protocols & Core Terms</div>
+      <div class="navlink" onclick="go('topology')" id="sn-topology"><i class="ti ti-git-fork"></i>Network Topologies</div>
+      <div class="navlink" onclick="go('structure')" id="sn-structure"><i class="ti ti-hierarchy-2"></i>LAN / MAN / WAN & Structure</div>
 
-      <div class="navgroup">
-        <div class="navgroup-label">Deep Dives</div>
-        <div class="navlink" onclick="go('http')" id="sn-http"><span class="n">11</span>HTTP & the Web</div>
-        <div class="navlink" onclick="go('dns')" id="sn-dns"><span class="n">12</span>DNS Resolution</div>
-        <div class="navlink" onclick="go('email')" id="sn-email"><span class="n">13</span>Email — SMTP/POP3/IMAP</div>
-        <div class="navlink" onclick="go('tcpudp')" id="sn-tcpudp"><span class="n">14</span>TCP vs UDP, Deep Dive</div>
-        <div class="navlink" onclick="go('ip')" id="sn-ip"><span class="n">15</span>IP Addressing & Subnetting</div>
-        <div class="navlink" onclick="go('nat')" id="sn-nat"><span class="n">16</span>NAT & Private Addressing</div>
-        <div class="navlink" onclick="go('datalink')" id="sn-datalink"><span class="n">17</span>MAC, ARP & Framing</div>
-      </div>
+      <div class="nav-section">Models</div>
+      <div class="navlink" onclick="go('osi')" id="sn-osi"><i class="ti ti-layers-intersect"></i>OSI Model — Overview</div>
+      <div class="navlink" onclick="go('l7')" id="sn-l7"><i class="ti ti-browser"></i>Layer 7 — Application</div>
+      <div class="navlink" onclick="go('l6')" id="sn-l6"><i class="ti ti-file-text-ai"></i>Layer 6 — Presentation</div>
+      <div class="navlink" onclick="go('l5')" id="sn-l5"><i class="ti ti-arrows-join"></i>Layer 5 — Session</div>
+      <div class="navlink" onclick="go('l4')" id="sn-l4"><i class="ti ti-arrows-split"></i>Layer 4 — Transport</div>
+      <div class="navlink" onclick="go('l3')" id="sn-l3"><i class="ti ti-route"></i>Layer 3 — Network</div>
+      <div class="navlink" onclick="go('l2')" id="sn-l2"><i class="ti ti-cards"></i>Layer 2 — Data Link</div>
+      <div class="navlink" onclick="go('l1')" id="sn-l1"><i class="ti ti-bolt"></i>Layer 1 — Physical</div>
+      <div class="navlink" onclick="go('tcpip')" id="sn-tcpip"><i class="ti ti-stack"></i>TCP/IP Model</div>
 
-      <div class="navgroup">
-        <div class="navgroup-label">Hardware & Tools</div>
-        <div class="navlink" onclick="go('devices')" id="sn-devices"><span class="n">18</span>Networking Devices</div>
-        <div class="navlink" onclick="go('commands')" id="sn-commands"><span class="n">19</span>Command-Line Reference</div>
-        <div class="navlink" onclick="go('bits')" id="sn-bits"><span class="n">20</span>Bits, Bytes & Number Reference</div>
-      </div>
+      <div class="nav-section">Deep Dives</div>
+      <div class="navlink" onclick="go('http')" id="sn-http"><i class="ti ti-world"></i>HTTP & the Web</div>
+      <div class="navlink" onclick="go('dns')" id="sn-dns"><i class="ti ti-world-search"></i>DNS Resolution</div>
+      <div class="navlink" onclick="go('email')" id="sn-email"><i class="ti ti-mail"></i>Email — SMTP/POP3/IMAP</div>
+      <div class="navlink" onclick="go('tcpudp')" id="sn-tcpudp"><i class="ti ti-arrows-double-ne-sw"></i>TCP vs UDP, Deep Dive</div>
+      <div class="navlink" onclick="go('ip')" id="sn-ip"><i class="ti ti-numbers"></i>IP Addressing & Subnetting</div>
+      <div class="navlink" onclick="go('nat')" id="sn-nat"><i class="ti ti-transfer-in"></i>NAT & Private Addressing</div>
+      <div class="navlink" onclick="go('datalink')" id="sn-datalink"><i class="ti ti-anchor"></i>MAC, ARP & Framing</div>
+
+      <div class="nav-section">Hardware & Tools</div>
+      <div class="navlink" onclick="go('devices')" id="sn-devices"><i class="ti ti-router"></i>Networking Devices</div>
+      <div class="navlink" onclick="go('commands')" id="sn-commands"><i class="ti ti-terminal-2"></i>Command-Line Reference</div>
+      <div class="navlink" onclick="go('bits')" id="sn-bits"><i class="ti ti-binary"></i>Bits, Bytes & Number Reference</div>
     </nav>
 
     <!-- Main Content -->
@@ -643,6 +680,62 @@
             <li><strong>Server</strong> — a machine that's always listening, waiting to respond to requests (identified by an IP address).</li>
           </ul>
 
+          <h3 class="h">Casting modes: Unicast, Broadcast, Multicast</h3>
+          <p>How data is addressed and distributed across the network determines its casting mode, operating at both Layer 2 (MAC) and Layer 3 (IP):</p>
+          
+          <div class="def">
+            <div class="label">Unicast (One-to-One)</div>
+            <p>Data is sent from a single sender to a single specific receiver. The packet contains one destination IP/MAC address. Used for web browsing, emails, and direct file transfers.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Broadcast (One-to-All)</div>
+            <p>Data is sent from a single sender to <em>all</em> hosts on the same local network subnet. Packets are addressed to a special broadcast address (e.g. <code>255.255.255.255</code>). Routers block broadcasts to keep traffic localized. Used for ARP resolution and DHCP discovery.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Multicast (One-to-Many)</div>
+            <p>Data is sent from a single sender to a specific group of interested receivers who have subscribed to a multicast group IP (ranges <code>224.0.0.0</code> to <code>239.255.255.255</code>). Switches and routers replicate the packets only to ports with active subscribers. Used for live IPTV, video conferencing, and routing protocol updates.</p>
+          </div>
+
+          <div class="example">
+            <div class="label">Real-world Analogy</div>
+            <p><strong>Unicast</strong> is sending a private letter to a specific home. <strong>Broadcast</strong> is shouting through a megaphone in a neighborhood square where everyone hears you. <strong>Multicast</strong> is sending a magazine only to subscribers of a particular interest club.</p>
+          </div>
+
+          <h3 class="h">Circuit Switching vs Packet Switching</h3>
+          <p>The two fundamental paradigms of moving data through a network mesh:</p>
+          
+          <div class="def">
+            <div class="label">Circuit Switching</div>
+            <p>A dedicated physical communication path (circuit) is established between the sender and receiver before any data is sent. The capacity of the path is reserved and cannot be shared. If no data is sent, the resource is wasted.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Packet Switching</div>
+            <p>Data is broken into smaller chunks called <strong>packets</strong>, each containing a header with routing info. Packets travel independently through the network, sharing paths dynamically (statistical multiplexing) and being queued at routers (store-and-forward).</p>
+          </div>
+
+          <div class="example">
+            <div class="label">Postal vs Phone Analogy</div>
+            <p><strong>Circuit Switching</strong> is like making a phone call: the line is reserved just for your voice, and no one else can use it until you hang up. <strong>Packet Switching</strong> is like sending a multi-chapter book through the mail: each page is placed in an envelope and mailed separately. They might take different routes and arrive out of order, but they are reassembled at the destination.</p>
+          </div>
+
+          <h3 class="h">Direct Comparison</h3>
+          <table class="tight">
+            <thead>
+              <tr><th>Metric / Feature</th><th>Circuit Switching</th><th>Packet Switching</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Resource Reservation</strong></td><td>Dedicated path reserved upfront</td><td>Dynamic sharing on demand</td></tr>
+              <tr><td><strong>Congestion / Queuing</strong></td><td>None (Guaranteed bandwidth)</td><td>Yes (Packets wait in router queues)</td></tr>
+              <tr><td><strong>Setup Delay</strong></td><td>High (Requires signaling handshake)</td><td>None (Immediate transmission)</td></tr>
+              <tr><td><strong>Link Efficiency</strong></td><td>Low (Wasted during silence/idle)</td><td>High (Bursty traffic multiplexed)</td></tr>
+              <tr><td><strong>Failure Resilience</strong></td><td>Low (If a link cuts, the call drops)</td><td>High (Packets routed dynamically around faults)</td></tr>
+              <tr><td><strong>Primary Use Case</strong></td><td>Landline telephony (PSTN), GSM voice</td><td>The Internet, LANs, WANs</td></tr>
+            </tbody>
+          </table>
+
           <h3 class="h">IP Addresses</h3>
           <div class="def">
             <div class="label">Definition</div>
@@ -687,6 +780,64 @@
             </tbody>
           </table>
           <p>Internet connections are described by separate <strong>upload speed</strong> and <strong>download speed</strong> — most home connections are asymmetric, with download much faster than upload, since typical usage (browsing, streaming) receives far more data than it sends.</p>
+
+          <h3 class="h">Network Delay, Throughput & Goodput</h3>
+          <p>When measuring network performance, bandwidth alone is insufficient. We must track how long data takes to travel, how much arrival time varies, and how much actual data is successfully processed.</p>
+
+          <div class="def">
+            <div class="label">Latency (Delay)</div>
+            <p>The total time it takes for a data packet to travel from the source to the destination host. Latency is the sum of four distinct components: <strong>Nodal Delay</strong> = Processing Delay + Queuing Delay + Transmission Delay + Propagation Delay.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Jitter</div>
+            <p>The variation or fluctuation in packet arrival times (packet delay variation). High jitter causes packets to arrive out of order or clumped together, resulting in choppy audio/video during VoIP calls or video streams.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Throughput vs Goodput</div>
+            <p><strong>Throughput</strong> is the total rate at which bits are sent over the physical link per unit time (including TCP/IP headers, metadata, and retransmissions). <strong>Goodput</strong> is the rate of actual useful application-level payload data successfully delivered (excluding all protocol header overhead and duplicate packets).</p>
+          </div>
+
+          <div class="example">
+            <div class="label">Throughput vs Goodput example</div>
+            <p>If you download a 10MB file and due to a poor connection 2MB of packets are corrupted and retransmitted, your link's **throughput** counts all 12MB of data sent. However, the **goodput** only counts the 10MB of successfully reassembled file payload delivered to your browser.</p>
+          </div>
+
+          <h3 class="h">The Four Sources of Packet Delay (Nodal Delay)</h3>
+          <p>A packet experiences different delays at each router hop along its path:</p>
+
+          <div class="grid2">
+            <div class="def">
+              <div class="label">1. Processing Delay (d_proc)</div>
+              <p>The time a router takes to inspect a packet's header, check for bit-level errors using checksums, and determine the next-hop interface. Usually microseconds or less.</p>
+            </div>
+            <div class="def">
+              <div class="label">2. Queuing Delay (d_queue)</div>
+              <p>The time a packet spends waiting in the router's buffer queues before being transmitted. Depends heavily on network congestion and the traffic intensity ($L \cdot a / R$ where $L$ is packet length, $a$ is arrival rate, $R$ is transmission rate). Can range from microseconds to seconds.</p>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="def">
+              <div class="label">3. Transmission Delay (d_trans)</div>
+              <p>The time taken to push all the packet's bits onto the physical wire. Formula: <code>d_trans = L / R</code> (where <code>L</code> is packet length in bits, and <code>R</code> is the transmission rate of the link in bps). Depends on packet size and wire speed.</p>
+            </div>
+            <div class="def">
+              <div class="label">4. Propagation Delay (d_prop)</div>
+              <p>The time it takes for a single bit to travel physically from one end of the link to the other at the speed of light in the physical medium. Formula: <code>d_prop = d / s</code> (where <code>d</code> is physical distance, and <code>s</code> is propagation speed, roughly $2 \times 10^8$ m/s in optical fiber). Depends only on distance and medium, not packet size.</p>
+            </div>
+          </div>
+
+          <div class="example">
+            <div class="label">Memory Aid</div>
+            <p>Remember the delay sources top-to-bottom: <strong>P</strong>eople <strong>Q</strong>uickly <strong>T</strong>ake <strong>P</strong>athways — <strong>P</strong>rocessing, <strong>Q</strong>ueuing, <strong>T</strong>ransmission, <strong>P</strong>ropagation.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">Quality of Service (QoS)</div>
+            <p>A suite of technologies (like traffic shaping, packet tagging, and priority queuing) used to manage traffic congestion. QoS ensures high-priority, latency-sensitive packets (like live voice/video) are processed ahead of non-critical traffic (like bulk file downloads).</p>
+          </div>
 
           <h3 class="h">Guided vs unguided media</h3>
           <div class="grid2">
@@ -888,13 +1039,13 @@
           <p>Data physically only exists as electrical/light/radio signals — the OSI model is the human-friendly abstraction layered on top so engineers can reason about "what's happening" without tracking every electron. Each layer talks logically to its counterpart layer on the other machine, but physically only ever talks to the layer directly above/below it on the same machine.</p>
 
           <div class="toc-cards">
-            <div class="toc-card" onclick="go('osi-upper')"><div class="tn">L7</div><h5>Application</h5><p>What the user-facing software does</p></div>
-            <div class="toc-card" onclick="go('osi-upper')"><div class="tn">L6</div><h5>Presentation</h5><p>Formatting, encryption, translation</p></div>
-            <div class="toc-card" onclick="go('osi-upper')"><div class="tn">L5</div><h5>Session</h5><p>Setting up & managing connections</p></div>
-            <div class="toc-card" onclick="go('osi-transport')"><div class="tn">L4</div><h5>Transport</h5><p>TCP/UDP, segmentation, ports</p></div>
-            <div class="toc-card" onclick="go('osi-network')"><div class="tn">L3</div><h5>Network</h5><p>IP addressing, routing</p></div>
-            <div class="toc-card" onclick="go('osi-lower')"><div class="tn">L2</div><h5>Data Link</h5><p>MAC addresses, framing</p></div>
-            <div class="toc-card" onclick="go('osi-lower')"><div class="tn">L1</div><h5>Physical</h5><p>Raw bits as electrical/light signals</p></div>
+            <div class="toc-card" onclick="go('l7')"><div class="tn">L7</div><h5>Application</h5><p>What the user-facing software does</p></div>
+            <div class="toc-card" onclick="go('l6')"><div class="tn">L6</div><h5>Presentation</h5><p>Formatting, encryption, translation</p></div>
+            <div class="toc-card" onclick="go('l5')"><div class="tn">L5</div><h5>Session</h5><p>Setting up & managing connections</p></div>
+            <div class="toc-card" onclick="go('l4')"><div class="tn">L4</div><h5>Transport</h5><p>TCP/UDP, segmentation, ports</p></div>
+            <div class="toc-card" onclick="go('l3')"><div class="tn">L3</div><h5>Network</h5><p>IP addressing, routing</p></div>
+            <div class="toc-card" onclick="go('l2')"><div class="tn">L2</div><h5>Data Link</h5><p>MAC addresses, framing</p></div>
+            <div class="toc-card" onclick="go('l1')"><div class="tn">L1</div><h5>Physical</h5><p>Raw bits as electrical/light signals</p></div>
           </div>
 
           <h3 class="h">Memory aid</h3>
@@ -923,112 +1074,475 @@
           </div>
         </section>
 
-        <!-- 06 OSI UPPER -->
-        <section id="p-osi-upper">
-          <div class="eyebrow">Models · OSI Layers 7–5</div>
-          <h2 class="pagetitle">Application, Presentation, Session</h2>
-          <p class="subtitle">The three top layers — closest to the human, furthest from the wire.</p>
+        <!-- 06 LAYER 7 -->
+        <section id="p-l7">
+          <div class="eyebrow">Models · OSI Layer 7</div>
+          <h2 class="pagetitle">Layer 7 — Application Layer</h2>
+          <p class="subtitle">The gateway between end-user applications and the underlying network interface.</p>
 
-          <div class="layer-card" style="border-left-color:var(--accent);">
-            <div class="lh"><span class="lnum">L7</span><span class="lname">Application Layer</span><span class="ltag">user-facing</span></div>
-            <p>The layer the user directly interacts with — it's where applications and software live. This is the layer that's implemented inside browsers, WhatsApp, email clients, and games.</p>
-            <ul class="plain">
-              <li>Defines the protocols apps use to communicate: HTTP/S, DHCP, FTP, SMTP, POP3/IMAP, SSH, Telnet</li>
-              <li>Implements the client-server architecture at the software level</li>
-            </ul>
-            <div class="example"><div class="label">Example</div><p>When you open WhatsApp and send a message, the WhatsApp app itself — and the protocol it uses to format/send that message — is the Application Layer in action.</p></div>
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Application Layer</strong> is the top layer of the OSI model, representing the user-facing software environment that initiates or receives network requests. It directly supports software applications (browsers, email clients, file sharing tools) by providing a suite of standardized protocols to exchange data.</p>
           </div>
 
-          <div class="layer-card" style="border-left-color:var(--amber);">
-            <div class="lh"><span class="lnum">L6</span><span class="lname">Presentation Layer</span><span class="ltag">translator</span></div>
-            <p>Responsible for converting data into a machine-representable binary format the receiving system can understand — essentially a translator between application-layer data and the network.</p>
-            <ul class="plain">
-              <li><strong>Translation</strong> — converting between different data formats (e.g. character encodings)</li>
-              <li><strong>Encryption / decryption</strong> — securing the data, e.g. via the <strong>SSL/TLS</strong> protocol</li>
-              <li><strong>Abstraction</strong> — hides format differences from the application layer above it</li>
-            </ul>
+          <div class="grid3">
+            <div class="chip on">PDU: Data / Message</div>
+            <div class="chip on">Focus: User Experience & APIs</div>
+            <div class="chip on">Hardware: Gateway / Host CPU</div>
           </div>
 
-          <div class="layer-card" style="border-left-color:var(--accent2);">
-            <div class="lh"><span class="lnum">L5</span><span class="lname">Session Layer</span><span class="ltag">connection manager</span></div>
-            <p>Sets up, manages, and terminates the "conversation" (session) between two devices — enabling them to send and receive data in an organized session, then properly closing it when done.</p>
-            <ul class="plain">
-              <li><strong>Authentication</strong> — verifying identity before a session starts</li>
-              <li><strong>Authorization</strong> — confirming what the authenticated party is allowed to do</li>
-            </ul>
-            <div class="example"><div class="label">Example</div><p>Logging into a video call: establishing who you are and opening the session is Layer 5's job; the actual video/audio streaming that follows belongs to lower layers.</p></div>
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>This layer does not refer to the actual software application itself (like Google Chrome or Outlook), but to the <strong>underlying protocols</strong> that those applications use. It acts as the direct interface between the program and the network stack, negotiating services such as resource discovery, protocol selection, and user identification.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Application Interface</strong>: Exposing network services (like sockets or HTTP request headers) directly to user-facing software.</li>
+            <li><strong>Resource Discovery</strong>: Identifying communication partners, verifying network availability, and coordinating authority to connect.</li>
+            <li><strong>Service Standardization</strong>: Ensuring that application-level exchanges (like sending an email or downloading a file) follow strict, structured patterns across different operating systems.</li>
+          </ul>
+
+          <h3 class="h">Common Protocols & Well-Known Ports</h3>
+          <table>
+            <thead>
+              <tr><th>Protocol</th><th>Port</th><th>Description</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>HTTP / HTTPS</strong></td><td>80 / 443</td><td>HyperText Transfer Protocol (Secure)</td><td>Web browsing, REST/GraphQL APIs</td></tr>
+              <tr><td><strong>SMTP</strong></td><td>25</td><td>Simple Mail Transfer Protocol</td><td>Sending emails between servers</td></tr>
+              <tr><td><strong>POP3 / IMAP</strong></td><td>110 / 143</td><td>Post Office Protocol / Internet Message Access Protocol</td><td>Retrieving emails from a mail server</td></tr>
+              <tr><td><strong>DNS</strong></td><td>53</td><td>Domain Name System</td><td>Resolving human domain names to IP addresses</td></tr>
+              <tr><td><strong>DHCP</strong></td><td>67 / 68</td><td>Dynamic Host Configuration Protocol</td><td>Assigning IP addresses to hosts automatically</td></tr>
+              <tr><td><strong>FTP / SFTP</strong></td><td>20, 21 / 22</td><td>File Transfer Protocol (Secure)</td><td>Bulk file transfers</td></tr>
+              <tr><td><strong>SSH</strong></td><td>22</td><td>Secure Shell</td><td>Secure remote terminal access</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Amazon Order Interface</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>In the physical delivery model, the Application Layer maps to the <strong>Amazon web interface or mobile app</strong> where you place the order. You specify what you want, who you are, and where it should go. You don't care how the package is shipped, which trucks are used, or how it is routed — you only deal with the high-level request itself.</p>
+          </div>
+
+          <h3 class="h">Pros & Cons of Application Layer Abstraction</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>High-level developer ease: no need to manage hardware interfaces or routing logic.</li>
+                <li>Standardized, interoperable interfaces across different platforms.</li>
+                <li>Allows rich user interaction and visual formatting.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>Significant performance overhead due to heavy text parsing and payload headers.</li>
+                <li>Highly vulnerable to security exploits (SQL injection, XSS, API spoofing).</li>
+                <li>Inefficient for latency-critical, raw bitstream needs.</li>
+              </ul>
+            </div>
           </div>
         </section>
 
-        <!-- 07 TRANSPORT -->
-        <section id="p-osi-transport">
+        <!-- 07 LAYER 6 -->
+        <section id="p-l6">
+          <div class="eyebrow">Models · OSI Layer 6</div>
+          <h2 class="pagetitle">Layer 6 — Presentation Layer</h2>
+          <p class="subtitle">The data translator, responsible for formatting, encrypting, and compressing payloads.</p>
+
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Presentation Layer</strong> acts as the translation assistant for the network. It takes structured data from the Application Layer and formats, serializes, encrypts, or compresses it into a standardized syntax that can be sent over the wire, and performs the reverse operation for incoming streams.</p>
+          </div>
+
+          <div class="grid3">
+            <div class="chip on">PDU: Data / Syntax</div>
+            <div class="chip on">Focus: Data Formats & Security</div>
+            <div class="chip on">Hardware: CPU / Crypto Accelerators</div>
+          </div>
+
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>Different operating systems represent data differently (e.g., EBCDIC vs ASCII text, or little-endian vs big-endian integers). The Presentation Layer resolves these syntax discrepancies, ensuring that the destination system can correctly interpret the data payload, regardless of its local architecture.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Data Translation</strong>: Serializing in-memory programming objects into common serialization formats (like JSON, XML, or binary Protocol Buffers) and decoding them at the receiver.</li>
+            <li><strong>Encryption & Decryption</strong>: Securing data for transit by applying cryptographic protocols (like SSL/TLS) to encrypt sensitive application payloads.</li>
+            <li><strong>Data Compression</strong>: Compressing data to minimize the total number of bytes sent over the network, maximizing bandwidth efficiency.</li>
+          </ul>
+
+          <h3 class="h">Common Standards & Protocols</h3>
+          <table>
+            <thead>
+              <tr><th>Standard / Protocol</th><th>Purpose</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>SSL / TLS</strong></td><td>Security & Encryption</td><td>Encrypts HTTP connections into HTTPS, protecting headers and payloads.</td></tr>
+              <tr><td><strong>JSON / XML / YAML</strong></td><td>Serialization Syntax</td><td>Converts software structures into readable text files.</td></tr>
+              <tr><td><strong>Protobuf / FlatBuffers</strong></td><td>Binary Serialization</td><td>Converts data structures into compact binary format for gRPC/speed.</td></tr>
+              <tr><td><strong>ASCII / Unicode (UTF-8)</strong></td><td>Character Encoding</td><td>Maps raw bytes to text characters uniformly.</td></tr>
+              <tr><td><strong>GZIP / Brotli / LZ4</strong></td><td>Data Compression</td><td>Reduces text and image payload sizes before packet transmission.</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Package Wrapping & Gift Box</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Presentation Layer corresponds to the <strong>packaging and wrapping</strong> of your order. If you order a fragile item, it is wrapped in bubble wrap (compression) and sealed in an opaque box (encryption) to protect it from outside inspection and damage. It is also labeled in a standardized language/format that the courier network understands.</p>
+          </div>
+
+          <h3 class="h">Key Responsibilities Matrix</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Strengths</div>
+              <ul>
+                <li>Ensures cross-platform interoperability (Windows can talk to Linux/Mac).</li>
+                <li>Centralizes cryptography, keeping application logic clean.</li>
+                <li>Reduces data volume through transparent compression.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Weaknesses</div>
+              <ul>
+                <li>Encryption/Decryption is computationally heavy and can introduce latency bottlenecks.</li>
+                <li>Bad formatting configurations (like character set mismatches) cause data corruption (mojibake).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 08 LAYER 5 -->
+        <section id="p-l5">
+          <div class="eyebrow">Models · OSI Layer 5</div>
+          <h2 class="pagetitle">Layer 5 — Session Layer</h2>
+          <p class="subtitle">The connection manager, coordinating and keeping conversations in sync.</p>
+
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Session Layer</strong> manages the dialog between two host computers. It establishes, coordinates, maintains, and terminates connections (sessions) between local and remote applications, keeping track of authorization, session tokens, and connection synchronization.</p>
+          </div>
+
+          <div class="grid3">
+            <div class="chip on">PDU: Data / Session</div>
+            <div class="chip on">Focus: Dialogue & Checkpoints</div>
+            <div class="chip on">Hardware: CPU / Auth Servers</div>
+          </div>
+
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>While the lower layers manage the delivery of raw packets or segments, the Session Layer is the high-level manager that understands the *lifetime* of the conversation. It handles user authentication, session token mapping, and coordinates which party is allowed to talk (dialogue control).</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Session Creation & Teardown</strong>: Gracefully opening a communication channel, authenticating users, assigning session IDs, and tearing down the channel when done.</li>
+            <li><strong>Synchronization & Checkpointing</strong>: Injecting checkpoints (recovery markers) into a data stream. If a 100MB download is interrupted at 80MB, session checkpoints allow the transfer to resume from the last marker instead of restarting from scratch.</li>
+            <li><strong>Dialogue Control</strong>: Coordinating half-duplex (alternating sender/receiver) or full-duplex (simultaneous) transmission streams so packets don't overlap in confusing sequences.</li>
+          </ul>
+
+          <h3 class="h">Common Technologies & Protocols</h3>
+          <table>
+            <thead>
+              <tr><th>Protocol / Standard</th><th>Description</th><th>Role in Session Management</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>SOCKS</strong></td><td>Socket Secure Protocol</td><td>Routes packets through proxy servers, establishing authenticated sessions.</td></tr>
+              <tr><td><strong>RPC / gRPC Sessions</strong></td><td>Remote Procedure Call</td><td>Makes remote servers look like local functions, managing transaction states.</td></tr>
+              <tr><td><strong>NetBIOS</strong></td><td>Network Basic Input/Output System</td><td>Sets up sessions and connections between local Windows computers.</td></tr>
+              <tr><td><strong>PPTP / L2TP Sessions</strong></td><td>Point-to-Point Tunneling Protocols</td><td>Establishes persistent, encrypted tunnels for VPN sessions.</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Courier Clerk & Order Authorization</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Session Layer is like the <strong>clerk checking your ID and payment authorization</strong> before shipping or releasing the package. They make sure you have an active account (session token) and coordinate the transaction, ensuring the handoff happens only after authentication is confirmed.</p>
+          </div>
+
+          <h3 class="h">Dialogue Modes & Session Lifecycle</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>Maintains state across stateless lower-layer protocols.</li>
+                <li>Ensures session isolation and security via token management.</li>
+                <li>Protects large transfers from network dropouts via checkpoint markers.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>Adds state management overhead on servers (scaling stateful sessions is complex).</li>
+                <li>Sessions can hang or timeout incorrectly if connection drops are not handled gracefully.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 09 LAYER 4 -->
+        <section id="p-l4">
           <div class="eyebrow">Models · OSI Layer 4</div>
-          <h2 class="pagetitle">Transport Layer</h2>
-          <p class="subtitle">The layer responsible for getting data reliably (or quickly) from one application to another.</p>
+          <h2 class="pagetitle">Layer 4 — Transport Layer</h2>
+          <p class="subtitle">The engine room, managing segment assembly, error correction, and application sockets.</p>
 
-          <div class="layer-card" style="border-left-color:var(--accent);">
-            <div class="lh"><span class="lnum">L4</span><span class="lname">Transport Layer</span><span class="ltag">TCP / UDP</span></div>
-            <p>Defines the protocol used to actually transport data — primarily TCP or UDP — and is responsible for several critical jobs:</p>
-            <ul class="plain">
-              <li><strong>Segmentation</strong> — breaking large chunks of application data into smaller, manageable segments</li>
-              <li><strong>Port numbers</strong> — attaching source and destination ports so the data reaches the right application</li>
-              <li><strong>Sequence numbers</strong> — labelling segments so they can be reassembled in the correct order at the destination, even if they arrive out of order</li>
-              <li><strong>Flow control</strong> — regulating how much data is sent at a time so the receiver isn't overwhelmed</li>
-              <li><strong>Checksum</strong> — a value used to verify data wasn't corrupted in transit (acknowledging integrity)</li>
-            </ul>
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Transport Layer</strong> is responsible for host-to-host communication. It takes data from the session layer, breaks it into smaller units called <strong>segments</strong>, and ensures they are delivered reliably, in the correct order, without error, and directly to the correct application socket using port numbers.</p>
           </div>
 
-          <div class="example"><div class="label">Analogy continued</div><p>Going back to the courier analogy: the Transport Layer is like the courier company deciding to split a large shipment into multiple labeled boxes, numbering each box so they can be reassembled correctly, and tracking whether each box actually arrived.</p></div>
+          <div class="grid3">
+            <div class="chip on">PDU: Segment (TCP) / Datagram (UDP)</div>
+            <div class="chip on">Focus: End-to-End Reliability</div>
+            <div class="chip on">Hardware: OS Kernel / Sockets</div>
+          </div>
 
-          <h3 class="h">Why Transport, not Network, does multiplexing</h3>
-          <p>Network-layer routing only gets data to the correct <em>machine</em>. It's the Transport Layer's job to then get it to the correct <em>application running on that machine</em> — this is covered in depth in the TCP vs UDP deep dive.</p>
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>While the Network Layer below routes packets to the correct *physical computer*, the Transport Layer is the one that gets the data to the correct *software process* on that computer. It acts as the supervisor of the connection, handling flow control, sequencing, and packet loss recovery.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Port Addressing & Multiplexing</strong>: Attaching source and destination ports. This allows a laptop to run Slack, Zoom, and a browser simultaneously without their data streams mixing.</li>
+            <li><strong>Segmentation & Reassembly</strong>: Dividing data into chunks size-optimized for the MTU (Maximum Transmission Unit) of the network, and re-assembling them in order at the destination.</li>
+            <li><strong>Flow Control</strong>: Preventing a fast sender from overwhelming a slow receiver by negotiating window sizes.</li>
+            <li><strong>Error Recovery & ACKs</strong>: Using checksums to spot corruption and retransmitting lost packets when timers expire.</li>
+          </ul>
+
+          <h3 class="h">TCP vs UDP — The Transport Split</h3>
+          <table class="tight">
+            <thead>
+              <tr><th>Feature</th><th>TCP (Transmission Control Protocol)</th><th>UDP (User Datagram Protocol)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Connection</strong></td><td>Connection-oriented (Requires 3-Way Handshake)</td><td>Connectionless (Fire and Forget)</td></tr>
+              <tr><td><strong>Reliability</strong></td><td>Guaranteed delivery (Retransmits lost segments)</td><td>Best-effort delivery (No retransmission)</td></tr>
+              <tr><td><strong>Ordering</strong></td><td>Guaranteed in-order reassembly</td><td>No ordering guarantees</td></tr>
+              <tr><td><strong>Header Size</strong></td><td>20 bytes minimum</td><td>8 bytes fixed</td></tr>
+              <tr><td><strong>Use Case</strong></td><td>Web browsing (HTTP), Email, File transfer (FTP)</td><td>Voice calls (VoIP), Video streams, DNS</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Shipment Box labeling and Tracking Numbers</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Transport Layer corresponds to the <strong>delivery coordinator packing your items into numbered boxes</strong>. They label box 1/3, 2/3, 3/3, and require a signature (ACK) upon delivery. If box 2/3 goes missing on the highway, they re-ship box 2/3. At your door, they reassemble the three boxes in order before handing them to you.</p>
+          </div>
+
+          <h3 class="h">Flow Control & Congestion Control</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>End-to-end data integrity guarantees (for TCP).</li>
+                <li>Enables multitasking (multiplexing) on a single physical link.</li>
+                <li>Prevents packet loss due to receiver buffer overload.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>TCP handshakes add latency before any data is sent.</li>
+                <li>Heavy CPU and memory usage to buffer and track outstanding acknowledgements.</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
-        <!-- 08 NETWORK -->
-        <section id="p-osi-network">
+        <!-- 10 LAYER 3 -->
+        <section id="p-l3">
           <div class="eyebrow">Models · OSI Layer 3</div>
-          <h2 class="pagetitle">Network Layer</h2>
-          <p class="subtitle">Where routers live, and where data crosses from one network to another.</p>
+          <h2 class="pagetitle">Layer 3 — Network Layer</h2>
+          <p class="subtitle">Where packets are stamped with IP addresses and routed across network borders.</p>
 
-          <div class="layer-card" style="border-left-color:var(--amber);">
-            <div class="lh"><span class="lnum">L3</span><span class="lname">Network Layer</span><span class="ltag">IP / routers</span></div>
-            <p>Handles transmission of data segments from one computer to another computer located on a <em>different</em> network — this is precisely where <strong>routers</strong> operate.</p>
-            <ul class="plain">
-              <li><strong>Logical addressing</strong> — wrapping data in an IP packet with the correct source/destination address</li>
-              <li><strong>Path selection</strong> — routers calculate the best path using algorithms like <strong>Dijkstra's shortest path algorithm</strong></li>
-              <li><strong>Load balancing</strong> — distributing traffic across multiple available paths/servers</li>
-            </ul>
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Network Layer</strong> is the routing engine of the internet. It handles the movement of data units called <strong>packets</strong> across multiple independent networks. It defines logical addressing (IP addresses) and routes packets from their original source host to their final destination using path-selection algorithms.</p>
           </div>
-          <div class="divider-note">Full depth on IP addressing, classes, subnetting, packet headers, and NAT is covered in the dedicated IP Addressing and NAT sections.</div>
+
+          <div class="grid3">
+            <div class="chip on">PDU: Packet</div>
+            <div class="chip on">Focus: Inter-Network Routing</div>
+            <div class="chip on">Hardware: Routers / Layer 3 Switches</div>
+          </div>
+
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>The Network Layer is where the boundaries of local networks (LANs) are crossed. While Layer 2 can only talk to immediate neighbors on the same cable or switch, Layer 3 is what allows packets to travel across routers, ISPs, and undersea cables to reach a server on the other side of the globe.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Logical Addressing</strong>: Wrapping segments in IP packets, stamping them with source and destination IP addresses.</li>
+            <li><strong>Routing & Path Selection</strong>: Routers calculate the optimal path through the global mesh using routing tables and algorithms (e.g. OSPF, BGP, RIP).</li>
+            <li><strong>Packet Fragmentation</strong>: Splitting large packets into smaller fragments if they exceed the MTU of a router interface, and setting flags to enable reassembly.</li>
+            <li><strong>Congestion Avoidance</strong>: Dropping or throttling packets when router queues fill up.</li>
+          </ul>
+
+          <h3 class="h">Common Protocols at Layer 3</h3>
+          <table>
+            <thead>
+              <tr><th>Protocol</th><th>Full Name</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>IPv4</strong></td><td>Internet Protocol version 4</td><td>32-bit logical addressing system (most common)</td></tr>
+              <tr><td><strong>IPv6</strong></td><td>Internet Protocol version 6</td><td>128-bit next-generation addressing system</td></tr>
+              <tr><td><strong>ICMP</strong></td><td>Internet Control Message Protocol</td><td>Sends diagnostic messages and error reports (used by <code>ping</code>)</td></tr>
+              <tr><td><strong>IPSec</strong></td><td>Internet Protocol Security</td><td>Provides authentication and encryption for Layer 3 packets (VPN tunnels)</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Postal Routing Center</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Network Layer is like the <strong>Postal Routing Center and GPS navigation</strong>. The box is stamped with a destination address (IP). The truck driver uses a map/GPS (routing table) to navigate through multiple toll roads and exits (routers/hops) to move the box closer to the final city, without needing to know who lives in the house.</p>
+          </div>
+
+          <h3 class="h">Path Selection Performance</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>Connects millions of independent networks globally.</li>
+                <li>Dijkstra/Shortest-path routing automatically avoids congested or failed links.</li>
+                <li>Hierarchical addressing scales efficiently.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>Best-effort delivery: packets can be dropped, delayed, or arrive out of order.</li>
+                <li>Router buffers introduce latency under high traffic load (bufferbloat).</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
-        <!-- 09 OSI LOWER -->
-        <section id="p-osi-lower">
-          <div class="eyebrow">Models · OSI Layers 2–1</div>
-          <h2 class="pagetitle">Data Link & Physical Layer</h2>
-          <p class="subtitle">The last two layers — where logical addressing becomes electrical reality.</p>
+        <!-- 11 LAYER 2 -->
+        <section id="p-l2">
+          <div class="eyebrow">Models · OSI Layer 2</div>
+          <h2 class="pagetitle">Layer 2 — Data Link Layer</h2>
+          <p class="subtitle">Hop-by-hop delivery, framing packets into physical frames, and resolving MAC addresses.</p>
 
-          <div class="layer-card" style="border-left-color:var(--accent2);">
-            <div class="lh"><span class="lnum">L2</span><span class="lname">Data Link Layer</span><span class="ltag">MAC / frames</span></div>
-            <p>Responsible for direct communication between two devices on the <em>same</em> local network/host — converts network-layer packets into <strong>frames</strong> ready for physical transmission.</p>
-            <ul class="plain">
-              <li><strong>MAC addresses</strong> — sender and receiver are each tagged with a unique hardware address (a 12-digit alphanumeric identifier burned into the network interface)</li>
-              <li><strong>Framing</strong> — wraps the packet with header/trailer info to form a frame</li>
-              <li><strong>Error detection</strong> — catches corrupted frames before they're passed up</li>
-            </ul>
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Data Link Layer</strong> handles direct node-to-node communication on the same local network. It takes IP packets, wraps them in <strong>frames</strong> containing physical hardware addresses (MAC addresses), detects errors on the wire, and controls access to the physical transmission medium.</p>
           </div>
 
-          <div class="layer-card" style="border-left-color:var(--text3);">
-            <div class="lh"><span class="lnum">L1</span><span class="lname">Physical Layer</span><span class="ltag">raw bits</span></div>
-            <p>The actual hardware layer — where data finally becomes physical signal.</p>
-            <ul class="plain">
-              <li>Electrical signals over copper cable (bits as voltage levels)</li>
-              <li>Light signals over fiber optic cable</li>
-              <li>Radio waves for wireless transmission</li>
-            </ul>
+          <div class="grid3">
+            <div class="chip on">PDU: Frame</div>
+            <div class="chip on">Focus: Local Hops & Media Access</div>
+            <div class="chip on">Hardware: Switches, Bridges, NICs</div>
           </div>
 
-          <div class="def"><div class="label">Connecting the dots</div><p>By the time data reaches Layer 1, every layer above it has already wrapped its own header around the original message — what hits the wire is the original application data, plus presentation/session info, plus a transport segment header, plus a network packet header, plus a data link frame header, all nested like Russian dolls.</p></div>
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>Layer 3 moves packets globally, but Layer 2 is what physically walks the packet across individual wires between immediate neighbors. It bridges the logical network layer with the physical copper/glass wire, using MAC addresses to resolve precisely which network card on a shared cable should open a frame.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Framing</strong>: Wrapping packets with start/stop indicators and error check sequences (FCS/CRC checksums) to establish where a frame begins and ends.</li>
+            <li><strong>Physical Addressing</strong>: Adding source and destination MAC addresses to frames. MAC addresses are 48-bit numbers burned into NIC hardware at the factory.</li>
+            <li><strong>Media Access Control (MAC)</strong>: Coordinating who is allowed to transmit on shared networks (like Wi-Fi frequencies or shared Ethernet hubs) using collision detection or avoidance systems (CSMA/CD, CSMA/CA).</li>
+            <li><strong>Address Resolution (ARP)</strong>: Finding the hardware MAC address of a destination IP on the local subnet using local ARP broadcasts.</li>
+          </ul>
+
+          <h3 class="h">Common Protocols at Layer 2</h3>
+          <table>
+            <thead>
+              <tr><th>Protocol</th><th>Description</th><th>Role in Local Network</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Ethernet (802.3)</strong></td><td>Wired network protocol</td><td>Main standard for wired home/office LANs.</td></tr>
+              <tr><td><strong>Wi-Fi (802.11)</strong></td><td>Wireless local network standard</td><td>Uses CSMA/CA to transmit frames wirelessly through the air.</td></tr>
+              <tr><td><strong>ARP</strong></td><td>Address Resolution Protocol</td><td>Resolves IP addresses to physical MAC addresses.</td></tr>
+              <tr><td><strong>PPP / Frame Relay</strong></td><td>Point-to-Point Protocol</td><td>Wired WAN links connecting distant routers directly.</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Local Delivery Van</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Data Link Layer represents the <strong>local delivery van driving from the post office to your house</strong>. The van cares about local physical markers (your house number and gate, mapping to MAC addresses) to drop off the box. The van driver only operates on your neighborhood roads (local LAN switch) and doesn't know about inter-state highways.</p>
+          </div>
+
+          <h3 class="h">LAN Devices & Media Control</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>Extremely fast hardware switching (L2 switches read MAC addresses in silicon).</li>
+                <li>Robust error detection filters out corrupted frames immediately.</li>
+                <li>Avoids signal collisions on shared media.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>Completely localized: cannot route data beyond its own local subnet.</li>
+                <li>Broadcast storms (ARP loops) can overwhelm the network if L2 loops exist.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12 LAYER 1 -->
+        <section id="p-l1">
+          <div class="eyebrow">Models · OSI Layer 1</div>
+          <h2 class="pagetitle">Layer 1 — Physical Layer</h2>
+          <p class="subtitle">Where raw bits travel as copper voltages, light pulses, or radio signals.</p>
+
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>The <strong>Physical Layer</strong> is the hardware base of the network. It deals with the transmission and reception of unstructured raw data streams (bits) over physical media. It defines electrical voltages, light frequencies, connector shapes, cable specs, and transmission speeds.</p>
+          </div>
+
+          <div class="grid3">
+            <div class="chip on">PDU: Bit</div>
+            <div class="chip on">Focus: Electrical/Optical Signals</div>
+            <div class="chip on">Hardware: Hubs, Repeaters, Cables, Modems</div>
+          </div>
+
+          <h3 class="h">Core Purpose & Function</h3>
+          <p>Layer 1 has no understanding of packet headers, addresses, or applications. It is strictly concerned with sending a series of electrical or optical pulses representing "1" or "0" down a wire, and ensuring that a receiver interprets those physical pulses back into matching bits.</p>
+
+          <h3 class="h">Key Responsibilities</h3>
+          <ul class="plain">
+            <li><strong>Bit Representation</strong>: Defining how 1s and 0s are coded (e.g. changes in voltage levels, light brightness, or radio frequency phases).</li>
+            <li><strong>Bandwidth & Data Rates</strong>: Governing the maximum bit rate (transmission speed in Mbps/Gbps) supported by a cable type.</li>
+            <li><strong>Physical Media Specifications</strong>: Standardizing wire thicknesses, fiber core widths, connector shapes (like RJ45 plugs), and shielding specifications.</li>
+            <li><strong>Line Configuration & Duplexing</strong>: Defining whether transmission is point-to-point, simplex (one-way), half-duplex, or full-duplex.</li>
+          </ul>
+
+          <h3 class="h">Common Physical Media</h3>
+          <table>
+            <thead>
+              <tr><th>Medium Type</th><th>Description</th><th>Typical Speed</th><th>Pros / Cons</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Unshielded Twisted Pair (UTP)</strong></td><td>Copper wires twisted to reduce interference</td><td>100 Mbps – 10 Gbps</td><td>Cheap, flexible, but short range (~100m)</td></tr>
+              <tr><td><strong>Fiber Optic Cable</strong></td><td>Glass strands transmitting light pulses</td><td>1 Gbps – 100+ Gbps</td><td>Immune to electromagnetic interference, long range</td></tr>
+              <tr><td><strong>Coaxial Cable</strong></td><td>Shielded copper conductor</td><td>10 – 100 Mbps</td><td>Resistant to noise, used for cable TV/broadband</td></tr>
+              <tr><td><strong>Radio Frequencies</strong></td><td>Electromagnetic waves traveling through air</td><td>Up to 10 Gbps (Wi-Fi 7)</td><td>No physical wires needed, but prone to walls/noise</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Asphalt Roads & Highways</h3>
+          <div class="example">
+            <div class="label">Amazon Analogy</div>
+            <p>The Physical Layer is the <strong>actual asphalt roads, physical bridges, and truck engines</strong>. It represents the physical tires rolling on the road. Without the asphalt, no delivery van can move. It doesn't know what's in the van or where it's going; it is just the physical conduit that allows travel.</p>
+          </div>
+
+          <h3 class="h">Hardware & Physical Connectors</h3>
+          <div class="grid2">
+            <div class="proscons pc-pro">
+              <div class="pc-head">Pros</div>
+              <ul>
+                <li>Establishes the physical link necessary for any network to function.</li>
+                <li>Fiber optics provide near-light-speed transmission over massive distances.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-con">
+              <div class="pc-head">Cons</div>
+              <ul>
+                <li>Vulnerable to physical damage (cuts, water leaks, severe weather).</li>
+                <li>Signal attenuation requires repeaters/amplifiers over long distances.</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         <!-- 10 TCPIP -->
@@ -1576,7 +2090,7 @@ $ dig -type=mx gmail.com  <span class="c"># find a domain's mail servers (MX rec
   <script>
     const ORDER = [
       'intro', 'protocols', 'topology', 'structure',
-      'osi', 'osi-upper', 'osi-transport', 'osi-network', 'osi-lower', 'tcpip',
+      'osi', 'l7', 'l6', 'l5', 'l4', 'l3', 'l2', 'l1', 'tcpip',
       'http', 'dns', 'email', 'tcpudp', 'ip', 'nat', 'datalink',
       'devices', 'commands', 'bits'
     ];
@@ -1587,10 +2101,13 @@ $ dig -type=mx gmail.com  <span class="c"># find a domain's mail servers (MX rec
       topology: 'Network Topologies',
       structure: 'LAN / MAN / WAN & Structure',
       osi: 'OSI Model — Overview',
-      'osi-upper': 'Layers 7–5 (App/Pres/Session)',
-      'osi-transport': 'Layer 4 — Transport',
-      'osi-network': 'Layer 3 — Network',
-      'osi-lower': 'Layers 2–1 (Data Link/Physical)',
+      l7: 'Layer 7 — Application',
+      l6: 'Layer 6 — Presentation',
+      l5: 'Layer 5 — Session',
+      l4: 'Layer 4 — Transport',
+      l3: 'Layer 3 — Network',
+      l2: 'Layer 2 — Data Link',
+      l1: 'Layer 1 — Physical',
       tcpip: 'TCP/IP Model',
       http: 'HTTP & the Web',
       dns: 'DNS Resolution',
@@ -1680,6 +2197,26 @@ $ dig -type=mx gmail.com  <span class="c"># find a domain's mail servers (MX rec
       document.body.style.overflow = '';
     }
 
+    function filterNav(q) {
+      q = q.toLowerCase();
+      document.querySelectorAll('.sidebar .navlink').forEach(n => {
+        const match = !q || n.textContent.toLowerCase().includes(q);
+        n.style.display = match ? 'flex' : 'none';
+      });
+      document.querySelectorAll('.sidebar .nav-section').forEach(sec => {
+        let el = sec.nextElementSibling;
+        let hasVisibleSibling = false;
+        while (el && !el.classList.contains('nav-section')) {
+          if (el.classList.contains('navlink') && el.style.display !== 'none') {
+            hasVisibleSibling = true;
+            break;
+          }
+          el = el.nextElementSibling;
+        }
+        sec.style.display = (q && !hasVisibleSibling) ? 'none' : 'block';
+      });
+    }
+
     function toggleNav() {
       document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
     }
@@ -1718,6 +2255,14 @@ $ dig -type=mx gmail.com  <span class="c"># find a domain's mail servers (MX rec
           </button>
         </div>`;
       document.querySelectorAll('section').forEach(sec => sec.insertAdjacentHTML('beforeend', navBarHTML));
+
+      // Make all tables responsive on mobile by wrapping them in .table-wrapper
+      document.querySelectorAll('table').forEach(table => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
 
       // Restore last active section
       let startId = 'intro';
