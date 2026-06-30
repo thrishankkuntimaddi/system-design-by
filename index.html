@@ -182,6 +182,7 @@
     .card-dsab { --c: var(--amber);  --cg: rgba(245,158,11,.05) }
     .card-dsaa { --c: var(--pink);   --cg: rgba(244,114,182,.05) }
     .card-api  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
+    .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
 
     /* Status badge */
     .card-status {
@@ -353,6 +354,21 @@
         </div>
       </a>
 
+      <a href="./subjects/git_github/index.html" class="subject-card card-git">
+        <span class="card-status status-live">LIVE</span>
+        <div class="card-icon"><i class="ti ti-brand-git"></i></div>
+        <div class="card-title">Git & GitHub</div>
+        <div class="card-desc">Version control, tracking history, staging area, branching, merging, PRs, pull/push, conflicts, and resetting.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">VCS</span>
+          </div>
+          <i class="ti ti-arrow-right card-arrow"></i>
+        </div>
+      </a>
+
       <a href="./subjects/operating_systems/index.html" class="subject-card card-os">
         <span class="card-status status-soon">SOON</span>
         <div class="card-icon"><i class="ti ti-cpu"></i></div>
@@ -480,6 +496,29 @@
           devices: 'Networking Devices',
           commands: 'Command-Line Reference',
           bits: 'Bits, Bytes & Number Reference'
+        }
+      },
+      {
+        key: 'git_topic',
+        href: './subjects/git_github/index.html',
+        name: 'Git & GitHub',
+        color: '#f05032',
+        labels: {
+          intro: 'Version Control Systems',
+          overview: 'Git vs GitHub',
+          setup: 'Installation & Configuration',
+          lifecycle: 'Git Lifecycle & Status',
+          clone: 'Repository & Cloning',
+          add: 'Staging Area & Adding',
+          commit: 'Committing Changes',
+          remote: 'Initializing & Remotes',
+          push: 'Pushing Code',
+          branch: 'Branching & Checkout',
+          merge: 'Merging & PRs',
+          pull: 'Pulling & Syncing',
+          conflict: 'Resolving Conflicts',
+          reset: 'Undoing Changes',
+          fork: 'Forking Repositories'
         }
       }
     ];

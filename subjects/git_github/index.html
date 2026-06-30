@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Git & GitHub — Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Git Notes">
+  <meta name="description" content="Complete Git & GitHub reference — version control, staging, commits, branching, merging, PRs, resolving conflicts, resetting, and remote repositories.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #f05032; /* Git Orange */
+      --accent2: #7c6af5;
+      --amber: #ffcf6b;
+      --danger: #ff6b7a;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #ffffff; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────── */
+    .shell { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 255px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px;
+    }
+
+    .search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+    .search-icon {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 36px 40px 100px;
+    }
+
+    /* ── Sidebar Header ─────────────────────────────────────── */
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+    .home-back-btn:hover { color: var(--accent); }
+    .home-back-btn i { font-size: 13px; }
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    /* ── Sidebar Nav ────────────────────────────────────────── */
+    .nav-section {
+      padding: 12px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .navlink {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px;
+    }
+    .navlink i {
+      font-size: 15px;
+      width: 17px;
+      flex-shrink: 0;
+      color: var(--text3);
+      transition: color .15s;
+    }
+    .navlink:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2); }
+    .navlink:hover i { color: var(--text); }
+    .navlink.active { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+    .navlink.active i { color: var(--accent); }
+
+    /* ── Content Styling ────────────────────────────────────── */
+    section { display: none; animation: fadein .35s ease; }
+    section.active { display: block; }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
+
+    h2.pagetitle {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      margin-bottom: 24px;
+    }
+
+    .h {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 28px 0 10px;
+      letter-spacing: -0.01em;
+    }
+
+    p { margin-bottom: 14px; color: var(--text2); }
+    p strong { color: var(--text); }
+
+    ul, ol { margin-bottom: 16px; padding-left: 20px; color: var(--text2); }
+    li { margin-bottom: 6px; }
+    ul.plain, ol.plain { list-style: none; padding-left: 0; }
+    ul.plain li, ol.plain li { margin-bottom: 8px; }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--bg2);
+      color: #ff8c7a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .inline-code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--bg3);
+      color: #ff9f8f;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    pre {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    /* ── Definition Box ─────────────────────────────────────── */
+    .def {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(42,52,80,.15);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .def .label {
+      position: absolute;
+      top: -10px; left: 16px;
+      background: var(--bg);
+      padding: 0 8px;
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent);
+    }
+    .def p { margin-bottom: 0; }
+
+    /* ── Example Box ────────────────────────────────────────── */
+    .example {
+      border-left: 3px solid var(--accent2);
+      background: rgba(124,106,245,.05);
+      padding: 12px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+    }
+    .example .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent2);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .example p { margin-bottom: 0; }
+
+    /* ── Pros/Cons ──────────────────────────────────────────── */
+    .proscons { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 10px; }
+    .proscons .pc-head {
+      padding: 8px 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .pc-pro .pc-head { background: rgba(52,211,153,.1); color: var(--accent2); }
+    .pc-con .pc-head { background: rgba(239,68,68,.1); color: var(--danger); }
+    .proscons ul { padding: 12px 16px 12px 28px; margin-bottom: 0; }
+
+    /* ── Grid Layouts ───────────────────────────────────────── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    @media (max-width: 900px) {
+      .grid2, .grid3 { grid-template-columns: 1fr; }
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 16px 0;
+      border-radius: 8px;
+    }
+
+    /* ── Tables ─────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13.5px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    th {
+      background: var(--bg2);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text3);
+      padding: 8px 11px;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 9px 11px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    tr:last-child td { border-bottom: none; }
+    td strong, td .mono { color: var(--text); }
+    table.tight td, table.tight th { padding: 6px 10px; }
+
+    /* ── ASCII Diagram & Flows ──────────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+    .flow .node {
+      background: var(--bg3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      color: var(--text);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .flow .arrow { color: var(--text3); font-weight: 600; font-size: 12px; }
+
+    .chip {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: var(--bg2);
+      color: var(--text3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-right: 6px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+    .chip.on {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(240,80,50,.05);
+    }
+
+    .toc-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+    .toc-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      cursor: pointer;
+      background: var(--bg2);
+      transition: all .15s;
+    }
+    .toc-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .toc-card .tn { font-family: var(--mono); color: var(--accent); font-size: 11px; font-weight: 600; }
+    .toc-card h5 { font-size: 14.5px; margin: 4px 0 2px; color: var(--text); }
+    .toc-card p { font-size: 12.5px; margin: 0; color: var(--text2); }
+    @media (max-width: 900px) { .toc-cards { grid-template-columns: 1fr; } }
+
+    .divider-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      border-left: 2px solid var(--border);
+      padding: 4px 0 4px 12px;
+      margin: 14px 0;
+    }
+
+    /* ── Mobile Hamburger & Navigation ──────────────────────── */
+    .mobile-nav {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 0 16px;
+    }
+    .hamburger-btn {
+      background: none; border: none;
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 20px; flex-shrink: 0;
+      transition: background .15s;
+    }
+    .hamburger-btn:active { background: var(--bg3); }
+    .mobile-nav-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mobile-nav-logo { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); flex-shrink: 0; }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 399;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
+      opacity: 0; transition: opacity .25s; pointer-events: none;
+    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+    @media (max-width: 900px) {
+      .mobile-nav { display: flex; }
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        z-index: 400; width: min(300px, 85vw);
+        transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.4, 0, .2, 1);
+        height: 100dvh; overflow-y: auto;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay { display: block; }
+      .main { padding-top: 56px; }
+      .shell { display: block; }
+      .content { padding: 24px 20px 80px; }
+    }
+
+    /* ── Prev / Next Navigation Bar ─────────────────────────── */
+    .topic-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding: 16px 0 8px;
+      border-top: 1px solid var(--border);
+      gap: 12px;
+    }
+    .topic-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+      min-width: 120px;
+    }
+    .topic-nav-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+    .topic-nav-btn.prev { justify-content: flex-start; }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto; }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0; }
+    .topic-nav-label { display: flex; flex-direction: column; }
+    .topic-nav-hint { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; }
+    .topic-nav-name { font-size: 13px; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px; }
+      .topic-nav-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Top Nav -->
+  <nav class="mobile-nav">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-title" id="mobileNavTitle">Introduction</span>
+    <span class="mobile-nav-logo">Git & GitHub</span>
+  </nav>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <div class="shell">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>Git & GitHub</h1>
+        <p>version control → commits → branching → PRs</p>
+      </div>
+
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+      </div>
+
+      <div class="nav-section">Foundations</div>
+      <div class="navlink active" onclick="go('intro')" id="sn-intro"><i class="ti ti-home"></i>Version Control Systems</div>
+      <div class="navlink" onclick="go('overview')" id="sn-overview"><i class="ti ti-git-commit"></i>Git vs GitHub</div>
+      <div class="navlink" onclick="go('setup')" id="sn-setup"><i class="ti ti-settings"></i>Installation & Config</div>
+
+      <div class="nav-section">Local Git</div>
+      <div class="navlink" onclick="go('lifecycle')" id="sn-lifecycle"><i class="ti ti-refresh"></i>Git Lifecycle & Status</div>
+      <div class="navlink" onclick="go('clone')" id="sn-clone"><i class="ti ti-copy"></i>Repository & Cloning</div>
+      <div class="navlink" onclick="go('add')" id="sn-add"><i class="ti ti-plus"></i>Staging Area & Adding</div>
+      <div class="navlink" onclick="go('commit')" id="sn-commit"><i class="ti ti-file-code"></i>Committing Changes</div>
+      <div class="navlink" onclick="go('remote')" id="sn-remote"><i class="ti ti-world"></i>Initializing & Remotes</div>
+
+      <div class="nav-section">Remote & Branching</div>
+      <div class="navlink" onclick="go('push')" id="sn-push"><i class="ti ti-upload"></i>Pushing Code</div>
+      <div class="navlink" onclick="go('branch')" id="sn-branch"><i class="ti ti-git-branch"></i>Branching & Checkout</div>
+      <div class="navlink" onclick="go('merge')" id="sn-merge"><i class="ti ti-git-merge"></i>Merging & PRs</div>
+      <div class="navlink" onclick="go('pull')" id="sn-pull"><i class="ti ti-download"></i>Pulling & Syncing</div>
+
+      <div class="nav-section">Advanced Operations</div>
+      <div class="navlink" onclick="go('conflict')" id="sn-conflict"><i class="ti ti-alert-triangle"></i>Resolving Conflicts</div>
+      <div class="navlink" onclick="go('reset')" id="sn-reset"><i class="ti ti-history"></i>Undoing Changes</div>
+      <div class="navlink" onclick="go('fork')" id="sn-fork"><i class="ti ti-git-fork"></i>Forking Repositories</div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main" id="mainContent">
+      <div class="content">
+
+        <!-- 01 INTRO -->
+        <section id="p-intro" class="active">
+          <div class="eyebrow">Foundations</div>
+          <h2 class="pagetitle">Version Control Systems (VCS)</h2>
+          <p class="subtitle">Why tracking source history is critical for clean, collaborative software development.</p>
+
+          <div class="def">
+            <div class="label">Definition</div>
+            <p>A <strong>Version Control System (VCS)</strong> is a software utility that tracks changes made to files (usually source code) over time. It allows developers to review modifications, revert files to previous states, compare revisions, and collaborate without overwriting each other's work.</p>
+          </div>
+
+          <div class="grid2">
+            <div class="def">
+              <div class="label">Track History</div>
+              <p>Maintains a timeline (log) of every addition, modification, and deletion. You can trace who changed what line of code, when, and why.</p>
+            </div>
+            <div class="def">
+              <div class="label">Collaborate</div>
+              <p>Allows multiple developers to work simultaneously on the same project codebase without blocking one another.</p>
+            </div>
+          </div>
+
+          <h3 class="h">Why VCS Exists</h3>
+          <p>Without a VCS, developers are forced to manually copy folders (e.g. <code>project_v1_final_v2</code>), coordinate changes via chat, and manually resolve conflicting modifications. A VCS automates this tracking, providing a safety net to undo mistakes instantly.</p>
+
+          <h3 class="h">Distributed vs Centralized VCS</h3>
+          <p>Modern version control is divided into two primary architectures:</p>
+          <table class="tight">
+            <thead>
+              <tr><th>Feature</th><th>Centralized VCS (e.g. SVN)</th><th>Distributed VCS (e.g. Git)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>History Location</strong></td><td>Single central server only</td><td>Every developer has a full copy of the history locally</td></tr>
+              <tr><td><strong>Offline Operations</strong></td><td>Cannot commit, view log, or diff offline</td><td>Can perform almost all operations offline</td></tr>
+              <tr><td><strong>Speed</strong></td><td>Slower (requires remote network connections)</td><td>Near-instant (local filesystem reads/writes)</td></tr>
+              <tr><td><strong>Resilience</strong></td><td>Single point of failure (server crash = loss of history)</td><td>Highly resilient (every local copy is a backup)</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Analogy: The Document Track Changes</h3>
+          <div class="example">
+            <div class="label">Analogy</div>
+            <p>A VCS is like the **"Version History"** panel in Google Docs. Instead of saving a new document copy every time you write a paragraph, the system records only the incremental edits (diffs). If a paragraph gets accidentally deleted, you can scroll back in time and restore that exact block.</p>
+          </div>
+        </section>
+
+        <!-- 02 OVERVIEW -->
+        <section id="p-overview">
+          <div class="eyebrow">Foundations</div>
+          <h2 class="pagetitle">Git vs GitHub</h2>
+          <p class="subtitle">The critical distinction between the local tool and the cloud hosting service.</p>
+
+          <div class="def">
+            <div class="label">Git (The Tool)</div>
+            <p><strong>Git</strong> is a free, open-source, fast, and scalable distributed version control system that runs locally on your computer's command terminal. It creates and tracks local history logs.</p>
+          </div>
+
+          <div class="def">
+            <div class="label">GitHub (The Platform)</div>
+            <p><strong>GitHub</strong> is a commercial, web-based hosting platform that stores your Git repositories in the cloud. It provides features like Pull Requests, issue tracking, user access management, and visual collaboration tools.</p>
+          </div>
+
+          <h3 class="h">Key Distinctions</h3>
+          <table class="tight">
+            <thead>
+              <tr><th>Dimension</th><th>Git</th><th>GitHub</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Nature</strong></td><td>Local CLI software program</td><td>Cloud hosted web platform (SaaS)</td></tr>
+              <tr><td><strong>Installation</strong></td><td>Required on developer's local machine</td><td>No installation (accessed via browser)</td></tr>
+              <tr><td><strong>Network</strong></td><td>Runs entirely offline</td><td>Requires internet connection to sync/push</td></tr>
+              <tr><td><strong>Key Competitors</strong></td><td>Mercurial, SVN, Perforce</td><td>GitLab, Bitbucket, AWS CodeCommit</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example">
+            <div class="label">Real-world Analogy</div>
+            <p>Think of **Git** as the camera on your phone that takes pictures (commits) and stores them in your local gallery. Think of **GitHub** as Instagram — a public/private web platform where you upload (push) those pictures to share and collaborate with others.</p>
+          </div>
+        </section>
+
+        <!-- 03 SETUP -->
+        <section id="p-setup">
+          <div class="eyebrow">Foundations</div>
+          <h2 class="pagetitle">Installation & Configuration</h2>
+          <p class="subtitle">Setting up the command line, verifying versions, and writing global settings.</p>
+
+          <h3 class="h">Verifying Installation</h3>
+          <p>Before using Git, check if it is already installed in your system's path by opening a terminal and running:</p>
+          <pre><code>git --version</code></pre>
+          <div class="example">
+            <div class="label">Output example</div>
+            <p><code>git version 2.39.3 (Apple Git-145)</code></p>
+          </div>
+
+          <h3 class="h">Setting Up User Configuration</h3>
+          <p>When you commit changes, Git stamps them with your name and email. These must be set globally using the <code>git config</code> command:</p>
+          <pre><code># Set your global username
+git config --global user.name "John Doe"
+
+# Set your global email address
+git config --global user.email "johndoe@gmail.com"</code></pre>
+
+          <h3 class="h">Verifying Configurations</h3>
+          <p>To view all configured settings and trace where they are saved, run:</p>
+          <pre><code>git config --list</code></pre>
+          <div class="divider-note">Global configurations are written to a file named <code>.gitconfig</code> located in your user's primary root directory (e.g. <code>~/.gitconfig</code>). You can open and edit it directly.</div>
+        </section>
+
+        <!-- 04 LIFECYCLE -->
+        <section id="p-lifecycle">
+          <div class="eyebrow">Local Git</div>
+          <h2 class="pagetitle">Git Lifecycle & File Status</h2>
+          <p class="subtitle">Understanding the four states of files and how Git tracks modifications.</p>
+
+          <p>As you edit, add, or delete files in your local project workspace, Git classifies every file into one of four distinct states:</p>
+
+          <div class="grid2">
+            <div class="def">
+              <div class="label">1. Untracked</div>
+              <p>Files that exist in your working directory but have never been added to Git's database index. Git ignores them.</p>
+            </div>
+            <div class="def">
+              <div class="label">2. Modified</div>
+              <p>Files already tracked by Git that have changes in your working directory, but the changes aren't staged yet.</p>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="def">
+              <div class="label">3. Staged</div>
+              <p>Files that have been flagged as ready to be committed. Staging prepares the snapshot of changes.</p>
+            </div>
+            <div class="def">
+              <div class="label">4. Unmodified</div>
+              <p>Files that are committed in Git's database and match the local working directory exactly.</p>
+            </div>
+          </div>
+
+          <h3 class="h">Git State Flow Diagram</h3>
+          <div class="flow">
+            <div class="node">Untracked File</div><div class="arrow">add →</div>
+            <div class="node">Staged (Ready)</div><div class="arrow">commit →</div>
+            <div class="node">Unmodified</div>
+          </div>
+          <div class="flow">
+            <div class="node">Unmodified</div><div class="arrow">edit file →</div>
+            <div class="node">Modified</div><div class="arrow">add →</div>
+            <div class="node">Staged (Ready)</div>
+          </div>
+
+          <h3 class="h">Checking Status</h3>
+          <p>To inspect the status of your working directory relative to the current Git branch, use:</p>
+          <pre><code>git status</code></pre>
+        </section>
+
+        <!-- 05 CLONE -->
+        <section id="p-clone">
+          <div class="eyebrow">Local Git</div>
+          <h2 class="pagetitle">Repository & Cloning</h2>
+          <p class="subtitle">Creating a local folder copy of remote GitHub repositories.</p>
+
+          <div class="def">
+            <div class="label">Repository (Repo)</div>
+            <p>A <strong>Repository</strong> is a database folder containing all your project files and their complete version history logs (the metadata is stored inside a hidden folder called <code>.git</code>).</p>
+          </div>
+
+          <h3 class="h">Cloning a Remote Repository</h3>
+          <p>To duplicate an existing remote repository hosted on GitHub down to your local machine, use the <code>git clone</code> command along with the HTTPS or SSH link:</p>
+          <pre><code>git clone https://github.com/username/my-project.git</code></pre>
+          <p>This command automatically does the following:</p>
+          <ul class="plain">
+            <li>Creates a new folder matching the repository name.</li>
+            <li>Initializes a local Git database inside it.</li>
+            <li>Fetches all the history branches and commits.</li>
+            <li>Checks out the default branch (usually <code>main</code> or <code>master</code>).</li>
+            <li>Configures the remote source address as <code>origin</code>.</li>
+          </ul>
+
+          <h3 class="h">Basic Terminal Operations</h3>
+          <table>
+            <thead>
+              <tr><th>Command</th><th>Purpose</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>cd [dir]</strong></td><td>Change Directory</td><td>Navigates into the specified folder.</td></tr>
+              <tr><td><strong>ls</strong></td><td>List Files</td><td>Lists all visible files in the directory.</td></tr>
+              <tr><td><strong>ls -a</strong></td><td>List All</td><td>Lists all files, including hidden files (like the <code>.git</code> folder).</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 06 ADD -->
+        <section id="p-add">
+          <div class="eyebrow">Local Git</div>
+          <h2 class="pagetitle">Staging Area & Adding Files</h2>
+          <p class="subtitle">Preparing changes for a commit snapshot by moving them to the staging index.</p>
+
+          <div class="def">
+            <div class="label">Staging Area</div>
+            <p>The <strong>Staging Area</strong> (or index) is a conceptual middle ground in Git. It is a file that tracks changes that are ready to be snapshotted in the next commit. This allows developers to stage only a subset of their modifications instead of committing everything at once.</p>
+          </div>
+
+          <h3 class="h">Staging Specific Files</h3>
+          <p>To stage changes in a specific file, use the <code>git add</code> command:</p>
+          <pre><code>git add index.html</code></pre>
+
+          <h3 class="h">Staging All Changes</h3>
+          <p>To stage all new, modified, and deleted files in the entire project folder in one command, use the dot wildcard:</p>
+          <pre><code>git add .</code></pre>
+
+          <h3 class="h">Analogy: Packing boxes for moving</h3>
+          <div class="example">
+            <div class="label">Analogy</div>
+            <p>Imagine packing boxes to move houses. Your **Working Directory** is your room with items strewn about. Running **<code>git add</code>** is like picking up specific items and loading them into a box. The box represents the **Staging Area**. You haven't sealed it or shipped it yet; you are just choosing what goes in the box.</p>
+          </div>
+        </section>
+
+        <!-- 07 COMMIT -->
+        <section id="p-commit">
+          <div class="eyebrow">Local Git</div>
+          <h2 class="pagetitle">Committing Changes</h2>
+          <p class="subtitle">Creating a permanent, signed snapshot of staged files in the Git database.</p>
+
+          <div class="def">
+            <div class="label">Commit</div>
+            <p>A <strong>Commit</strong> is a permanent snapshot of your staged changes saved directly to the local repository history. Each commit has a unique alphanumeric SHA-1 hash identifier, an author stamp, and a descriptive commit message.</p>
+          </div>
+
+          <h3 class="h">Running a Commit</h3>
+          <p>To commit your staged changes, use the <code>-m</code> flag to supply a short, descriptive message in the terminal:</p>
+          <pre><code>git commit -m "Add responsive mobile navigation layout"</code></pre>
+
+          <h3 class="h">Analogy: Saving a Game State</h3>
+          <div class="example">
+            <div class="label">Analogy</div>
+            <p>A commit is like creating a **Save State** (checkpoint) in a video game. If you fail a boss fight or make a mistake, you can reload that exact save file to restore your character's state. The commits form a linear history of save states.</p>
+          </div>
+
+          <h3 class="h">Common Commit Mistakes</h3>
+          <div class="grid2">
+            <div class="proscons pc-con">
+              <div class="pc-head">Mistake</div>
+              <ul>
+                <li>Writing generic messages like "Fixed stuff" or "Update".</li>
+                <li>Committing massive, unrelated changes at once, making bugs hard to isolate.</li>
+              </ul>
+            </div>
+            <div class="proscons pc-pro">
+              <div class="pc-head">Correct Pattern</div>
+              <ul>
+                <li>Use imperative mood (e.g. "Fix CSS bug" instead of "Fixed CSS bug").</li>
+                <li>Commit early and commit often, grouping changes atomically.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 08 REMOTE -->
+        <section id="p-remote">
+          <div class="eyebrow">Local Git</div>
+          <h2 class="pagetitle">Initializing & Remote Repositories</h2>
+          <p class="subtitle">Creating a repository from scratch locally and binding it to a remote GitHub URL.</p>
+
+          <h3 class="h">Creating a New Local Repository</h3>
+          <p>If you have an existing project folder locally that isn't under version control, you can initialize a Git database inside it using:</p>
+          <pre><code># Initialize local repository
+git init</code></pre>
+          <p>This creates a hidden folder named <code>.git</code> in the root directory.</p>
+
+          <h3 class="h">Binding a Remote Source (GitHub)</h3>
+          <p>To sync this local repository with a remote repository you created on GitHub, add a remote binding address named <code>origin</code>:</p>
+          <pre><code># Bind local repository to remote GitHub URL
+git remote add origin https://github.com/username/my-repo.git
+
+# Verify connected remote URLs
+git remote -v</code></pre>
+
+          <h3 class="h">Renaming the Default Branch</h3>
+          <p>By default, <code>git init</code> historically names the default branch <code>master</code>. To rename it to the modern standard <code>main</code>, use:</p>
+          <pre><code>git branch -M main</code></pre>
+        </section>
+
+        <!-- 09 PUSH -->
+        <section id="p-push">
+          <div class="eyebrow">Remote & Branching</div>
+          <h2 class="pagetitle">Pushing Code to GitHub</h2>
+          <p class="subtitle">Uploading committed snapshots from your local machine to the remote repository.</p>
+
+          <div class="def">
+            <div class="label">Push</div>
+            <p><strong>Pushing</strong> is the process of uploading your local repository commit snapshots to a remote repository server like GitHub, making your local history available to collaborators.</p>
+          </div>
+
+          <h3 class="h">Setting Up Upstream & Pushing</h3>
+          <p>The first time you push code from a new local branch, you must bind it to the remote branch using the upstream flag (<code>-u</code>):</p>
+          <pre><code># Push and set upstream destination
+git push -u origin main</code></pre>
+          <p>For subsequent pushes, once the upstream is configured, you can run the simplified command:</p>
+          <pre><code>git push</code></pre>
+
+          <h3 class="h">Analogy: Publishing a Draft</h3>
+          <div class="example">
+            <div class="label">Analogy</div>
+            <p>Writing code is like writing a blog post. Saving drafts is like committing locally on your laptop (private). **Pushing** is like hitting "Publish" or syncing it to your cloud drive, making it public to the internet so others can read and edit it.</p>
+          </div>
+        </section>
+
+        <!-- 10 BRANCH -->
+        <section id="p-branch">
+          <div class="eyebrow">Remote & Branching</div>
+          <h2 class="pagetitle">Branching & Navigation</h2>
+          <p class="subtitle">Creating parallel lines of development to build features in isolation.</p>
+
+          <div class="def">
+            <div class="label">Branch</div>
+            <p>A <strong>Branch</strong> in Git is a lightweight, moveable pointer to a specific commit. By default, projects start with a default branch (typically <code>main</code>). Creating a new branch creates a separate pathway of history so you can build features or fix bugs without affecting the stable production code.</p>
+          </div>
+
+          <h3 class="h">Branching Flow Chart</h3>
+          <div class="flow">
+            <div class="node">Commit 1</div><div class="arrow">→</div>
+            <div class="node">Commit 2 (main)</div><div class="arrow">→</div>
+            <div class="node">Commit 3 (main)</div>
+          </div>
+          <div class="flow">
+            <div class="node">Commit 2 (main)</div><div class="arrow">↳ checkout new branch →</div>
+            <div class="node">Feature Commit A</div><div class="arrow">→</div>
+            <div class="node">Feature Commit B</div>
+          </div>
+
+          <h3 class="h">Branching Commands</h3>
+          <table>
+            <thead>
+              <tr><th>Command</th><th>Purpose</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>git branch</strong></td><td>List Branches</td><td>Lists all local branches in the repository.</td></tr>
+              <tr><td><strong>git checkout [branch]</strong></td><td>Navigate Branch</td><td>Switches the working directory to the target branch.</td></tr>
+              <tr><td><strong>git checkout -b [new-branch]</strong></td><td>Create & Navigate</td><td>Creates a new branch and switches to it in one step.</td></tr>
+              <tr><td><strong>git branch -d [branch]</strong></td><td>Delete Branch</td><td>Deletes a branch (requires that changes are merged).</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example">
+            <div class="label">Interview tip</div>
+            <p>On modern versions of Git, the checkout command can be replaced with <code>git switch</code> (e.g. <code>git switch -c new-branch</code> to create and switch), separating branch navigation from file restoration.</p>
+          </div>
+        </section>
+
+        <!-- 11 MERGE -->
+        <section id="p-merge">
+          <div class="eyebrow">Remote & Branching</div>
+          <h2 class="pagetitle">Merging & Pull Requests</h2>
+          <p class="subtitle">Integrating isolated branches and requesting code reviews on GitHub.</p>
+
+          <h3 class="h">Comparing Changes</h3>
+          <p>To view the difference in code content between two branches, commits, or staging areas before merging, use:</p>
+          <pre><code>git diff feature-branch main</code></pre>
+
+          <h3 class="h">Merging Locally</h3>
+          <p>To integrate changes from a feature branch into your active branch (e.g., merging <code>feature-login</code> into <code>main</code>), run:</p>
+          <pre><code># 1. Switch to the recipient branch (main)
+git checkout main
+
+# 2. Merge changes from the target branch
+git merge feature-login</code></pre>
+
+          <h3 class="h">Pull Requests (PRs)</h3>
+          <div class="def">
+            <div class="label">Pull Request</div>
+            <p>A <strong>Pull Request (PR)</strong> is a collaboration feature on GitHub that notifies team members that you've pushed changes to a branch and would like them to review, comment on, and merge those changes into the main repository.</p>
+          </div>
+
+          <h3 class="h">Fast-Forward vs Three-Way Merge</h3>
+          <div class="grid2">
+            <div class="def">
+              <div class="label">Fast-Forward Merge</div>
+              <p>If the recipient branch hasn't diverged (no new commits were made to <code>main</code> while you worked on the feature), Git simply moves the branch pointer forward. No merge commit is created.</p>
+            </div>
+            <div class="def">
+              <div class="label">Three-Way Merge (3-Way)</div>
+              <p>If both branches have diverged (new commits were made on both branches), Git performs a three-way merge using a common ancestor and creates a new, dedicated <strong>merge commit</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12 PULL -->
+        <section id="p-pull">
+          <div class="eyebrow">Remote & Branching</div>
+          <h2 class="pagetitle">Pulling & Syncing</h2>
+          <p class="subtitle">Updating your local repository to match remote updates on GitHub.</p>
+
+          <div class="def">
+            <div class="label">Pull</div>
+            <p><strong>Pulling</strong> fetches the latest commits from the remote repository and immediately integrates (merges) them into your active local branch.</p>
+          </div>
+
+          <h3 class="h">Running a Pull</h3>
+          <pre><code># Fetch and merge remote changes
+git pull origin main</code></pre>
+
+          <h3 class="h">Git Fetch vs Git Pull</h3>
+          <p>It is critical to distinguish between <code>fetch</code> and <code>pull</code>:</p>
+          <div class="flow">
+            <div class="node">git fetch</div><div class="arrow">Downloads remote changes to database only</div>
+            <div class="node">Safe (doesn't modify working files)</div>
+          </div>
+          <div class="flow">
+            <div class="node">git pull</div><div class="arrow">Downloads remote changes + immediately merges</div>
+            <div class="node">Active (can cause merge conflicts)</div>
+          </div>
+          <div class="divider-note">Under the hood, running <code>git pull</code> is exactly equivalent to running <code>git fetch</code> followed immediately by <code>git merge</code>.</div>
+        </section>
+
+        <!-- 13 CONFLICT -->
+        <section id="p-conflict">
+          <div class="eyebrow">Advanced Operations</div>
+          <h2 class="pagetitle">Resolving Merge Conflicts</h2>
+          <p class="subtitle">What happens when Git cannot merge automatically, and how to resolve it manually.</p>
+
+          <div class="def">
+            <div class="label">Merge Conflict</div>
+            <p>A <strong>Merge Conflict</strong> is an event that occurs when Git tries to merge two branches that have conflicting changes in the same line of the same file, or when a file has been deleted in one branch but modified in the other. Git cannot decide which version to keep and pauses the merge.</p>
+          </div>
+
+          <h3 class="h">How Git Flags Conflicts</h3>
+          <p>When a conflict occurs, Git marks the conflict boundaries directly in the affected files using conflict markers:</p>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+This is my local code change on main branch.
+=======
+This is the incoming code change from feature branch.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</code></pre>
+
+          <h3 class="h">Step-by-Step Conflict Resolution</h3>
+          <ol class="plain">
+            <li>Open the conflicted files in an editor (VS Code highlights these sections).</li>
+            <li>Inspect the code and manually choose which changes to keep, removing the markers (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>).</li>
+            <li>Stage the resolved files: <code>git add [filename]</code>.</li>
+            <li>Finalize the merge by committing: <code>git commit -m "Resolve merge conflict"</code>.</li>
+          </ol>
+        </section>
+
+        <!-- 14 RESET -->
+        <section id="p-reset">
+          <div class="eyebrow">Advanced Operations</div>
+          <h2 class="pagetitle">Undoing Changes</h2>
+          <p class="subtitle">Resetting states, restoring working directories, and reverting history.</p>
+
+          <h3 class="h">Case 1: Staged changes (Unstaging files)</h3>
+          <p>If you ran <code>git add</code> but decided you aren't ready to commit those files yet, unstage them using:</p>
+          <pre><code># Unstage a specific file
+git reset index.html
+
+# Unstage all staged changes
+git reset</code></pre>
+
+          <h3 class="h">Case 2: Committed changes (Undoing commits)</h3>
+          <p>If you committed changes locally but want to pull that commit back, you can reset. Git defines three modes of resetting, referencing <code>HEAD~1</code> (one commit back from active branch point):</p>
+          
+          <table class="tight">
+            <thead>
+              <tr><th>Reset Mode</th><th>Impact on Working Directory</th><th>Impact on Staging Area</th><th>Log History</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Soft (<code>--soft</code>)</strong></td><td>Keeps all modified files intact</td><td>Keeps all staged changes intact</td><td>Moves commit pointer back</td></tr>
+              <tr><td><strong>Mixed (Default)</strong></td><td>Keeps all modified files intact</td><td>Unstages all changes</td><td>Moves commit pointer back</td></tr>
+              <tr><td><strong>Hard (<code>--hard</code>)</strong></td><td>Deletes all working changes</td><td>Deletes all staged changes</td><td>Moves commit pointer back</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="h">Running a Hard Reset</h3>
+          <pre><code># WARNING: This destroys all uncommitted local modifications permanently
+git reset --hard HEAD~1
+
+# Reset to a specific commit hash in history
+git reset --hard a1b2c3d</code></pre>
+          <div class="example">
+            <div class="label">Warning</div>
+            <p>Never run a hard reset on commits that have already been pushed to a shared remote repository. It rewrites log history, causing severe sync issues for other team members.</p>
+          </div>
+        </section>
+
+        <!-- 15 FORK -->
+        <section id="p-fork">
+          <div class="eyebrow">Advanced Operations</div>
+          <h2 class="pagetitle">Forking Repositories</h2>
+          <p class="subtitle">Creating independent copies of remote projects on your GitHub profile.</p>
+
+          <div class="def">
+            <div class="label">Fork</div>
+            <p>A <strong>Fork</strong> is a new remote repository that shares code and visibility settings with the original upstream project, but is copied entirely onto your personal GitHub account profile. It allows you to freely experiment and push changes without affecting the parent project.</p>
+          </div>
+
+          <h3 class="h">Fork vs Clone</h3>
+          <table class="tight">
+            <thead>
+              <tr><th>Dimension</th><th>Fork</th><th>Clone</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Location</strong></td><td>Created on GitHub's remote server</td><td>Created on your local computer's drive</td></tr>
+              <tr><td><strong>Relationship</strong></td><td>Tethered to the original project (supports PRs)</td><td>Direct downstream mirror copy of a target remote</td></tr>
+              <tr><td><strong>Access</strong></td><td>No write access required on the original project</td><td>Requires write permissions to push back to remote</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example">
+            <div class="label">Use Case</div>
+            <p>Forking is the primary workflow for **Open-Source Contributions**. You fork a public library, clone your fork locally, make improvements, commit and push to your fork, and then submit a **Pull Request** to merge those changes back into the original creator's repository.</p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const ORDER = [
+      'intro', 'overview', 'setup', 'lifecycle', 'clone', 'add',
+      'commit', 'remote', 'push', 'branch', 'merge', 'pull',
+      'conflict', 'reset', 'fork'
+    ];
+
+    const LABELS = {
+      intro: 'Version Control Systems',
+      overview: 'Git vs GitHub',
+      setup: 'Installation & Config',
+      lifecycle: 'Git Lifecycle & Status',
+      clone: 'Repository & Cloning',
+      add: 'Staging Area & Adding',
+      commit: 'Committing Changes',
+      remote: 'Initializing & Remotes',
+      push: 'Pushing Code',
+      branch: 'Branching & Checkout',
+      merge: 'Merging & PRs',
+      pull: 'Pulling & Syncing',
+      conflict: 'Resolving Conflicts',
+      reset: 'Undoing Changes',
+      fork: 'Forking Repositories'
+    };
+
+    function go(id) {
+      // Hide all pages
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      // Deactivate all sidebar nav items
+      document.querySelectorAll('.sidebar .navlink').forEach(n => n.classList.remove('active'));
+
+      // Show the target section
+      const targetSection = document.getElementById('p-' + id);
+      if (targetSection) targetSection.classList.add('active');
+
+      // Activate the sidebar nav item
+      const navItem = document.getElementById('sn-' + id);
+      if (navItem) {
+        navItem.classList.add('active');
+        navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Scroll content to top
+      document.getElementById('mainContent').scrollTop = 0;
+      window.scrollTo(0, 0);
+
+      // Update mobile title
+      const label = LABELS[id];
+      const mobileTitle = document.getElementById('mobileNavTitle');
+      if (mobileTitle) mobileTitle.textContent = label;
+
+      // Save progress to localStorage
+      try { localStorage.setItem('git_topic', id); } catch(e) {}
+
+      // Close mobile sidebar
+      closeSidebar();
+
+      // Update previous / next button state
+      const idx = ORDER.indexOf(id);
+      
+      // Prev button config
+      const prevId = idx > 0 ? ORDER[idx - 1] : null;
+      const prevBtn = targetSection ? targetSection.querySelector('.topic-nav-btn.prev') : null;
+      if (prevBtn) {
+        if (prevId) {
+          prevBtn.style.visibility = 'visible';
+          prevBtn.querySelector('.topic-nav-name').textContent = LABELS[prevId];
+          prevBtn.onclick = () => go(prevId);
+        } else {
+          prevBtn.style.visibility = 'hidden';
+        }
+      }
+
+      // Next button config - Loops back to Overview at the end
+      const nextId = idx < ORDER.length - 1 ? ORDER[idx + 1] : 'intro';
+      const nextBtn = targetSection ? targetSection.querySelector('.topic-nav-btn.next') : null;
+      if (nextBtn) {
+        const isLast = idx === ORDER.length - 1;
+        nextBtn.querySelector('.topic-nav-hint').textContent = isLast ? 'Back to start' : 'Next';
+        nextBtn.querySelector('.topic-nav-name').textContent = LABELS[nextId];
+        nextBtn.onclick = () => go(nextId);
+      }
+    }
+
+    // ── Mobile Sidebar Functionality ─────────────────────────
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'true');
+      document.getElementById('hamburgerIcon').className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close mobile sidebar
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('hamburgerIcon').className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+
+    function filterNav(q) {
+      q = q.toLowerCase();
+      document.querySelectorAll('.sidebar .navlink').forEach(n => {
+        const match = !q || n.textContent.toLowerCase().includes(q);
+        n.style.display = match ? 'flex' : 'none';
+      });
+      document.querySelectorAll('.sidebar .nav-section').forEach(sec => {
+        let el = sec.nextElementSibling;
+        let hasVisibleSibling = false;
+        while (el && !el.classList.contains('nav-section')) {
+          if (el.classList.contains('navlink') && el.style.display !== 'none') {
+            hasVisibleSibling = true;
+            break;
+          }
+          el = el.nextElementSibling;
+        }
+        sec.style.display = (q && !hasVisibleSibling) ? 'none' : 'block';
+      });
+    }
+
+    function toggleNav() {
+      document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger click binding
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+        btn.addEventListener('touchend', e => { e.preventDefault(); e.stopPropagation(); toggleNav(); }, { passive: false });
+      }
+
+      // Overlay click binding
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('touchend', e => { e.preventDefault(); closeSidebar(); }, { passive: false });
+      }
+
+      // Inject navigation footer buttons dynamically into each section
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('section').forEach(sec => sec.insertAdjacentHTML('beforeend', navBarHTML));
+
+      // Make all tables responsive on mobile by wrapping them in .table-wrapper
+      document.querySelectorAll('table').forEach(table => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+
+      // Restore last active section
+      let startId = 'intro';
+      try {
+        const saved = localStorage.getItem('git_topic');
+        if (saved && ORDER.includes(saved)) startId = saved;
+      } catch(e) {}
+      go(startId);
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+  </script>
+</body>
+</html>
