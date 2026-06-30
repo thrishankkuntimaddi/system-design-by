@@ -1264,7 +1264,7 @@
       const mobileTitle = document.getElementById('mobileNavTitle');
       if (mobileTitle) mobileTitle.textContent = label;
       // save progress
-      try { localStorage.setItem('api_topic', id); } catch(e) {}
+      try { localStorage.setItem('api_topic', id); localStorage.setItem('api_topic_time', Date.now()); } catch(e) {}
       // close mobile sidebar
       closeSidebar();
 

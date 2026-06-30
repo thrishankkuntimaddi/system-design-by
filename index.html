@@ -527,16 +527,26 @@
       const cards = [];
       SUBJECTS.forEach(s => {
         let topicId;
-        try { topicId = localStorage.getItem(s.key); } catch(e) {}
+        let updateTime = 0;
+        try {
+          topicId = localStorage.getItem(s.key);
+          const t = localStorage.getItem(s.key + '_time');
+          if (t) updateTime = parseInt(t, 10);
+        } catch(e) {}
         if (!topicId) return;
         const label = s.labels[topicId] || topicId;
-        cards.push({ href: s.href, name: s.name, color: s.color, topic: label });
+        cards.push({ href: s.href, name: s.name, color: s.color, topic: label, time: updateTime });
       });
       if (!cards.length) return;
 
+      // Sort by updateTime descending, then slice to get only the 2 most recent
+      cards.sort((a, b) => b.time - a.time);
+      const recentCards = cards.slice(0, 2);
+
       document.getElementById('continueSection').style.display = '';
       const row = document.getElementById('continueRow');
-      cards.forEach(c => {
+      row.innerHTML = ''; // Clear existing cards before rendering
+      recentCards.forEach(c => {
         const el = document.createElement('a');
         el.href = c.href;
         el.className = 'continue-card';

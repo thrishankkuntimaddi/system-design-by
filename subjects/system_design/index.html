@@ -2448,7 +2448,7 @@
       currentId = id;
       updateNavArrows(id);
       // Persist current topic to localStorage
-      try { localStorage.setItem('sd_topic', id); } catch(e) {}
+      try { localStorage.setItem('sd_topic', id); localStorage.setItem('sd_topic_time', Date.now()); } catch(e) {}
       // Close sidebar on mobile
       if (window.innerWidth <= 768) closeSidebar();
     }

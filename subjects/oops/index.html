@@ -1001,7 +1001,7 @@ a-&gt;<span class="fn">speak</span>();  <span class="cm">// prints "Woof!" — r
       currentId = id;
       updateNavArrows(id);
       // Persist
-      try { localStorage.setItem('oops_topic', id); } catch(e) {}
+      try { localStorage.setItem('oops_topic', id); localStorage.setItem('oops_topic_time', Date.now()); } catch(e) {}
       if (window.innerWidth <= 768) closeSidebar();
     }
 

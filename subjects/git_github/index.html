@@ -1131,7 +1131,7 @@ git reset --hard a1b2c3d</code></pre>
       if (mobileTitle) mobileTitle.textContent = label;
 
       // Save progress to localStorage
-      try { localStorage.setItem('git_topic', id); } catch(e) {}
+      try { localStorage.setItem('git_topic', id); localStorage.setItem('git_topic_time', Date.now()); } catch(e) {}
 
       // Close mobile sidebar
       closeSidebar();
