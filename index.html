@@ -183,6 +183,7 @@
     .card-dsaa { --c: var(--pink);   --cg: rgba(244,114,182,.05) }
     .card-api  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
     .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
+    .card-ml   { --c: #a855f7;   --cg: rgba(168,85,247,.05) }
 
     /* Status badge */
     .card-status {
@@ -278,7 +279,7 @@
       </div>
     </div>
     <div class="topbar-right">
-      <i class="ti ti-bolt"></i> 7 subjects
+      <i class="ti ti-bolt"></i> 9 subjects
     </div>
   </header>
 
@@ -414,6 +415,21 @@
         </div>
       </a>
 
+      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml">
+        <span class="card-status status-live">LIVE</span>
+        <div class="card-icon"><i class="ti ti-brain"></i></div>
+        <div class="card-title">Machine Learning & AI</div>
+        <div class="card-desc">Supervised & unsupervised learning, evaluation metrics, statistical significance, feature engineering, and pipeline design.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">AI / ML</span>
+            <span class="tag">Statistics</span>
+            <span class="tag">Pipelines</span>
+          </div>
+          <i class="ti ti-arrow-right card-arrow"></i>
+        </div>
+      </a>
+
     </div>
 
   </div>
@@ -519,6 +535,26 @@
           conflict: 'Resolving Conflicts',
           reset: 'Undoing Changes',
           fork: 'Forking Repositories'
+        }
+      },
+      {
+        key: 'ml_topic',
+        href: './subjects/machine_learning_ai/index.html',
+        name: 'Machine Learning & AI',
+        color: '#a855f7',
+        labels: {
+          data_modeling: 'Data-Driven Modeling',
+          train_test: 'Train/Test Protocols',
+          error_analysis: 'Error Analysis',
+          stat_significance: 'Statistical Significance',
+          problem_formulation: 'Problem Formulation',
+          data_collection: 'Data Collection & Annotation',
+          modeling_approaches: 'Modeling Approaches',
+          evaluation_metrics: 'Model Evaluation Metrics',
+          common_pitfalls: 'Common Pitfalls',
+          ai_ethics: 'AI Ethics & Responsible AI',
+          ml_pipeline: 'End-to-End ML Pipeline',
+          interview_scenarios: 'Scenario-Based Interview Questions'
         }
       }
     ];

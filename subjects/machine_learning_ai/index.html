@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Machine Learning & AI Mastery Notes</title>
+  <!-- PWA & Favicon -->
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ML Notes">
+  <meta name="description"
+    content="Complete machine learning and AI reference for software and ML engineering interviews.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #a855f7; /* Purple/Violet representing AI/ML */
+      --accent2: #6366f1; /* Indigo */
+      --accent3: #34d399; /* Green */
+      --accent4: #f59e0b; /* Yellow */
+      --accent5: #f472b6; /* Pink */
+      --red: #ef4444;
+      --green: #34d399;
+      --yellow: #f59e0b;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: 265px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 40px
+    }
+
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px
+    }
+
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+
+    .home-back-btn:hover { color: var(--accent); }
+    .home-back-btn i { font-size: 13px; }
+
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase
+    }
+
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px
+    }
+
+    .nav-section {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3)
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px
+    }
+
+    .nav-item:hover {
+      background: var(--bg3);
+      color: var(--text);
+      border-left-color: var(--border2)
+    }
+
+    .nav-item.active {
+      background: var(--bg3);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 500
+    }
+
+    .nav-item i {
+      font-size: 15px;
+      width: 17px;
+      flex-shrink: 0
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 20px;
+      background: var(--bg4);
+      color: var(--accent5);
+      font-weight: 600;
+    }
+
+    .search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s
+    }
+
+    .search-input:focus {
+      border-color: var(--accent)
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px
+    }
+
+    .topic {
+      display: none
+    }
+
+    .topic.visible {
+      display: block
+    }
+
+    .page-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 20px
+    }
+
+    .tag-blue {
+      background: rgba(79, 142, 247, .15);
+      color: #7db3ff
+    }
+
+    .tag-purple {
+      background: rgba(168, 85, 247, .15);
+      color: #c084fc
+    }
+
+    .tag-green {
+      background: rgba(52, 211, 153, .15);
+      color: #34d399
+    }
+
+    .tag-amber {
+      background: rgba(245, 158, 11, .15);
+      color: #f59e0b
+    }
+
+    .tag-pink {
+      background: rgba(244, 114, 182, .15);
+      color: #f472b6
+    }
+
+    .tag-red {
+      background: rgba(239, 68, 68, .15);
+      color: #ef4444
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3
+    }
+
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      margin-bottom: 28px;
+      line-height: 1.6
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0
+    }
+
+    .section {
+      margin-bottom: 28px
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .section-title i {
+      font-size: 14px
+    }
+
+    .def-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text2);
+      margin-bottom: 15px;
+    }
+
+    .def-card strong {
+      color: var(--text)
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .card h3 i {
+      font-size: 15px;
+      color: var(--accent)
+    }
+
+    .card p {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px
+    }
+
+    .pros,
+    .cons {
+      border-radius: var(--radius);
+      padding: 14px 16px
+    }
+
+    .pros {
+      background: rgba(52, 211, 153, .07);
+      border: 1px solid rgba(52, 211, 153, .2)
+    }
+
+    .cons {
+      background: rgba(239, 68, 68, .07);
+      border: 1px solid rgba(239, 68, 68, .2)
+    }
+
+    .col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .pros .col-title {
+      color: var(--green)
+    }
+
+    .cons .col-title {
+      color: var(--red)
+    }
+
+    .pros ul,
+    .cons ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .pros li,
+    .cons li {
+      font-size: 13px;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5
+    }
+
+    .pros li {
+      color: rgba(52, 211, 153, .9)
+    }
+
+    .cons li {
+      color: rgba(239, 100, 100, .9)
+    }
+
+    .pros li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .cons li::before {
+      content: "✗";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 0
+    }
+
+    .flow-box {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 700
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .tag-chip {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      background: var(--bg3)
+    }
+
+    .tag-chip.blue {
+      border-color: rgba(79, 142, 247, .4);
+      color: #7db3ff;
+      background: rgba(79, 142, 247, .08)
+    }
+
+    .tag-chip.green {
+      border-color: rgba(52, 211, 153, .4);
+      color: #34d399;
+      background: rgba(52, 211, 153, .08)
+    }
+
+    .tag-chip.amber {
+      border-color: rgba(245, 158, 11, .4);
+      color: #f59e0b;
+      background: rgba(245, 158, 11, .08)
+    }
+
+    .tag-chip.purple {
+      border-color: rgba(168, 85, 247, .4);
+      color: #c084fc;
+      background: rgba(168, 85, 247, .08)
+    }
+
+    .related-chip {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--bg2)
+    }
+
+    .related-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(168, 85, 247, .08)
+    }
+
+    .math-block {
+      background: var(--bg3);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 13.5px;
+      color: #c084fc;
+      margin: 10px 0;
+      border-left: 2px solid var(--accent);
+      overflow-x: auto;
+    }
+
+    .latency-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+
+    .latency-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 500px;
+    }
+
+    .latency-table th {
+      padding: 10px 14px;
+      text-align: left;
+      background: var(--bg3);
+      color: var(--text3);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .latency-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2)
+    }
+
+    .latency-table tr:hover td {
+      background: var(--bg3);
+      color: var(--text)
+    }
+
+    .latency-table .fast {
+      color: var(--green);
+      font-weight: 600
+    }
+
+    .latency-table .medium {
+      color: var(--yellow);
+      font-weight: 600
+    }
+
+    .latency-table .slow {
+      color: var(--red);
+      font-weight: 600
+    }
+
+    .highlight-box {
+      background: rgba(168, 85, 247, .08);
+      border: 1px solid rgba(168, 85, 247, .25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .highlight-box strong {
+      color: var(--accent)
+    }
+
+    .warning-box {
+      background: rgba(245, 158, 11, .07);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .warning-box strong {
+      color: var(--yellow)
+    }
+
+    .success-box {
+      background: rgba(52, 211, 153, .07);
+      border: 1px solid rgba(52, 211, 153, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .success-box strong {
+      color: var(--green)
+    }
+
+    /* ── Confusion Matrix Grid Styles ────────────────────────── */
+    .confusion-matrix-container {
+      margin: 15px 0;
+    }
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: var(--radius);
+    }
+    .matrix-cell {
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .matrix-cell.header-row {
+      background: var(--bg4);
+      color: var(--text);
+      font-weight: bold;
+      text-align: center;
+      align-items: center;
+    }
+    .matrix-cell.label-row {
+      background: var(--bg4);
+      color: var(--text);
+      font-weight: bold;
+      align-items: flex-start;
+    }
+    .matrix-cell.label-col {
+      background: transparent;
+    }
+    .cell-tp {
+      background: rgba(52, 211, 153, .1);
+      border: 1px solid rgba(52, 211, 153, .3);
+    }
+    .cell-tn {
+      background: rgba(52, 211, 153, .1);
+      border: 1px solid rgba(52, 211, 153, .3);
+    }
+    .cell-fp {
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .3);
+    }
+    .cell-fn {
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .3);
+    }
+    .cell-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .cell-desc {
+      font-size: 11px;
+      color: var(--text2);
+    }
+    .cell-val {
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+    .badge-green { background: rgba(52,211,153,.15); color: var(--green); }
+    .badge-red { background: rgba(239,68,68,.15); color: var(--red); }
+
+    /* Learning Way Box */
+    .learn-box {
+      background: rgba(99, 102, 241, 0.06);
+      border: 1px dashed rgba(99, 102, 241, 0.3);
+      border-left: 3px solid var(--accent2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+    .learn-box strong {
+      color: #a5b4fc;
+    }
+
+    /* Code styling */
+    pre {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12.5px;
+      color: #e8eaf0;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    code {
+      font-family: monospace;
+      color: var(--accent5);
+    }
+
+    .tip-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .tip-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .tip-icon.do { color: var(--green); }
+    .tip-icon.dont { color: var(--red); }
+    .tip-text {
+      font-size: 13.5px;
+      color: var(--text2);
+    }
+
+    /* Prev / Next Bottom Nav Bar */
+    .topic-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border)
+    }
+
+    .topic-nav-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .15s
+    }
+
+    .topic-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: var(--bg3)
+    }
+
+    .topic-nav-label {
+      display: flex;
+      flex-direction: column
+    }
+
+    .topic-nav-hint {
+      font-size: 10px;
+      color: var(--text3);
+      text-transform: uppercase;
+      font-weight: 700
+    }
+
+    .topic-nav-name {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600
+    }
+
+    /* Mobile hamburger & top navbar */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px
+    }
+
+    .hamburger-btn:hover {
+      background: var(--bg3)
+    }
+
+    .mobile-nav-logo {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .mobile-nav-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 98;
+      backdrop-filter: blur(4px)
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .app {
+        flex-direction: column
+      }
+
+      .mobile-nav {
+        display: flex
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 52px;
+        bottom: 0;
+        z-index: 99;
+        transform: translateX(-100%);
+        transition: transform .2s ease-out;
+        width: 260px;
+        height: calc(100vh - 52px);
+        padding-bottom: 20px
+      }
+
+      .sidebar.open {
+        transform: translateX(0)
+      }
+
+      .sidebar-overlay.active {
+        display: block
+      }
+
+      .main {
+        padding: 80px 20px 40px;
+        font-size: 14px
+      }
+
+      .sidebar-header {
+        display: none
+      }
+
+      .card-grid, .card-grid-3, .pros-cons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Open navigation menu"
+      aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">ML</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">Data-Driven Modeling</span>
+  </nav>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn" id="homeBackBtn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>Machine Learning</h1>
+        <p>Interview Prep Notes</p>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+      </div>
+      <div class="nav-section">Core Theory</div>
+      <div class="nav-item active" onclick="show('data_modeling')" id="nav-data_modeling"><i class="ti ti-database-cog"></i>Data-Driven Modeling</div>
+      <div class="nav-item" onclick="show('train_test')" id="nav-train_test"><i class="ti ti-flask"></i>Train/Test Protocols</div>
+      <div class="nav-item" onclick="show('error_analysis')" id="nav-error_analysis"><i class="ti ti-bug"></i>Error Analysis</div>
+      <div class="nav-item" onclick="show('stat_significance')" id="nav-stat_significance"><i class="ti ti-chart-arrows-vertical"></i>Statistical Significance</div>
+      
+      <div class="nav-section">Data & Design</div>
+      <div class="nav-item" onclick="show('problem_formulation')" id="nav-problem_formulation"><i class="ti ti-target-arrow"></i>Problem Formulation</div>
+      <div class="nav-item" onclick="show('data_collection')" id="nav-data_collection"><i class="ti ti-tags"></i>Collection & Annotation</div>
+      <div class="nav-item" onclick="show('modeling_approaches')" id="nav-modeling_approaches"><i class="ti ti-cpu"></i>Modeling Approaches</div>
+      
+      <div class="nav-section">Evaluation & Metrics</div>
+      <div class="nav-item" onclick="show('evaluation_metrics')" id="nav-evaluation_metrics"><i class="ti ti-award"></i>Evaluation Metrics</div>
+      <div class="nav-item" onclick="show('common_pitfalls')" id="nav-common_pitfalls"><i class="ti ti-alert-triangle"></i>Common Pitfalls</div>
+      <div class="nav-item" onclick="show('ai_ethics')" id="nav-ai_ethics"><i class="ti ti-shield-half"></i>Responsible AI & Ethics</div>
+      
+      <div class="nav-section">Implementation</div>
+      <div class="nav-item" onclick="show('ml_pipeline')" id="nav-ml_pipeline"><i class="ti ti-git-fork"></i>End-to-End ML Pipeline</div>
+      <div class="nav-item" onclick="show('interview_scenarios')" id="nav-interview_scenarios"><i class="ti ti-user-check"></i>Interview Scenarios</div>
+    </div>
+
+    <!-- Main Content Panel -->
+    <div class="main">
+
+      <!-- 1. DATA-DRIVEN MODELING -->
+      <div class="topic visible" id="topic-data_modeling">
+        <div class="page-tag tag-purple"><i class="ti ti-database-cog"></i>Chapter 1</div>
+        <h1 class="page-title">Data-Driven Modeling</h1>
+        <p class="page-subtitle">Solving problems using statistical patterns in data instead of manually writing heuristic rules.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-book"></i>What is Machine Learning?</div>
+          <div class="def-card">
+            <strong>Machine Learning (ML)</strong> is the process of training algorithms to parse historical datasets, discover statistical correlations, and map inputs to outputs without manual rule coding.
+            <div class="math-block">y = f(x) + ε</div>
+            Where <code>x</code> represents the features, <code>y</code> represents the target label, and <code>ε</code> represents the random irreducible noise.
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-device-gamepad"></i>Use Case: Spam Filtering</h3>
+            <p>Instead of manually writing thousands of regex rules (e.g. flagging words like "FREE", "VIAGRA"), an ML model learns which token frequencies predict a spam designation based on millions of user-flagged emails.</p>
+          </div>
+          <div class="learn-box">
+            <strong>The Learning Way:</strong> Focus on transition. Traditional software engineering: <code>Inputs + Rules = Output</code>. Machine Learning: <code>Inputs + Outputs = Rules (Model parameters)</code>.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-hierarchy"></i>AI vs ML vs Deep Learning</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Artificial Intelligence (AI)</h3>
+              <p>The parent landscape. Any technique that enables computers to mimic human behavior. <br>
+              <strong>Use Case:</strong> Chess engine using alpha-beta pruning trees (rules-based heuristics with no data training).</p>
+            </div>
+            <div class="card">
+              <h3>Machine Learning (ML)</h3>
+              <p>Subset of AI. Algorithms that learn parameters directly from structured/unstructured datasets.<br>
+              <strong>Use Case:</strong> Customer churn estimation using a Random Forest model on user transaction tables.</p>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+              <h3>Deep Learning (DL)</h3>
+              <p>Subset of ML. Uses multi-layered neural networks (DNNs) that utilize backpropagation to automatically learn hierarchical feature representations directly from raw data (pixels, audio, text) without manual feature engineering.<br>
+              <strong>Use Case:</strong> Vision Transformer (ViT) classifying objects in autonomous vehicle camera feeds.</p>
+            </div>
+          </div>
+          <div class="learn-box">
+            <strong>The Learning Way:</strong> Think of it as a set of nested Russian dolls. AI contains ML, and ML contains DL.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-table"></i>Types of Data</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Structured Data</h3>
+              <p>Tabular data stored in SQL/NoSQL databases with strict schemas.<br>
+              <strong>Use Case:</strong> Credit card transactions containing timestamp, billing zip, amount, and cardholder age.</p>
+            </div>
+            <div class="card">
+              <h3>Unstructured Data</h3>
+              <p>Raw text, sound, video, or image logs lacking a structured layout.<br>
+              <strong>Use Case:</strong> Storing customer call-center recordings and transcript logs for sentiment audit.</p>
+            </div>
+            <div class="card">
+              <h3>Time-Series Data</h3>
+              <p>Sequences of data points indexed in chronological order, showing autocorrelation.<br>
+              <strong>Use Case:</strong> Stock market prices sampled every second, or CPU utilization logged every minute.</p>
+            </div>
+            <div class="card">
+              <h3>Images</h3>
+              <p>Grids of pixel arrays (often 3-channel RGB values ranging 0-255).<br>
+              <strong>Use Case:</strong> MRI scan grids processed by a CNN to segment tumors.</p>
+            </div>
+            <div class="card">
+              <h3>Audio</h3>
+              <p>Pressure waves represented in time-domain or converted to frequency-domain spectrograms.<br>
+              <strong>Use Case:</strong> Audio files sent to automatic speech translation models in voice assistants.</p>
+            </div>
+            <div class="card">
+              <h3>Text</h3>
+              <p>Discrete token sequences representing words, characters, or subwords.<br>
+              <strong>Use Case:</strong> User reviews analyzed to identify product bugs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-tag"></i>Features and Labels</div>
+          <div class="def-card">
+            • <strong>Features (X):</strong> The independent inputs or raw signals fed into the model.<br>
+            • <strong>Labels (y):</strong> The dependent ground-truth targets the model must learn to predict.
+          </div>
+          <div class="card">
+            <h3><i class="ti ti-list"></i>Use Case: House Price Predictor</h3>
+            <p>• <strong>Features:</strong> Number of bedrooms, square footage, zip code, distance to transit.<br>
+            • <strong>Label:</strong> Sale price (e.g., $450,000).</p>
+          </div>
+          <div class="learn-box">
+            <strong>The Learning Way:</strong> Always identify features as the clues given to the model, and the label as the target answer.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-adjustments"></i>Feature Engineering & Preprocessing</div>
+          <div class="card">
+            <h3>Data Preprocessing</h3>
+            <p>Preparing raw logs for algorithms. Includes parsing timestamps, one-hot encoding categories, and handling text tokenization.</p>
+          </div>
+          <div class="card">
+            <h3>Missing Values</h3>
+            <p>• **Definition:** Null entries in feature tables.<br>
+            • **Use Case:** Mean/Median/Mode imputation for numerical/categorical fields, or KNN Imputer for multivariate estimation. Dropping rows if missing rates exceed 50%.</p>
+          </div>
+          <div class="card">
+            <h3>Outliers</h3>
+            <p>• **Definition:** Values lying far outside the typical distribution.<br>
+            • **Use Case:** Capping values using the Interquartile Range (IQR) method (below $Q1 - 1.5*IQR$ or above $Q3 + 1.5*IQR$) or Log Transformations to compress right-skewed tails.</p>
+          </div>
+          <div class="card">
+            <h3>Normalization (Min-Max Scaler)</h3>
+            <p>• **Definition:** Rescaling feature ranges to $[0, 1]$. Highly sensitive to outliers.<br>
+            <div class="math-block">X_norm = (X - X_min) / (X_max - X_min)</div>
+            • **Use Case:** Neural networks and distance-based models (KNN, K-Means).</p>
+          </div>
+          <div class="card">
+            <h3>Standardization (Z-Score Scaler)</h3>
+            <p>• **Definition:** Centering data to mean = 0 and standard deviation = 1.<br>
+            <div class="math-block">Z = (X - μ) / σ</div>
+            • **Use Case:** Models assuming Gaussian inputs (Linear Regression, SVMs, PCA).</p>
+          </div>
+          <div class="card">
+            <h3>Dimensionality Reduction</h3>
+            <p>• **Definition:** Projecting high-dimensional spaces to lower-dimensional latent spaces.<br>
+            • **Use Case:** Applying **Principal Component Analysis (PCA)** to compress 100 features to 5 principal orthogonal components, reducing training time and preventing overfitting.</p>
+          </div>
+          <div class="learn-box">
+            <strong>The Learning Way:</strong> Standard scaling centers and scales variables, whereas Min-Max bounds them. Standard scaling is generally safer because it handles outliers better.
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TRAIN/TEST PROTOCOLS -->
+      <div class="topic" id="topic-train_test">
+        <div class="page-tag tag-purple"><i class="ti ti-flask"></i>Chapter 2</div>
+        <h1 class="page-title">Train/Test Protocols</h1>
+        <p class="page-subtitle">Standard methodologies for partitioning data to validate model generalization and avoid overfitting.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-pie"></i>Train vs. Validation vs. Test Split</div>
+          <div class="def-card">
+            To correctly evaluate a model's performance, data is divided into three disjoint sets:<br>
+            • **Train Set (70-80%):** Weights are adjusted using this dataset.<br>
+            • **Validation Set (10-15%):** Used during hyperparameter tuning and model selection. Acts as a proxy test set during iterations.<br>
+            • **Test Set (10-15%):** Held out until the end. Used once to report final generalization metrics.
+          </div>
+          <div class="learn-box">
+            <strong>The Learning Way:</strong> Never let the model see the test set during training or validation, otherwise you risk model leakage and optimistic bias.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-split-2"></i>Stratified vs. Random Sampling</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Random Sampling</h3>
+              <p>• **Definition:** Each sample has an equal probability of selection.<br>
+              • **Use Case:** Uniformly distributed datasets.<br>
+              • **Pitfall:** May omit rare positive classes in highly imbalanced datasets.</p>
+            </div>
+            <div class="card">
+              <h3>Stratified Sampling</h3>
+              <p>• **Definition:** Partitioning samples to guarantee that target class proportions in splits match target proportions in the parent set.<br>
+              • **Use Case:** Highly imbalanced classes (e.g. 99% clean, 1% fraud).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-reload"></i>Cross-Validation</div>
+          <div class="card">
+            <h3>K-Fold Cross-Validation</h3>
+            <p>Dataset is split into <code>K</code> folds. Model is trained <code>K</code> times, using 1 fold for validation and <code>K-1</code> folds for training. Overcomes small-data validation noise.<br>
+            <strong>Stratified K-Fold:</strong> Preserves target distribution across folds.<br>
+            <strong>Time-Series Split:</strong> Dynamic rolling windows (e.g., train Fold 1 on Jan, validate Feb; train Fold 2 on Jan-Feb, validate March) to avoid future temporal leakage.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>Data Leakage</div>
+          <div class="warning-box">
+            <strong>Data Leakage</strong> occurs when information from target labels or test/validation sets leaks into the training feature pipeline. Common examples: computing global scaling parameters before splitting, or using features that aren't available at inference time (e.g. using session duration to predict user click probability).
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-area"></i>Overfitting & Underfitting</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Underfitting</h3>
+              <p>High bias. Model is too simple to capture the underlying pattern.<br>
+              <strong>Metrics:</strong> High training error, high validation error.<br>
+              <strong>Fixes:</strong> Increase model capacity, add features, reduce regularization.</p>
+            </div>
+            <div class="card">
+              <h3>Overfitting</h3>
+              <p>High variance. Model memorizes training noise and fails to generalize.<br>
+              <strong>Metrics:</strong> Low training error, high validation error.<br>
+              <strong>Fixes:</strong> Gather more data, apply L1/L2 regularization, prune trees, add dropout layers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-axis-x"></i>Bias-Variance Tradeoff</div>
+          <div style="text-align: center; margin: 15px 0;">
+            <svg viewBox="0 0 500 280" width="100%" height="auto" style="background:var(--bg2); border-radius:var(--radius); border:1px solid var(--border); padding:12px;">
+              <!-- Grid Lines -->
+              <line x1="60" y1="220" x2="460" y2="220" stroke="var(--border)" stroke-width="1.5" />
+              <line x1="60" y1="30" x2="60" y2="220" stroke="var(--border)" stroke-width="1.5" />
+              
+              <!-- Labels -->
+              <text x="260" y="255" fill="var(--text2)" font-size="11" text-anchor="middle" font-family="sans-serif">Model Complexity (e.g. Tree Depth, NN Epochs)</text>
+              <text x="25" y="125" fill="var(--text2)" font-size="11" text-anchor="middle" font-family="sans-serif" transform="rotate(-90 25 125)">Error Rate</text>
+              
+              <!-- Curves -->
+              <!-- Bias (descending) -->
+              <path d="M 80 50 Q 200 190 440 210" fill="none" stroke="var(--red)" stroke-width="2" stroke-dasharray="3" />
+              <!-- Variance (ascending) -->
+              <path d="M 80 210 Q 250 200 440 50" fill="none" stroke="var(--yellow)" stroke-width="2" stroke-dasharray="3" />
+              <!-- Total Error (U-shape) -->
+              <path d="M 80 120 Q 230 220 440 90" fill="none" stroke="var(--accent)" stroke-width="3" />
+              
+              <!-- Labels on curves -->
+              <text x="110" y="80" fill="var(--red)" font-size="10" font-family="sans-serif" font-weight="bold">Bias²</text>
+              <text x="400" y="75" fill="var(--yellow)" font-size="10" font-family="sans-serif" font-weight="bold">Variance</text>
+              <text x="235" y="130" fill="var(--accent)" font-size="10" font-family="sans-serif" font-weight="bold">Total Error</text>
+              
+              <!-- Optimum Line -->
+              <line x1="225" y1="30" x2="225" y2="220" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="3" />
+              <text x="225" y="24" fill="var(--green)" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="bold">Sweet Spot (Optimal Generalization)</text>
+              
+              <!-- Zones -->
+              <text x="130" y="205" fill="var(--text3)" font-size="10" text-anchor="middle" font-family="sans-serif">Underfitting (High Bias)</text>
+              <text x="350" y="205" fill="var(--text3)" font-size="10" text-anchor="middle" font-family="sans-serif">Overfitting (High Var)</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-settings"></i>Hyperparameter Tuning</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Grid Search</h3>
+              <p>Exhaustive evaluation of all hyperparameter combinations. Grid grows exponentially; slow but structured.</p>
+            </div>
+            <div class="card">
+              <h3>Random Search</h3>
+              <p>Randomly samples hyperparameter combinations. Highly efficient. Statistically superior for high-dimensional search spaces because most models are sensitive to only a few parameters.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. ERROR ANALYSIS -->
+      <div class="topic" id="topic-error_analysis">
+        <div class="page-tag tag-purple"><i class="ti ti-bug"></i>Chapter 3</div>
+        <h1 class="page-title">Error Analysis</h1>
+        <p class="page-subtitle">Inspecting wrong predictions systematically to diagnose weaknesses and drive targeted improvements.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-table-shortcut"></i>Confusion Matrix & Class Imbalance</div>
+          <div class="def-card">
+            A **Confusion Matrix** is a grid summarizing predictions against true labels.
+          </div>
+          <div class="confusion-matrix-container">
+            <div class="matrix-grid">
+              <div class="matrix-cell label-col"></div>
+              <div class="matrix-cell header-row">Predicted Positive</div>
+              <div class="matrix-cell header-row">Predicted Negative</div>
+              <div class="matrix-cell label-row">Actual Positive</div>
+              <div class="matrix-cell cell-tp">
+                <div class="cell-title">True Positive (TP)</div>
+                <div class="cell-desc">Correctly classified positive instances.</div>
+                <span class="cell-val badge-green">Hit</span>
+              </div>
+              <div class="matrix-cell cell-fn">
+                <div class="cell-title">False Negative (FN)</div>
+                <div class="cell-desc">Positives classified as negatives.</div>
+                <span class="cell-val badge-red">Type II Error (Miss)</span>
+              </div>
+              <div class="matrix-cell label-row">Actual Negative</div>
+              <div class="matrix-cell cell-fp">
+                <div class="cell-title">False Positive (FP)</div>
+                <div class="cell-desc">Negatives classified as positives.</div>
+                <span class="cell-val badge-red">Type I Error (False Alarm)</span>
+              </div>
+              <div class="matrix-cell cell-tn">
+                <div class="cell-title">True Negative (TN)</div>
+                <div class="cell-desc">Correctly classified negative instances.</div>
+                <span class="cell-val badge-green">Correct Reject</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-split"></i>False Positives vs. False Negatives</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>False Positive (FP) - Type I</h3>
+              <p>• **Definition:** Model predicts positive, but actual is negative.<br>
+              • **Use Case (Security):** System flags a clean login attempt as fraudulent, causing user frustration.</p>
+            </div>
+            <div class="card">
+              <h3>False Negative (FN) - Type II</h3>
+              <p>• **Definition:** Model predicts negative, but actual is positive.<br>
+              • **Use Case (Healthcare):** Diagnostic system misses a cancer indication, delaying treatment.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-math-symbols"></i>Precision, Recall, F1 Score</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Precision</h3>
+              <p>Fraction of positive predictions that are correct. Use when FP cost is high.<br>
+              <div class="math-block">Precision = TP / (TP + FP)</div>
+              </p>
+            </div>
+            <div class="card">
+              <h3>Recall (Sensitivity)</h3>
+              <p>Fraction of actual positives detected. Use when FN cost is high.<br>
+              <div class="math-block">Recall = TP / (TP + FN)</div>
+              </p>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+              <h3>F1 Score</h3>
+              <p>Harmonic mean balancing Precision and Recall. Essential for class-imbalanced evaluations.<br>
+              <div class="math-block">F1 = 2 * (Precision * Recall) / (Precision + Recall)</div>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-line"></i>ROC vs. PR Curves</div>
+          <div class="highlight-box">
+            • **ROC Curve (TPR vs. FPR):** Evaluates overall classification rank. Optimistic on highly imbalanced sets.<br>
+            • **Precision-Recall (PR) Curve:** Precision vs. Recall. Ideal for sparse targets (e.g. 0.1% fraud) because it doesn't use True Negatives in its metrics.
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>ROC Curve</h3>
+              <svg viewBox="0 0 300 220" width="100%" height="auto" style="background:var(--bg3); border-radius:8px; border:1px solid var(--border); padding:5px;">
+                <line x1="40" y1="180" x2="280" y2="180" stroke="var(--border)" stroke-width="1.5" />
+                <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)" stroke-width="1.5" />
+                <text x="160" y="205" fill="var(--text2)" font-size="9" text-anchor="middle">FPR</text>
+                <text x="12" y="100" fill="var(--text2)" font-size="9" text-anchor="middle" transform="rotate(-90 12 100)">TPR (Recall)</text>
+                <line x1="40" y1="180" x2="280" y2="20" stroke="var(--text3)" stroke-width="1" stroke-dasharray="3" />
+                <path d="M 40 180 Q 50 30 280 20" fill="none" stroke="var(--accent)" stroke-width="2" />
+              </svg>
+            </div>
+            <div class="card">
+              <h3>PR Curve</h3>
+              <svg viewBox="0 0 300 220" width="100%" height="auto" style="background:var(--bg3); border-radius:8px; border:1px solid var(--border); padding:5px;">
+                <line x1="40" y1="180" x2="280" y2="180" stroke="var(--border)" stroke-width="1.5" />
+                <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)" stroke-width="1.5" />
+                <text x="160" y="205" fill="var(--text2)" font-size="9" text-anchor="middle">Recall</text>
+                <text x="12" y="100" fill="var(--text2)" font-size="9" text-anchor="middle" transform="rotate(-90 12 100)">Precision</text>
+                <path d="M 40 30 Q 210 40 280 180" fill="none" stroke="var(--green)" stroke-width="2" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-adjustments-horizontal"></i>Threshold Tuning</div>
+          <div class="card">
+            <h3>Choosing the Decision Cutoff</h3>
+            <p>Models output probability ranges $[0, 1]$. The default threshold is $0.5$. <br>
+            • For high-security login verification, raise the threshold (e.g., $0.98$) to reduce False Positives.<br>
+            • For medical diagnoses, lower the threshold (e.g., $0.15$) to prioritize Recall (minimizing False Negatives).</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-pull-request"></i>Human vs. Model Error & Slice-Based Evaluation</div>
+          <div class="card">
+            <h3>Human Error vs. Model Error</h3>
+            <p>• **Human Error (Bayes Error):** The irreducible error limit (e.g. ambiguous image pixels).<br>
+            • **Training Error:** Error rate on the training dataset.<br>
+            • **Generalization (Test) Error:** Model performance on unseen datasets.</p>
+          </div>
+          <div class="card">
+            <h3>Slice-Based Evaluation</h3>
+            <p>Auditing performance metrics across data slices (e.g., checking if fraud model performs poorly for cardholders in specific countries) to prevent bias and ensure fairness.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-help"></i>Interviewer Audit Cheat Sheet</div>
+          <div class="def-card">
+            <strong>Q: Why is your model failing?</strong><br>
+            <em>A:</em> (1) Check for Covariate Shift or concept drift; (2) Group errors by category (e.g. blurry inputs, typos); (3) Check for label noise.<br><br>
+            <strong>Q: How would you improve it?</strong><br>
+            <em>A:</em> (1) Add specific features for error categories (e.g., spell check); (2) Use active learning on failing slices; (3) Regularize if variance is high.
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. STATISTICAL SIGNIFICANCE -->
+      <div class="topic" id="topic-stat_significance">
+        <div class="page-tag tag-purple"><i class="ti ti-chart-arrows-vertical"></i>Chapter 4</div>
+        <h1 class="page-title">Statistical Significance</h1>
+        <p class="page-subtitle">Verifying if performance improvements are real or simply due to sample bias or random chance.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-math-symbols"></i>Probability & Sampling Basics</div>
+          <div class="card">
+            <h3>Bayes' Theorem</h3>
+            <p>Calculates conditional probabilities based on prior knowledge.</p>
+            <div class="math-block">P(A|B) = [P(B|A) * P(A)] / P(B)</div>
+          </div>
+          <div class="card">
+            <h3>Central Limit Theorem (CLT)</h3>
+            <p>As sample size increases, the distribution of sample means approaches a normal distribution, regardless of the parent population's distribution. This enables parametric statistical modeling.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>Mean, Median, Variance, Standard Deviation</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Mean vs. Median</h3>
+              <p>• **Mean ($μ$):** Average value. Highly sensitive to outliers.<br>
+              • **Median:** Middle sorted value. Robust to skew.</p>
+            </div>
+            <div class="card">
+              <h3>Variance & Std Dev</h3>
+              <p>• **Variance ($σ^2$):** Mean squared deviations from Mean.<br>
+              • **Standard Deviation ($σ$):** Dispersion metric in the same units as the dataset.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-area"></i>Hypothesis Testing & p-values</div>
+          <div class="def-card">
+            • **Null Hypothesis ($H_0$):** Assumption of no change (e.g., Conversion model A = model B).<br>
+            • **p-value:** The probability of obtaining the observed results (or more extreme) assuming $H_0$ is true.<br>
+            • **Significance Level ($α$):** Probability cutoff for rejecting $H_0$ (usually $0.05$).
+          </div>
+          <div style="text-align: center; margin: 15px 0;">
+            <svg viewBox="0 0 400 200" width="100%" height="auto" style="background:var(--bg2); border-radius:var(--radius); border:1px solid var(--border); padding:10px;">
+              <!-- Bell Curve -->
+              <path d="M 40 180 Q 120 180 160 120 T 200 30 T 240 120 T 360 180" fill="none" stroke="var(--accent)" stroke-width="2" />
+              <!-- Rejection region left -->
+              <path d="M 40 180 Q 80 180 120 156 L 120 180 Z" fill="rgba(239, 68, 68, 0.25)" stroke="var(--red)" stroke-width="1.2" />
+              <!-- Rejection region right -->
+              <path d="M 280 156 Q 320 180 360 180 L 280 180 Z" fill="rgba(239, 68, 68, 0.25)" stroke="var(--red)" stroke-width="1.2" />
+              <line x1="30" y1="180" x2="370" y2="180" stroke="var(--border)" stroke-width="1.5" />
+              <line x1="200" y1="30" x2="200" y2="180" stroke="var(--green)" stroke-width="1.2" stroke-dasharray="3" />
+              <text x="200" y="195" fill="var(--green)" font-size="9" text-anchor="middle" font-weight="bold">Mean (H₀)</text>
+              <text x="325" y="145" fill="var(--red)" font-size="9" text-anchor="middle" font-weight="bold">Rejection Region (α/2 = 2.5%)</text>
+              <text x="200" y="100" fill="var(--text2)" font-size="10" text-anchor="middle">Acceptance Region (95%)</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-refresh"></i>A/B Testing & Bootstrap Sampling</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>A/B Testing</h3>
+              <p>Routing traffic to control (A) and treatment (B) groups.<br>
+              <strong>Steps:</strong> Power analysis to set sample sizes, monitor guardrail metrics (e.g. latency), run experiment to target duration, evaluate p-value.</p>
+            </div>
+            <div class="card">
+              <h3>Bootstrap Sampling</h3>
+              <p>Resampling a dataset with replacement to construct empirical confidence intervals for non-parametric evaluation metrics (e.g., F1, NDCG) without assuming normal distributions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. PROBLEM FORMULATION -->
+      <div class="topic" id="topic-problem_formulation">
+        <div class="page-tag tag-amber"><i class="ti ti-target-arrow"></i>Chapter 5</div>
+        <h1 class="page-title">Problem Formulation</h1>
+        <p class="page-subtitle">Formulating business objectives as specific, solvable machine learning targets.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-route"></i>Core Paradigm Classification</div>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>Supervised</h3>
+              <p>Model learns mappings using historical inputs and target labels.<br>
+              <strong>Use Case:</strong> Predicting churn, classifying email categories.</p>
+            </div>
+            <div class="card">
+              <h3>Unsupervised</h3>
+              <p>Finding patterns and groupings in unlabeled data.<br>
+              <strong>Use Case:</strong> Customer segmentation, fraud anomaly detection.</p>
+            </div>
+            <div class="card">
+              <h3>Reinforcement</h3>
+              <p>Learning via sequential actions to maximize cumulative reward.<br>
+              <strong>Use Case:</strong> Game bots (AlphaGo), robotics trajectory optimization.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-compare"></i>ML Task Definitions & Scenarios</div>
+          <div class="latency-table-wrap">
+            <table class="latency-table">
+              <thead>
+                <tr>
+                  <th>Task Class</th>
+                  <th>Definition</th>
+                  <th>Use Case Scenario</th>
+                  <th>Primary Metric</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Regression</strong></td>
+                  <td>Predicting continuous real values.</td>
+                  <td>Predicting ride price based on distance.</td>
+                  <td>RMSE / MAE</td>
+                </tr>
+                <tr>
+                  <td><strong>Classification</strong></td>
+                  <td>Predicting discrete categorical tags.</td>
+                  <td>Flagging if a user comment is toxic.</td>
+                  <td>Precision / Recall / F1</td>
+                </tr>
+                <tr>
+                  <td><strong>Ranking</strong></td>
+                  <td>Ordering list items by relevance score.</td>
+                  <td>Displaying relevant search results.</td>
+                  <td>NDCG / MAP</td>
+                </tr>
+                <tr>
+                  <td><strong>Recommendation</strong></td>
+                  <td>Suggesting personalized content.</td>
+                  <td>Recommending movie feeds.</td>
+                  <td>Recall@K / Hit Rate</td>
+                </tr>
+                <tr>
+                  <td><strong>Anomaly Detection</strong></td>
+                  <td>Identifying rare, irregular data patterns.</td>
+                  <td>Flagging structural network intrusion logs.</td>
+                  <td>PR-AUC / Recall</td>
+                </tr>
+                <tr>
+                  <td><strong>Forecasting</strong></td>
+                  <td>Predicting future values chronologically.</td>
+                  <td>Forecasting weekly inventory demand.</td>
+                  <td>MAPE / RMSE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-device-gamepad"></i>Use Case: Spam Classifier Formulation Blueprint</div>
+          <div class="def-card">
+            • **Input:** Email body text, sender history, IP logs, metadata.<br>
+            • **Output:** Binary output probability `P(Spam)`. <br>
+            • **Type:** Supervised Binary Classification.<br>
+            • **Labels:** User-flagged "Mark as Spam" actions.<br>
+            • **Metrics:** Precision (to minimize False Positives) and F1 Score.
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. DATA COLLECTION & ANNOTATION -->
+      <div class="topic" id="topic-data_collection">
+        <div class="page-tag tag-amber"><i class="ti ti-tags"></i>Chapter 6</div>
+        <h1 class="page-title">Data Collection & Annotation</h1>
+        <p class="page-subtitle">Acquiring raw training data, managing annotations, and establishing label quality checks.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-database-enter"></i>Data Acquisition Channels</div>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>Public Datasets</h3>
+              <p>Fast bootstrapping, but lacks domain-specific user logs.</p>
+            </div>
+            <div class="card">
+              <h3>Web Scraping</h3>
+              <p>Scraping web data. Useful for static data, but risks rate-limits and compliance issues.</p>
+            </div>
+            <div class="card">
+              <h3>Sensors & Logs</h3>
+              <p>Device events. High volume, but contains missing features and noise.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-edit"></i>Labeling & Weak Supervision</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Crowdsourcing</h3>
+              <p>Paying external labeling networks (e.g. MTurk). Fast, but requires quality checks to filter out spam answers.</p>
+            </div>
+            <div class="card">
+              <h3>Weak Supervision</h3>
+              <p>Using deterministic labeling functions (heuristics, regex patterns) to label datasets programmatically (e.g., Snorkel). Fast, but results in noisy labels.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-reload"></i>Active Learning Loop</div>
+          <div class="def-card">
+            <strong>Active Learning:</strong> Instead of annotating data randomly, the model evaluates unlabeled pools, identifies instances near its decision boundary (high entropy/uncertainty), and sends them to humans for labeling. This reduces labeling costs.
+          </div>
+          <div class="flow" style="justify-content:center;">
+            <div class="flow-box">Train Model</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Identify Uncertain Samples</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Human Annotates</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Add to Labeled Pool</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>Annotation Issues & Mitigations</div>
+          <div class="pros-cons">
+            <div class="cons" style="grid-column: span 2; background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.2);">
+              <div class="col-title" style="color:var(--yellow)"><i class="ti ti-alert-triangle"></i>Labeling Bottlenecks</div>
+              <ul>
+                <li><strong>Noisy Labels:</strong> Annotators make mistakes. Use **Cohen's Kappa** or **Fleiss' Kappa** (values > 0.8 indicate strong agreement) to measure inter-annotator agreement. Assign multiple annotators per sample and use majority voting.</li>
+                <li><strong>Biased Labels:</strong> Diverse annotator pools prevent systemic labeling bias.</li>
+                <li><strong>Expensive Labels:</strong> Domain-specific experts (e.g. doctors) are costly. Use Transfer Learning or Active Learning.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. MODELING APPROACHES -->
+      <div class="topic" id="topic-modeling_approaches">
+        <div class="page-tag tag-amber"><i class="ti ti-cpu"></i>Chapter 7</div>
+        <h1 class="page-title">Modeling Approaches</h1>
+        <p class="page-subtitle">Selecting the optimal modeling frameworks for various scale and performance requirements.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-bar"></i>1. Classical Machine Learning</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Linear / Logistic Regression</h3>
+              <p>• **Definition:** Models linear relationships using feature weights.<br>
+              • **Use Case:** Ad-click probability baselines.<br>
+              • **Why:** Millisecond training/inference, highly interpretable parameters.</p>
+            </div>
+            <div class="card">
+              <h3>Decision Trees</h3>
+              <p>• **Definition:** Splits data using feature thresholds.<br>
+              • **Use Case:** Medical diagnostic pathways.<br>
+              • **Why:** Highly interpretable, handles categorical features natively.</p>
+            </div>
+            <div class="card">
+              <h3>Random Forest</h3>
+              <p>• **Definition:** Ensemble of independent decision trees trained via bagging.<br>
+              • **Use Case:** Credit scoring risk profiles.<br>
+              • **Why:** Reduces variance, handles non-linear relationships, hard to overfit.</p>
+            </div>
+            <div class="card">
+              <h3>Gradient Boosting (XGBoost / LightGBM)</h3>
+              <p>• **Definition:** Sequential tree ensemble. Each tree learns from the residual errors of prior trees.<br>
+              • **Use Case:** E-commerce product search ranking.<br>
+              • **Why:** State-of-the-art performance on tabular datasets.</p>
+            </div>
+            <div class="card">
+              <h3>Support Vector Machines (SVM)</h3>
+              <p>• **Definition:** Maximizes boundary margins between classes using kernel tricks.<br>
+              • **Use Case:** Text categorization datasets.<br>
+              • **Why:** Effective in high-dimensional feature spaces.</p>
+            </div>
+            <div class="card">
+              <h3>Naive Bayes</h3>
+              <p>• **Definition:** Classifier based on Bayes' theorem, assuming feature independence.<br>
+              • **Use Case:** Spam text filtering.<br>
+              • **Why:** Fast inference, requires small training sets.</p>
+            </div>
+            <div class="card">
+              <h3>K-Nearest Neighbors (KNN)</h3>
+              <p>• **Definition:** Classifies samples based on majority vote of the K nearest neighbors.<br>
+              • **Use Case:** Basic recommendation algorithms.<br>
+              • **Why:** Simple non-parametric model.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-layers-difference"></i>2. Unsupervised Learning</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>K-Means</h3>
+              <p>• **Definition:** Minimizes within-cluster sum-of-squares (inertia).<br>
+              • **Use Case:** Customer demographic segmentation.<br>
+              • **Pitfall:** Requires specifying `K` beforehand; sensitive to outliers.</p>
+            </div>
+            <div class="card">
+              <h3>DBSCAN</h3>
+              <p>• **Definition:** Groups points based on local density thresholds.<br>
+              • **Use Case:** Geospatial location clustering.<br>
+              • **Benefit:** Finds arbitrary shape boundaries, filters outliers automatically.</p>
+            </div>
+            <div class="card">
+              <h3>PCA (Principal Component Analysis)</h3>
+              <p>• **Definition:** Linear projection to maximize variance along orthogonal axes.<br>
+              • **Use Case:** Visualizing 100-dimension features on a 2D plane.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-network"></i>3. Deep Learning</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Neural Networks (MLP)</h3>
+              <p>Stacked layers of artificial neurons optimizing weights via backpropagation.</p>
+            </div>
+            <div class="card">
+              <h3>Convolutional Networks (CNN)</h3>
+              <p>Uses sliding kernel filters to capture local grid spatial hierarchies. Best for <strong>Images</strong> and <strong>Audio spectrograms</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>RNN / LSTM / GRU</h3>
+              <p>Maintains sequence-state loops. Useful for time-series forecasting.</p>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+              <h3>Transformers (Attention Mechanism)</h3>
+              <p>Processes sequence tokens in parallel using self-attention, replacing recurrences. Used in modern LLMs (GPT) and vision architectures (ViT).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-game-space"></i>4. Reinforcement Learning (RL)</div>
+          <div class="def-card">
+            • **Agent:** Decision model.<br>
+            • **Environment:** Target context system.<br>
+            • **Reward:** Performance feedback signal.<br>
+            • **Policy:** Action mapping function.<br>
+            • **Q-Learning:** Learns state-action values ($Q$).<br>
+            • **Deep Q Networks (DQN):** Replaces tabular $Q$ metrics with deep neural networks for high-dimensional states.
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. MODEL EVALUATION METRICS -->
+      <div class="topic" id="topic-evaluation_metrics">
+        <div class="page-tag tag-green"><i class="ti ti-award"></i>Chapter 8</div>
+        <h1 class="page-title">Model Evaluation Metrics</h1>
+        <p class="page-subtitle">Choosing the mathematically correct metrics to evaluate model performance across different machine learning tasks.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-circle-check"></i>Classification Metrics</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Accuracy</h3>
+              <p>Fraction of correct predictions. Do not use for imbalanced datasets.<br>
+              <div class="math-block">Accuracy = (TP + TN) / (TP + TN + FP + FN)</div></p>
+            </div>
+            <div class="card">
+              <h3>Precision</h3>
+              <p>Fraction of predicted positives that are correct. Minimizes False Positives.<br>
+              <div class="math-block">Precision = TP / (TP + FP)</div></p>
+            </div>
+            <div class="card">
+              <h3>Recall (Sensitivity)</h3>
+              <p>Fraction of actual positives detected. Minimizes False Negatives.<br>
+              <div class="math-block">Recall = TP / (TP + FN)</div></p>
+            </div>
+            <div class="card">
+              <h3>F1 Score</h3>
+              <p>Harmonic mean of Precision and Recall.<br>
+              <div class="math-block">F1 = 2 * (Precision * Recall) / (Precision + Recall)</div></p>
+            </div>
+            <div class="card">
+              <h3>ROC-AUC</h3>
+              <p>Overall ranking capability of the model across different thresholds. Sensitive to class imbalance.</p>
+            </div>
+            <div class="card">
+              <h3>PR-AUC</h3>
+              <p>Area under Precision-Recall curve. The standard metric for highly imbalanced datasets (e.g. fraud detection).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>Regression Metrics</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>MAE (Mean Absolute Error)</h3>
+              <p>Average of absolute errors. Linear scale. Robust to outliers.<br>
+              <div class="math-block">MAE = (1/N) * Σ |y_i - ŷ_i|</div></p>
+            </div>
+            <div class="card">
+              <h3>MSE (Mean Squared Error)</h3>
+              <p>Average of squared errors. Penalizes large errors heavily, making it sensitive to outliers.<br>
+              <div class="math-block">MSE = (1/N) * Σ (y_i - ŷ_i)²</div></p>
+            </div>
+            <div class="card">
+              <h3>RMSE (Root Mean Squared Error)</h3>
+              <p>Square root of MSE. Keeps metrics in target variable unit scale.<br>
+              <div class="math-block">RMSE = √MSE</div></p>
+            </div>
+            <div class="card">
+              <h3>R² Score</h3>
+              <p>Proportion of variance explained by model features. 1.0 is perfect; 0.0 means the model is no better than predicting the mean of the training data.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-sort-ascending"></i>Ranking & Recommendation Metrics</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>NDCG</h3>
+              <p>Normalized Discounted Cumulative Gain. Penalizes relevant items returned lower in the list using logarithmic decay. The standard metric for search engine evaluation.</p>
+            </div>
+            <div class="card">
+              <h3>MAP (Mean Average Precision)</h3>
+              <p>Averages Precision@K scores across all relevant ranks. Useful for search and recommendation feeds.</p>
+            </div>
+            <div class="card">
+              <h3>MRR (Mean Reciprocal Rank)</h3>
+              <p>Looks only at the position of the **first relevant item** returned. Great for QA systems or "I'm Feeling Lucky" searches.</p>
+            </div>
+            <div class="card">
+              <h3>Hit Rate</h3>
+              <p>Did the top K recommendations contain at least one item the user engaged with?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. COMMON PITFALLS -->
+      <div class="topic" id="topic-common_pitfalls">
+        <div class="page-tag tag-green"><i class="ti ti-alert-triangle"></i>Chapter 9</div>
+        <h1 class="page-title">Common Pitfalls</h1>
+        <p class="page-subtitle">Critical pitfalls that cause machine learning systems to fail in training or degrade in production.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-bug"></i>Pitfalls, Causes & mitigations</div>
+          <div class="card">
+            <h3>1. Data Leakage</h3>
+            <p>• **Cause:** Standardizing dataset using global mean/stddev prior to splitting.<br>
+            • **Fix:** Fit pre-processing transformers on training subsets *only*; use pipelines.</p>
+          </div>
+          <div class="card">
+            <h3>2. Overfitting vs. Underfitting</h3>
+            <p>• **Overfitting:** Model memorizes noise (low training error, high validation error). Use regularization (L1/L2), dropout, or gather more data.<br>
+            • **Underfitting:** Model is too simple (high training and validation error). Increase model size, add features, reduce regularization.</p>
+          </div>
+          <div class="card">
+            <h3>3. Class Imbalance</h3>
+            <p>• **Cause:** Predicts majority class to maximize accuracy.<br>
+            • **Fix:** Use Focal Loss, apply class weights, or use SMOTE to oversample minority classes.</p>
+          </div>
+          <div class="card">
+            <h3>4. Small Datasets</h3>
+            <p>• **Cause:** Model overfits on tiny training datasets.<br>
+            • **Fix:** Use Transfer Learning (finetuning pre-trained models) or apply heavy data augmentation.</p>
+          </div>
+          <div class="card">
+            <h3>5. Dataset Bias & Label Noise</h3>
+            <p>• **Cause:** Training set does not match the real-world deployment cohort, or labelers provide incorrect tags.<br>
+            • **Fix:** Use active learning verification checkups; audit label quality.</p>
+          </div>
+          <div class="card">
+            <h3>6. Distribution Shift & Concept Drift</h3>
+            <p>• **Covariate Shift:** Input features change, but the relationship $P(Y|X)$ remains constant.<br>
+            • **Concept Drift:** The relationship between features and labels changes $P(Y|X)$ (e.g., purchase intent changes during inflation).<br>
+            • **Fix:** Monitor input distribution divergence (PSI metrics); schedule periodic model retraining.</p>
+          </div>
+          <div class="card">
+            <h3>7. Spurious Correlations</h3>
+            <p>• **Cause:** Model targets coincidentally correlated features rather than causal indicators.<br>
+            • **Fix:** Apply SHAP feature attribution audits; use adversarial validation splits.</p>
+          </div>
+          <div class="card">
+            <h3>8. Missing & Duplicate Data</h3>
+            <p>• **Cause:** Imputation errors, or identical records split across train/test sets causing artificial performance boosts.<br>
+            • **Fix:** Run rigorous record deduplication steps before partitioning datasets.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. AI ETHICS & RESPONSIBLE AI -->
+      <div class="topic" id="topic-ai_ethics">
+        <div class="page-tag tag-green"><i class="ti ti-shield-half"></i>Chapter 10</div>
+        <h1 class="page-title">AI Ethics & Responsible AI</h1>
+        <p class="page-subtitle">Building fair, robust, and explainable models that respect user privacy.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-scale"></i>Fairness & Bias</div>
+          <div class="card">
+            <h3>Demographic Parity vs. Equalized Odds</h3>
+            <p>• **Demographic Parity:** Model outputs positive classes at equal rates across demographic groups. (Can degrade performance).<br>
+            • **Equalized Odds:** True Positive Rate and False Positive Rate are identical across demographic groups (ensuring equal accuracy).</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-eye"></i>Explainability vs. Interpretability</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Explainability (Post-hoc)</h3>
+              <p>Using external models (LIME, SHAP) to explain predictions of complex black-box models (e.g. DNNs).</p>
+            </div>
+            <div class="card">
+              <h3>Interpretability (By Design)</h3>
+              <p>Using simple models (Linear Regression, Decision Trees) where parameters directly reflect the feature contributions.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>Privacy & Security</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Differential Privacy</h3>
+              <p>Adding mathematical noise to database queries so that individual records cannot be identified, while maintaining global statistical properties.</p>
+            </div>
+            <div class="card">
+              <h3>Federated Learning</h3>
+              <p>Training models across decentralized client devices without centralizing raw user data on cloud servers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>Generative AI Pitfalls & Robustness</div>
+          <div class="card">
+            <h3>Modern Vulnerabilities</h3>
+            <p>• **Hallucinations:** LLMs generating false information confidently. Mitigate using RAG (Retrieval-Augmented Generation).<br>
+            • **Adversarial Attacks:** Input perturbations (e.g. FGSM pixel changes) that cause models to misclassify. Fix with adversarial training.<br>
+            • **Model Robustness:** Evaluating how models handle out-of-distribution (OOD) data inputs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. END-TO-END ML PIPELINE -->
+      <div class="topic" id="topic-ml_pipeline">
+        <div class="page-tag tag-blue"><i class="ti ti-git-fork"></i>Chapter 11</div>
+        <h1 class="page-title">End-to-End ML Pipeline</h1>
+        <p class="page-subtitle">The continuous lifecycle of an engineering-grade Machine Learning system.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-route"></i>12 Pipeline Stages</div>
+          <div style="text-align: center; margin: 15px 0;">
+            <svg viewBox="0 0 700 240" width="100%" height="auto" style="background:var(--bg2); border-radius:var(--radius); border:1px solid var(--border); padding:15px;">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <rect x="20" y="30" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="85" y="58" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">1. Formulate Goal</text>
+              <line x1="150" y1="52" x2="190" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="190" y="30" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="255" y="58" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">2. Ingest & Label</text>
+              <line x1="320" y1="52" x2="360" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="360" y="30" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="425" y="58" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">3. Feature Eng</text>
+              <line x1="490" y1="52" x2="530" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="530" y="30" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="595" y="58" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">4. Model & Train</text>
+              
+              <path d="M 595 75 L 595 120 L 85 120 L 85 150" fill="none" stroke="var(--accent2)" stroke-dasharray="3" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="20" y="150" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="85" y="178" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">5. Error Analysis</text>
+              <line x1="150" y1="172" x2="190" y2="172" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="190" y="150" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="255" y="178" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">6. Evaluate & Validate</text>
+              <line x1="320" y1="172" x2="360" y2="172" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="360" y="150" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="425" y="178" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">7. Deploy (Canary/Shadow)</text>
+              <line x1="490" y1="172" x2="530" y2="172" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <rect x="530" y="150" width="130" height="45" rx="6" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="595" y="178" fill="var(--text)" font-size="11" text-anchor="middle" font-family="sans-serif">8. Monitor & Retrain</text>
+              
+              <path d="M 595 195 L 595 220 L 255 220 L 255 75" fill="none" stroke="var(--green)" stroke-width="1" stroke-dasharray="2" marker-end="url(#arrow)" />
+              <text x="425" y="215" fill="var(--green)" font-size="9" text-anchor="middle">Data/Concept Drift Retraining Loop</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-list-numbers"></i>Stage Descriptions</div>
+          <div class="card">
+            <p>1. **Define Problem:** Establish inputs, targets, and metrics.<br>
+            2. **Collect Data:** Ingest logs, scrapings, or sensor data.<br>
+            3. **Clean Data:** Deduplicate rows, drop invalid logs.<br>
+            4. **Annotate Data:** Label datasets via active learning or weak supervision.<br>
+            5. **Exploratory Data Analysis (EDA):** Identify feature statistics, distributions, and outliers.<br>
+            6. **Feature Engineering:** Apply standardization, normalization, and scaling.<br>
+            7. **Train Model:** Train candidate models (XGBoost, DNNs).<br>
+            8. **Validate Model:** Tune hyperparameters using cross-validation.<br>
+            9. **Error Analysis:** Categorize wrong predictions and evaluate performance slices.<br>
+            10. **Hyperparameter Tuning:** Run Grid Search or Random Search on best candidates.<br>
+            11. **Final Evaluation:** Verify performance on held-out test datasets; calculate statistical significance.<br>
+            12. **Deploy, Monitor & Retrain:** Route traffic using canary deploys, monitor for drift, and trigger scheduled retraining loops.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. SCENARIO-BASED INTERVIEW QUESTIONS -->
+      <div class="topic" id="topic-interview_scenarios">
+        <div class="page-tag tag-blue"><i class="ti ti-user-check"></i>Chapter 12</div>
+        <h1 class="page-title">Scenario-Based Interview Questions</h1>
+        <p class="page-subtitle">Real-world case studies demonstrating machine learning system design principles.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-messages"></i>Scenario 1: Recommendation System</div>
+          <div class="card">
+            <h3>Design a YouTube Video Recommendation Feed</h3>
+            <p><strong>Formulation:</strong> Predict the probability of a user clicking and watching a video.<br>
+            <strong>Data Source:</strong> User click history logs, search query logs, video metadata.<br>
+            <strong>Labeling:</strong> Click = 1, skip = 0.<br>
+            <strong>Modeling:</strong> Two-stage pipeline. (1) **Retrieval:** Dual-tower neural networks to filter down to 100 candidates. (2) **Ranking:** Deep & Cross Network (DCN) to rank candidates by expected watch time.<br>
+            <strong>Metric:</strong> Offline NDCG, online watch time.<br>
+            <strong>Deployment:</strong> Canary deployment to verify conversion lift.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>Scenario 2: Anomaly Detection</div>
+          <div class="card">
+            <h3>Design a Credit Card Fraud Detection Pipeline</h3>
+            <p><strong>Formulation:</strong> Classify transactions as fraud/clean in under 50ms.<br>
+            <strong>Imbalance:</strong> Fraud is 0.05%. Treat as extreme class imbalance. Use class weights in XGBoost loss.<br>
+            <strong>Metrics:</strong> F1-score, Recall, and PR-AUC. Never use Accuracy.<br>
+            <strong>Feature Engineering:</strong> Cash profile logs in Redis cache (e.g., number of transactions in last hour).<br>
+            <strong>Deployment:</strong> Shadow deployment to evaluate latency against the 50ms SLA before routing live traffic.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-history"></i>Scenario 3: Troubleshooting Production Performance Drop</div>
+          <div class="card">
+            <h3>A conversion model's CTR drops significantly after 3 months. How do you fix it?</h3>
+            <p><strong>1. Schema Verification:</strong> Check if input features have missing logs or invalid defaults.<br>
+            <strong>2. Measure Drift:</strong> Calculate **Population Stability Index (PSI)** between training data and current production logs to detect Covariate Shift.<br>
+            <strong>3. Concept Drift Audit:</strong> Check if user behavior trends have changed.<br>
+            <strong>4. Mitigation:</strong> Implement an automated retraining pipeline that updates model weights weekly using the most recent data.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end main -->
+  </div><!-- end app -->
+
+  <script>
+    // ── Topic order for Prev / Next ─────────────────────────────
+    const TOPIC_ORDER = [
+      'data_modeling', 'train_test', 'error_analysis', 'stat_significance',
+      'problem_formulation', 'data_collection', 'modeling_approaches',
+      'evaluation_metrics', 'common_pitfalls', 'ai_ethics',
+      'ml_pipeline', 'interview_scenarios'
+    ];
+
+    const NAV_LABELS = {
+      data_modeling: 'Data-Driven Modeling',
+      train_test: 'Train/Test Protocols',
+      error_analysis: 'Error Analysis',
+      stat_significance: 'Statistical Significance',
+      problem_formulation: 'Problem Formulation',
+      data_collection: 'Collection & Annotation',
+      modeling_approaches: 'Modeling Approaches',
+      evaluation_metrics: 'Model Evaluation Metrics',
+      common_pitfalls: 'Common Pitfalls',
+      ai_ethics: 'Responsible AI & Ethics',
+      ml_pipeline: 'End-to-End ML Pipeline',
+      interview_scenarios: 'Interview Scenarios'
+    };
+
+    let currentId = 'data_modeling';
+
+    function show(id) {
+      document.querySelectorAll('.topic').forEach(t => t.classList.remove('visible'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const t = document.getElementById('topic-' + id);
+      const n = document.getElementById('nav-' + id);
+      if (t) t.classList.add('visible');
+      if (n) { n.classList.add('active'); n.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+      
+      // Update mobile navbar title
+      const titleEl = document.getElementById('mobileNavTitle');
+      if (titleEl && NAV_LABELS[id]) titleEl.textContent = NAV_LABELS[id];
+      
+      // Scroll main view to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const main = document.querySelector('.main');
+      if (main) main.scrollTop = 0;
+      
+      // Update arrows and track current
+      currentId = id;
+      updateNavArrows(id);
+      
+      // Persist current topic to localStorage
+      try {
+        localStorage.setItem('ml_topic', id);
+        localStorage.setItem('ml_topic_time', Date.now());
+      } catch(e) {}
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function updateNavArrows(id) {
+      const idx = TOPIC_ORDER.indexOf(id);
+      const prevId = idx > 0 ? TOPIC_ORDER[idx - 1] : null;
+      const nextId = idx < TOPIC_ORDER.length - 1 ? TOPIC_ORDER[idx + 1] : null;
+      document.querySelectorAll('.topic-nav-bar').forEach(bar => {
+        const prevBtn = bar.querySelector('.prev');
+        const nextBtn = bar.querySelector('.next');
+        if (prevBtn) {
+          if (prevId) {
+            prevBtn.style.visibility = 'visible';
+            prevBtn.onclick = () => show(prevId);
+            const nm = prevBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[prevId] || prevId;
+          } else {
+            prevBtn.style.visibility = 'hidden';
+          }
+        }
+        if (nextBtn) {
+          if (nextId) {
+            nextBtn.style.visibility = 'visible';
+            nextBtn.onclick = () => show(nextId);
+            const nm = nextBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[nextId] || nextId;
+          } else {
+            nextBtn.style.visibility = 'hidden';
+          }
+        }
+      });
+    }
+
+    function filterNav(q) {
+      q = q.toLowerCase();
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.style.display = (!q || n.textContent.toLowerCase().includes(q)) ? 'flex' : 'none';
+      });
+    }
+
+    function openSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      icon.className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      icon.className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+
+    function toggleNav() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    // ── Wire everything up after DOM is ready ───────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+      }
+      
+      // Overlay tap closes sidebar
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+      }
+
+      // ── Inject Prev / Next bar into every topic ───────────────
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.topic').forEach(topic => {
+        topic.insertAdjacentHTML('beforeend', navBarHTML);
+      });
+
+      // ── Restore last visited topic from localStorage ──────────
+      let startId = 'data_modeling';
+      try {
+        const saved = localStorage.getItem('ml_topic');
+        if (saved && document.getElementById('topic-' + saved)) startId = saved;
+      } catch(e) {}
+      show(startId);
+    });
+
+    // Escape key closes sidebar
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Register service worker for PWA offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../../sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+
+</html>
