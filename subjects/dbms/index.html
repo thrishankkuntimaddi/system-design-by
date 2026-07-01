@@ -3,27 +3,1820 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>DBMS — Notes</title>
+  <title>DBMS Mastery Notes</title>
+  <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
   <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DBMS Notes">
+  <meta name="description" content="Complete DBMS mastery reference — relational model, SQL joins, normalization, concurrency control, transaction recovery, indexing, and deadlock handling.">
+  <meta name="mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:#2a3450;--text:#e8eaf0;--text2:#9aa3b8;--text3:#6b748a;--accent:#f97316;--radius:10px}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
-    .back{display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:40px;transition:color.15s;position:absolute;top:24px;left:24px}
-    .back:hover{color:var(--accent)}
-    .icon-wrap{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(249,115,22,.1));border:1px solid rgba(249,115,22,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--accent)}
-    h1{font-size:28px;font-weight:700;color:var(--text);margin-bottom:10px}
-    p{font-size:15px;color:var(--text2);max-width:400px;line-height:1.7;margin-bottom:32px}
-    .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.05em}
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #f97316;
+      --radius: 10px;
+      --radius-lg: 14px;
+
+      /* design tokens */
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'SF Mono', Consolas, 'Courier New', monospace;
+      --surface-1: #161b27;
+      --surface-2: #1e2535;
+      --text-primary: #e8eaf0;
+      --text-secondary: #9aa3b8;
+      --text-muted: #6b748a;
+      --text-accent: #ff9a52;
+      --text-pro: #c4b5fd;
+      --text-success: #34d399;
+      --text-warning: #f59e0b;
+      --text-danger: #ef4444;
+      --border-accent: rgba(249,115,22,.35);
+      --border-pro: rgba(167,139,250,.35);
+      --border-success: rgba(52,211,153,.35);
+      --border-warning: rgba(245,158,11,.35);
+      --border-danger: rgba(239,68,68,.35);
+      --border-strong: #344060;
+      --border-stronger: #3d4f70;
+      --bg-accent: rgba(249,115,22,.1);
+      --bg-pro: rgba(167,139,250,.1);
+      --bg-success: rgba(52,211,153,.08);
+      --bg-warning: rgba(245,158,11,.08);
+      --bg-danger: rgba(239,68,68,.08);
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Outer shell ──────────────────────────────────────────── */
+    .shell { display: flex; min-height: 100vh }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px;
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    /* ── Sidebar header ────────────────────────────────────────── */
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+    .home-back-btn:hover { color: var(--accent) }
+    .home-back-btn i { font-size: 13px }
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    /* ── Sidebar nav ─────────────────────────────────────────── */
+    .nav-section {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* ── Mobile nav ──────────────────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .hamburger-btn {
+      background: none; border: none; cursor: pointer;
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 22px; flex-shrink: 0;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .hamburger-btn:active { background: var(--bg3) }
+    .mobile-nav-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .mobile-nav-logo  { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); flex-shrink: 0 }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 599;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
+      opacity: 0; transition: opacity .25s; pointer-events: none;
+    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all }
+
+    /* ── Scrollbar ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px }
+    ::-webkit-scrollbar-track { background: var(--bg) }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media(max-width: 768px) {
+      .mobile-nav { display: flex }
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        z-index: 600; width: min(300px, 85vw);
+        transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.4,0,.2,1);
+        height: 100dvh; overflow-y: auto;
+      }
+      .sidebar.open { transform: translateX(0) }
+      .sidebar-overlay { display: block }
+      .main { padding-top: 56px }
+      .shell { display: block }
+    }
+
+    /* ── Embedded overrides ────────────────────────── */
+    .app {
+      display: flex;
+      min-height: calc(100vh - 0px);
+      font-family: var(--font-sans);
+    }
+    .app > .sb { display: none !important }
+    .app > .ct {
+      flex: 1;
+      padding: 28px 36px;
+      overflow-y: auto;
+      max-height: none !important;
+      height: 100%;
+    }
+
+    /* nav items */
+    .ni {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px;
+    }
+    .ni:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2) }
+    .ni.on { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); font-weight: 500 }
+    .ni i { font-size: 15px; width: 17px; flex-shrink: 0 }
+    .sb-hd {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    @media(max-width: 768px) {
+      .app > .ct { padding: 16px }
+    }
+
+    /* ── Prev / Next nav bar ─────────────────────────────────── */
+    .topic-nav-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; padding: 16px 0 8px; border-top: 1px solid var(--border); gap: 12px }
+    .topic-nav-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all .18s; touch-action: manipulation; user-select: none; min-width: 110px }
+    .topic-nav-btn:hover, .topic-nav-btn:active { background: var(--bg3); border-color: var(--accent); color: var(--accent) }
+    .topic-nav-btn.prev { justify-content: flex-start }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0 }
+    .topic-nav-label  { display: flex; flex-direction: column }
+    .topic-nav-hint   { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em }
+    .topic-nav-name   { font-size: 13px; font-weight: 600 }
+    @media(max-width: 768px) {
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px }
+      .topic-nav-hint { display: none }
+    }
+
+    /* ── Fragment styles ────────────────────────────────────── */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .pg{display:none}
+    .pg.on{display:block}
+    .ptag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;margin-bottom:7px}
+    .t-bl{background:var(--bg-accent);color:var(--text-accent)}
+    .t-pu{background:var(--bg-pro);color:var(--text-pro)}
+    .t-gr{background:var(--bg-success);color:var(--text-success)}
+    .t-am{background:var(--bg-warning);color:var(--text-warning)}
+    .t-re{background:var(--bg-danger);color:var(--text-danger)}
+    .ptitle{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em}
+    .psub{font-size:13.5px;color:var(--text-secondary);margin-bottom:20px;line-height:1.65}
+    .def{background:var(--surface-1);border:0.5px solid var(--border);border-left:3px solid var(--border-accent);padding:14px 16px;font-size:13.5px;line-height:1.75;color:var(--text-secondary);margin-bottom:18px;border-radius:var(--radius)}
+    .def strong{color:var(--text-primary)}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+    .card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+    .card h3{font-size:13.5px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+    .card h3 i{font-size:15px;color:var(--text-accent)}
+    .card p{font-size:13px;color:var(--text-secondary);line-height:1.65}
+    .sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:20px 0 12px;display:flex;align-items:center;gap:6px}
+    .code{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-accent);line-height:1.7;overflow-x:auto;margin:10px 0}
+    .code .cm{color:var(--text-muted)}
+    .code .kw{color:var(--text-pro)}
+    .code .st{color:var(--text-success)}
+    .code .re{color:var(--text-danger)}
+    .code .am{color:var(--text-warning)}
+    .hl{background:var(--bg-accent);border:0.5px solid var(--border-accent);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-secondary);line-height:1.7;margin:10px 0}
+    .hl strong{color:var(--text-accent)}
+    .warn{background:var(--bg-warning);border:0.5px solid var(--border-warning);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-warning);line-height:1.7;margin:10px 0}
+    .danger{background:var(--bg-danger);border:0.5px solid var(--border-danger);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-danger);line-height:1.7;margin:10px 0}
+    .ok{background:var(--bg-success);border:0.5px solid var(--border-success);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-success);line-height:1.7;margin:10px 0}
+    .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .fb{background:var(--surface-2);border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:6px 12px;font-size:12.5px;color:var(--text-primary);font-weight:500}
+    .fa{color:var(--text-accent);font-size:16px;font-weight:600}
+    .chip{font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-2);display:inline-block}
+    .chip.bl{border-color:var(--border-accent);color:var(--text-accent);background:var(--bg-accent)}
+    .chip.gr{border-color:var(--border-success);color:var(--text-success);background:var(--bg-success)}
+    .chip.re{border-color:var(--border-danger);color:var(--text-danger);background:var(--bg-danger)}
+    .chip.am{border-color:var(--border-warning);color:var(--text-warning);background:var(--bg-warning)}
+    .chip.pu{border-color:var(--border-pro);color:var(--text-pro);background:var(--bg-pro)}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+    .divider{height:0.5px;background:var(--border);margin:24px 0}
+    .tab-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+    .tb{padding:5px 13px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:all .12s}
+    .tb.on{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent);font-weight:600}
+    .tp{display:none}
+    .tp.on{display:block}
+    .compare-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+    .compare-table th{background:var(--surface-1);color:var(--text-muted);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:0.5px solid var(--border)}
+    .compare-table td{padding:10px 12px;color:var(--text-secondary);border-bottom:0.5px solid var(--border);line-height:1.6}
+    .compare-table tr:last-child td{border-bottom:none}
+    .compare-table tr:hover td{background:var(--surface-1)}
+    .step-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--border)}
+    .step-row:last-child{border-bottom:none}
+    .step-num{min-width:24px;height:24px;border-radius:50%;background:var(--bg-accent);color:var(--text-accent);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .step-body{flex:1}
+    .step-title{font-size:13.5px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+    .step-desc{font-size:12.5px;color:var(--text-secondary);line-height:1.6}
+    @media(max-width:768px){
+      .ct{padding:16px}
+      .g2,.g3,.g4{grid-template-columns:1fr!important}
+    }
   </style>
 </head>
+
 <body>
-  <a href="../../index.html" class="back"><i class="ti ti-arrow-left"></i> Home</a>
-  <div class="icon-wrap"><i class="ti ti-database"></i></div>
-  <h1>DBMS</h1>
-  <p>Relational databases, SQL queries, normalization, indexing, transaction ACID properties, and concurrency control. Coming soon.</p>
-  <div class="badge"><i class="ti ti-clock"></i> Coming Soon</div>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">DBMS</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">Overview</span>
+  </nav>
+  <!-- Sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <div class="shell">
+    <!-- Sidebar (outer shell) -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>DBMS Notes</h1>
+        <p>Complete Study Guide</p>
+      </div>
+
+      <div class="nav-section">Introduction</div>
+      <div class="ni on" onclick="go('intro')" id="sn-intro"><i class="ti ti-database"></i>Introduction</div>
+
+      <div class="nav-section" style="margin-top:6px">Data Modeling</div>
+      <div class="ni" onclick="go('er_model')" id="sn-er_model"><i class="ti ti-sitemap"></i>ER Model</div>
+      <div class="ni" onclick="go('relational_model')" id="sn-relational_model"><i class="ti ti-math-function"></i>Relational Algebra</div>
+      <div class="ni" onclick="go('sql')" id="sn-sql"><i class="ti ti-file-code"></i>SQL Masterclass</div>
+      <div class="ni" onclick="go('nosql')" id="sn-nosql"><i class="ti ti-box"></i>NoSQL Databases</div>
+
+      <div class="nav-section" style="margin-top:6px">Database Design</div>
+      <div class="ni" onclick="go('normalization')" id="sn-normalization"><i class="ti ti-columns"></i>Normalization</div>
+
+      <div class="nav-section" style="margin-top:6px">Transactions</div>
+      <div class="ni" onclick="go('transactions')" id="sn-transactions"><i class="ti ti-lock"></i>Transaction &amp; Concurrency</div>
+
+      <div class="nav-section" style="margin-top:6px">Optimizations</div>
+      <div class="ni" onclick="go('indexing')" id="sn-indexing"><i class="ti ti-list-numbers"></i>Indexing</div>
+
+      <div class="nav-section" style="margin-top:6px">Interview</div>
+      <div class="ni" onclick="go('interview')" id="sn-interview"><i class="ti ti-help"></i>Interview Prep</div>
+    </div>
+
+    <!-- Main content container -->
+    <div class="main" id="mainContent">
+      <div class="app">
+        <div class="ct">
+
+          <!-- 1. INTRODUCTION TO DBMS -->
+          <div class="pg on" id="p-intro">
+            <div class="ptag t-bl"><i class="ti ti-database"></i>Foundations</div>
+            <div class="ptitle">Introduction to DBMS</div>
+            <p class="psub">A Database Management System (DBMS) is a specialized system software designed to store, organize, retrieve, and manipulate data securely. It serves as an abstraction layer between physical storage and application programs or end-users.</p>
+
+            <div class="def">
+              <strong>Core Functions of a DBMS:</strong>
+              <ul style="margin-top:8px; padding-left:20px; font-size:13px">
+                <li><strong>Data Storage and Buffer Management:</strong> Storing data systematically across pages on disk, using memory buffers (caching) to minimize disk I/O latency.</li>
+                <li><strong>Concurrency Control:</strong> Managing simultaneous transactions using scheduling algorithms and locking protocols to prevent data corruption.</li>
+                <li><strong>Security &amp; Privilege Management:</strong> Controlling data access through granular authorization schemas (schemas, views, roles).</li>
+                <li><strong>Data Integrity enforcement:</strong> Ensuring records adhere to domain constraints, referential keys, and schema rules.</li>
+                <li><strong>Backup &amp; Recovery:</strong> Logging all write operations to WAL (Write-Ahead Log) files, allowing the database engine to restore its state after hardware crashes.</li>
+              </ul>
+            </div>
+
+            <div class="sec"><i class="ti ti-arrows-left-right"></i>File System vs DBMS</div>
+            <div class="tab-row" data-group="intro_fs">
+              <div class="tb on" onclick="tab('intro_fs','dbms',this)">DBMS Approach</div>
+              <div class="tb" onclick="tab('intro_fs','filesystem',this)">File System Approach</div>
+            </div>
+
+            <div class="tp on" data-group="intro_fs" id="intro_fs-dbms">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>DBMS Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Data Redundancy</strong></td>
+                    <td style="color:var(--text-success)">Minimized via Normalization. Changes need to be updated in only one place.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Abstraction</strong></td>
+                    <td style="color:var(--text-success)">Provides 3 levels of abstraction (physical, conceptual, view). Hides physical storage paths from queries.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Concurrency</strong></td>
+                    <td style="color:var(--text-success)">Excellent. Allows thousands of concurrent read/write operations using row-level locking.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Crash Recovery</strong></td>
+                    <td style="color:var(--text-success)">Strong. Uses Transaction logs (WAL) to Undo uncommitted and Redo committed actions during startup.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td style="color:var(--text-success)">Granular. Access can be restricted down to specific tables, views, or even individual columns.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tp" data-group="intro_fs" id="intro_fs-filesystem">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>File System Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Data Redundancy</strong></td>
+                    <td style="color:var(--text-danger)">High. Same customer information is duplicated across different department files, leading to updates anomalies.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Abstraction</strong></td>
+                    <td style="color:var(--text-danger)">None. Application code must know the physical layout (e.g., binary offset, CSV format) of the files to read them.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Concurrency</strong></td>
+                    <td style="color:var(--text-danger)">Poor. Concurrent modifications are blocked. The operating system locks the entire file, preventing parallel updates.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Crash Recovery</strong></td>
+                    <td style="color:var(--text-danger)">Weak/None. If a crash occurs mid-write, the file gets corrupted. No built-in rollback system.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td style="color:var(--text-danger)">Basic. Relies on OS file permissions (read/write/execute). Anyone with read permissions sees all columns.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sec"><i class="ti ti-category"></i>Primary Types of DBMS Models</div>
+            <div class="g2">
+              <div class="card">
+                <h3><i class="ti ti-git-fork"></i>Hierarchical Database Model</h3>
+                <p>Organizes data in a tree structure. Each child record has only one parent record (1:N relationship). Navigated via physical pointers.</p>
+                <div class="chips"><span class="chip">IBM IMS</span><span class="chip">Windows Registry</span></div>
+              </div>
+              <div class="card">
+                <h3><i class="ti ti-network"></i>Network Database Model</h3>
+                <p>A graph-like structure. A record can have multiple parents (supports M:N relationships using pointers called sets).</p>
+                <div class="chips"><span class="chip">Integrated Data Store (IDS)</span><span class="chip">IDMS</span></div>
+              </div>
+              <div class="card">
+                <h3><i class="ti ti-table"></i>Relational DBMS (RDBMS)</h3>
+                <p>Data stored in tabular format with rows and columns. Links tables using mathematical relations and keys. Employs SQL queries.</p>
+                <div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">Oracle</span></div>
+              </div>
+              <div class="card">
+                <h3><i class="ti ti-box"></i>NoSQL DBMS</h3>
+                <p>Non-relational schemas, optimized for horizontal scalability and high throughput. Handles semi-structured or unstructured data.</p>
+                <div class="chips"><span class="chip">Document (MongoDB)</span><span class="chip">Key-Value (Redis)</span><span class="chip">Column (Cassandra)</span><span class="chip">Graph (Neo4j)</span></div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-code"></i>Database Languages</div>
+            <p>DBMS uses specialized languages to define structures, modify rows, and manage access privileges:</p>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Language Type</th>
+                  <th>Description</th>
+                  <th>Key Commands &amp; SQL Examples</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>DDL</strong> (Data Definition)</td>
+                  <td>Defines and modifies the physical database schema and structures.</td>
+                  <td><code>CREATE</code>, <code>DROP</code>, <code>ALTER</code>, <code>TRUNCATE</code>, <code>RENAME</code>
+                  <br><code style="font-size:11px;color:var(--text-muted)">CREATE TABLE Users (Id INT PRIMARY KEY, Name VARCHAR(50));</code></td>
+                </tr>
+                <tr>
+                  <td><strong>DML</strong> (Data Manipulation)</td>
+                  <td>Manipulates data records inside existing tables.</td>
+                  <td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>
+                  <br><code style="font-size:11px;color:var(--text-muted)">UPDATE Users SET Name = 'Alice' WHERE Id = 1;</code></td>
+                </tr>
+                <tr>
+                  <td><strong>DQL</strong> (Data Query)</td>
+                  <td>Retrieves data records from the database.</td>
+                  <td><code>SELECT</code>
+                  <br><code style="font-size:11px;color:var(--text-muted)">SELECT * FROM Users WHERE Id = 1;</code></td>
+                </tr>
+                <tr>
+                  <td><strong>TCL</strong> (Transaction Control)</td>
+                  <td>Manages the execution flow of database transactions.</td>
+                  <td><code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code>
+                  <br><code style="font-size:11px;color:var(--text-muted)">ROLLBACK TO SAVEPOINT sv1;</code></td>
+                </tr>
+                <tr>
+                  <td><strong>DCL</strong> (Data Control)</td>
+                  <td>Grants and revokes user access permissions.</td>
+                  <td><code>GRANT</code>, <code>REVOKE</code>
+                  <br><code style="font-size:11px;color:var(--text-muted)">GRANT SELECT ON Users TO DeveloperRole;</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-hierarchy-2"></i>DBMS Architectures</div>
+            <div class="g3">
+              <div class="card">
+                <h3>1-Tier Architecture</h3>
+                <p>The client application, server database engine, and physical data live on the same local system. Primarily used for local testing or small embedded systems (e.g. SQLite embedded in mobile apps).</p>
+              </div>
+              <div class="card">
+                <h3>2-Tier Architecture</h3>
+                <p>Client-Server model. The client application directly contacts the Database Server over the network, using database drivers like JDBC or ODBC to execute SQL queries.</p>
+              </div>
+              <div class="card">
+                <h3>3-Tier Architecture</h3>
+                <p>Enterprise standard. The client application connects to an <strong>Application Server</strong> (Middle tier/API), which processes the business logic and queries the backend Database Server.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-cloud-network"></i>Distributed Deployments</div>
+            <div class="g2">
+              <div class="card">
+                <h3>Homogeneous Distributed DBMS</h3>
+                <p>All physical database servers run the exact same DBMS software engine (e.g. all nodes are PostgreSQL). They share schema rules, making queries and distributed joins simple to coordinate.</p>
+              </div>
+              <div class="card">
+                <h3>Heterogeneous Distributed DBMS</h3>
+                <p>Different physical nodes run different database engines (e.g. some run Oracle, others MySQL). Requires specialized middleware translation layers to reconcile schema mapping and query operations.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-notes"></i>Codd's 12 Rules for Relational Databases</div>
+            <p>Dr. E.F. Codd established 12 rules (numbered 1 through 12, plus Rule 0) that define a true Relational Database Management System (RDBMS):</p>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Rule #</th>
+                  <th>Rule Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Rule 0</strong></td>
+                  <td>Foundation Rule</td>
+                  <td>The system must manage databases entirely through its relational capabilities.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 1</strong></td>
+                  <td>Information Rule</td>
+                  <td>All data (including metadata) must be represented as values in table columns and rows.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 2</strong></td>
+                  <td>Guaranteed Access Rule</td>
+                  <td>Every data item is logically accessible using table name + primary key + column name.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 3</strong></td>
+                  <td>Systematic Null Treatment</td>
+                  <td>Nulls must represent missing/inapplicable info in a systematic way, distinct from 0 or blank.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 4</strong></td>
+                  <td>Dynamic Online Catalog</td>
+                  <td>Database schema description must be stored in tables queryable using SQL.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 5</strong></td>
+                  <td>Comprehensive Sublanguage</td>
+                  <td>Must support a single language (like SQL) covering schema definition, manipulation, integrity, and transactions.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 6</strong></td>
+                  <td>View Updating Rule</td>
+                  <td>All database views that are theoretically updatable must be updatable by the system.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 7</strong></td>
+                  <td>High-Level Insert/Update/Delete</td>
+                  <td>Must support multi-row insert, update, and delete statements.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 8</strong></td>
+                  <td>Physical Data Independence</td>
+                  <td>Changes to physical storage structures (disks, file paths) must not affect application code.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 9</strong></td>
+                  <td>Logical Data Independence</td>
+                  <td>Changes to conceptual schemas (splitting tables, adding fields) must not impact view applications.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 10</strong></td>
+                  <td>Integrity Independence</td>
+                  <td>Integrity constraints (PK, FK) must be stored in catalog metadata, not embedded in application code.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 11</strong></td>
+                  <td>Distribution Independence</td>
+                  <td>The database must function normally even if data is moved across different physical servers.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rule 12</strong></td>
+                  <td>Nonsubversion Rule</td>
+                  <td>Low-level access routes must not bypass schema security or integrity constraints.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2. ER MODEL -->
+          <div class="pg" id="p-er_model">
+            <div class="ptag t-bl"><i class="ti ti-sitemap"></i>Entity-Relationship</div>
+            <div class="ptitle">ER Model &amp; Mapping</div>
+            <p class="psub">The Entity-Relationship (ER) model is a conceptual, abstract database design framework representing entities, attributes, and relationships. It is mapped to a relational schema during the implementation phase.</p>
+
+            <div class="sec"><i class="ti ti-components"></i>Entities &amp; Entity Sets</div>
+            <div class="g2">
+              <div class="card" style="border-left: 3px solid var(--border-accent)">
+                <h3>Strong Entity Set</h3>
+                <p>Can exist independently of other entities. Must have a primary key (composed of key attributes) to uniquely identify each instance.</p>
+                <div class="chips" style="margin-top:5px"><span class="chip bl">Symbol: Single Rectangle</span><span class="chip bl">Example: Customer (CustID)</span></div>
+              </div>
+              <div class="card" style="border-left: 3px solid var(--border-warning)">
+                <h3>Weak Entity Set</h3>
+                <p>Cannot exist without a corresponding strong entity set (its owner entity). Does not have a primary key. It is identified using the owner's primary key combined with its own <strong>partial key / discriminator</strong> attribute.</p>
+                <div class="chips" style="margin-top:5px"><span class="chip am">Symbol: Double Rectangle</span><span class="chip am">Example: Payment (PaymentNo, discriminator)</span></div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-tags"></i>Attributes in Detail</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Attribute Type</th>
+                  <th>Visual Symbol</th>
+                  <th>Rule &amp; Mechanics</th>
+                  <th>Example Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Key Attribute</strong></td>
+                  <td>Ellipse with underlined text</td>
+                  <td>Uniquely identifies each instance in the entity set.</td>
+                  <td><code><u>RollNo</u></code> in Student relation</td>
+                </tr>
+                <tr>
+                  <td><strong>Composite Attribute</strong></td>
+                  <td>Ellipses branching out from another ellipse</td>
+                  <td>Attribute composed of multiple sub-attributes. Saves structured details.</td>
+                  <td><code>Address</code> branching into <code>Street</code>, <code>City</code>, <code>Zip</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Multivalued Attribute</strong></td>
+                  <td>Double Ellipse</td>
+                  <td>Can store more than one value for a single entity instance.</td>
+                  <td><code>Phone_No</code> (a student can have multiple phone numbers)</td>
+                </tr>
+                <tr>
+                  <td><strong>Derived Attribute</strong></td>
+                  <td>Dashed Ellipse</td>
+                  <td>Value is computed dynamically from other stored columns. Not saved directly on disk.</td>
+                  <td><code>Age</code> (computed dynamically from <code>Date_Of_Birth</code>)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-arrow-merge"></i>Relationships &amp; Degree</div>
+            <p>A relationship connects two or more entities. The <strong>degree</strong> is the number of participating entity sets:</p>
+            <div class="g3">
+              <div class="card">
+                <h3>Unary (Recursive)</h3>
+                <p>A single entity set relates to itself.</p>
+                <div class="code">Person — [Marries] — Person</div>
+              </div>
+              <div class="card">
+                <h3>Binary</h3>
+                <p>Two entity sets participate.</p>
+                <div class="code">Student — [Enrolled] — Course</div>
+              </div>
+              <div class="card">
+                <h3>Ternary</h3>
+                <p>Three entity sets participate.</p>
+                <div class="code">Doctor — [Treats] — Patient<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Medicine]</div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-chart-dots"></i>Cardinality &amp; Structural Constraints</div>
+            <div class="def">
+              <strong>Participation Constraints (min cardinality):</strong>
+              <br>• <strong>Total Participation (Double Line):</strong> Every entity in the set must participate in at least one relationship instance. (e.g., every <code>Employee</code> must belong to a <code>Department</code>).
+              <br>• <strong>Partial Participation (Single Line):</strong> Entities can exist without participating in the relationship. (e.g., not every <code>Employee</code> manages a <code>Department</code>).
+              <br><br>
+              <strong>Min-Max Notation <code>(min, max)</code>:</strong>
+              <br>• Placed on the line connecting the entity set and relationship.
+              <br>• <code>min = 0</code> indicates partial participation. <code>min &ge; 1</code> indicates total participation.
+              <br>• <code>max</code> represents the cardinality ratio limit (e.g., 1 or N).
+            </div>
+
+            <div class="sec"><i class="ti ti-hierarchy"></i>Generalization, Specialization, Aggregation &amp; Inheritance</div>
+            <div class="g2">
+              <div class="card">
+                <h3>Generalization &amp; Specialization</h3>
+                <p><strong>Generalization:</strong> Bottom-up approach where common attributes of lower-level entities are combined into a high-level parent entity.
+                <br><strong>Specialization:</strong> Top-down approach where a parent entity is decomposed into lower-level sub-entities based on specialized attributes.</p>
+              </div>
+              <div class="card">
+                <h3>Aggregation</h3>
+                <p>Abstraction where a relationship set (and participating entities) is enclosed in a box and treated as a single higher-level entity, allowing it to have relationship links to other entities.</p>
+              </div>
+            </div>
+            <div class="card" style="margin-top:10px">
+              <h3>Types of Inheritance</h3>
+              <ul style="padding-left:20px; font-size:13px">
+                <li><strong>Attribute Inheritance:</strong> Lower-level entities inherit all attributes of the parent entity automatically.</li>
+                <li><strong>Relationship Inheritance:</strong> Lower-level entities participate in all relationships that the parent entity participates in.</li>
+                <li><strong>Overriding Inheritance:</strong> A sub-entity can redefine a parent attribute or relationship for its specific type.</li>
+              </ul>
+            </div>
+
+            <div class="sec"><i class="ti ti-transform"></i>ER-to-Relational Mapping Algorithm</div>
+            <p>Step-by-step logic to map conceptual ER diagrams into database tables:</p>
+            <div class="step-row">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <div class="step-title">Strong Entity</div>
+                <div class="step-desc">Create a table. Simple attributes become columns. Composite attributes are flattened into individual columns (e.g. <code>Street</code>, <code>City</code> columns). Key attribute becomes the Primary Key.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <div class="step-title">Weak Entity</div>
+                <div class="step-desc">Create a table. Add all attributes of the weak entity. Put the Primary Key of the owner entity as a Foreign Key. The Primary Key is a composite key: <code>{Owner_PK, Discriminator}</code>.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <div class="step-title">1:1 Relationships</div>
+                <div class="step-desc">
+                  Based on participation constraints:
+                  <br>• <strong>Both Total:</strong> Merge the two entity sets into a single table.
+                  <br>• <strong>One Total, One Partial:</strong> Take the PK from the partial side and place it as a Foreign Key in the total participation side's table.
+                  <br>• <strong>Both Partial:</strong> Keep separate tables and add a Foreign Key to either side (preferably the side with fewer null rows).
+                </div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <div class="step-title">1:N / N:1 Relationships</div>
+                <div class="step-desc">Do not create a new table. Take the Primary Key from the "1" side and place it as a Foreign Key in the table representing the "N" side (to avoid null values).</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">5</div>
+              <div class="step-body">
+                <div class="step-title">M:N Relationships</div>
+                <div class="step-desc"><strong>Must create a new table</strong>. The columns of the new table are the primary keys of both participating entities (each acting as a foreign key). The primary key of this new table is the composite key <code>{PK1, PK2}</code>.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">6</div>
+              <div class="step-body">
+                <div class="step-title">Multivalued Attribute</div>
+                <div class="step-desc"><strong>Create a new table</strong>. Place the parent entity's Primary Key (as FK) and the multivalued attribute column in this table. The composite PK is <code>{Parent_PK, Attribute}</code>.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. RELATIONAL ALGEBRA & CALCULUS -->
+          <div class="pg" id="p-relational_model">
+            <div class="ptag t-bl"><i class="ti ti-math-function"></i>Relational Theory</div>
+            <div class="ptitle">Relational Algebra &amp; Calculus</div>
+            <p class="psub">Relational algebra is a mathematical procedural query language containing operations to retrieve data. Relational calculus is its non-procedural, declarative counterpart.</p>
+
+            <div class="sec"><i class="ti ti-math"></i>Relational Algebra Operators</div>
+            <div class="tab-row" data-group="ra_ops">
+              <div class="tb on" onclick="tab('ra_ops','basic',this)">Basic Operators</div>
+              <div class="tb" onclick="tab('ra_ops','derived',this)">Derived Operators</div>
+            </div>
+
+            <div class="tp on" data-group="ra_ops" id="ra_ops-basic">
+              <div class="card">
+                <h3>Selection (&sigma;)</h3>
+                <p>Filters rows based on a logical predicate. Removes no columns.</p>
+                <div class="code">&sigma;<sub>Dept = 'HR' &and; Salary &gt; 50000</sub>(Employees)</div>
+              </div>
+              <div class="card">
+                <h3>Projection (&pi;)</h3>
+                <p>Selects specified columns and discards others. <strong>Removes duplicates</strong> automatically in relational theory.</p>
+                <div class="code">&pi;<sub>Name, Dept</sub>(Employees)</div>
+              </div>
+              <div class="card">
+                <h3>Union (&cup;)</h3>
+                <p>Combines rows from two tables. Both tables must be <strong>union-compatible</strong> (same number of columns, matching domain types in order).</p>
+                <div class="code">Students &cup; Instructors</div>
+              </div>
+              <div class="card">
+                <h3>Set Difference (-)</h3>
+                <p>Returns rows present in the first table but not in the second table. Must be union-compatible.</p>
+                <div class="code">Students - Graduates</div>
+              </div>
+              <div class="card">
+                <h3>Cartesian Product (&times;)</h3>
+                <p>Combines every row of the left table with every row of the right table. Output columns = Sum of columns; Output rows = Product of rows.</p>
+                <div class="code">A &times; B</div>
+              </div>
+            </div>
+
+            <div class="tp" data-group="ra_ops" id="ra_ops-derived">
+              <div class="card">
+                <h3>Natural Join (&bowtie;)</h3>
+                <p>Joins tables based on matching column names and data types, removing duplicate join columns from the output.</p>
+                <div class="code">Employees &bowtie; Departments</div>
+              </div>
+              <div class="card">
+                <h3>Theta Join (&bowtie;<sub>&theta;</sub>)</h3>
+                <p>An inner join that combines rows using an arbitrary comparison condition <code>&theta;</code> (e.g. <code>=, &lt;, &gt;, &le;, &ge;, &ne;</code>).</p>
+                <div class="code">A &bowtie;<sub>A.Age &lt; B.MinAge</sub> B</div>
+              </div>
+              <div class="card">
+                <h3>Division (&divide;)</h3>
+                <p>Used for queries containing the word "all". R &divide; S returns tuples in R that are paired with <em>every</em> tuple in S.</p>
+                <div class="code">Enrolls(Student, Course) &divide; Mandatory(Course)</div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-arrows-minimize"></i>Relational Calculus Syntax Comparison</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Aspect</th>
+                  <th>Tuple Relational Calculus (TRC)</th>
+                  <th>Domain Relational Calculus (DRC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Variables</strong></td>
+                  <td>Variables represent entire rows (tuples). e.g., <code>t</code></td>
+                  <td>Variables represent individual attributes (domains). e.g., <code>x, y, z</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Query focus</strong></td>
+                  <td>Filters rows. Very close to SQL concept.</td>
+                  <td>Filters values in columns directly. More abstract.</td>
+                </tr>
+                <tr>
+                  <td><strong>Syntax</strong></td>
+                  <td><code>{ t | P(t) }</code></td>
+                  <td><code>{ &lt;x1, x2, ...&gt; | P(x1, x2, ...) }</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Example Query</strong><br>(Get Names of Students in CS dept)</td>
+                  <td><code>{ t.Name | t &isin; Students &and; t.Dept = 'CS' }</code></td>
+                  <td><code>{ &lt;n&gt; | &exist; i, d (&lt;i, n, d&gt; &isin; Students &and; d = 'CS') }</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4. SQL MASTERCLASS -->
+          <div class="pg" id="p-sql">
+            <div class="ptag t-bl"><i class="ti ti-file-code"></i>Implementation</div>
+            <div class="ptitle">SQL Masterclass</div>
+            <p class="psub">Structured Query Language (SQL) is the standard declarative implementation language for database query operations. This section covers production-grade queries, syntax, and structures.</p>
+
+            <div class="sec"><i class="ti ti-database-import"></i>DDL &amp; DML Syntax</div>
+            <div class="card">
+              <h3>Creating tables with constraints</h3>
+              <p>Common field constraints include <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>NOT NULL</code>, <code>UNIQUE</code>, <code>CHECK</code>, and <code>DEFAULT</code>.</p>
+              <div class="code">
+CREATE TABLE Employees (
+  EmpID INT PRIMARY KEY,
+  Name VARCHAR(100) NOT NULL,
+  Email VARCHAR(100) UNIQUE,
+  Salary DECIMAL(10,2) CHECK (Salary > 0),
+  DeptID INT,
+  JoinDate DATE DEFAULT CURRENT_DATE,
+  CONSTRAINT fk_dept FOREIGN KEY (DeptID) REFERENCES Departments(Id) ON DELETE SET NULL
+);
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-arrow-fork"></i>SQL Joins Deep-Dive</div>
+            <p>Consider two tables: <strong>Employees</strong> (ID, Name, ManagerID) and <strong>Departments</strong> (ID, DeptName).</p>
+            <div class="tab-row" data-group="sql_queries_joins">
+              <div class="tb on" onclick="tab('sql_queries_joins','self',this)">Self Join Query</div>
+              <div class="tb" onclick="tab('sql_queries_joins','cross',this)">Cross Join Query</div>
+            </div>
+            <div class="tp on" data-group="sql_queries_joins" id="sql_queries_joins-self">
+              <div class="card">
+                <h3>Self Join (Table references itself)</h3>
+                <p>Typically used for hierarchical columns in a single table, like employee-manager relations.</p>
+                <div class="code">
+-- Find employees who earn more than their direct manager
+SELECT e.Name AS Employee, m.Name AS Manager
+FROM Employees e
+INNER JOIN Employees m ON e.ManagerID = m.EmpID
+WHERE e.Salary > m.Salary;
+                </div>
+              </div>
+            </div>
+            <div class="tp" data-group="sql_queries_joins" id="sql_queries_joins-cross">
+              <div class="card">
+                <h3>Cross Join (Cartesian Product)</h3>
+                <p>Returns the cartesian product of rows from both tables without matching conditions.</p>
+                <div class="code">
+-- Generate all possible combinations of sizes and colors
+SELECT s.SizeName, c.ColorName
+FROM Sizes s
+CROSS JOIN Colors c;
+                </div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-list"></i>Aggregations &amp; Group By</div>
+            <div class="def">
+              Aggregate functions (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>) perform calculations on a set of values.
+              <br>• <strong>GROUP BY:</strong> Groups rows sharing identical values in summary columns.
+              <br>• <strong>HAVING:</strong> Filters grouped results. Equivalent to <code>WHERE</code> but runs <em>after</em> values are aggregated.
+            </div>
+            <div class="code">
+-- Get departments with more than 5 employees and an average salary above 60000
+SELECT DeptID, COUNT(*) AS EmpCount, AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY DeptID
+HAVING COUNT(*) > 5 AND AVG(Salary) > 60000;
+            </div>
+
+            <div class="sec"><i class="ti ti-fold-down"></i>Nested &amp; Subqueries</div>
+            <div class="g2">
+              <div class="card">
+                <h3>Correlated Subquery (EXISTS)</h3>
+                <p>The inner query executes repeatedly — once for each row evaluated by the outer query.</p>
+                <div class="code">
+-- Find departments with active employees
+SELECT d.DeptName
+FROM Departments d
+WHERE EXISTS (
+  SELECT 1 FROM Employees e 
+  WHERE e.DeptID = d.ID
+);
+                </div>
+              </div>
+              <div class="card">
+                <h3>Common Table Expressions (CTEs)</h3>
+                <p>The <code>WITH</code> clause creates a temporary named result set, making complex queries readable.</p>
+                <div class="code">
+-- Filter employees earning above average
+WITH AvgSal AS (
+  SELECT AVG(Salary) AS avg_s FROM Employees
+)
+SELECT Name, Salary 
+FROM Employees, AvgSal
+WHERE Salary > avg_s;
+                </div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-grid-pattern"></i>Window Functions</div>
+            <p>Compute values across a set of table rows related to the current row, without collapsing the results (unlike GROUP BY):</p>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Function</th>
+                  <th>Mechanics</th>
+                  <th>Syntax / Usage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ROW_NUMBER()</strong></td>
+                  <td>Assigns a sequential integer to rows starting at 1.</td>
+                  <td rowspan="3" style="font-family:var(--font-mono);font-size:11px">
+                    SELECT Name, Salary, DeptID,<br>
+                    <strong>DENSE_RANK() OVER (</strong><br>
+                    &nbsp;&nbsp;PARTITION BY DeptID<br>
+                    &nbsp;&nbsp;ORDER BY Salary DESC<br>
+                    <strong>)</strong> AS RankInDept<br>
+                    FROM Employees;
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>RANK()</strong></td>
+                  <td>Assigns rank values. Skips rank integers if duplicate values are found (e.g. 1, 2, 2, 4).</td>
+                </tr>
+                <tr>
+                  <td><strong>DENSE_RANK()</strong></td>
+                  <td>Assigns rank values consecutively. Does not skip rank integers (e.g. 1, 2, 2, 3).</td>
+                </tr>
+                <tr>
+                  <td><strong>LEAD() / LAG()</strong></td>
+                  <td>Accesses data columns from rows directly ahead of (LEAD) or behind (LAG) the current row.</td>
+                  <td style="font-family:var(--font-mono);font-size:11px">
+                    -- Compare employee salary to predecessor<br>
+                    LAG(Salary, 1) OVER (ORDER BY Salary)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-layers-intersect"></i>Set Operations &amp; Views</div>
+            <div class="g2">
+              <div class="card">
+                <h3>UNION vs UNION ALL</h3>
+                <p><code>UNION</code> combines query results and <strong>deduplicates</strong> rows (costly sort). <code>UNION ALL</code> merges row sets without removing duplicates, making it much faster.</p>
+              </div>
+              <div class="card">
+                <h3>Views &amp; Indexes</h3>
+                <p>Views are virtual query shortcuts. Indexes speed up searches.</p>
+                <div class="code">
+CREATE VIEW ActiveStaff AS
+SELECT ID, Name, JoinDate FROM Employees WHERE Active=1;
+
+CREATE INDEX idx_emp_salary ON Employees(Salary);
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. NOSQL DATABASES -->
+          <div class="pg" id="p-nosql">
+            <div class="ptag t-bl"><i class="ti ti-box"></i>Non-Relational</div>
+            <div class="ptitle">NoSQL Databases</div>
+            <p class="psub">NoSQL (Not Only SQL) databases are built for horizontal scalability, unstructured schemas, and high write throughput, departing from the rigid ACID constraints of relational systems.</p>
+
+            <div class="sec"><i class="ti ti-help"></i>Why NoSQL?</div>
+            <div class="def">
+              Traditional RDBMS scales <strong>vertically</strong> (faster CPU, more RAM), which has physical scaling limits and high hardware costs. NoSQL is designed to scale <strong>horizontally</strong> (adding cheap server nodes in a distributed cluster).
+              <br>• <strong>Dynamic Schemas:</strong> Allows storing unstructured document records (JSON) without running migrations.
+              <br>• <strong>Low Latency:</strong> Uses simple query patterns (e.g. key-value hash lookups) to bypass slow relational joins.
+            </div>
+
+            <div class="sec"><i class="ti ti-arrows-left-right"></i>SQL vs NoSQL Comparison</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>SQL Databases (RDBMS)</th>
+                  <th>NoSQL Databases</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Schema</strong></td>
+                  <td>Strict, predefined tabular schema. Changes require DDL migration locks.</td>
+                  <td>Dynamic / Schema-less. Records can store custom dynamic columns.</td>
+                </tr>
+                <tr>
+                  <td><strong>Scaling</strong></td>
+                  <td>Vertical (Scale Up).</td>
+                  <td>Horizontal (Scale Out). Shards data partitions across multiple nodes.</td>
+                </tr>
+                <tr>
+                  <td><strong>Joins</strong></td>
+                  <td>Supported natively. Executed horizontally.</td>
+                  <td>Not supported. Data is denormalized in documents to avoid joins.</td>
+                </tr>
+                <tr>
+                  <td><strong>Transactions</strong></td>
+                  <td>Strict ACID properties. Absolute consistency.</td>
+                  <td>BASE model. Prioritizes availability; eventual consistency.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-category"></i>The 4 Types of NoSQL Databases</div>
+            <div class="g2">
+              <div class="card" style="border-top:3px solid var(--border-accent)">
+                <h3>1. Document Database</h3>
+                <p>Stores records as documents (JSON/BSON). Documents can nest objects and arrays inside themselves.</p>
+                <div class="hl"><strong>Use Cases:</strong> E-commerce catalogs, Content Management Systems (CMS), user profile configurations.</div>
+                <div class="chips"><span class="chip">MongoDB</span><span class="chip">CouchDB</span></div>
+              </div>
+              <div class="card" style="border-top:3px solid var(--border-warning)">
+                <h3>2. Key-Value Store</h3>
+                <p>Stores simple key-to-value associations. Extremely fast because it behaves as a giant hash table in RAM.</p>
+                <div class="hl"><strong>Use Cases:</strong> Real-time caching, user session states, global leaderboards.</div>
+                <div class="chips"><span class="chip">Redis</span><span class="chip">Memcached</span></div>
+              </div>
+              <div class="card" style="border-top:3px solid var(--border-pro)">
+                <h3>3. Column-Family Store</h3>
+                <p>Stores columns of data together on disk, rather than rows. Highly optimized for mass writes across columns.</p>
+                <div class="hl"><strong>Use Cases:</strong> IoT sensor metrics, time-series telemetry data, event logs.</div>
+                <div class="chips"><span class="chip">Apache Cassandra</span><span class="chip">HBase</span></div>
+              </div>
+              <div class="card" style="border-top:3px solid var(--border-danger)">
+                <h3>4. Graph Database</h3>
+                <p>Stores data nodes and directed edges (relationships) natively, bypassing join layers for deep networks.</p>
+                <div class="hl"><strong>Use Cases:</strong> Social graph analysis, fraud detection, recommendation engines.</div>
+                <div class="chips"><span class="chip">Neo4j</span><span class="chip">Amazon Neptune</span></div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-code"></i>Query Comparison: SQL vs MongoDB</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>SQL Database</th>
+                  <th>MongoDB (NoSQL Document)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Insert Row</strong></td>
+                  <td><code style="font-size:11px">INSERT INTO Users (Name, Age) VALUES ('Alice', 25);</code></td>
+                  <td><code style="font-size:11px">db.users.insertOne({ name: "Alice", age: 25 });</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Select rows</strong></td>
+                  <td><code style="font-size:11px">SELECT * FROM Users WHERE Age &gt; 21;</code></td>
+                  <td><code style="font-size:11px">db.users.find({ age: { $gt: 21 } });</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Update rows</strong></td>
+                  <td><code style="font-size:11px">UPDATE Users SET Age=26 WHERE Name='Alice';</code></td>
+                  <td><code style="font-size:11px">db.users.updateMany({ name: "Alice" }, { $set: { age: 26 } });</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 6. NORMALIZATION -->
+          <div class="pg" id="p-normalization">
+            <div class="ptag t-bl"><i class="ti ti-columns"></i>Database Design</div>
+            <div class="ptitle">Normalization &amp; Anomaly Prevention</div>
+            <p class="psub">Normalization is the mathematical process of decomposing tables to reduce data redundancy, eliminate data anomalies, and preserve functional dependencies.</p>
+
+            <div class="sec"><i class="ti ti-alert-triangle"></i>Database Anomalies Illustrated</div>
+            <p>Suppose we store student and course info in one unnormalized table:</p>
+            <div class="code" style="font-size:12px">
+<strong>Table: StudentCourse</strong>
+StudentID | Name    | CourseID | CourseName | DeptHead
+----------+---------+----------+------------+---------
+101       | Alice   | CS10     | DBMS       | Dr. Smith
+101       | Alice   | CS20     | Networks   | Dr. Smith
+102       | Bob     | CS10     | DBMS       | Dr. Smith
+            </div>
+            <div class="g3">
+              <div class="card" style="border-top: 3px solid var(--border-danger)">
+                <h3>Insertion Anomaly</h3>
+                <p>We cannot insert a new course (e.g. <code>CS30</code>, <code>OS</code> under <code>Dr. Jones</code>) unless we have at least one student enrolled in it, because StudentID is part of the primary key.</p>
+              </div>
+              <div class="card" style="border-top: 3px solid var(--border-danger)">
+                <h3>Deletion Anomaly</h3>
+                <p>If Bob (StudentID 102) drops <code>CS10</code> and we delete his row, we completely lose the details that <code>CS10</code> is called <code>DBMS</code> and managed by <code>Dr. Smith</code> if he was the only enrollee.</p>
+              </div>
+              <div class="card" style="border-top: 3px solid var(--border-danger)">
+                <h3>Update Anomaly</h3>
+                <p>If the department head for CS changes from <code>Dr. Smith</code> to <code>Dr. Alan</code>, we have to update multiple rows. If we miss even one row, the database state becomes inconsistent.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-calculator"></i>Finding Candidate Keys Algorithm</div>
+            <div class="def">
+              <strong>Algorithm:</strong>
+              <br>1. Identify the set of all attributes in relation R.
+              <br>2. Find attributes that <strong>never</strong> appear on the right-hand side (RHS) of any Functional Dependency (FD). These attributes <strong>must</strong> be part of every candidate key.
+              <br>3. Compute the closure of this core attribute set. If the closure covers all attributes of R, it is the unique Candidate Key.
+              <br>4. If not, add other attributes one by one and calculate closures until you find minimal sets that determine R.
+            </div>
+
+            <div class="sec"><i class="ti ti-adjustments"></i>Armstrong's Axioms in Detail</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Axiom Rule</th>
+                  <th>Mathematical Definition</th>
+                  <th>Explanation / Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Reflexivity</strong></td>
+                  <td>If <code>Y &sube; X</code>, then <code>X &rarr; Y</code></td>
+                  <td>If X contains Y, then X determines Y. e.g. <code>{ID, Name} &rarr; {Name}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Augmentation</strong></td>
+                  <td>If <code>X &rarr; Y</code>, then <code>XZ &rarr; YZ</code></td>
+                  <td>Adding attributes to both sides preserves dependency. e.g. If <code>ID &rarr; Name</code>, then <code>{ID, Code} &rarr; {Name, Code}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Transitivity</strong></td>
+                  <td>If <code>X &rarr; Y</code> and <code>Y &rarr; Z</code>, then <code>X &rarr; Z</code></td>
+                  <td>Chain rule. e.g. If <code>StudentID &rarr; ZipCode</code> and <code>ZipCode &rarr; City</code>, then <code>StudentID &rarr; City</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Union</strong> (Secondary)</td>
+                  <td>If <code>X &rarr; Y</code> and <code>X &rarr; Z</code>, then <code>X &rarr; YZ</code></td>
+                  <td>If X determines two fields separately, it determines both.</td>
+                </tr>
+                <tr>
+                  <td><strong>Decomposition</strong> (Secondary)</td>
+                  <td>If <code>X &rarr; YZ</code>, then <code>X &rarr; Y</code> and <code>X &rarr; Z</code></td>
+                  <td>We can split the RHS attributes into separate dependencies.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-number"></i>Normal Forms (1NF - 5NF)</div>
+            <div class="tab-row" data-group="nf">
+              <div class="tb on" onclick="tab('nf','nf13',this)">1NF, 2NF, 3NF</div>
+              <div class="tb" onclick="tab('nf','bcnf5',this)">BCNF, 4NF, 5NF</div>
+            </div>
+
+            <div class="tp on" data-group="nf" id="nf-nf13">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Normal Form</th>
+                    <th>Core Requirement</th>
+                    <th>Dependency Avoidance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>1NF</strong> (First Normal Form)</td>
+                    <td>All column values must be atomic (no multi-valued attributes, no repeating groups).</td>
+                    <td>Removes duplicate records and structural repeating nesting.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>2NF</strong> (Second Normal Form)</td>
+                    <td>Must satisfy 1NF, and have <strong>no Partial Dependency</strong>.</td>
+                    <td>No non-prime attribute should depend on a proper subset of a candidate key.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3NF</strong> (Third Normal Form)</td>
+                    <td>Must satisfy 2NF, and have <strong>no Transitive Dependency</strong>.</td>
+                    <td>For every non-trivial FD <code>X &rarr; Y</code>, either X is a superkey or Y is a prime attribute.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tp" data-group="nf" id="nf-bcnf5">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Normal Form</th>
+                    <th>Core Requirement</th>
+                    <th>Details / Focus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>BCNF</strong> (Boyce-Codd Normal Form)</td>
+                    <td>Stricter version of 3NF. For every non-trivial FD <code>X &rarr; Y</code>, <strong>X must be a superkey</strong>.</td>
+                    <td>Eliminates cases where a prime attribute is determined by a non-prime attribute.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>4NF</strong> (Fourth Normal Form)</td>
+                    <td>Must satisfy BCNF and contain <strong>no Multi-Valued Dependencies</strong> (MVD).</td>
+                    <td>Prevents independent 1-to-many relationships from creating duplicate records in one table.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5NF</strong> (Fifth Normal Form)</td>
+                    <td>Must satisfy 4NF and have <strong>no Join Dependency</strong>.</td>
+                    <td>Ensures a table cannot be decomposed and reconstructed without losing data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sec"><i class="ti ti-fold"></i>Decomposition Properties</div>
+            <div class="g2">
+              <div class="card">
+                <h3>1. Lossless Join Decomposition</h3>
+                <p>Ensures that when relation R is split into R1 and R2, joining them back (R1 &bowtie; R2) reconstructs R exactly without inserting spurious tuples.
+                <br><strong>Condition:</strong> <code>R1 &cap; R2 &ne; &empty;</code> and either <code>(R1 &cap; R2) &rarr; R1</code> or <code>(R1 &cap; R2) &rarr; R2</code>.</p>
+              </div>
+              <div class="card">
+                <h3>2. Dependency Preserving Decomposition</h3>
+                <p>Guarantees that all functional dependencies of the original relation can be validated inside the individual tables without performing joins.
+                <br><strong>Condition:</strong> <code>(F1 &cup; F2)<sup>+</sup> = F<sup>+</sup></code>.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-arrows-minimize"></i>Denormalization</div>
+            <div class="def">
+              <strong>Denormalization</strong> is an optimization technique where redundant data is intentionally added back to a normalized schema.
+              <br>• <strong>Why?</strong> Excessively normalized databases require complex, slow multi-table joins.
+              <br>• <strong>Tradeoff:</strong> Dramatically increases <strong>read speed</strong> but adds <strong>update overhead</strong> and storage requirements. Ideal for read-heavy analytical dashboards (OLAP), not transaction engines (OLTP).
+            </div>
+          </div>
+
+          <!-- 5. TRANSACTION & CONCURRENCY -->
+          <div class="pg" id="p-transactions">
+            <div class="ptag t-bl"><i class="ti ti-lock"></i>Concurrency</div>
+            <div class="ptitle">Transactions, Recovery &amp; Deadlocks</div>
+            <p class="psub">A transaction is a logical unit of work. To maintain database consistency, transactions must adhere to ACID properties, and concurrent operations must be serializable.</p>
+
+            <div class="sec"><i class="ti ti-activity-heartbeat"></i>ACID vs BASE</div>
+            <div class="tab-row" data-group="acid_base">
+              <div class="tb on" onclick="tab('acid_base','acid',this)">ACID (Strict Consistency)</div>
+              <div class="tb" onclick="tab('acid_base','base',this)">BASE (Eventual Consistency)</div>
+            </div>
+
+            <div class="tp on" data-group="acid_base" id="acid_base-acid">
+              <div class="ok">
+                <strong>ACID Properties:</strong>
+                <br>• <strong>Atomicity:</strong> All-or-nothing execution. Rollback on failure. (Managed by <em>Transaction Manager</em>)
+                <br>• <strong>Consistency:</strong> The database transitions only between valid states conforming to rules. (Managed by <em>Application Programmer</em>)
+                <br>• <strong>Isolation:</strong> Concurrent transactions run independently without interference. (Managed by <em>Concurrency Control Manager</em>)
+                <br>• <strong>Durability:</strong> Once committed, changes survive system crashes. (Managed by <em>Recovery Manager</em>)
+              </div>
+            </div>
+            <div class="tp" data-group="acid_base" id="acid_base-base">
+              <div class="warn">
+                <strong>BASE Model (NoSQL systems):</strong>
+                <br>• <strong>Basically Available:</strong> The system responds to requests, even if some nodes are down.
+                <br>• <strong>Soft State:</strong> The state of the data can drift or change over time without user interaction.
+                <br>• <strong>Eventual Consistency:</strong> Data copies across global servers will sync up and become identical over time.
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-triangle-square-circle"></i>CAP Theorem</div>
+            <div class="def">
+              States that a distributed data store can simultaneously provide at most two of the following three guarantees:
+              <br>1. <strong>Consistency (C):</strong> Every read receives the most recent write or an error.
+              <br>2. <strong>Availability (A):</strong> Every non-failing node returns a response for every request.
+              <br>3. <strong>Partition Tolerance (P):</strong> The system continues to operate despite arbitrary communication network splits.
+              <br><strong>Tradeoff:</strong> When a network partition (P) occurs, a database must choose either Consistency (CP) or Availability (AP).
+            </div>
+
+            <div class="sec"><i class="ti ti-bug"></i>Concurrency Problems</div>
+            <div class="g3">
+              <div class="card" style="border-top:3px solid var(--border-danger)">
+                <h3>Dirty Read</h3>
+                <p>Transaction T1 reads data modified by T2. T2 then aborts and rolls back, leaving T1 with invalid, uncommitted data.</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--border-warning)">
+                <h3>Lost Update</h3>
+                <p>T1 and T2 read the same value, modify it independently, and write it back. One update overwrites the other.</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--border-pro)">
+                <h3>Non-Repeatable Read</h3>
+                <p>T1 reads a value. T2 updates that value and commits. T1 reads the value again and gets a different result.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-calendar-time"></i>Schedules &amp; Serializability</div>
+            <div class="chips">
+              <span class="chip"><strong>Serial Schedule:</strong> Transactions execute one after another without interleaving. Always consistent.</span>
+              <span class="chip"><strong>Non-Serial Schedule:</strong> Operations interleave. Improves performance but can lead to conflicts.</span>
+              <span class="chip"><strong>Conflict Serializable:</strong> A schedule that can be transformed into a serial schedule by swapping non-conflicting adjacent operations.</span>
+              <span class="chip"><strong>View Serializable:</strong> A weaker check than conflict serializability, verifying identical read/write flow states.</span>
+            </div>
+
+            <div class="sec"><i class="ti ti-key-off"></i>Recoverability of Schedules</div>
+            <div class="step-row">
+              <div class="step-num">R</div>
+              <div class="step-body">
+                <div class="step-title">Recoverable Schedule</div>
+                <div class="step-desc">T2 reads a value written by T1. T2 commits only <em>after</em> T1 commits. If T1 aborts, T2 can also safely abort.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">C</div>
+              <div class="step-body">
+                <div class="step-title">Cascadeless Schedule</div>
+                <div class="step-desc">T2 is only allowed to read values written by T1 <em>after</em> T1 has committed. Prevents cascading rollbacks where one transaction failure forces aborting multiple active ones.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">S</div>
+              <div class="step-body">
+                <div class="step-title">Strict Schedule</div>
+                <div class="step-desc">A transaction cannot read <em>or write</em> a data item written by another transaction until that transaction has committed or aborted. Prevents dirty writes.</div>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-lock-open"></i>Concurrency Protocols</div>
+            <div class="tab-row" data-group="cc_proto">
+              <div class="tb on" onclick="tab('cc_proto','locks',this)">Two-Phase Locking (2PL)</div>
+              <div class="tb" onclick="tab('cc_proto','hierarchical',this)">Multiple Granularity Locking (MGL)</div>
+            </div>
+
+            <div class="tp on" data-group="cc_proto" id="cc_proto-locks">
+              <div class="card">
+                <h3>Two-Phase Locking (2PL) Rules</h3>
+                <p>Guarantees conflict serializability but does not prevent deadlocks:</p>
+                <ul style="padding-left:15px; font-size:12.5px; margin-top:5px">
+                  <li><strong>Growing Phase:</strong> Transaction can acquire locks but cannot release any.</li>
+                  <li><strong>Shrinking Phase:</strong> Transaction can release locks but cannot acquire new ones.</li>
+                  <li><strong>Strict 2PL:</strong> All exclusive (X) locks held by a transaction must be kept until the transaction commits.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tp" data-group="cc_proto" id="cc_proto-hierarchical">
+              <div class="card">
+                <h3>Multiple Granularity Compatibility Matrix</h3>
+                <p>Introduces Intention Locks to allow locking entire folders or individual records without parsing every child node:</p>
+                <table class="compare-table" style="margin-top: 8px">
+                  <thead>
+                    <tr>
+                      <th>Lock Mode</th>
+                      <th>IS</th>
+                      <th>IX</th>
+                      <th>S</th>
+                      <th>SIX</th>
+                      <th>X</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>IS</strong> (Intention Shared)</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                    </tr>
+                    <tr>
+                      <td><strong>IX</strong> (Intention Exclusive)</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                    </tr>
+                    <tr>
+                      <td><strong>S</strong> (Shared)</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                    </tr>
+                    <tr>
+                      <td><strong>SIX</strong> (Shared Intention Excl)</td>
+                      <td style="color:var(--text-success)">OK</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                    </tr>
+                    <tr>
+                      <td><strong>X</strong> (Exclusive)</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                      <td style="color:var(--text-danger)">Conflict</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-refresh"></i>Database Recovery Techniques</div>
+            <div class="g2">
+              <div class="card">
+                <h3>Log-Based Recovery</h3>
+                <p>Uses a sequential write-ahead log file to recover data:</p>
+                <ul style="padding-left:15px; font-size:12.5px; margin-top:5px">
+                  <li><strong>Deferred Update (No-Undo/Redo):</strong> Changes written to disk only after commit. On failure, apply REDO. No UNDO is ever needed.</li>
+                  <li><strong>Immediate Update (Undo/Redo):</strong> Changes can be written to disk before commit. On failure, apply UNDO for uncommitted, and REDO for committed transactions.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Shadow Paging</h3>
+                <p>Alternative recovery scheme that avoids logs. Keeps two page tables: a <strong>Current Page Table</strong> and a <strong>Shadow Page Table</strong>. On commit, the current pointer overwrites the shadow pointer.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-barrier-block"></i>Deadlock Prevention Schemes</div>
+            <div class="tab-row" data-group="deadlock_sch">
+              <div class="tb on" onclick="tab('deadlock_sch','watedie',this)">Wait-Die Scheme</div>
+              <div class="tb" onclick="tab('deadlock_sch','woundwait',this)">Wound-Wait Scheme</div>
+            </div>
+
+            <div class="tp on" data-group="deadlock_sch" id="deadlock_sch-watedie">
+              <div class="warn">
+                <strong>Wait-Die Scheme (Non-preemptive):</strong>
+                <br>• If an older transaction requests a resource held by a younger one, the older is allowed to <strong>wait</strong>.
+                <br>• If a younger transaction requests a resource held by an older one, the younger is killed (<strong>dies</strong>) and restarted.
+              </div>
+            </div>
+            <div class="tp" data-group="deadlock_sch" id="deadlock_sch-woundwait">
+              <div class="ok">
+                <strong>Wound-Wait Scheme (Preemptive):</strong>
+                <br>• If an older transaction requests a resource held by a younger one, the older pre-empts (<strong>wounds</strong>) the younger, forcing it to abort and roll back.
+                <br>• If a younger transaction requests a resource held by an older one, the younger is allowed to <strong>wait</strong>.
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. INDEXING -->
+          <div class="pg" id="p-indexing">
+            <div class="ptag t-bl"><i class="ti ti-list-numbers"></i>Optimization</div>
+            <div class="ptitle">Indexing &amp; Physical Design</div>
+            <p class="psub">Indexing is an essential data structure technique designed to speed up search operations by reducing the number of physical disk block accesses required to retrieve rows.</p>
+
+            <div class="sec"><i class="ti ti-schema"></i>Indexing Classifications</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Index Type</th>
+                  <th>Key Order Alignment</th>
+                  <th>Index density</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Primary Index</strong></td>
+                  <td>Ordered key matches table structure.</td>
+                  <td>Usually Sparse</td>
+                  <td>Defined on the primary key of an ordered data file. Only one primary index can exist.</td>
+                </tr>
+                <tr>
+                  <td><strong>Clustering Index</strong></td>
+                  <td>Non-key field ordered matches table.</td>
+                  <td>Sparse</td>
+                  <td>Defined on a non-key ordered field (e.g., grouping employees by Department ID).</td>
+                </tr>
+                <tr>
+                  <td><strong>Secondary Index</strong></td>
+                  <td>Table physical order is independent of index key.</td>
+                  <td>Dense</td>
+                  <td>Defined on unordered fields (e.g., creating an index on email field). Multiple secondary indexes are allowed.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="sec"><i class="ti ti-binary"></i>Index Dense vs Sparse</div>
+            <div class="g2">
+              <div class="card">
+                <h3>Dense Index</h3>
+                <p>An index record is created for <strong>every single search key value</strong> in the database table. Faster lookup, but requires significantly more memory.</p>
+              </div>
+              <div class="card">
+                <h3>Sparse Index</h3>
+                <p>An index record is created only for some search keys (typically one per data block). Requires less memory, but requires traversing the physical block to find the exact row.</p>
+              </div>
+            </div>
+
+            <div class="sec"><i class="ti ti-hierarchy-2"></i>B-Tree vs B+ Tree Node Layout</div>
+            <p>Database engines use B+ Trees for relational indexes due to their physical layout advantages:</p>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>B-Tree</th>
+                  <th>B+ Tree</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Data pointers</strong></td>
+                  <td>Stored in both leaf and non-leaf nodes.</td>
+                  <td>Stored <strong>only in leaf nodes</strong>. Non-leaf nodes only store search key values to route queries.</td>
+                </tr>
+                <tr>
+                  <td><strong>Leaf linking</strong></td>
+                  <td>Leaf nodes are not linked together.</td>
+                  <td>Leaf nodes are connected sequentially in a <strong>doubly linked list</strong>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Range Queries</strong></td>
+                  <td>Slow. Requires executing in-order traversal (up and down the tree).</td>
+                  <td>Fast. Locate the starting key in a leaf, then traverse the linked list.</td>
+                </tr>
+                <tr>
+                  <td><strong>Internal Node capacity</strong></td>
+                  <td>Low, because data pointers occupy space in internal nodes.</td>
+                  <td>High. Can store many child pointers, leading to a much wider fan-out and shorter tree.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 7. INTERVIEW PREP -->
+          <div class="pg" id="p-interview">
+            <div class="ptag t-bl"><i class="ti ti-help"></i>Preparation</div>
+            <div class="ptitle">Interview Q&amp;A &amp; Tricks</div>
+            <p class="psub">Curated DBMS interview prep, core conceptual focus points, and common database interview cheats.</p>
+
+            <div class="sec"><i class="ti ti-question-mark"></i>Top 10 Frequently Asked Interview Questions</div>
+            <div class="card">
+              <h3>Q1: Explain the difference between Clustered and Non-Clustered index.</h3>
+              <p>A clustered index dictates the physical order in which rows are stored on disk. Because the data rows can only be sorted in one order, there can be at most one clustered index per table. A non-clustered index has a separate structure that contains search keys and pointers to the actual data rows. You can create multiple non-clustered indexes on a table.</p>
+            </div>
+            <div class="card">
+              <h3>Q2: Why are B+ Trees preferred over Binary Search Trees (BST) for disk storage?</h3>
+              <p>BSTs are deep and narrow, causing a high number of node travels. Since database pages live on disk, reading a node requires a disk block I/O. B+ Trees have a high fan-out (many children per node), making the tree short and wide. A search requires only 3-4 block reads even for millions of records, reducing I/O bottleneck.</p>
+            </div>
+            <div class="card">
+              <h3>Q3: What is the difference between 3NF and BCNF?</h3>
+              <p>BCNF is a stricter form of 3NF. In 3NF, for any functional dependency <code>X &rarr; Y</code>, either X is a superkey, or Y is a prime attribute. In BCNF, X must be a superkey. BCNF eliminates partial dependencies where a prime attribute is determined by a non-prime attribute.</p>
+            </div>
+            <div class="card">
+              <h3>Q4: Explain the difference between a Conflict and View Serializable schedule.</h3>
+              <p>A schedule is conflict serializable if it can be reduced to a serial schedule by swapping non-conflicting adjacent operations. A schedule is view serializable if it is view equivalent to some serial schedule. Every conflict serializable schedule is view serializable, but not vice versa (e.g., schedules with blind writes).</p>
+            </div>
+            <div class="card">
+              <h3>Q5: What are data anomalies and how does normalization solve them?</h3>
+              <p>Anomalies are side-effects of data redundancy in unnormalized tables: Insertion Anomaly (cannot add data without unrelated parent keys), Deletion Anomaly (losing data as a side-effect of deletion), and Update Anomaly (inconsistencies when duplicate records are not updated simultaneously). Normalization splits tables so that each fact is stored in exactly one place.</p>
+            </div>
+            <div class="card">
+              <h3>Q6: Explain the difference between optimistic and pessimistic concurrency control.</h3>
+              <p>Pessimistic concurrency control locks resources before modifications occur, assuming conflicts are highly likely. Optimistic concurrency control allows transactions to execute without locking, but checks for conflicts during the commit phase (using validation steps); it rolls back the transaction if a conflict occurred, assuming conflicts are rare.</p>
+            </div>
+            <div class="card">
+              <h3>Q7: What is write-ahead logging (WAL)?</h3>
+              <p>WAL is a database recovery protocol stating that all database modifications must be written to a persistent log file (on disk) <em>before</em> the actual changes are applied to the physical database pages. This guarantees durability and recoverability in case of power failure.</p>
+            </div>
+            <div class="card">
+              <h3>Q8: Explain the difference between 2-Tier and 3-Tier architecture.</h3>
+              <p>In a 2-Tier architecture, the client application runs queries directly on the database engine. In a 3-Tier architecture, the client communicates with an application server (API/backend), which performs validation/business logic and then queries the database engine, offering better scalability and security.</p>
+            </div>
+            <div class="card">
+              <h3>Q9: Why does Natural Join remove duplicate columns while Cartesian Product keeps them?</h3>
+              <p>Natural Join matches columns by name and merges them into one logical attribute to simplify relationships. Cartesian Product does not analyze column names; it simply pairs every attribute from Table A with every attribute from Table B, resulting in duplicate columns containing prefix names.</p>
+            </div>
+            <div class="card">
+              <h3>Q10: What are weak entity sets, and how do they map to schemas?</h3>
+              <p>Weak entity sets are entities that cannot be uniquely identified using only their own attributes and depend on a strong parent entity. They map to a separate table where the columns are the weak entity's attributes, plus the parent's Primary Key. The primary key of the weak table is a composite key: <code>{Parent_PK, Discriminator}</code>.</p>
+            </div>
+
+            <div class="sec"><i class="ti ti-stars"></i>Interview Tricks &amp; Common Confusions</div>
+            <div class="g2">
+              <div class="card" style="border-left: 3px solid var(--border-danger)">
+                <h3>Thomas Write Rule Edge Case</h3>
+                <p>An optimization on the Timestamp Concurrency protocol. If transaction T wants to write a data item, and the write timestamp is older than the current write timestamp of the item, instead of rolling back T, it simply <strong>discards the write</strong> because it was overwritten anyway. Only works if isolation levels allow.</p>
+              </div>
+              <div class="card" style="border-left: 3px solid var(--border-warning)">
+                <h3>Null vs Empty Values</h3>
+                <p>In databases, <code>NULL</code> represents the absence of data, whereas an empty string or 0 represents actual entered data. Standard SQL logical operations treat nulls using three-valued logic (True, False, Unknown).</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Navigation order
+    const ORDER = ['intro', 'er_model', 'relational_model', 'sql', 'nosql', 'normalization', 'transactions', 'indexing', 'interview'];
+    const LABELS = {
+      'intro': 'Introduction to DBMS',
+      'er_model': 'ER Model',
+      'relational_model': 'Relational Algebra & Calculus',
+      'sql': 'SQL Masterclass',
+      'nosql': 'NoSQL Databases',
+      'normalization': 'Normalization',
+      'transactions': 'Transaction & Concurrency',
+      'indexing': 'Indexing',
+      'interview': 'Interview Prep'
+    };
+
+    function go(id) {
+      // deactivate all navigation links and pages
+      document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+      document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+
+      // activate the target page
+      const page = document.getElementById('p-' + id);
+      if (page) page.classList.add('on');
+
+      // activate the corresponding nav item in sidebar
+      const navItem = document.getElementById('sn-' + id);
+      if (navItem) {
+        navItem.classList.add('on');
+        navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // scroll the main content area to top
+      document.getElementById('mainContent').scrollTop = 0;
+      window.scrollTo(0, 0);
+
+      // update mobile title
+      const label = LABELS[id] || id;
+      const mobileTitle = document.getElementById('mobileNavTitle');
+      if (mobileTitle) mobileTitle.textContent = label;
+
+      // save progress to localStorage
+      try {
+        localStorage.setItem('dbms_topic', id);
+        localStorage.setItem('dbms_topic_time', Date.now());
+      } catch(e) {}
+
+      // close the mobile sidebar
+      closeSidebar();
+
+      // ── Update prev / next buttons ──────────────────────────
+      const idx = ORDER.indexOf(id);
+      // Prev Button
+      const prevId = idx > 0 ? ORDER[idx - 1] : null;
+      const prevBtn = page ? page.querySelector('.topic-nav-btn.prev') : null;
+      if (prevBtn) {
+        if (prevId) {
+          prevBtn.style.visibility = 'visible';
+          prevBtn.querySelector('.topic-nav-name').textContent = LABELS[prevId] || prevId;
+          prevBtn.onclick = () => go(prevId);
+        } else {
+          prevBtn.style.visibility = 'hidden';
+        }
+      }
+      // Next Button
+      const nextId = idx < ORDER.length - 1 ? ORDER[idx + 1] : 'intro';
+      const nextBtn = page ? page.querySelector('.topic-nav-btn.next') : null;
+      if (nextBtn) {
+        const isLast = idx === ORDER.length - 1;
+        nextBtn.querySelector('.topic-nav-hint').textContent = isLast ? 'Back to start' : 'Next';
+        nextBtn.querySelector('.topic-nav-name').textContent = LABELS[nextId] || nextId;
+        nextBtn.onclick = () => go(nextId);
+      }
+    }
+
+    // Fixed tab switching implementation using data-group
+    function tab(group, id, btn) {
+      document.querySelectorAll('.tp[data-group="' + group + '"]').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('.tab-row[data-group="' + group + '"] .tb').forEach(b => b.classList.remove('on'));
+      const panel = document.getElementById(group + '-' + id);
+      if (panel) panel.classList.add('on');
+      btn.classList.add('on');
+    }
+
+    // Mobile sidebar handling
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'true');
+      document.getElementById('hamburgerIcon').className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close sidebar
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+      document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('hamburgerIcon').className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+
+    function toggleNav() {
+      document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // hamburger menu button listener
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+      }
+
+      // overlay click/tap listener
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+      }
+
+      // Inject prev/next nav bars into all .pg sections dynamically
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+
+      document.querySelectorAll('.pg').forEach(pg => pg.insertAdjacentHTML('beforeend', navBarHTML));
+
+      // Restore last visited topic from local storage
+      let startId = 'intro';
+      try {
+        const saved = localStorage.getItem('dbms_topic');
+        if (saved && document.getElementById('p-' + saved)) {
+          startId = saved;
+        }
+      } catch(e) {}
+      go(startId);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeSidebar();
+      }
+    });
+  </script>
 </body>
 </html>
