@@ -890,7 +890,9 @@
 
       .main {
         padding: 80px 20px 40px;
-        font-size: 14px
+        font-size: 14px;
+        width: 100%;
+        overflow-x: hidden;
       }
 
       .sidebar-header {
@@ -907,7 +909,7 @@
 <body>
   <!-- Mobile Top Navbar -->
   <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Open navigation menu"
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu"
       aria-expanded="false" aria-controls="sidebar">
       <i class="ti ti-menu-2" id="hamburgerIcon"></i>
     </button>
@@ -916,7 +918,7 @@
   </nav>
 
   <!-- Sidebar Overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
   <div class="app">
     <!-- Sidebar Navigation -->
