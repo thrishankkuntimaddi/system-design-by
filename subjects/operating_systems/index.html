@@ -1,29 +1,2233 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Operating Systems — Notes</title>
+  <title>Operating Systems Mastery Notes</title>
+  <!-- PWA & Favicon -->
+  <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
   <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OS Notes">
+  <meta name="description"
+    content="Complete operating systems reference for software engineering interviews — processes, threads, scheduling, memory, deadlocks, and files.">
+  <meta name="mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:#2a3450;--text:#e8eaf0;--text2:#9aa3b8;--text3:#6b748a;--accent:#34d399;--radius:10px}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
-    .back{display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:40px;transition:color.15s;position:absolute;top:24px;left:24px}
-    .back:hover{color:var(--accent)}
-    .icon-wrap{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,rgba(52,211,153,.2),rgba(16,185,129,.2));border:1px solid rgba(52,211,153,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--accent)}
-    h1{font-size:28px;font-weight:700;color:var(--text);margin-bottom:10px}
-    p{font-size:15px;color:var(--text2);max-width:400px;line-height:1.7;margin-bottom:32px}
-    .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.05em}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #34d399; /* Green representing OS */
+      --accent2: #22d3ee; /* Cyan */
+      --accent3: #7c6af5; /* Purple */
+      --accent4: #f59e0b; /* Amber */
+      --accent5: #f472b6; /* Pink */
+      --red: #ef4444;
+      --green: #34d399;
+      --yellow: #f59e0b;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: 265px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 40px
+    }
+
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px
+    }
+
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+
+    .home-back-btn:hover { color: var(--accent); }
+    .home-back-btn i { font-size: 13px; }
+
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase
+    }
+
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px
+    }
+
+    .nav-section {
+      padding: 8px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3)
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px
+    }
+
+    .nav-item:hover {
+      background: var(--bg3);
+      color: var(--text);
+      border-left-color: var(--border2)
+    }
+
+    .nav-item.active {
+      background: var(--bg3);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 500
+    }
+
+    .nav-item i {
+      font-size: 15px;
+      width: 17px;
+      flex-shrink: 0
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 20px;
+      background: var(--bg4);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s
+    }
+
+    .search-input:focus {
+      border-color: var(--accent)
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px
+    }
+
+    .topic {
+      display: none
+    }
+
+    .topic.visible {
+      display: block
+    }
+
+    .page-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 20px
+    }
+
+    .tag-blue {
+      background: rgba(79, 142, 247, .15);
+      color: #7db3ff
+    }
+
+    .tag-purple {
+      background: rgba(168, 85, 247, .15);
+      color: #c084fc
+    }
+
+    .tag-green {
+      background: rgba(52, 211, 153, .15);
+      color: #34d399
+    }
+
+    .tag-amber {
+      background: rgba(245, 158, 11, .15);
+      color: #f59e0b
+    }
+
+    .tag-pink {
+      background: rgba(244, 114, 182, .15);
+      color: #f472b6
+    }
+
+    .tag-red {
+      background: rgba(239, 68, 68, .15);
+      color: #ef4444
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3
+    }
+
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      margin-bottom: 28px;
+      line-height: 1.6
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0
+    }
+
+    .section {
+      margin-bottom: 28px
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .section-title i {
+      font-size: 14px
+    }
+
+    .def-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text2);
+      margin-bottom: 15px;
+    }
+
+    .def-card strong {
+      color: var(--text)
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .card h3 i {
+      font-size: 15px;
+      color: var(--accent)
+    }
+
+    .card p {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px
+    }
+
+    .pros,
+    .cons {
+      border-radius: var(--radius);
+      padding: 14px 16px
+    }
+
+    .pros {
+      background: rgba(52, 211, 153, .07);
+      border: 1px solid rgba(52, 211, 153, .2)
+    }
+
+    .cons {
+      background: rgba(239, 68, 68, .07);
+      border: 1px solid rgba(239, 68, 68, .2)
+    }
+
+    .col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .pros .col-title {
+      color: var(--green)
+    }
+
+    .cons .col-title {
+      color: var(--red)
+    }
+
+    .pros ul,
+    .cons ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .pros li,
+    .cons li {
+      font-size: 13px;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5
+    }
+
+    .pros li {
+      color: rgba(52, 211, 153, .9)
+    }
+
+    .cons li {
+      color: rgba(239, 100, 100, .9)
+    }
+
+    .pros li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .cons li::before {
+      content: "✗";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 0
+    }
+
+    .flow-box {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 700
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .tag-chip {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      background: var(--bg3)
+    }
+
+    .tag-chip.blue {
+      border-color: rgba(79, 142, 247, .4);
+      color: #7db3ff;
+      background: rgba(79, 142, 247, .08)
+    }
+
+    .tag-chip.green {
+      border-color: rgba(52, 211, 153, .4);
+      color: #34d399;
+      background: rgba(52, 211, 153, .08)
+    }
+
+    .tag-chip.amber {
+      border-color: rgba(245, 158, 11, .4);
+      color: #f59e0b;
+      background: rgba(245, 158, 11, .08)
+    }
+
+    .tag-chip.purple {
+      border-color: rgba(168, 85, 247, .4);
+      color: #c084fc;
+      background: rgba(168, 85, 247, .08)
+    }
+
+    .related-chip {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--bg2)
+    }
+
+    .related-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(52, 211, 153, .08)
+    }
+
+    .math-block {
+      background: var(--bg3);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 13.5px;
+      color: #34d399;
+      margin: 10px 0;
+      border-left: 2px solid var(--accent);
+      overflow-x: auto;
+    }
+
+    .latency-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+
+    .latency-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 500px;
+    }
+
+    .latency-table th {
+      padding: 10px 14px;
+      text-align: left;
+      background: var(--bg3);
+      color: var(--text3);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .latency-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2)
+    }
+
+    .latency-table tr:hover td {
+      background: var(--bg3);
+      color: var(--text)
+    }
+
+    .latency-table .fast {
+      color: var(--green);
+      font-weight: 600
+    }
+
+    .latency-table .medium {
+      color: var(--yellow);
+      font-weight: 600
+    }
+
+    .latency-table .slow {
+      color: var(--red);
+      font-weight: 600
+    }
+
+    .highlight-box {
+      background: rgba(52, 211, 153, .08);
+      border: 1px solid rgba(52, 211, 153, .25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .highlight-box strong {
+      color: var(--accent)
+    }
+
+    .warning-box {
+      background: rgba(245, 158, 11, .07);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .warning-box strong {
+      color: var(--yellow)
+    }
+
+    .success-box {
+      background: rgba(52, 211, 153, .07);
+      border: 1px solid rgba(52, 211, 153, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .success-box strong {
+      color: var(--green)
+    }
+
+    /* Gantt chart CSS block */
+    .gantt-chart {
+      display: flex;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 15px 0 5px;
+      font-size: 12px;
+      font-family: monospace;
+      font-weight: 600;
+    }
+    .gantt-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      color: var(--bg);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .gantt-scale {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--text3);
+      margin-bottom: 15px;
+    }
+
+    /* Gantt Block Colors */
+    .gb-p1 { background: var(--accent); color: var(--bg); }
+    .gb-p2 { background: var(--accent2); color: var(--bg); }
+    .gb-p3 { background: var(--accent5); color: var(--bg); }
+    .gb-p4 { background: var(--accent4); color: var(--bg); }
+    .gb-idle { background: var(--bg4); color: var(--text3); }
+
+    /* Code styling */
+    pre {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12.5px;
+      color: #e8eaf0;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    code {
+      font-family: monospace;
+      color: var(--accent5);
+    }
+
+    /* Prev / Next Bottom Nav Bar */
+    .topic-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border)
+    }
+
+    .topic-nav-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .15s
+    }
+
+    .topic-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: var(--bg3)
+    }
+
+    .topic-nav-label {
+      display: flex;
+      flex-direction: column
+    }
+
+    .topic-nav-hint {
+      font-size: 10px;
+      color: var(--text3);
+      text-transform: uppercase;
+      font-weight: 700
+    }
+
+    .topic-nav-name {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600
+    }
+
+    /* Mobile hamburger & top navbar */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px
+    }
+
+    .hamburger-btn:hover {
+      background: var(--bg3)
+    }
+
+    .mobile-nav-logo {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .mobile-nav-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 98;
+      backdrop-filter: blur(4px)
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .app {
+        flex-direction: column
+      }
+
+      .mobile-nav {
+        display: flex
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 52px;
+        bottom: 0;
+        z-index: 99;
+        transform: translateX(-100%);
+        transition: transform .2s ease-out;
+        width: 260px;
+        height: calc(100vh - 52px);
+        padding-bottom: 20px
+      }
+
+      .sidebar.open {
+        transform: translateX(0)
+      }
+
+      .sidebar-overlay.active {
+        display: block
+      }
+
+      .main {
+        padding: 80px 20px 40px;
+        font-size: 14px
+      }
+
+      .sidebar-header {
+        display: none
+      }
+
+      .card-grid, .card-grid-3, .pros-cons {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <a href="../../index.html" class="back"><i class="ti ti-arrow-left"></i> Home</a>
-  <div class="icon-wrap"><i class="ti ti-cpu"></i></div>
-  <h1>Operating Systems</h1>
-  <p>Processes, threads, scheduling, memory management, deadlocks, file systems, and synchronization primitives. Coming soon.</p>
-  <div class="badge"><i class="ti ti-clock"></i> Coming Soon</div>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Open navigation menu"
+      aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">OS</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">Basic Introduction</span>
+  </nav>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn" id="homeBackBtn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>Operating Systems</h1>
+        <p>Interview Prep Notes</p>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+      </div>
+      <div class="nav-section">Core Fundamentals</div>
+      <div class="nav-item active" onclick="show('basic_intro')" id="nav-basic_intro"><i class="ti ti-info-circle"></i>Basic Introduction</div>
+      <div class="nav-item" onclick="show('process_scheduling')" id="nav-process_scheduling"><i class="ti ti-git-commit"></i>Process Scheduling</div>
+      <div class="nav-item" onclick="show('process_synchronization')" id="nav-process_synchronization"><i class="ti ti-repeat"></i>Process Synchronization</div>
+      <div class="nav-item" onclick="show('deadlocks_threads')" id="nav-deadlocks_threads"><i class="ti ti-shield-exclamation"></i>Deadlocks & Threads</div>
+      
+      <div class="nav-section">Memory & Storage</div>
+      <div class="nav-item" onclick="show('memory_management')" id="nav-memory_management"><i class="ti ti-database"></i>Memory Management</div>
+      <div class="nav-item" onclick="show('disk_scheduling')" id="nav-disk_scheduling"><i class="ti ti-disc"></i>Disk Scheduling</div>
+      
+      <div class="nav-section">UNIX & Filesystems</div>
+      <div class="nav-item" onclick="show('unix_commands')" id="nav-unix_commands"><i class="ti ti-terminal-2"></i>UNIX Commands</div>
+      <div class="nav-item" onclick="show('file_management')" id="nav-file_management"><i class="ti ti-folder"></i>File Management</div>
+    </div>
+
+    <!-- Main Content Panel -->
+    <div class="main">
+
+      <!-- 1. BASIC INTRODUCTION -->
+      <div class="topic visible" id="topic-basic_intro">
+        <div class="page-tag tag-green"><i class="ti ti-info-circle"></i>Chapter 1</div>
+        <h1 class="page-title">Basic Introduction</h1>
+        <p class="page-subtitle">Understanding the core architecture, types of operating systems, process transitions, and execution modes.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-book"></i>1. Introduction & Batch operating system</div>
+          <div class="def-card">
+            An **Operating System (OS)** is system software that acts as an intermediary between a user of a computer and the computer hardware. Its primary goals are to execute user programs, make the computer system convenient to use, and utilize hardware efficiently.
+          </div>
+          <div class="card">
+            <h3>Batch Operating System</h3>
+            <p><strong>Definition:</strong> Users do not interact with the computer system directly. Instead, a user prepares their job (consisting of the program, data, and control cards) and submits it to a computer operator. The operator groups jobs with similar requirements into **batches** to speed up processing.<br>
+            <strong>Pros:</strong> Reduces setup time for similar jobs; can run overnight without operator supervision.<br>
+            <strong>Cons:</strong> Lacks direct interaction; CPU remains idle during slow I/O operations; debugging is difficult.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-hierarchy"></i>2. Types of Operating Systems</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Multiprogramming</h3>
+              <p>Keeps multiple jobs in memory simultaneously. When the current job halts for I/O, the CPU switches to another job. Prevents CPU idling.<br>
+              <strong>Use Case:</strong> Early mainframe operating systems.</p>
+            </div>
+            <div class="card">
+              <h3>Multitasking (Time-Sharing)</h3>
+              <p>An extension of multiprogramming where the CPU executes multiple jobs by switching among them rapidly (via time quantum clocks). Interactive user context.<br>
+              <strong>Use Case:</strong> Modern OS (Windows, macOS, Linux).</p>
+            </div>
+            <div class="card">
+              <h3>Real-Time OS (RTOS)</h3>
+              <p>Guarantees output within strict, predictable time boundaries.<br>
+              • **Hard RTOS:** Missing a deadline results in system failure (e.g. missile guidance, pacemakers).<br>
+              • **Soft RTOS:** Missing a deadline degrades quality but isn't fatal (e.g. video streaming).</p>
+            </div>
+            <div class="card">
+              <h3>Distributed & Clustered</h3>
+              <p>• **Distributed:** Manages a collection of independent CPUs that appear to the user as a single system.<br>
+              • **Clustered:** Combines multiple physical machines into a unified cluster to share storage and provide high availability.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-route"></i>3. Process States & Schedulers</div>
+          <div class="def-card">
+            A **Process** is a program in execution. Its lifecycle transitions through multiple states:
+          </div>
+          <div style="text-align: center; margin: 15px 0;">
+            <!-- Process State Diagram SVG -->
+            <svg viewBox="0 0 500 220" width="100%" height="auto" style="background:var(--bg2); border-radius:var(--radius); border:1px solid var(--border); padding:10px;">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              
+              <!-- Nodes -->
+              <rect x="15" y="90" width="60" height="35" rx="5" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="45" y="112" fill="var(--text)" font-size="10" text-anchor="middle" font-family="sans-serif">New</text>
+              
+              <rect x="130" y="90" width="60" height="35" rx="5" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="160" y="112" fill="var(--text)" font-size="10" text-anchor="middle" font-family="sans-serif">Ready</text>
+              
+              <rect x="250" y="90" width="60" height="35" rx="5" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="280" y="112" fill="var(--text)" font-size="10" text-anchor="middle" font-family="sans-serif">Running</text>
+              
+              <rect x="400" y="90" width="70" height="35" rx="5" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="435" y="112" fill="var(--text)" font-size="10" text-anchor="middle" font-family="sans-serif">Terminated</text>
+              
+              <rect x="190" y="170" width="60" height="35" rx="5" fill="var(--bg3)" stroke="var(--border)" />
+              <text x="220" y="192" fill="var(--text)" font-size="10" text-anchor="middle" font-family="sans-serif">Waiting</text>
+              
+              <!-- Arrows -->
+              <line x1="75" y1="108" x2="125" y2="108" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <path d="M 190 100 L 245 100" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              <path d="M 250 112 L 195 112" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <line x1="310" y1="108" x2="395" y2="108" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              
+              <path d="M 280 125 L 280 188 L 250 188" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+              <path d="M 190 188 L 160 188 L 160 125" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)" />
+            </svg>
+          </div>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>Long-Term Scheduler</h3>
+              <p>Job scheduler. Selects processes from storage and loads them into memory. Controls the **degree of multiprogramming**.</p>
+            </div>
+            <div class="card">
+              <h3>Short-Term Scheduler</h3>
+              <p>CPU scheduler. Selects a process from the Ready queue in memory and allocates the CPU to it. Must be extremely fast.</p>
+            </div>
+            <div class="card">
+              <h3>Medium-Term Scheduler</h3>
+              <p>Swapping scheduler. Swaps processes out of memory to disk to reduce memory pressure, and swaps them back later.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-terminal-2"></i>4. Linux Commands & System Calls</div>
+          <div class="card">
+            <h3>User Mode vs. Kernel Mode</h3>
+            <p>To protect hardware, execution is divided: <br>
+            • **User Mode (Mode bit = 1):** Restricted access to memory and peripheral hardware.<br>
+            • **Kernel Mode (Mode bit = 0):** Unrestricted access to hardware and instructions. Transitions to Kernel mode occur via **System Calls** (e.g. read, write, open).</p>
+          </div>
+          <div class="card">
+            <h3>The <code>fork()</code> System Call</h3>
+            <p>Creates a new child process by duplicating the calling parent process. <br>
+            • Returns `0` to the child process.<br>
+            • Returns the child's process ID (PID) to the parent process.<br>
+            • Returns a negative value if creation fails.</p>
+            <pre>
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    fork(); // Split: parent and child
+    fork(); // Split again: now 4 processes
+    printf("Hello\n"); // Prints 4 times
+    return 0;
+}</pre>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-fork"></i>5. Processes vs. Threads</div>
+          <div class="latency-table-wrap">
+            <table class="latency-table">
+              <thead>
+                <tr>
+                  <th>Characteristic</th>
+                  <th>Process</th>
+                  <th>Thread (Lightweight Process)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Definition</strong></td>
+                  <td>Independent executing program instance.</td>
+                  <td>Segment of execution within a parent process.</td>
+                </tr>
+                <tr>
+                  <td><strong>Memory Sharing</strong></td>
+                  <td>Separate virtual memory address spaces.</td>
+                  <td>Shares code, data, and file descriptors of parent.</td>
+                </tr>
+                <tr>
+                  <td><strong>Context Switch</strong></td>
+                  <td>Slow, requires page table and cache flushes.</td>
+                  <td>Fast, only registers and stack are switched.</td>
+                </tr>
+                <tr>
+                  <td><strong>Isolation</strong></td>
+                  <td>Strong isolation. One crash doesn't affect others.</td>
+                  <td>Weak isolation. One thread crash can crash process.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>User-Level vs. Kernel-Level Threads</h3>
+            <p>• **User-Level Threads:** Managed by user-space libraries. The OS is unaware of them. Fast to create and switch, but if one user thread blocks on I/O, the entire process blocks.<br>
+            • **Kernel-Level Threads:** Managed directly by the OS. The kernel handles scheduling. If one thread blocks on I/O, the kernel can schedule another thread from the same process.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. PROCESS SCHEDULING -->
+      <div class="topic" id="topic-process_scheduling">
+        <div class="page-tag tag-green"><i class="ti ti-git-commit"></i>Chapter 2</div>
+        <h1 class="page-title">Process Scheduling</h1>
+        <p class="page-subtitle">CPU allocation algorithms, Gantt chart scheduling evaluations, and queue strategies.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-clock"></i>1. Scheduling Terms & Definitions</div>
+          <div class="def-card">
+            • <strong>Preemption:</strong> The OS can interrupt a running process to allocate CPU to another process.<br>
+            • <strong>Non-preemption:</strong> A process holds the CPU until it terminates or blocks (voluntarily relinquishes control).<br>
+            • <strong>Arrival Time (AT):</strong> Time when a process enters the ready queue.<br>
+            • <strong>Burst Time (BT):</strong> CPU execution time required by the process.<br>
+            • <strong>Completion Time (CT):</strong> Time when the process finishes execution.<br>
+            • <strong>Turnaround Time (TAT):</strong> Total time from arrival to completion. <code>TAT = CT - AT</code>.<br>
+            • <strong>Waiting Time (WT):</strong> Time spent waiting in the ready queue. <code>WT = TAT - BT</code>.<br>
+            • <strong>Response Time (RT):</strong> Time from arrival to the first CPU allocation. <code>RT = First Allocation - AT</code>.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>2. Numerical Scheduling Trace Examples</div>
+          <div class="highlight-box">
+            <strong>Sample Dataset:</strong> Let's evaluate the following processes across multiple scheduling algorithms:
+            <table class="latency-table" style="margin-top:8px; min-width:300px;">
+              <thead>
+                <tr>
+                  <th>Process</th>
+                  <th>Arrival Time (AT)</th>
+                  <th>Burst Time (BT)</th>
+                  <th>Priority (Lower = Higher)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>P1</td><td>0</td><td>4</td><td>2</td></tr>
+                <tr><td>P2</td><td>1</td><td>3</td><td>1</td></tr>
+                <tr><td>P3</td><td>2</td><td>1</td><td>3</td></tr>
+                <tr><td>P4</td><td>3</td><td>2</td><td>2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- FCFS -->
+          <div class="card">
+            <h3>First-Come, First-Served (FCFS)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Non-preemptive scheduling where the process that requests the CPU first is allocated the CPU first, managed via a standard FIFO queue.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Simple to understand, code, and maintain.</li>
+                  <li>Fairness in terms of order of requests; guarantees no starvation.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li><strong>Convoy Effect:</strong> Short processes get stuck waiting behind long CPU-bound processes.</li>
+                  <li>Poor average waiting and response times; unsuitable for interactive systems.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Batch systems where turnaround time is secondary to CPU utilization, or simple microcontroller task queues.</p>
+            </div>
+            <p><strong>Gantt Chart (Execution Trace):</strong></p>
+            <div class="gantt-chart">
+              <div class="gantt-block gb-p1" style="width:40%">P1</div>
+              <div class="gantt-block gb-p2" style="width:30%">P2</div>
+              <div class="gantt-block gb-p3" style="width:10%">P3</div>
+              <div class="gantt-block gb-p4" style="width:20%">P4</div>
+            </div>
+            <div class="gantt-scale">
+              <span>0</span><span>4</span><span>7</span><span>8</span><span>10</span>
+            </div>
+            <p style="font-size:12.5px;">
+              • **CT:** P1=4, P2=7, P3=8, P4=10.<br>
+              • **TAT (CT - AT):** P1=4, P2=6, P3=6, P4=7. (Avg: <strong>5.75</strong>)<br>
+              • **WT (TAT - BT):** P1=0, P2=3, P3=5, P4=5. (Avg: <strong>3.25</strong>)
+            </p>
+          </div>
+
+          <!-- SJF -->
+          <div class="card">
+            <h3>Shortest Job First (SJF)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Non-preemptive scheduling that selects the waiting process with the smallest CPU burst time for the next execution slot.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Provably minimizes average waiting time for a given set of processes.</li>
+                  <li>Good for short interactive processes which finish quickly.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li><strong>Starvation:</strong> Long processes can wait indefinitely if short processes are constantly submitted.</li>
+                  <li>Impossible to know next CPU burst length beforehand (must be predicted).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Long-term scheduler in mainframe environments where execution time limits are declared in job attributes.</p>
+            </div>
+            <p><strong>Gantt Chart (Execution Trace):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">At t=4, P2 (BT=3), P3 (BT=1), and P4 (BT=2) are ready. P3 is selected first because it has the shortest burst time.</p>
+            <div class="gantt-chart">
+              <div class="gantt-block gb-p1" style="width:40%">P1</div>
+              <div class="gantt-block gb-p3" style="width:10%">P3</div>
+              <div class="gantt-block gb-p4" style="width:20%">P4</div>
+              <div class="gantt-block gb-p2" style="width:30%">P2</div>
+            </div>
+            <div class="gantt-scale">
+              <span>0</span><span>4</span><span>5</span><span>7</span><span>10</span>
+            </div>
+            <p style="font-size:12.5px;">
+              • **CT:** P1=4, P3=5, P4=7, P2=10.<br>
+              • **TAT:** P1=4, P2=9, P3=3, P4=4. (Avg: <strong>5.00</strong>)<br>
+              • **WT:** P1=0, P2=6, P3=2, P4=2. (Avg: <strong>2.50</strong>)
+            </p>
+          </div>
+
+          <!-- SRTF -->
+          <div class="card">
+            <h3>Shortest Remaining Time First (SRTF)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Preemptive version of SJF. The currently running process is preempted if a newly arrived process has a shorter remaining burst time.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Achieves exceptionally low average waiting time and response time.</li>
+                  <li>Overcomes the non-preemptive delays of SJF when short jobs arrive.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>High context-switch overhead due to frequent preemption checks.</li>
+                  <li>Requires tracking remaining burst times continuously; starvation risk.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Short-term CPU schedulers in environments where process runtimes are predictable or bounded.</p>
+            </div>
+            <p><strong>Gantt Chart (Execution Trace):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">At t=2, P3 (BT=1) arrives and preempts P1 (remaining BT=2).</p>
+            <div class="gantt-chart">
+              <div class="gantt-block gb-p1" style="width:20%">P1</div>
+              <div class="gantt-block gb-p3" style="width:10%">P3</div>
+              <div class="gantt-block gb-p1" style="width:20%">P1</div>
+              <div class="gantt-block gb-p4" style="width:20%">P4</div>
+              <div class="gantt-block gb-p2" style="width:30%">P2</div>
+            </div>
+            <div class="gantt-scale">
+              <span>0</span><span>2</span><span>3</span><span>5</span><span>7</span><span>10</span>
+            </div>
+            <p style="font-size:12.5px;">
+              • **CT:** P3=3, P1=5, P4=7, P2=10.<br>
+              • **TAT:** P1=5, P2=9, P3=1, P4=4. (Avg: <strong>4.75</strong>)<br>
+              • **WT:** P1=1, P2=6, P3=0, P4=2. (Avg: <strong>2.25</strong>)
+            </p>
+          </div>
+
+          <!-- Round Robin -->
+          <div class="card">
+            <h3>Round Robin (RR) — Time Quantum = 2</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Preemptive scheduling algorithm where each ready process is assigned the CPU for a fixed time interval (time quantum) in a cyclic order.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Highly interactive; guarantees excellent response times for all users.</li>
+                  <li>Fair distribution of CPU resources; completely starvation-free.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Heavy performance degradation if the quantum is too small (excessive context switching).</li>
+                  <li>Becomes FCFS if the time quantum is larger than the longest burst time.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Multi-user time-sharing environments, general desktop systems, and network packet routing.</p>
+            </div>
+            <p><strong>Gantt Chart (Execution Trace):</strong></p>
+            <div class="gantt-chart">
+              <div class="gantt-block gb-p1" style="width:20%">P1</div>
+              <div class="gantt-block gb-p2" style="width:20%">P2</div>
+              <div class="gantt-block gb-p3" style="width:10%">P3</div>
+              <div class="gantt-block gb-p1" style="width:20%">P1</div>
+              <div class="gantt-block gb-p4" style="width:20%">P4</div>
+              <div class="gantt-block gb-p2" style="width:10%">P2</div>
+            </div>
+            <div class="gantt-scale">
+              <span>0</span><span>2</span><span>4</span><span>5</span><span>7</span><span>9</span><span>10</span>
+            </div>
+            <p style="font-size:12.5px;">
+              • **CT:** P3=5, P1=7, P4=9, P2=10.<br>
+              • **TAT:** P1=7, P2=9, P3=3, P4=6. (Avg: <strong>6.25</strong>)<br>
+              • **WT:** P1=3, P2=6, P3=2, P4=4. (Avg: <strong>3.75</strong>)
+            </p>
+          </div>
+
+          <!-- Preemptive Priority -->
+          <div class="card">
+            <h3>Preemptive Priority Scheduling</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> CPU scheduling where tasks are assigned priorities, and a higher priority process preempts a lower priority running process.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Critical and time-sensitive processes are prioritized and execute immediately.</li>
+                  <li>Allows direct control over system responsiveness for important tasks.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li><strong>Indefinite Blocking / Starvation:</strong> Low priority processes may never run if high priority tasks stream in.</li>
+                  <li>Requires complex priority assignment; solved by **aging** (gradually increasing priority over wait time).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Real-time operating systems (RTOS) or critical daemon process scheduling inside modern operating kernels.</p>
+            </div>
+            <p><strong>Gantt Chart (Execution Trace):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">At t=1, P2 (priority 1) arrives and preempts P1 (priority 2).</p>
+            <div class="gantt-chart">
+              <div class="gantt-block gb-p1" style="width:10%">P1</div>
+              <div class="gantt-block gb-p2" style="width:30%">P2</div>
+              <div class="gantt-block gb-p1" style="width:30%">P1</div>
+              <div class="gantt-block gb-p4" style="width:20%">P4</div>
+              <div class="gantt-block gb-p3" style="width:10%">P3</div>
+            </div>
+            <div class="gantt-scale">
+              <span>0</span><span>1</span><span>4</span><span>7</span><span>9</span><span>10</span>
+            </div>
+            <p style="font-size:12.5px;">
+              • **CT:** P2=4, P1=7, P4=9, P3=10.<br>
+              • **TAT:** P1=7, P2=3, P3=8, P4=6. (Avg: <strong>6.00</strong>)<br>
+              • **WT:** P1=3, P2=0, P3=7, P4=4. (Avg: <strong>3.50</strong>)
+            </p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-exchange"></i>3. Mixed Burst & Multi-Level Queue</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Mixed CPU & I/O Bursts</h3>
+              <p>Processes alternate between CPU bursts and waiting on I/O devices (e.g. disk read, user input). Schedulers switch active processes when a process halts to wait on I/O, preventing the CPU from sitting idle.</p>
+            </div>
+            <div class="card">
+              <h3>Multi-Level Queue Scheduling</h3>
+              <p>Partitions the ready queue into separate queues based on process type (e.g. interactive vs. batch). Each queue has its own scheduling algorithm.
+              <br><br>
+              <strong>Feedback Queue:</strong> Allows processes to move between queues based on their CPU usage. Prevents starvation for interactive jobs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. PROCESS SYNCHRONIZATION -->
+      <div class="topic" id="topic-process_synchronization">
+        <div class="page-tag tag-green"><i class="ti ti-repeat"></i>Chapter 3</div>
+        <h1 class="page-title">Process Synchronization</h1>
+        <p class="page-subtitle">Avoiding race conditions, identifying critical section criteria, locks, and semaphores.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-help"></i>1. Race Conditions & Critical Section</div>
+          <div class="def-card">
+            A **Race Condition** occurs when multiple processes access and manipulate the same shared data concurrently, and the outcome of the execution depends on the order in which the access takes place.
+          </div>
+          <div class="card">
+            <h3>Printer-Spooler Problem</h3>
+            <p>A directory contains spooler slots. Process A reads the next free slot index (say, 4). Before Process A can write its file, it is preempted. Process B runs, reads the free slot index (still 4), and writes its file. When Process A resumes, it overwrites Process B's file. This is a classic race condition.</p>
+          </div>
+          <div class="card">
+            <h3>Critical Section Requirements</h3>
+            <p>The region of code accessing shared variables. A solution to the critical section problem must satisfy:<br><br>
+            1. **Mutual Exclusion:** Only one process can execute in its critical section at a time.<br>
+            2. **Progress:** If no process is executing in its critical section, only processes wishing to enter can participate in deciding which process enters next.<br>
+            3. **Bounded Waiting:** There must be a limit on the number of times other processes can enter their critical sections before a process's request to enter is granted.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>2. Synchronization Primitives</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Lock Variables</h3>
+              <p>A simple shared boolean variable. A process polls <code>while(lock == 1)</code>, then sets <code>lock = 1</code> before entering. Fails to guarantee mutual exclusion if preemption occurs immediately after the while loop evaluation.</p>
+            </div>
+            <div class="card">
+              <h3>Turn Variable (Strict Alternation)</h3>
+              <p>Uses a shared variable <code>turn</code> to indicate which process's turn it is. Guarantees mutual exclusion, but fails progress because processes must wait even if the other process has no interest in entering.</p>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+              <h3>TestAndSet Instruction</h3>
+              <p>An atomic hardware instruction. It reads the lock value and sets it to true in a single, uninterruptible clock cycle, ensuring mutual exclusion without software race conditions.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-circle-check"></i>3. Semaphores</div>
+          <div class="def-card">
+            A **Semaphore** is an integer variable accessed only through two atomic, uninterruptible operations:<br>
+            • <code>wait(S)</code> or <code>P(S)</code>: Decrements S. If $S \le 0$, the calling process blocks.<br>
+            • <code>signal(S)</code> or <code>V(S)</code>: Increments S. If processes are blocked, it wakes one up.
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Binary Semaphore</h3>
+              <p>Can only take values `0` or `1`. Acts exactly like a mutex lock. Used to guarantee mutual exclusion.</p>
+            </div>
+            <div class="card">
+              <h3>Counting Semaphore</h3>
+              <p>Value can range over an unrestricted domain. Used to control access to a resource pool with a finite number of instances.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>4. Classical Problems of Synchronization</div>
+          <div class="card">
+            <h3>Producer-Consumer Problem</h3>
+            <p>Uses shared buffer slots. Uses three semaphores:<br>
+            • <code>mutex</code> (binary, initialized to 1) protects buffer access.<br>
+            • <code>empty</code> (counting, initialized to N) tracks empty slots.<br>
+            • <code>full</code> (counting, initialized to 0) tracks filled slots.</p>
+          </div>
+          <div class="card">
+            <h3>Dining Philosophers Problem</h3>
+            <p>5 philosophers sit around a table with 5 chopsticks. Each philosopher needs both adjacent chopsticks to eat. If all philosophers pick up their left chopstick simultaneously, a deadlock occurs (circular wait).<br><br>
+            <strong>Solutions:</strong> Allow at most 4 philosophers to sit, or allow a philosopher to pick up chopsticks only if both are available.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. DEADLOCKS & THREADS -->
+      <div class="topic" id="topic-deadlocks_threads">
+        <div class="page-tag tag-green"><i class="ti ti-shield-exclamation"></i>Chapter 4</div>
+        <h1 class="page-title">Deadlocks</h1>
+        <p class="page-subtitle">Understanding deadlock conditions, prevention strategies, avoidance safe-states, and safety evaluations using the Banker's Algorithm.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-circle"></i>1. Deadlock Conditions & Graphs</div>
+          <div class="def-card">
+            A **Deadlock** is a state where a set of processes are blocked because each process is holding a resource and waiting for another resource held by a different process in the set.
+          </div>
+          <div class="card">
+            <h3>Four Coffman Conditions</h3>
+            <p>All four must hold simultaneously for a deadlock to occur:<br><br>
+            1. **Mutual Exclusion:** At least one resource must be held in a non-shareable mode.<br>
+            2. **Hold and Wait:** A process must hold at least one resource and be waiting for another.<br>
+            3. **No Preemption:** Resources cannot be preempted; they are released only voluntarily.<br>
+            4. **Circular Wait:** Process P<sub>0</sub> waits for a resource held by P<sub>1</sub>, which waits for P<sub>2</sub>, ..., which waits for P<sub>0</sub>.</p>
+          </div>
+          <div class="card">
+            <h3>Resource Allocation Graph (RAG)</h3>
+            <p>A directed graph representing system state.<br>
+            • Vertices: Processes (P) and Resources (R).<br>
+            • Request Edge: Directed edge P<sub>i</sub> &rarr; R<sub>j</sub> (process is waiting for resource).<br>
+            • Assignment Edge: Directed edge R<sub>j</sub> &rarr; P<sub>i</sub> (resource is allocated to process).<br><br>
+            <strong>Rule:</strong> If the graph has no cycles, no deadlock exists. If a cycle exists: deadlock exists if resources have single instances; deadlock may exist if resources have multiple instances.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield-check"></i>2. Strategies for Handling Deadlocks</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>1. Deadlock Prevention</h3>
+              <p>Design the system to eliminate at least one of the four Coffman conditions:<br><br>
+              • **Mutual Exclusion:** Make resources shareable (e.g. read-only files). Inherently impossible for spoolers/printers.<br>
+              • **Hold and Wait:** Require processes to request all resources at start, or release held resources before making new requests. (Disadvantage: Low resource utilization).<br>
+              • **No Preemption:** If a process requests a resource that is unavailable, it must release all its currently held resources.<br>
+              • **Circular Wait:** Impose a global ordering on all resources. A process can only request resources in strictly increasing order (e.g. if holding R<sub>2</sub>, cannot request R<sub>1</sub>). Provably prevents cycles.</p>
+            </div>
+            <div class="card">
+              <h3>2. Deadlock Avoidance</h3>
+              <p>OS dynamically decides whether to grant a resource request based on whether the resulting state is **Safe** or **Unsafe**.<br><br>
+              • **Safe State:** There exists a safe execution sequence (e.g. P<sub>1</sub>, P<sub>2</sub>, ...) where all processes can eventually get their maximum required resources and terminate.<br>
+              • **Unsafe State:** Not necessarily a deadlock, but the OS can no longer prevent processes from eventually deadlocking if they request their maximum resources.<br>
+              • **Algorithm:** Banker's Algorithm is used for multi-instance resource types.</p>
+            </div>
+            <div class="card">
+              <h3>3. Deadlock Detection & Recovery</h3>
+              <p>Allow deadlocks to occur, periodically detect them, and recover:<br><br>
+              • **Detection:** OS builds a **Wait-For Graph** (collapsing RAG resources) and runs cycle-detection algorithms (e.g., DFS, finding cycles in O(V+E) time).<br>
+              • **Recovery by Process Termination:** Abort all deadlocked processes (expensive), or abort one process at a time until the deadlock cycle is broken.<br>
+              • **Recovery by Resource Preemption:** Temporarily seize resources from some processes. Requires: <em>Victim Selection</em> (minimize cost), <em>Rollback</em> (return to a safe checkpoint), and avoiding <em>Starvation</em> (ensure the same process isn't always victimized).</p>
+            </div>
+            <div class="card">
+              <h3>4. Deadlock Ignorance (Ostrich Algorithm)</h3>
+              <p>Ignore the problem entirely. Assume deadlocks occur so rarely that the performance overhead of prevention, avoidance, or detection is not worth the cost.<br><br>
+              • If a deadlock occurs, let the system freeze or require manual process termination / reboot.<br>
+              <strong>Use Case:</strong> Adopted by most general-purpose operating systems, including Linux, macOS, and Windows.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>3. Banker's Algorithm Numerical Example</div>
+          <div class="highlight-box">
+            <strong>System Setup:</strong> 5 Processes (P<sub>0</sub> to P<sub>4</sub>) and 3 Resources: A (10 instances), B (5 instances), C (7 instances).
+          </div>
+          <div class="card">
+            <h3>Step 1: Compute the Need Matrix</h3>
+            <p>Formula: <code>Need = Max - Allocation</code></p>
+            <table class="latency-table" style="margin-top:8px;">
+              <thead>
+                <tr>
+                  <th>Process</th>
+                  <th>Allocation (A B C)</th>
+                  <th>Max Demand (A B C)</th>
+                  <th>Calculated Need (A B C)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>P0</td><td>0 1 0</td><td>7 5 3</td><td style="color:var(--accent);">7 4 3</td></tr>
+                <tr><td>P1</td><td>2 0 0</td><td>3 2 2</td><td style="color:var(--accent);">1 2 2</td></tr>
+                <tr><td>P2</td><td>3 0 2</td><td>9 0 2</td><td style="color:var(--accent);">6 0 0</td></tr>
+                <tr><td>P3</td><td>2 1 1</td><td>2 2 2</td><td style="color:var(--accent);">0 1 1</td></tr>
+                <tr><td>P4</td><td>0 0 2</td><td>4 3 3</td><td style="color:var(--accent);">4 3 1</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:10px; font-size:13px;">
+              • Total allocated: A=7, B=2, C=5.<br>
+              • Available resources: <code>[10-7, 5-2, 7-5] = [3, 3, 2]</code>.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Step 2: Safety Verification Sequence</h3>
+            <p>We check if we can satisfy the Need of each process with our Available resource vector:<br><br>
+            1. **Check P0:** Need [7, 4, 3] > Available [3, 3, 2]. Cannot allocate.<br>
+            2. **Check P1:** Need [1, 2, 2] <= Available [3, 3, 2]. Allocate and run. <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;• *Release resources:* New Available = [3,3,2] + [2,0,0] = <strong>[5, 3, 2]</strong>.<br>
+            3. **Check P2:** Need [6, 0, 0] > Available [5, 3, 2]. Cannot allocate.<br>
+            4. **Check P3:** Need [0, 1, 1] <= Available [5, 3, 2]. Allocate and run. <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;• *Release resources:* New Available = [5,3,2] + [2,1,1] = <strong>[7, 4, 3]</strong>.<br>
+            5. **Check P4:** Need [4, 3, 1] <= Available [7, 4, 3]. Allocate and run. <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;• *Release resources:* New Available = [7,4,3] + [0,0,2] = <strong>[7, 4, 5]</strong>.<br>
+            6. **Check P0:** Need [7, 4, 3] <= Available [7, 4, 5]. Allocate and run. <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;• *Release resources:* New Available = [7,4,5] + [0,1,0] = <strong>[7, 5, 5]</strong>.<br>
+            7. **Check P2:** Need [6, 0, 0] <= Available [7, 5, 5]. Allocate and run. <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;• *Release resources:* New Available = [7,5,5] + [3,0,2] = <strong>[10, 5, 7]</strong>.
+            </p>
+            <div class="success-box" style="margin-top:10px;">
+              <strong>System is Safe!</strong> The safe execution sequence is: <strong>&lt;P1, P3, P4, P0, P2&gt;</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. MEMORY MANAGEMENT -->
+      <div class="topic" id="topic-memory_management">
+        <div class="page-tag tag-green"><i class="ti ti-database"></i>Chapter 5</div>
+        <h1 class="page-title">Memory Management</h1>
+        <p class="page-subtitle">Contiguous allocation, paging address translation, TLB access calculations, and page replacement traces.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-box"></i>1. Partitioning & Fragmentations</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Internal Fragmentation</h3>
+              <p>Occurs when memory is allocated in **fixed-size partitions**. If a process is smaller than the partition, the leftover memory is wasted and cannot be used by other processes.</p>
+            </div>
+            <div class="card">
+              <h3>External Fragmentation</h3>
+              <p>Occurs in **variable-size partitioning** when total free memory is sufficient to satisfy a request, but it is not contiguous (it's split into small holes throughout memory).<br>
+              <strong>Fix:</strong> Compaction (shifting memory contents to group free spaces into a single block) or Paging.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-right"></i>2. Placement Strategies: First, Next, Best, Worst Fit</div>
+          <div class="highlight-box">
+            <strong>Example scenario:</strong> Memory partitions: 100 KB, 500 KB, 200 KB, 300 KB, 600 KB.<br>
+            Process requests: <strong>212 KB, 417 KB, 112 KB, 426 KB</strong>.
+          </div>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>First Fit</h3>
+              <p>Allocate the **first hole** that is big enough.<br><br>
+              • 212KB &rarr; 500KB (left 288KB)<br>
+              • 417KB &rarr; 600KB (left 183KB)<br>
+              • 112KB &rarr; 288KB (left 176KB)<br>
+              • 426KB &rarr; **Fails!** (Largest free is 300KB)</p>
+            </div>
+            <div class="card">
+              <h3>Best Fit</h3>
+              <p>Allocate the **smallest hole** that is big enough. Minimizes wasted space.<br><br>
+              • 212KB &rarr; 300KB (left 88KB)<br>
+              • 417KB &rarr; 500KB (left 83KB)<br>
+              • 112KB &rarr; 200KB (left 88KB)<br>
+              • 426KB &rarr; 600KB (left 174KB)<br>
+              • **All Fit!**</p>
+            </div>
+            <div class="card">
+              <h3>Worst Fit</h3>
+              <p>Allocate the **largest hole** that is big enough. Leaves large leftover holes.<br><br>
+              • 212KB &rarr; 600KB (left 388KB)<br>
+              • 417KB &rarr; 500KB (left 83KB)<br>
+              • 112KB &rarr; 388KB (left 276KB)<br>
+              • 426KB &rarr; **Fails!**</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-table"></i>3. Paging & Address Translation</div>
+          <div class="def-card">
+            Paging is a non-contiguous memory management scheme. <br>
+            • **Logical Address:** Generated by the CPU. Consists of a **Page Number (p)** and a **Page Offset (d)**.<br>
+            • **Physical Address:** Actual RAM address. Consists of a **Frame Number (f)** and a **Page Offset (d)**.
+          </div>
+          <div class="card">
+            <h3>Logical to Physical Address Translation</h3>
+            <p>1. Page size is always equal to frame size (typically 2<sup>k</sup> bytes).<br>
+            2. The page offset d remains unchanged during translation.<br>
+            3. The page number p is used as an index into the **Page Table**, which yields the corresponding frame number f.</p>
+            <div class="math-block">Physical Address = (f * Page_Size) + d</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-clock"></i>4. Translation Lookaside Buffer (TLB)</div>
+          <div class="card">
+            <h3>TLB Access Math</h3>
+            <p>The TLB is a fast hardware cache that stores page table translations. Let:<br>
+            • h = TLB hit ratio.<br>
+            • c = TLB access lookup time.<br>
+            • m = Main memory access time.</p>
+            <div class="math-block">EMAT (Effective Access Time) = h * (c + m) + (1 - h) * (c + 2 * m)</div>
+            <p style="font-size:12.5px;"><em>Why 2*m on miss?</em> On a TLB miss, we perform one memory access to read the page table entry, and a second access to retrieve the actual data.</p>
+          </div>
+          <div class="card">
+            <h3>Numerical Example</h3>
+            <p>Given hit ratio h = 90%, TLB lookup time c = 10 ns, memory access time m = 100 ns.</p>
+            <pre>
+EMAT = 0.90 * (10 + 100) + 0.10 * (10 + 200)
+     = 0.90 * 110 + 0.10 * 210
+     = 99 + 21
+     = 120 ns</pre>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-bar"></i>5. Numerical Page Replacement Traces</div>
+          <div class="highlight-box">
+            <strong>Trace Scenario:</strong> 3 Frames. Reference string: <strong>7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2</strong>.
+          </div>
+          
+          <div class="card">
+            <h3>First-In, First-Out (FIFO)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Replaces the oldest page loaded into physical memory first, utilizing a simple queue-based system.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Low execution overhead and simple to implement (FIFO queue of frame pointers).</li>
+                  <li>No complex hardware access tracking structures required.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li><strong>Belady's Anomaly:</strong> Increasing the physical frame count can counter-intuitively increase page faults.</li>
+                  <li>Ignores how frequently or recently a page is being used, potentially replacing active pages.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Low-cost embedded systems or devices with highly sequential memory access patterns where simplicity is preferred over optimization.</p>
+            </div>
+            <p><strong>Replacement Trace (Execution Scenario):</strong></p>
+            <table class="latency-table">
+              <thead><tr><th>Ref</th><th>7</th><th>0</th><th>1</th><th>2</th><th>0</th><th>3</th><th>0</th><th>4</th><th>2</th><th>3</th><th>0</th><th>3</th><th>2</th></tr></thead>
+              <tbody>
+                <tr><td>F0</td><td>7</td><td>7</td><td>7</td><td>2</td><td>2</td><td>2</td><td>2</td><td>4</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>F1</td><td>-</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                <tr><td>F2</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+                <tr style="color:var(--red); font-weight:bold;"><td>Stat</td><td>F</td><td>F</td><td>F</td><td>F</td><td>H</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>H</td><td>H</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:10px; font-size:12.5px;">• Total Page Faults: <strong>10</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>Least Recently Used (LRU)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Replaces the page in physical memory that has not been referenced for the longest duration of time.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Highly effective; aligns closely with the **temporal locality of reference** principle.</li>
+                  <li>Does not suffer from Belady's Anomaly (belongs to the class of stack algorithms).</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Expensive hardware support needed to track reference timestamps or stack positions on every memory request.</li>
+                  <li>Hard to scale in pure hardware (typically approximated using reference bits, e.g. Second Chance algorithm).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Standard virtual memory page replacement in modern operating systems (Linux/Windows) and caching solutions like Redis.</p>
+            </div>
+            <p><strong>Replacement Trace (Execution Scenario):</strong></p>
+            <table class="latency-table">
+              <thead><tr><th>Ref</th><th>7</th><th>0</th><th>1</th><th>2</th><th>0</th><th>3</th><th>0</th><th>4</th><th>2</th><th>3</th><th>0</th><th>3</th><th>2</th></tr></thead>
+              <tbody>
+                <tr><td>F0</td><td>7</td><td>7</td><td>7</td><td>2</td><td>2</td><td>2</td><td>2</td><td>4</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>F1</td><td>-</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                <tr><td>F2</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+                <tr style="color:var(--green); font-weight:bold;"><td>Stat</td><td>F</td><td>F</td><td>F</td><td>F</td><td>H</td><td>F</td><td>H</td><td>F</td><td>F</td><td>F</td><td>H</td><td>H</td><td>H</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:10px; font-size:12.5px;">• Total Page Faults: <strong>8</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>Optimal Page Replacement (OPT)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Replaces the page in physical memory that will not be accessed for the longest duration of time in the future.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Guarantees the absolute lowest possible page fault rate for any given reference string.</li>
+                  <li>No Belady's Anomaly.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Impossible to implement in real systems because it requires perfect knowledge of future memory requests.</li>
+                  <li>Mainly serves as a theoretical yardstick for evaluating practical algorithms.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Performance analysis profiling, offline trace analysis, and benchmarking other real-time algorithms.</p>
+            </div>
+            <p><strong>Replacement Trace (Execution Scenario):</strong></p>
+            <table class="latency-table">
+              <thead><tr><th>Ref</th><th>7</th><th>0</th><th>1</th><th>2</th><th>0</th><th>3</th><th>0</th><th>4</th><th>2</th><th>3</th><th>0</th><th>3</th><th>2</th></tr></thead>
+              <tbody>
+                <tr><td>F0</td><td>7</td><td>7</td><td>7</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                <tr><td>F1</td><td>-</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>4</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>F2</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+                <tr style="color:var(--accent); font-weight:bold;"><td>Stat</td><td>F</td><td>F</td><td>F</td><td>F</td><td>H</td><td>F</td><td>H</td><td>F</td><td>H</td><td>H</td><td>F</td><td>H</td><td>H</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:10px; font-size:12.5px;">• Total Page Faults: <strong>7</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. DISK SCHEDULING -->
+      <div class="topic" id="topic-disk_scheduling">
+        <div class="page-tag tag-green"><i class="ti ti-disc"></i>Chapter 6</div>
+        <h1 class="page-title">Disk Scheduling</h1>
+        <p class="page-subtitle">HDD seek architecture, disk access times, and track seek comparison metrics.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-server"></i>1. HDD Architecture & Access Times</div>
+          <div class="def-card">
+            A Hard Disk Drive (HDD) consists of a stack of rotating **platters** coated with magnetic material. Electromagnetic **read-write heads** float above the platter surfaces.
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>HDD Track Terms</h3>
+              <p>• **Tracks:** Concentric circular rings on a platter surface.<br>
+              • **Sectors:** Pie-shaped slices division of tracks (typically 512 bytes).<br>
+              • **Cylinder:** A set of tracks at the same distance from the spindle across all platters.</p>
+            </div>
+            <div class="card">
+              <h3>Access Time Components</h3>
+              <p>• **Seek Time:** Time required to move the read-write head to the target track.<br>
+              • **Rotational Latency:** Time required for the target sector to rotate under the head.<br>
+              • **Transfer Time:** Time to transmit read bytes from disk to memory.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-bar"></i>2. Numerical Disk Scheduling Traces</div>
+          <div class="highlight-box">
+            <strong>Track Scenario:</strong> Disk size: 200 tracks (0 to 199). Head starting position = <strong>53</strong>.<br>
+            Request queue: <strong>98, 183, 37, 122, 14, 124, 65, 67</strong>.
+          </div>
+
+          <div class="card">
+            <h3>First-Come, First-Served (FCFS)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Disk head services incoming requests in the exact order of their arrival in the queue, without re-ordering based on current head position.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Completely fair; guarantees every request is served with zero risk of starvation.</li>
+                  <li>Incredibly simple implementation requiring only a basic FIFO queue.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Extremely inefficient head travel; causes high seek times and slow average response times.</li>
+                  <li>No optimization for track proximity, causing the arm to swing erratically.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Simple systems with light or purely sequential I/O workloads where scheduling overhead is to be minimized.</p>
+            </div>
+            <p><strong>Calculated Trace:</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">
+              <strong>Order:</strong> 53 &rarr; 98 &rarr; 183 &rarr; 37 &rarr; 122 &rarr; 14 &rarr; 124 &rarr; 65 &rarr; 67.<br>
+              <strong>Calculation:</strong> |98 - 53| + |183 - 98| + |37 - 183| + |122 - 37| + |14 - 122| + |124 - 14| + |65 - 124| + |67 - 65|
+            </p>
+            <p style="margin-top:5px; font-size:12.5px;">• Total Head Movement: <strong>640 cylinders</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>Shortest Seek Time First (SSTF)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Disk head always selects the next pending request that is closest to its current position, minimizing the immediate seek distance.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Drastically reduces average seek time compared to FCFS.</li>
+                  <li>Increases disk throughput by minimizing unnecessary arm movements.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li><strong>Starvation:</strong> Requests at the inner or outer extremes may wait indefinitely if active requests keep arriving near the current head position.</li>
+                  <li>High seek time variance; response times are highly unpredictable.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> General purpose personal computers and standard workstation drives where throughput matters and extreme latency limits are not strictly enforced.</p>
+            </div>
+            <p><strong>Calculated Trace:</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">
+              <strong>Order:</strong> 53 &rarr; 65 &rarr; 67 &rarr; 37 &rarr; 14 &rarr; 98 &rarr; 122 &rarr; 124 &rarr; 183.<br>
+              <strong>Calculation:</strong> |65 - 53| + |67 - 65| + |37 - 67| + |14 - 37| + |98 - 14| + |122 - 98| + |124 - 122| + |183 - 124|
+            </p>
+            <p style="margin-top:5px; font-size:12.5px;">• Total Head Movement: <strong>236 cylinders</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>SCAN (Elevator Algorithm)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Disk arm moves continuously back and forth across the entire platter, servicing requests in its path. Upon reaching a boundary, it reverses direction.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Completely starvation-free; head reaches all tracks in a bounded sweep cycle.</li>
+                  <li>Low seek time variance; predictable response times.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Inefficient boundary travel: forces the arm to travel all the way to 0 or 199 even if no requests are pending there.</li>
+                  <li>Unequal wait times: tracks near the center are serviced twice as often as edge tracks.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Enterprise database management systems and file servers with moderate-to-high concurrent load.</p>
+            </div>
+            <p><strong>Calculated Trace (Assuming direction is toward 0 first):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">
+              <strong>Order:</strong> 53 &rarr; 37 &rarr; 14 &rarr; 0 &rarr; 65 &rarr; 67 &rarr; 98 &rarr; 122 &rarr; 124 &rarr; 183.<br>
+              <strong>Calculation:</strong> (53 - 0) + (183 - 0)
+            </p>
+            <p style="margin-top:5px; font-size:12.5px;">• Total Head Movement: <strong>236 cylinders</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>C-SCAN (Circular SCAN)</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Head moves in one direction to service requests, and upon reaching the far boundary, immediately sweeps back to the beginning without servicing any requests.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Provides a uniform, consistent waiting time across all disk cylinders.</li>
+                  <li>Fairer response distributions compared to standard SCAN.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>High seek movement count on return sweeps (though modern hard disks execute this return sweep rapidly).</li>
+                  <li>Still travels to absolute disk boundaries (0 and 199) regardless of queue density.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Very high-load storage servers where a predictable queue execution rate is preferred over raw seek minimization.</p>
+            </div>
+            <p><strong>Calculated Trace (Assuming direction is toward 199 first):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">
+              <strong>Order:</strong> 53 &rarr; 65 &rarr; 67 &rarr; 98 &rarr; 122 &rarr; 124 &rarr; 183 &rarr; 199 &rarr; 0 &rarr; 14 &rarr; 37.<br>
+              <strong>Calculation:</strong> (199 - 53) + (199 - 0) + (37 - 0)
+            </p>
+            <p style="margin-top:5px; font-size:12.5px;">• Total Head Movement (including wrap): <strong>382 cylinders</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>LOOK & C-LOOK</h3>
+            <div class="def-card" style="border-left-color: var(--accent); margin-bottom: 12px; padding: 12px 14px;">
+              <strong>Definition:</strong> Optimized variants of SCAN and C-SCAN that direct the head to reverse direction immediately after servicing the last request in that direction, rather than traveling to the boundary.
+            </div>
+            <div class="pros-cons" style="margin-bottom: 12px;">
+              <div class="pros">
+                <div class="col-title">Pros</div>
+                <ul>
+                  <li>Prevents unnecessary arm travel to the empty edges of the disk platter.</li>
+                  <li>Saves substantial head seek distance compared to SCAN and C-SCAN.</li>
+                </ul>
+              </div>
+              <div class="cons">
+                <div class="col-title">Cons</div>
+                <ul>
+                  <li>Slightly increased computational overhead to continuously scan the queue for current direction boundaries.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card" style="background: var(--bg3); margin-bottom: 15px; border-color: var(--border);">
+              <p style="font-size: 13px;"><strong>Use Case:</strong> Default scheduling approach implemented in modern high-performance operating system block-layer drivers.</p>
+            </div>
+            <p><strong>LOOK Calculated Trace (Assuming direction is toward 0 first):</strong></p>
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 8px;">
+              <strong>LOOK Order:</strong> 53 &rarr; 37 &rarr; 14 &rarr; 65 &rarr; 67 &rarr; 98 &rarr; 122 &rarr; 124 &rarr; 183.<br>
+              <strong>LOOK Calculation:</strong> (53 - 14) + (183 - 14)
+            </p>
+            <p style="margin-top:5px; font-size:12.5px;">• LOOK Head Movement: <strong>208 cylinders</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. UNIX COMMANDS -->
+      <div class="topic" id="topic-unix_commands">
+        <div class="page-tag tag-green"><i class="ti ti-terminal-2"></i>Chapter 7</div>
+        <h1 class="page-title">UNIX Commands</h1>
+        <p class="page-subtitle">A command-line reference for file attributes, permissions, and system resources audits.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-terminal"></i>Core Commands Table</div>
+          <div class="latency-table-wrap">
+            <table class="latency-table">
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>Syntax / Example</th>
+                  <th>Action Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ls</strong></td>
+                  <td><code>ls -la</code></td>
+                  <td>List files in long-format including hidden files.</td>
+                </tr>
+                <tr>
+                  <td><strong>chmod</strong></td>
+                  <td><code>chmod 755 script.sh</code></td>
+                  <td>Change permissions (755: rwxr-xr-x).</td>
+                </tr>
+                <tr>
+                  <td><strong>grep</strong></td>
+                  <td><code>grep "error" app.log</code></td>
+                  <td>Search files for regular expression matches.</td>
+                </tr>
+                <tr>
+                  <td><strong>find</strong></td>
+                  <td><code>find /var -name "*.log"</code></td>
+                  <td>Find files within a directory tree.</td>
+                </tr>
+                <tr>
+                  <td><strong>top</strong></td>
+                  <td><code>top</code></td>
+                  <td>Display real-time CPU/memory process logs.</td>
+                </tr>
+                <tr>
+                  <td><strong>kill</strong></td>
+                  <td><code>kill -9 1243</code></td>
+                  <td>Force terminate process PID 1243.</td>
+                </tr>
+                <tr>
+                  <td><strong>df</strong></td>
+                  <td><code>df -h</code></td>
+                  <td>Show disk space utilization in human-readable units.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. FILE MANAGEMENT -->
+      <div class="topic" id="topic-file_management">
+        <div class="page-tag tag-green"><i class="ti ti-folder"></i>Chapter 8</div>
+        <h1 class="page-title">File Management & Security</h1>
+        <p class="page-subtitle">Storage allocations, Inode file blocks, and compilation linkers/loaders.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-server"></i>1. File Allocation Methods</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Contiguous Allocation</h3>
+              <p>Each file occupies a contiguous set of blocks on the disk. <br>
+              • **Pros:** Excellent read performance; simple.<br>
+              • **Cons:** External fragmentation; files cannot grow easily.</p>
+            </div>
+            <div class="card">
+              <h3>Linked List Allocation</h3>
+              <p>Each block contains a pointer to the next block. <br>
+              • **Pros:** No external fragmentation; files can grow easily.<br>
+              • **Cons:** Slow random access (requires traversing pointers); pointer overhead in blocks.</p>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+              <h3>Indexed File Allocation</h3>
+              <p>Brings all pointers together into a single block, called the **Index Block**. Supports fast random access and avoids external fragmentation, but incurs index block overhead for small files.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-network"></i>2. UNIX Inode Structure</div>
+          <div class="def-card">
+            An **Inode (Index Node)** is a data structure on a UNIX filesystem that describes a file-system object (file, directory). It stores file attributes and direct/indirect block pointers.
+          </div>
+          <div class="card">
+            <h3>Block Mappings</h3>
+            <p>A typical Inode has 15 pointers:<br>
+            • **12 Direct Pointers:** Point directly to blocks containing file data.<br>
+            • **1 Single Indirect Pointer:** Points to a block containing pointers to data blocks.<br>
+            • **1 Double Indirect Pointer:** Points to a block containing pointers to indirect blocks.<br>
+            • **1 Triple Indirect Pointer:** Points to a block containing pointers to double indirect blocks.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-code"></i>3. Linkers & Loaders</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Linker</h3>
+              <p>A utility program that combines multiple object files (compiled code) and libraries into a single executable file. Resolves references to external functions and variables.</p>
+            </div>
+            <div class="card">
+              <h3>Loader</h3>
+              <p>An OS program that copies an executable file from disk into main memory (RAM), sets up stack and heap segments, and triggers execution at the entry point address.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end main -->
+  </div><!-- end app -->
+
+  <script>
+    // ── Topic order for Prev / Next ─────────────────────────────
+    const TOPIC_ORDER = [
+      'basic_intro', 'process_scheduling', 'process_synchronization', 'deadlocks_threads',
+      'memory_management', 'disk_scheduling', 'unix_commands', 'file_management'
+    ];
+
+    const NAV_LABELS = {
+      basic_intro: 'Basic Introduction',
+      process_scheduling: 'Process Scheduling',
+      process_synchronization: 'Process Synchronization',
+      deadlocks_threads: 'Deadlocks & Threads',
+      memory_management: 'Memory Management',
+      disk_scheduling: 'Disk Scheduling',
+      unix_commands: 'UNIX Commands',
+      file_management: 'File Management & Security'
+    };
+
+    let currentId = 'basic_intro';
+
+    function show(id) {
+      document.querySelectorAll('.topic').forEach(t => t.classList.remove('visible'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const t = document.getElementById('topic-' + id);
+      const n = document.getElementById('nav-' + id);
+      if (t) t.classList.add('visible');
+      if (n) { n.classList.add('active'); n.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+      
+      // Update mobile navbar title
+      const titleEl = document.getElementById('mobileNavTitle');
+      if (titleEl && NAV_LABELS[id]) titleEl.textContent = NAV_LABELS[id];
+      
+      // Scroll main view to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const main = document.querySelector('.main');
+      if (main) main.scrollTop = 0;
+      
+      // Update arrows and track current
+      currentId = id;
+      updateNavArrows(id);
+      
+      // Persist current topic to localStorage
+      try {
+        localStorage.setItem('os_topic', id);
+        localStorage.setItem('os_topic_time', Date.now());
+      } catch(e) {}
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function updateNavArrows(id) {
+      const idx = TOPIC_ORDER.indexOf(id);
+      const prevId = idx > 0 ? TOPIC_ORDER[idx - 1] : null;
+      const nextId = idx < TOPIC_ORDER.length - 1 ? TOPIC_ORDER[idx + 1] : null;
+      document.querySelectorAll('.topic-nav-bar').forEach(bar => {
+        const prevBtn = bar.querySelector('.prev');
+        const nextBtn = bar.querySelector('.next');
+        if (prevBtn) {
+          if (prevId) {
+            prevBtn.style.visibility = 'visible';
+            prevBtn.onclick = () => show(prevId);
+            const nm = prevBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[prevId] || prevId;
+          } else {
+            prevBtn.style.visibility = 'hidden';
+          }
+        }
+        if (nextBtn) {
+          if (nextId) {
+            nextBtn.style.visibility = 'visible';
+            nextBtn.onclick = () => show(nextId);
+            const nm = nextBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[nextId] || nextId;
+          } else {
+            nextBtn.style.visibility = 'hidden';
+          }
+        }
+      });
+    }
+
+    function filterNav(q) {
+      q = q.toLowerCase();
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.style.display = (!q || n.textContent.toLowerCase().includes(q)) ? 'flex' : 'none';
+      });
+    }
+
+    function openSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      icon.className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      icon.className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+
+    function toggleNav() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    // ── Wire everything up after DOM is ready ───────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+      }
+      
+      // Overlay tap closes sidebar
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+      }
+
+      // ── Inject Prev / Next bar into every topic ───────────────
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.topic').forEach(topic => {
+        topic.insertAdjacentHTML('beforeend', navBarHTML);
+      });
+
+      // ── Restore last visited topic from localStorage ──────────
+      let startId = 'basic_intro';
+      try {
+        const saved = localStorage.getItem('os_topic');
+        if (saved && document.getElementById('topic-' + saved)) startId = saved;
+      } catch(e) {}
+      show(startId);
+    });
+
+    // Escape key closes sidebar
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Register service worker for PWA offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../../sw.js').catch(() => {});
+      });
+    }
+  </script>
 </body>
+
 </html>

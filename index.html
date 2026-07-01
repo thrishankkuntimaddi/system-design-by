@@ -184,6 +184,7 @@
     .card-api  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
     .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
     .card-ml   { --c: #a855f7;   --cg: rgba(168,85,247,.05) }
+    .card-dbms { --c: #f97316;   --cg: rgba(249,115,22,.05) }
 
     /* Status badge */
     .card-status {
@@ -371,7 +372,7 @@
       </a>
 
       <a href="./subjects/operating_systems/index.html" class="subject-card card-os">
-        <span class="card-status status-soon">SOON</span>
+        <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-cpu"></i></div>
         <div class="card-title">Operating Systems</div>
         <div class="card-desc">Processes, threads, scheduling algorithms, memory management, deadlocks, and file systems.</div>
@@ -380,6 +381,21 @@
             <span class="tag">Threads</span>
             <span class="tag">Memory</span>
             <span class="tag">Deadlocks</span>
+          </div>
+          <i class="ti ti-arrow-right card-arrow"></i>
+        </div>
+      </a>
+
+      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml">
+        <span class="card-status status-live">LIVE</span>
+        <div class="card-icon"><i class="ti ti-brain"></i></div>
+        <div class="card-title">Machine Learning & AI</div>
+        <div class="card-desc">Supervised & unsupervised learning, evaluation metrics, statistical significance, feature engineering, and pipeline design.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">AI / ML</span>
+            <span class="tag">Statistics</span>
+            <span class="tag">Pipelines</span>
           </div>
           <i class="ti ti-arrow-right card-arrow"></i>
         </div>
@@ -415,16 +431,16 @@
         </div>
       </a>
 
-      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml">
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-brain"></i></div>
-        <div class="card-title">Machine Learning & AI</div>
-        <div class="card-desc">Supervised & unsupervised learning, evaluation metrics, statistical significance, feature engineering, and pipeline design.</div>
+      <a href="./subjects/dbms/index.html" class="subject-card card-dbms">
+        <span class="card-status status-soon">SOON</span>
+        <div class="card-icon"><i class="ti ti-database"></i></div>
+        <div class="card-title">DBMS</div>
+        <div class="card-desc">Relational databases, SQL queries, normalization, indexing, transaction ACID properties, and concurrency control.</div>
         <div class="card-footer">
           <div class="card-tags">
-            <span class="tag">AI / ML</span>
-            <span class="tag">Statistics</span>
-            <span class="tag">Pipelines</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Indexing</span>
+            <span class="tag">ACID</span>
           </div>
           <i class="ti ti-arrow-right card-arrow"></i>
         </div>
@@ -555,6 +571,36 @@
           ai_ethics: 'AI Ethics & Responsible AI',
           ml_pipeline: 'End-to-End ML Pipeline',
           interview_scenarios: 'Scenario-Based Interview Questions'
+        }
+      },
+      {
+        key: 'os_topic',
+        href: './subjects/operating_systems/index.html',
+        name: 'Operating Systems',
+        color: '#34d399',
+        labels: {
+          basic_intro: 'Basic Introduction',
+          process_scheduling: 'Process Scheduling',
+          process_synchronization: 'Process Synchronization',
+          deadlocks_threads: 'Deadlocks & Threads',
+          memory_management: 'Memory Management',
+          disk_scheduling: 'Disk Scheduling',
+          unix_commands: 'UNIX Commands',
+          file_management: 'File Management & Security'
+        }
+      },
+      {
+        key: 'dbms_topic',
+        href: './subjects/dbms/index.html',
+        name: 'DBMS',
+        color: '#f97316',
+        labels: {
+          intro: 'Introduction to DBMS',
+          er_model: 'ER Model',
+          relational_model: 'Relational Model & SQL',
+          normalization: 'Normalization',
+          indexing: 'Indexing & Hashing',
+          transactions: 'Transaction & Concurrency'
         }
       }
     ];
