@@ -19,7 +19,7 @@ TOPICS = [
     {"id": "hashing", "title": "Hashing", "icon": "ti-hash"},
     {"id": "set", "title": "Set", "icon": "ti-category-2"},
     {"id": "dictionary", "title": "Dictionary", "icon": "ti-vocabulary"},
-    {"id": "string", "title": "String (Immutable)", "icon": "ti-letters-case"},
+    {"id": "string", "title": "String (Immutable)", "icon": "ti-quote"},
     {"id": "singly_linked", "title": "Linked List", "icon": "ti-link"},
     {"id": "circular_linked", "title": "Circular Linked List", "icon": "ti-rotate"},
     {"id": "doubly_linked", "title": "Doubly Linked List", "icon": "ti-arrows-left-right"},
@@ -164,6 +164,8 @@ def parse_inline_elements(text):
 def parse_code_cell(cell):
     code_lines = cell.get("source", [])
     code_text = "".join(code_lines)
+    if not code_text.strip():
+        return ""
     
     # Extract Time & Space complexity comments
     time_match = re.search(r'#\s*Time\s*(?:complexity)?\s*:\s*([^\n\r]+)', code_text, re.IGNORECASE)
@@ -231,7 +233,9 @@ def parse_notebook_file(filepath):
                 
             sections_html.append(clean_markdown(source))
         elif cell_type == "code":
-            sections_html.append(parse_code_cell(cell))
+            code_html = parse_code_cell(cell)
+            if code_html:
+                sections_html.append(code_html)
             
     return "\n".join(sections_html)
 

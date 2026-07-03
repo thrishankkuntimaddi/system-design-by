@@ -17,7 +17,7 @@ TOPICS = [
     {"id": "matrix", "title": "Matrix", "icon": "ti-grid-dots"},
     {"id": "sorting", "title": "Sorting", "icon": "ti-arrows-sort"},
     {"id": "hashing", "title": "Hashing", "icon": "ti-hash"},
-    {"id": "string", "title": "String", "icon": "ti-letters-case"},
+    {"id": "string", "title": "String", "icon": "ti-quote"},
     {"id": "linked_list", "title": "LinkedList", "icon": "ti-link"},
     {"id": "stack", "title": "Stack", "icon": "ti-layers-difference"},
     {"id": "infix_postfix", "title": "Infix, Postfix, Prefix", "icon": "ti-brackets"},
@@ -161,6 +161,8 @@ def parse_inline_elements(text):
 def parse_code_cell(cell):
     code_lines = cell.get("source", [])
     code_text = "".join(code_lines)
+    if not code_text.strip():
+        return ""
     
     time_match = re.search(r'#\s*Time\s*(?:complexity)?\s*:\s*([^\n\r]+)', code_text, re.IGNORECASE)
     space_match = re.search(r'#\s*Space\s*(?:complexity)?\s*:\s*([^\n\r]+)', code_text, re.IGNORECASE)
@@ -223,7 +225,9 @@ def parse_notebook_file(filepath):
                 
             sections_html.append(clean_markdown(source))
         elif cell_type == "code":
-            sections_html.append(parse_code_cell(cell))
+            code_html = parse_code_cell(cell)
+            if code_html:
+                sections_html.append(code_html)
             
     return "\n".join(sections_html)
 
