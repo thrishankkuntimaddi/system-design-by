@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cs-notes-v10';
+const CACHE_NAME = 'cs-notes-v12';
 
 const ASSETS = [
   './',
@@ -15,6 +15,7 @@ const ASSETS = [
   './subjects/git_github/index.html',
   './subjects/machine_learning_ai/index.html',
   './subjects/dbms/index.html',
+  './subjects/cryptography/index.html',
 ];
 
 // Install — pre-cache all pages

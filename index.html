@@ -185,6 +185,7 @@
     .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
     .card-ml   { --c: #a855f7;   --cg: rgba(168,85,247,.05) }
     .card-dbms { --c: #f97316;   --cg: rgba(249,115,22,.05) }
+    .card-crypto { --c: #e11d48;   --cg: rgba(225,29,72,.05) }
 
     /* Status badge */
     .card-status {
@@ -446,6 +447,21 @@
         </div>
       </a>
 
+      <a href="./subjects/cryptography/index.html" class="subject-card card-crypto">
+        <span class="card-status status-live">LIVE</span>
+        <div class="card-icon"><i class="ti ti-lock"></i></div>
+        <div class="card-title">Cryptography</div>
+        <div class="card-desc">End-to-end encryption lifecycles, asymmetric/symmetric ciphers, key management, socket security, and threat modeling.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">E2EE</span>
+            <span class="tag">AES-GCM</span>
+            <span class="tag">Roadmap</span>
+          </div>
+          <i class="ti ti-arrow-right card-arrow"></i>
+        </div>
+      </a>
+
     </div>
 
   </div>
@@ -664,6 +680,40 @@
           disjoint_set: 'Disjoint Set',
           segment_tree: 'Segment Tree',
           binary_indexed_tree: 'Binary Indexed Tree'
+        }
+      },
+      {
+        key: 'crypto_topic',
+        href: './subjects/cryptography/index.html',
+        name: 'Cryptography',
+        color: '#e11d48',
+        labels: {
+          intro: 'High-Level Overview',
+          lifecycle: 'E2E Encryption Flow',
+          files: 'File Level Breakdown',
+          sockets: 'Socket Architecture',
+          crypto_analysis: 'Cryptographic Analysis',
+          threat_model: 'Threat Model Evaluation',
+          journey: 'Message Journey',
+          weaknesses: 'Weaknesses & Refactoring',
+          diagrams: 'Architecture Diagrams',
+          ch1: '01. Fundamentals',
+          ch2: '02. Goals of Cryptography',
+          ch3: '03. Classical Cryptography',
+          ch4: '04. Symmetric Key Crypto',
+          ch5: '05. Asymmetric Crypto',
+          ch6: '06. Hash Functions',
+          ch7: '07. Digital Signatures',
+          ch8: '08. Certificates & PKI',
+          ch9: '09. TLS / SSL',
+          ch10: '10. Message Auth Code',
+          ch11: '11. Key Management',
+          ch12: '12. Diffie-Hellman',
+          ch13: '13. Elliptic Curves (ECC)',
+          ch14: '14. Password Security',
+          ch15: '15. Cryptographic Attacks',
+          ch16: '16. Random Numbers (RNG)',
+          ch17: '17. Modern Applications'
         }
       }
     ];

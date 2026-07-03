@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cryptography & Secure Systems Mastery Notes</title>
+  <!-- PWA & Favicon -->
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="apple-touch-icon" href="../../favicon.svg">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Crypto Notes">
+  <meta name="description"
+    content="Production-ready cryptographic architectures, end-to-end encryption lifecycles, threat models, and comprehensive study roadmaps for engineering interviews.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --bg3: #1e2535;
+      --bg4: #252d40;
+      --border: #2a3450;
+      --border2: #344060;
+      --text: #e8eaf0;
+      --text2: #9aa3b8;
+      --text3: #6b748a;
+      --accent: #e11d48; /* Rose Red */
+      --accent-glow: rgba(225, 29, 72, 0.15);
+      --accent2: #f43f5e;
+      --accent3: #10b981;
+      --accent4: #f59e0b;
+      --red: #ef4444;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px
+    }
+
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 40px
+    }
+
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px
+    }
+
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 0;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+    .home-back-btn:hover { color: var(--accent); }
+    .home-back-btn i { font-size: 13px; }
+
+    .sidebar-header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase
+    }
+
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 3px
+    }
+
+    .nav-section {
+      padding: 12px 12px 4px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3)
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px 7px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      border-radius: 0 6px 6px 0;
+      margin-right: 8px
+    }
+
+    .nav-item:hover {
+      background: var(--bg3);
+      color: var(--text);
+      border-left-color: var(--border2)
+    }
+
+    .nav-item.active {
+      background: var(--bg3);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 500
+    }
+
+    .nav-item i {
+      font-size: 15px;
+      width: 17px;
+      flex-shrink: 0
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: var(--bg4);
+      color: var(--text3)
+    }
+
+    .search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s
+    }
+
+    .search-input:focus {
+      border-color: var(--accent)
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px
+    }
+
+    .topic {
+      display: none
+    }
+
+    .topic.visible {
+      display: block
+    }
+
+    .page-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 20px
+    }
+
+    .tag-rose {
+      background: rgba(225, 29, 72, .15);
+      color: #fda4af
+    }
+
+    .tag-blue {
+      background: rgba(59, 130, 246, .15);
+      color: #93c5fd
+    }
+
+    .tag-green {
+      background: rgba(16, 185, 129, .15);
+      color: #6ee7b7
+    }
+
+    .tag-amber {
+      background: rgba(245, 158, 11, .15);
+      color: #fde047
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.02em;
+      margin-bottom: 4px
+    }
+
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      margin-bottom: 24px;
+      font-weight: 400
+    }
+
+    .section {
+      margin-bottom: 28px
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .section-title i {
+      font-size: 15px
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      transition: all .2s
+    }
+
+    .card:hover {
+      border-color: var(--accent2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .card h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .card h3 i {
+      color: var(--accent);
+      font-size: 16px
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6
+    }
+
+    .def-card {
+      background: var(--bg2);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px var(--radius) var(--radius) 4px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 12px
+    }
+
+    .def-card strong {
+      color: var(--text)
+    }
+
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 4px
+    }
+
+    .pros,
+    .cons {
+      border-radius: var(--radius);
+      padding: 14px 16px
+    }
+
+    .pros {
+      background: rgba(16, 185, 129, .06);
+      border: 1px solid rgba(16, 185, 129, .15)
+    }
+
+    .cons {
+      background: rgba(239, 68, 68, .06);
+      border: 1px solid rgba(239, 68, 68, .15)
+    }
+
+    .col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .pros .col-title {
+      color: var(--green)
+    }
+
+    .cons .col-title {
+      color: var(--red)
+    }
+
+    .pros ul,
+    .cons ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .pros li,
+    .cons li {
+      font-size: 13px;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5
+    }
+
+    .pros li {
+      color: rgba(16, 185, 129, .9)
+    }
+
+    .cons li {
+      color: rgba(239, 68, 68, .9)
+    }
+
+    .pros li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .cons li::before {
+      content: "✗";
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 0
+    }
+
+    .flow-box {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .flow-arrow {
+      color: var(--text3);
+      font-weight: bold
+    }
+
+    .code-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px;
+      color: #92a1c6;
+      overflow-x: auto;
+      line-height: 1.58;
+      margin-bottom: 12px
+    }
+
+    .code-block .keyword {
+      color: #f43f5e;
+      font-weight: 600
+    }
+
+    .code-block .string {
+      color: #10b981
+    }
+
+    .code-block .comment {
+      color: var(--text3);
+      font-style: italic
+    }
+
+    .code-block .func {
+      color: #60a5fa
+    }
+
+    .code-block .param {
+      color: #f59e0b
+    }
+
+    .pre-wrap {
+      font-family: monospace;
+      white-space: pre;
+      background: #0b0d12;
+      padding: 16px;
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      line-height: 1.4;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .schema-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-size: 13px;
+      margin-bottom: 16px
+    }
+
+    .schema-table th {
+      padding: 10px 14px;
+      text-align: left;
+      background: var(--bg4);
+      color: var(--text3);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .schema-table td {
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--text2)
+    }
+
+    .schema-table tr:hover {
+      background: rgba(255,255,255,0.02)
+    }
+
+    .highlight-box {
+      background: rgba(225, 29, 72, .06);
+      border: 1px solid rgba(225, 29, 72, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 16px
+    }
+
+    .highlight-box strong {
+      color: var(--text)
+    }
+
+    .warning-box {
+      background: rgba(245, 158, 11, .06);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 16px
+    }
+
+    .warning-box strong {
+      color: var(--text)
+    }
+
+    .tip-box {
+      display: flex;
+      gap: 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px
+    }
+
+    .tip-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0
+    }
+
+    .tip-icon.do {
+      background: rgba(16, 185, 129, .15);
+      color: var(--green)
+    }
+
+    .tip-icon.dont {
+      background: rgba(239, 68, 68, .15);
+      color: var(--red)
+    }
+
+    .tip-text {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.6
+    }
+
+    .tip-text strong {
+      color: var(--text)
+    }
+
+    .math-formula {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      background: #0d1017;
+      padding: 12px 16px;
+      border-radius: 6px;
+      color: #38bdf8;
+      border-left: 2px solid #0284c7;
+      font-size: 13.5px;
+      margin: 8px 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 3px
+    }
+
+    /* ── Mobile Navbar ─────────────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font-size: 22px;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: background .15s;
+    }
+    .hamburger-btn:active { background: var(--bg3); }
+
+    .mobile-nav-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .04em;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mobile-nav-logo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── Sidebar overlay (mobile) ──────────────────────────── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 599;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+    /* ── Prev / Next bottom bar ────────────────────────────── */
+    .topic-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding: 16px 0 8px;
+      border-top: 1px solid var(--border);
+      gap: 12px;
+    }
+    .topic-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .18s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      min-width: 110px;
+    }
+    .topic-nav-btn:hover, .topic-nav-btn:active {
+      background: var(--bg3);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .topic-nav-btn.prev { justify-content: flex-start; }
+    .topic-nav-btn.next { justify-content: flex-end; margin-left: auto; }
+    .topic-nav-btn i { font-size: 16px; flex-shrink: 0; }
+    .topic-nav-label { display: flex; flex-direction: column; }
+    .topic-nav-hint { font-size: 10px; font-weight: 400; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; }
+    .topic-nav-name { font-size: 13px; font-weight: 600; }
+
+    /* ── Responsive breakpoints ────────────────────────────── */
+    @media(max-width:768px) {
+      .mobile-nav { display: flex }
+
+      .sidebar {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        z-index: 600;
+        transform: translateX(-100%);
+        transition: transform .25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 10px 0 30px rgba(0,0,0,.5);
+        background: var(--bg2);
+      }
+      .sidebar.open { transform: translateX(0); }
+
+      .main {
+        padding: 80px 20px 32px;
+      }
+
+      .topic-nav-btn { padding: 9px 12px; font-size: 12px; min-width: 80px; }
+      .topic-nav-hint { display: none; }
+
+      .card-grid,
+      .card-grid-3,
+      .pros-cons {
+        grid-template-columns: 1fr !important;
+      }
+
+      .page-title {
+        font-size: 22px
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        margin-bottom: 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Top Navbar -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Open navigation menu"
+      aria-expanded="false" aria-controls="sidebar">
+      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+    </button>
+    <span class="mobile-nav-logo">CN</span>
+    <span class="mobile-nav-title" id="mobileNavTitle">High-Level Overview</span>
+  </nav>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="home-back-btn" id="homeBackBtn">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <h1>Cryptography</h1>
+        <p>E2E Secure System Design</p>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+      </div>
+
+      <div class="nav-section">Architectures</div>
+      <div class="nav-item active" onclick="show('intro')" id="nav-intro"><i class="ti ti-activity"></i>System Overview</div>
+      <div class="nav-item" onclick="show('lifecycle')" id="nav-lifecycle"><i class="ti ti-arrows-repeat"></i>E2E Encryption Flow</div>
+      <div class="nav-item" onclick="show('files')" id="nav-files"><i class="ti ti-files"></i>File Level Breakdown</div>
+      <div class="nav-item" onclick="show('sockets')" id="nav-sockets"><i class="ti ti-network"></i>Socket Architecture</div>
+
+      <div class="nav-section">Analysis & Safety</div>
+      <div class="nav-item" onclick="show('crypto_analysis')" id="nav-crypto_analysis"><i class="ti ti-lock"></i>Cryptographic Analysis</div>
+      <div class="nav-item" onclick="show('threat_model')" id="nav-threat_model"><i class="ti ti-shield"></i>Threat Model</div>
+      <div class="nav-item" onclick="show('journey')" id="nav-journey"><i class="ti ti-route"></i>Message Journey</div>
+      <div class="nav-item" onclick="show('weaknesses')" id="nav-weaknesses"><i class="ti ti-alert-triangle"></i>Weakness & Refactor</div>
+      <div class="nav-item" onclick="show('diagrams')" id="nav-diagrams"><i class="ti ti-hierarchy"></i>System Diagrams</div>
+
+      <div class="nav-section">Roadmap Chapters</div>
+      <div class="nav-item" onclick="show('ch1')" id="nav-ch1"><i class="ti ti-hash"></i>01. Fundamentals</div>
+      <div class="nav-item" onclick="show('ch2')" id="nav-ch2"><i class="ti ti-target"></i>02. Goals of Cryptography</div>
+      <div class="nav-item" onclick="show('ch3')" id="nav-ch3"><i class="ti ti-history"></i>03. Classical Cryptography</div>
+      <div class="nav-item" onclick="show('ch4')" id="nav-ch4"><i class="ti ti-key"></i>04. Symmetric Key Crypto</div>
+      <div class="nav-item" onclick="show('ch5')" id="nav-ch5"><i class="ti ti-binary"></i>05. Asymmetric Crypto</div>
+      <div class="nav-item" onclick="show('ch6')" id="nav-ch6"><i class="ti ti-hash"></i>06. Hash Functions</div>
+      <div class="nav-item" onclick="show('ch7')" id="nav-ch7"><i class="ti ti-fingerprint"></i>07. Digital Signatures</div>
+      <div class="nav-item" onclick="show('ch8')" id="nav-ch8"><i class="ti ti-certificate"></i>08. Certificates & PKI</div>
+      <div class="nav-item" onclick="show('ch9')" id="nav-ch9"><i class="ti ti-broadcast"></i>09. TLS / SSL</div>
+      <div class="nav-item" onclick="show('ch10')" id="nav-ch10"><i class="ti ti-shield-lock"></i>10. Message Auth Code</div>
+      <div class="nav-item" onclick="show('ch11')" id="nav-ch11"><i class="ti ti-tool"></i>11. Key Management</div>
+      <div class="nav-item" onclick="show('ch12')" id="nav-ch12"><i class="ti ti-arrows-left-right"></i>12. Diffie-Hellman</div>
+      <div class="nav-item" onclick="show('ch13')" id="nav-ch13"><i class="ti ti-chart-arcs"></i>13. Elliptic Curves (ECC)</div>
+      <div class="nav-item" onclick="show('ch14')" id="nav-ch14"><i class="ti ti-salt"></i>14. Password Security</div>
+      <div class="nav-item" onclick="show('ch15')" id="nav-ch15"><i class="ti ti-search"></i>15. Cryptographic Attacks</div>
+      <div class="nav-item" onclick="show('ch16')" id="nav-ch16"><i class="ti ti-numbers"></i>16. Random Numbers (RNG)</div>
+      <div class="nav-item" onclick="show('ch17')" id="nav-ch17"><i class="ti ti-apps"></i>17. Modern Applications</div>
+    </div>
+
+    <!-- Main Content Panel -->
+    <div class="main" id="contentArea">
+
+      <!-- SECTION 1 — High Level System Overview -->
+      <div class="topic visible" id="topic-intro">
+        <div class="page-tag tag-rose"><i class="ti ti-lock"></i>Security Architecture</div>
+        <h1 class="page-title">High-Level System Overview</h1>
+        <p class="page-subtitle">Production-grade End-to-End Encrypted (E2EE) messaging architectures, trust boundaries, and communication strategies.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield-check"></i>E2EE Model Philosophy</div>
+          <div class="def-card">
+            An <strong>End-to-End Encrypted (E2EE)</strong> message system ensures that payloads are encrypted on the sender's device and can only be decrypted on the recipient's device. The intermediate server handles routing and message persistence in a <strong>zero-knowledge</strong> manner — the backend never sees plaintext messages or keys.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-circles-relation"></i>Core Architectural Pillars</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-key"></i>Key Exchange Model</h3>
+              <p><strong>Diffie-Hellman Key Exchange (ECDH):</strong> Ephemeral or double-ratchet models are used to establish unique session keys between participants. Public keys are registered on the database, allowing offline negotiation.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-binary"></i>Message Encryption</h3>
+              <p><strong>Authenticated Symmetric Encryption (AES-GCM):</strong> Message payloads are encrypted using a derived 256-bit symmetric session key with random 96-bit Initialization Vectors (IVs) and authentication tags to guarantee integrity.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-network"></i>Transport Channel</h3>
+              <p><strong>Real-Time WebSockets (Socket.IO):</strong> Delivers low-latency message relaying between connected clients. Authentication occurs during the socket handshake using cryptographically signed tokens (JWTs).</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-database"></i>Storage Strategy</h3>
+              <p><strong>Encrypted persistence:</strong> The server stores the payload's <code>ciphertext</code>, <code>iv</code>, and <code>auth_tag</code>. Routing metadata (timestamps, sender/receiver IDs) is plaintext, but payloads are locked.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-border-outer"></i>Trust Boundaries & Attack Surface</div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">Client-Side Secure Boundary</div>
+              <ul>
+                <li>Private keys are generated locally and never transmitted to the network.</li>
+                <li>Private keys are decrypted in memory only using a key derived from password hashing (PBKDF2/Argon2).</li>
+                <li>Compromise of the database or transport channel does not expose message contents.</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <div class="col-title">Remaining Attack Surface</div>
+              <ul>
+                <li><strong>Metadata Leakage:</strong> Server knows who is communicating, when, and how frequently.</li>
+                <li><strong>XSS / Local Exploits:</strong> If keys are stored in localStorage, a cross-site scripting attack can leak them.</li>
+                <li><strong>MITM Key Substitution:</strong> A malicious server could return its own public keys instead of the receiver's.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 — End-to-End Encryption Lifecycle -->
+      <div class="topic" id="topic-lifecycle">
+        <div class="page-tag tag-rose"><i class="ti ti-arrows-repeat"></i>E2E Flow</div>
+        <h1 class="page-title">End-to-End Encryption Lifecycle</h1>
+        <p class="page-subtitle">The cryptographic progression of a message from local generation, socket routing, database storage, and remote decryption.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-list-numbers"></i>Sequential Steps</div>
+          
+          <div class="def-card">
+            <strong>1. User Registration & Key Generation:</strong><br>
+            During signup, the client browser generates a public/private asymmetric key pair (Curve25519 for key exchange).
+            <ul>
+              <li><strong>Public Key:</strong> Sent to the server and persisted in the <code>users</code> database column.</li>
+              <li><strong>Private Key:</strong> Encrypted locally using a key derived from the user's password using PBKDF2/scrypt, then stored in IndexedDB.</li>
+            </ul>
+          </div>
+
+          <div class="def-card">
+            <strong>2. User Login & Key Retrieval:</strong><br>
+            The user authenticates with the server to retrieve their encrypted private key bundle. The local client uses the entered password to derive the key-encryption-key (KEK), decrypting the private key locally into volatile web memory.
+          </div>
+
+          <div class="def-card">
+            <strong>3. Conversation Initialization:</strong><br>
+            When User A starts a chat with User B:
+            <ol>
+              <li>User A requests User B's public key from the backend.</li>
+              <li>User A performs an <strong>ECDH (Elliptic Curve Diffie-Hellman)</strong> operation with User B's public key and User A's private key to derive a <code>shared_secret</code>.</li>
+              <li>The <code>shared_secret</code> is run through a HKDF (HMAC-based Key Derivation Function) to derive a 256-bit symmetric session key: <code>aes_session_key</code>.</li>
+            </ol>
+          </div>
+
+          <div class="def-card">
+            <strong>4. Message Transmission (Encrypt & Send):</strong><br>
+            User A encrypts the plaintext payload using <code>AES-256-GCM</code> with the derived <code>aes_session_key</code> and a random IV.
+            The socket client emits:
+            <pre class="pre-wrap">socket.emit("send_message", {
+  recipientId: "userB_uuid",
+  ciphertext: "d7a8f9...",
+  iv: "3e4b...",
+  authTag: "fa2b..."
+});</pre>
+          </div>
+
+          <div class="def-card">
+            <strong>5. Message Persistence:</strong><br>
+            The socket server validates User A's authentication token (JWT), saves the encrypted packet (ciphertext, IV, authTag) in the SQL DB, and forwards the event to User B's active socket room.
+          </div>
+
+          <div class="def-card">
+            <strong>6. Message Decryption:</strong><br>
+            User B receives the packet via their socket connection. User B computes the same session key using their private key and User A's public key, then decrypts the ciphertext using <code>AES-256-GCM</code> with the provided IV and validates the integrity tag.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-binary-tree-2"></i>E2EE Sequential Flow Diagram</div>
+          <pre class="pre-wrap">
++----------+             +----------+             +----------+             +----------+
+|  User A  |             | Backend  |             | Database |             |  User B  |
++----------+             +----------+             +----------+             +----------+
+     |                        |                        |                        |
+     |--- Get B's PubKey ---->|                        |                        |
+     |<-- Return B's PubKey --|                        |                        |
+     |                        |                        |                        |
+     |--[ Derives AES Key ]--|                        |                        |
+     |--[ Encrypts Message ]--|                        |                        |
+     |                        |                        |                        |
+     |---- Send Encrypted --->|                        |                        |
+     |   {ct, iv, tag, to:B}  |---- Persist Record --->|                        |
+     |                        |    {ct, iv, tag, to:B} |                        |
+     |                        |                        |                        |
+     |                        |---------------- Forward Encrypted ------------->|
+     |                        |                 {ct, iv, tag, from:A}           |
+     |                        |                        |                        |
+     |                        |                        |                  [ Derives Key ]
+     |                        |                        |                  [ Decrypts & ]
+     |                        |                        |                  [ Verifies ]
+          </pre>
+        </div>
+      </div>
+
+      <!-- SECTION 3 — File Level Breakdown -->
+      <div class="topic" id="topic-files">
+        <div class="page-tag tag-rose"><i class="ti ti-files"></i>File Level Breakdown</div>
+        <h1 class="page-title">File Level Breakdown</h1>
+        <p class="page-subtitle">Explaining exact file roles, exported methods, dependencies, and security relevance inside secure E2EE chat modules.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-file-text"></i>Key System Files</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>File Path</th>
+                <th>Core Exported Functions</th>
+                <th>Dependencies</th>
+                <th>Security Relevance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>utils/crypto.js</strong></td>
+                <td><code>generateKeys()</code>, <code>deriveSharedKey()</code>, <code>encryptGCM()</code>, <code>decryptGCM()</code></td>
+                <td><code>crypto-web-api</code> / Node.js <code>crypto</code></td>
+                <td>Provides cryptographic primitives. Ensures standard AES-GCM and Curve25519 usage.</td>
+              </tr>
+              <tr>
+                <td><strong>controllers/keyManager.js</strong></td>
+                <td><code>storePrivateKey()</code>, <code>getDecryptedPrivateKey()</code>, <code>rotateSessionKey()</code></td>
+                <td>IndexedDB API, PBKDF2 utilities</td>
+                <td>Handles secure storage and memory isolation of user key bundles.</td>
+              </tr>
+              <tr>
+                <td><strong>server/socket.js</strong></td>
+                <td><code>initSocketServer()</code>, <code>verifySocketJWT()</code>, <code>handleConnections()</code></td>
+                <td><code>socket.io</code>, <code>jsonwebtoken</code></td>
+                <td>Authenticates inbound real-time channels and manages transport namespaces.</td>
+              </tr>
+              <tr>
+                <td><strong>handlers/messageHandler.js</strong></td>
+                <td><code>onSendMessage()</code>, <code>persistPayload()</code>, <code>ackDelivery()</code></td>
+                <td><code>models/Message</code>, <code>socketInstance</code></td>
+                <td>Routes encrypted payloads to rooms and saves raw ciphertext metadata.</td>
+              </tr>
+              <tr>
+                <td><strong>models/Message.js</strong></td>
+                <td><code>MessageSchema</code>, <code>indexes</code></td>
+                <td>Mongoose ORM / Prisma</td>
+                <td>Defines database constraints for ciphertext, IV, and authTag. Ensures no plaintext columns.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 4 — Socket Architecture Deep Dive -->
+      <div class="topic" id="topic-sockets">
+        <div class="page-tag tag-rose"><i class="ti ti-network"></i>Sockets</div>
+        <h1 class="page-title">Socket Architecture Deep Dive</h1>
+        <p class="page-subtitle">Real-time message routing, connection handshakes, namespaces, and delivery verification flow.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-door-enter"></i>Connection Handshake & Auth</div>
+          <div class="def-card">
+            To prevent unauthorized messaging, the socket connection performs a cryptographically validated handshake. Clients must pass a valid JWT in the connection query parameters:
+            <pre class="code-block"><span class="keyword">const</span> socket = <span class="func">io</span>(<span class="string">"https://chat.cnotes.io"</span>, {
+  auth: { token: <span class="string">"JWT_TOKEN_HERE"</span> }
+});</pre>
+            The backend verifies the signature on the JWT. If invalid, the connection is immediately closed. Upon success, the socket associates the connection ID with the verified <code>userId</code>.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-layout-grid"></i>Room & Routing Configuration</div>
+          <p class="page-subtitle">Each user joins their own private notification room <code>user_&lt;userId&gt;</code> on connect. This design avoids shared room states and prevents information leakage.</p>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-login"></i>1. Join Room</h3>
+              <p>On connection, the backend calls <code>socket.join("user_" + socket.userId)</code>. All incoming payloads for this user are emitted directly to this targeted room.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-arrow-right-tail"></i>2. Delivery Acks</h3>
+              <p>When User A sends a message to User B, User A registers a callback handler. When User B receives and decrypts the message, they emit a delivery receipt back to the server, resolving the callback.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-merge"></i>Real-time Lifecycle Stages</div>
+          <div class="flow">
+            <div class="flow-box">connect</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">authenticate JWT</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">join "user_uuid"</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">relay payload</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">persist ciphertext</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">delivery ack</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5 — Cryptographic Analysis -->
+      <div class="topic" id="topic-crypto_analysis">
+        <div class="page-tag tag-rose"><i class="ti ti-math-symbols"></i>Primitives</div>
+        <h1 class="page-title">Cryptographic Analysis</h1>
+        <p class="page-subtitle">Deep dive into algorithm choices, key sizes, Initialization Vectors, and security rationale.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>Cryptographic Choices</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Primitive Type</th>
+                <th>Algorithm Choice</th>
+                <th>Rationale & Key Sizes</th>
+                <th>Misuse Risks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Asymmetric Keys</strong></td>
+                <td>X25519 (ECDH)</td>
+                <td>256-bit key size. High security, extremely fast key derivation. Native to browser WebCrypto API.</td>
+                <td>Reusing ephemeral keys indefinitely (mitigated by key rotation or Double Ratchet).</td>
+              </tr>
+              <tr>
+                <td><strong>Symmetric Cipher</strong></td>
+                <td>AES-256-GCM</td>
+                <td>256-bit key. Galois Counter Mode provides **AEAD** (Authenticated Encryption with Associated Data).</td>
+                <td><strong>IV Reuse:</strong> Reusing the same IV with the same key destroys confidentiality and integrity guarantees.</td>
+              </tr>
+              <tr>
+                <td><strong>Key Derivation</strong></td>
+                <td>HKDF (SHA-256)</td>
+                <td>Extracts and expands entropy from ECDH shared secrets to produce cryptographically strong symmetric keys.</td>
+                <td>Using raw DH shared secrets as symmetric keys directly without expansion.</td>
+              </tr>
+              <tr>
+                <td><strong>Password KEK</strong></td>
+                <td>Argon2id / PBKDF2</td>
+                <td>Memory-hard hashing function to encrypt local key bundles on disk.</td>
+                <td>Using weak iterations or lack of unique salting leading to dictionary lookup attacks.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>Critical Alert: The IV Rules</div>
+          <div class="warning-box">
+            <strong>IMPORTANT:</strong> For <strong>AES-GCM</strong>, the Initialization Vector (IV) MUST be exactly 96-bits (12 bytes) and MUST be cryptographically random for every single message encrypted under the same session key. Never hardcode an IV or increment it predictably.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6 — Threat Model Evaluation -->
+      <div class="topic" id="topic-threat_model">
+        <div class="page-tag tag-rose"><i class="ti ti-shield"></i>Threat Model</div>
+        <h1 class="page-title">Threat Model Evaluation</h1>
+        <p class="page-subtitle">Evaluating the architecture against standard cybersecurity attack vectors and exploits.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-current-location"></i>Attack Vector Analysis</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-user-x"></i>Man-in-the-Middle (MITM)</h3>
+              <p><strong>Threat:</strong> The server acts as a proxy, returning a fake public key to User A so it can decrypt messages.<br><br><strong>Mitigation:</strong> Visual safety numbers (computed from hashes of public keys) are compared out-of-band by users, or public keys are signed by a Certificate Authority.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-database-off"></i>Compromised Server Database</h3>
+              <p><strong>Threat:</strong> An attacker steals all records from the messages table.<br><br><strong>Mitigation:</strong> Payloads are stored as ciphertext. Only metadata (sender ID, time) is exposed. Message content remains secure.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-history"></i>Replay Attacks</h3>
+              <p><strong>Threat:</strong> An attacker intercepts an encrypted message packet and forwards it to the recipient repeatedly.<br><br><strong>Mitigation:</strong> The encrypted packet contains a sequence counter and timestamp. Recipient rejects duplicated or expired sequences.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-window-code"></i>XSS Key Leakage</h3>
+              <p><strong>Threat:</strong> A cross-site scripting script accesses local IndexedDB variables and exfiltrates private keys.<br><br><strong>Mitigation:</strong> Keys are kept in-memory (volatile storage) or loaded only within a sandbox Web Worker that restricts DOM access.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrow-forward-up"></i>Forward Secrecy Definition</div>
+          <div class="highlight-box">
+            <strong>Forward Secrecy:</strong> If an attacker compromises the private keys of User A or User B today, they must not be able to decrypt past conversations. This is achieved by generating **ephemeral keys** that are destroyed after a session is closed.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 7 — Sequential End-to-End Message Journey -->
+      <div class="topic" id="topic-journey">
+        <div class="page-tag tag-rose"><i class="ti ti-route"></i>Journey</div>
+        <h1 class="page-title">End-to-End Message Journey</h1>
+        <p class="page-subtitle">Following a single text string "Hello" from User A's terminal keystrokes to User B's screen render.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-text-recognition"></i>Step-by-Step Execution Path</div>
+          <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 14px;">
+            <li><strong>Client A Keystroke:</strong> User A types "Hello" and presses send. The front-end triggers <code>sendMessage("Hello", "recipient_uuid")</code>.</li>
+            <li><strong>Symmetric Key Lookup:</strong> The front-end fetches the 256-bit symmetric session key for the target from local memory.</li>
+            <li><strong>Encryption:</strong> The crypto handler generates 12 random bytes (IV) and encrypts the string "Hello" into a base64 ciphertext (e.g. <code>+x09jF/3...</code>) and extracts a 16-byte auth tag.</li>
+            <li><strong>Socket Emission:</strong> The client emits the packet over a TLS-encrypted WebSocket channel to the node backend.</li>
+            <li><strong>Backend Interception:</strong> The message controller extracts the packet, logs routing metadata, and executes an INSERT query to database to save the ciphertext.</li>
+            <li><strong>Relay routing:</strong> The socket server routes the payload to User B's active socket channel: <code>socket.to("user_recipient_uuid").emit("receive_message", packet)</code>.</li>
+            <li><strong>Decryption:</strong> User B's browser triggers the event, retrieves the session key, and executes the WebCrypto GCM decryption. The output string "Hello" is rendered on the viewport.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- SECTION 8 — Architectural Weaknesses & Refactor Recommendations -->
+      <div class="topic" id="topic-weaknesses">
+        <div class="page-tag tag-rose"><i class="ti ti-alert-triangle"></i>Audit Results</div>
+        <h1 class="page-title">Architectural Weaknesses & Refactors</h1>
+        <p class="page-subtitle">Security improvements, architectural adjustments, and optimization strategies for secure communication engines.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-search"></i>Identified Vulnerabilities & Recommendations</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-circle-x"></i>Weakness 1: Static Public Keys</h3>
+              <p>If user keys remain static indefinitely, a compromise of the private key allows decryption of all historical messages.<br><br><strong>Refactor:</strong> Implement a **Double Ratchet** protocol (e.g. Signal Protocol) where keys are rotated dynamically for every message exchanged.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-circle-x"></i>Weakness 2: Plaintext Metadata</h3>
+              <p>The backend stores database logs containing clear associations of sender ID, receiver ID, and timestamps.<br><br><strong>Refactor:</strong> Use **Sealed Sender** headers (encrypting the sender identity using the recipient's public key) so the backend only routes to the recipient without knowing the sender.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-circle-x"></i>Weakness 3: Memory Exhaustion</h3>
+              <p>Relaying large binary payloads or media content through WebSockets places load on socket server thread memory.<br><br><strong>Refactor:</strong> Clients upload large files to an S3 bucket encrypted with a one-time symmetric key, passing only the download link and key over the socket.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-circle-x"></i>Weakness 4: Key Retrieval MITM</h3>
+              <p>A compromised backend database could substitute the public keys returned to clients during session initialization.<br><br><strong>Refactor:</strong> Use **Key Transparency** logs (similar to Certificate Transparency) where key modifications are appended to a tamper-proof public ledger.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 9 — Diagram Representation -->
+      <div class="topic" id="topic-diagrams">
+        <div class="page-tag tag-rose"><i class="ti ti-hierarchy"></i>Diagrams</div>
+        <h1 class="page-title">System Architecture Diagrams</h1>
+        <p class="page-subtitle">Text diagrams detailing secure handshakes and persistent message flows.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-key-visualizer"></i>1. Key Exchange Handshake (ECDH)</div>
+          <pre class="pre-wrap">
+User A (Private a, Pub A=aG)                     User B (Private b, Pub B=bG)
+      |                                                |
+      |------------ [1. Upload PubKey A] ------------->| (Server Store)
+      |                                                |
+      |<----------- [2. Download PubKey B] ------------| (Server Retrieval)
+      |                                                |
+      |-- Derives shared secret S = a * Pub B (abG) ---|
+      |-- Runs through HKDF -> Symmetric Session Key --|
+          </pre>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-message"></i>2. Message Flow Routing Lifecycle</div>
+          <pre class="pre-wrap">
++---------+         +---------+         +-----------+         +--------+
+| ClientA |         | Backend |         |  Database |         |ClientB |
++---------+         +---------+         +-----------+         +--------+
+     |                   |                    |                    |
+     |--[AES Encrypt]    |                    |                    |
+     |                   |                    |                    |
+     |--- websocket ---->|                    |                    |
+     |    {ct, iv, tag}  |                    |                    |
+     |                   |-- db.insert ------>|                    |
+     |                   |   {ct, iv, tag}    |                    |
+     |                   |                    |                    |
+     |                   |----------- websocket -------------->|
+     |                   |            {ct, iv, tag}            |
+     |                   |                                     |
+     |                   |                                [AES Decrypt]
+     |                   |<---------- ack delivery ------------|
+     |<-- ack delivery --|                                     |
+          </pre>
+        </div>
+      </div>
+
+      <!-- ROADMAP CHAPTER 1 -->
+      <div class="topic" id="topic-ch1">
+        <div class="page-tag tag-rose"><i class="ti ti-hash"></i>Chapter 01</div>
+        <h1 class="page-title">Fundamentals of Cryptography</h1>
+        <p class="page-subtitle">Deep dive into cryptographic vocabulary, mathematical models of encryptions, and basic shift operations.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-book"></i>1. Core Vocabulary & Concepts</div>
+          <div class="def-card">
+            • <strong>Plaintext (P):</strong> The original, readable message string or byte buffer before being processed by a cipher. E.g., <code>"HELLO"</code>.<br>
+            • <strong>Ciphertext (C):</strong> The scrambled, unreadable output of an encryption algorithm. To unauthorized parties, it should appear as cryptographically random noise.<br>
+            • <strong>Encryption (E):</strong> The mathematical operation mapping plaintext and a key to ciphertext: <code class="inline-code">E(P, K) = C</code>.<br>
+            • <strong>Decryption (D):</strong> The process of reconstructing plaintext from ciphertext using a key: <code class="inline-code">D(C, K) = P</code>. For a correct cipher, <code class="inline-code">D(E(P, K), K) == P</code> holds true.<br>
+            • <strong>Cipher:</strong> The mechanical, electrical, or mathematical algorithm containing the logical steps for encryption and decryption.<br>
+            • <strong>Cryptographic Key (K):</strong> A variable parameter (usually a string of random bits) that alters the cipher output. Its secrecy is the sole guarantor of confidentiality (Kerckhoffs's Principle).<br>
+            • <strong>Cryptanalysis:</strong> The science of hacking or reverse engineering, cracking, or decyphering ciphertext without authorization or prior possession of the correct keys.<br>
+            • <strong>Cryptology:</strong> The overarching discipline combining both cryptography (designing ciphers) and cryptanalysis (breaking ciphers).
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>2. Mathematical Models & Kerckhoffs's Principle</div>
+          <p class="page-subtitle">Modern systems assume the algorithm is public. The security of the system rests entirely on keeping the key secret.</p>
+          <div class="highlight-box">
+            <strong>Kerckhoffs's Principle (1883):</strong> A cryptographic system should be secure even if everything about the system, except the key, is public knowledge. This is the foundation of open security standards (AES, RSA, TLS) where public review ensures no backdoors exist.
+          </div>
+          <div class="math-formula">
+            Symmetric Cipher Equation: C = E_K(P)  &lt;=&gt;  P = D_K(C)
+          </div>
+          <p>If the key is chosen from a key space of size 2<sup>N</sup> (where N is the key length in bits), an attacker performing a brute-force search must search through 2<sup>N</sup> combinations. A key size of 128 bits yields a key space of 3.4 x 10<sup>38</sup> combinations, making brute force physically impossible with current computing boundaries.</p>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrow-right-tail"></i>3. Detailed Step-by-Step Example: Caesar Cipher</div>
+          <p class="page-subtitle">The simplest substitution cipher: shifting letters along the modulo circle.</p>
+          <div class="def-card">
+            We map the English alphabet to numbers modulo 26: <code>A = 0, B = 1, C = 2, ..., Z = 25</code>.
+            The encryption shift formula is:
+            <div class="math-formula">C_i = (P_i + K) mod 26</div>
+            The decryption shift formula is:
+            <div class="math-formula">P_i = (C_i - K) mod 26</div>
+          </div>
+          <div class="highlight-box">
+            <strong>Trace of Plaintext "HELLO" with Key K = 3:</strong><br>
+            • <strong>H</strong> -> Index 7. Encrypt: (7 + 3) mod 26 = 10 -> <strong>K</strong><br>
+            • <strong>E</strong> -> Index 4. Encrypt: (4 + 3) mod 26 = 7 -> <strong>H</strong><br>
+            • <strong>L</strong> -> Index 11. Encrypt: (11 + 3) mod 26 = 14 -> <strong>O</strong><br>
+            • <strong>L</strong> -> Index 11. Encrypt: (11 + 3) mod 26 = 14 -> <strong>O</strong><br>
+            • <strong>O</strong> -> Index 14. Encrypt: (14 + 3) mod 26 = 17 -> <strong>R</strong><br>
+            <strong>Plaintext:</strong> <code>HELLO</code><br>
+            <strong>Ciphertext:</strong> <code>KHOOR</code>
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 2 -->
+      <div class="topic" id="topic-ch2">
+        <div class="page-tag tag-rose"><i class="ti ti-target"></i>Chapter 02</div>
+        <h1 class="page-title">Goals of Cryptography</h1>
+        <p class="page-subtitle">The core pillars of information security (CIA triad + Non-Repudiation) and their cryptographic enforcement.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield-check"></i>1. Core Guarantees & Cryptographic Primitives</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Goal</th>
+                <th>Definition</th>
+                <th>Threat Model Vector</th>
+                <th>Cryptographic Primitive</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Confidentiality</strong></td>
+                <td>Ensures unauthorized entities cannot read the payload data.</td>
+                <td>Passive Eavesdropping, Man-in-the-Middle sniffing.</td>
+                <td>Symmetric Encryption (AES-GCM, ChaCha20), Asymmetric Encryption (RSA, ECIES).</td>
+              </tr>
+              <tr>
+                <td><strong>Integrity</strong></td>
+                <td>Guarantees data has not been modified, deleted, or added to in transit.</td>
+                <td>Active Tampering, bit-flipping attacks, data corruption.</td>
+                <td>Cryptographic Hash Functions (SHA-256, SHA-3), Message Authentication Codes (HMAC).</td>
+              </tr>
+              <tr>
+                <td><strong>Authentication</strong></td>
+                <td>Verifies the true identity of the communication peer.</td>
+                <td>Identity spoofing, impersonation, phishing.</td>
+                <td>Digital Certificates (X.509), Digital Signatures (ECDSA), challenge-response handshakes.</td>
+              </tr>
+              <tr>
+                <td><strong>Non-Repudiation</strong></td>
+                <td>Prevents the sender from denying they generated or sent a payload.</td>
+                <td>Fraudulent denial of transactions, message forging.</td>
+                <td>Asymmetric Digital Signatures (only the owner of the private key could sign the message).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>2. Breach Scenarios & Real-World Impacts</div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">How Goals are Met in HTTPS</div>
+              <ul>
+                <li><strong>Confidentiality:</strong> Payload encrypted using AES-GCM symmetric session keys.</li>
+                <li><strong>Integrity:</strong> Handshake messages checked with SHA-256 MAC tags.</li>
+                <li><strong>Authentication:</strong> Server certificate verified against Root CAs.</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <div class="col-title">Typical Security Failures</div>
+              <ul>
+                <li><strong>Confidentiality Breach:</strong> Storing passwords or API keys in plaintext inside databases.</li>
+                <li><strong>Integrity Failure:</strong> Relaying database records without signature tags, allowing parameter manipulation.</li>
+                <li><strong>Authentication Spoofing:</strong> Trusting client-declared headers (e.g. X-User-ID) without JWT verification.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 3 -->
+      <div class="topic" id="topic-ch3">
+        <div class="page-tag tag-rose"><i class="ti ti-history"></i>Chapter 03</div>
+        <h1 class="page-title">Classical Cryptography</h1>
+        <p class="page-subtitle">Pencil-and-paper ciphers, monoalphabetic substitution, polyalphabetic Vigenère grids, and transposition patterns.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-book-open"></i>1. Substitution Ciphers & Frequency Analysis</div>
+          <div class="def-card">
+            • <strong>Monoalphabetic Substitution:</strong> Maps each letter of the alphabet to a unique counterpart in a scrambled alphabet. E.g., `A` always maps to `Q`, `B` always maps to `W`, etc.<br>
+            • <strong>Vulnerability (Frequency Analysis):</strong> In any language, letters appear with predictable frequencies. In English, `E` (~12.7%), `T` (~9.1%), and `A` (~8.2%) are most common. By calculating character counts in large ciphertexts, attackers can rebuild the lookup mapping table instantly.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-grid-dots"></i>2. Polyalphabetic (Vigenère) & Grid Substitution</div>
+          <p>The <strong>Vigenère Cipher</strong> mitigates frequency analysis by using a keyword to shift letters. Each letter in the key determines the Caesar shift for the corresponding message letter. The key repeats to match the length of the plaintext.</p>
+          <div class="math-formula">
+            Vigenère Formula: C_i = (P_i + K_(i mod len(K))) mod 26
+          </div>
+          <div class="highlight-box">
+            <strong>Example Trace:</strong><br>
+            Plaintext: <code>ATTACK</code> | Key: <code>KEY</code><br>
+            Repeated Key: <code>KEYKEY</code><br>
+            • <strong>A (0) + K (10)</strong> mod 26 = 10 -> <strong>K</strong><br>
+            • <strong>T (19) + E (4)</strong> mod 26 = 23 -> <strong>X</strong><br>
+            • <strong>T (19) + Y (24)</strong> mod 26 = 43 mod 26 = 17 -> <strong>R</strong><br>
+            • <strong>A (0) + K (10)</strong> mod 26 = 10 -> <strong>K</strong><br>
+            • <strong>C (2) + E (4)</strong> mod 26 = 6 -> <strong>G</strong><br>
+            • <strong>K (10) + Y (24)</strong> mod 26 = 34 mod 26 = 8 -> <strong>I</strong><br>
+            <strong>Ciphertext:</strong> <code>KXRKGI</code>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-border-all"></i>3. Block and Transposition Ciphers (Playfair, Rail Fence, Hill)</div>
+          <div class="def-card">
+            <strong>Playfair Cipher:</strong> Encrypts pairs of letters (digrams) using a 5x5 key matrix.
+            <ul>
+              <li>If the two letters are in the same row, replace with the letter immediately to their right (wrapping around).</li>
+              <li>If in the same column, replace with the letter immediately below (wrapping around).</li>
+              <li>Otherwise, form a rectangle and pick the letters at the opposite corners in the same row.</li>
+            </ul>
+          </div>
+          
+          <div class="def-card">
+            <strong>Rail Fence (Transposition) Cipher:</strong> Scrambles the position of letters (transposition) by writing the message diagonally in a zig-zag across imaginary rails:
+            <pre class="pre-wrap">
+Plaintext: "SECRET MESSAGE", Rails: 3
+S . . . E . . . E . . . G .
+. E . R . T . M . S . A . E
+. . C . . . S . . . S . . .
+Ciphertext read row-by-row: "SEEGERTMAECCS"</pre>
+          </div>
+
+          <div class="def-card">
+            <strong>Hill Cipher:</strong> Combines letters into vectors and encrypts them using matrix multiplication.
+            <div class="math-formula">Vector C = (Matrix K * Vector P) mod 26</div>
+            For example, to encrypt `HE` (7, 4) with Key Matrix <code>[[3, 3], [2, 5]]</code>:
+            <div class="math-formula">
+              C_1 = (3*7 + 3*4) mod 26 = 33 mod 26 = 7 (H)<br>
+              C_2 = (2*7 + 5*4) mod 26 = 34 mod 26 = 8 (I) => Ciphertext: "HI"
+            </div>
+            To decrypt, the matrix must be invertible modulo 26 (i.e. determinant must share no common factors with 26).
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 4 -->
+      <div class="topic" id="topic-ch4">
+        <div class="page-tag tag-rose"><i class="ti ti-key"></i>Chapter 04</div>
+        <h1 class="page-title">Symmetric Key Cryptography</h1>
+        <p class="page-subtitle">Stream vs Block ciphers, operational modes (ECB vs CBC vs GCM), and padding standards.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-list"></i>1. Stream Ciphers vs. Block Ciphers</div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">Stream Ciphers (e.g. ChaCha20, RC4)</div>
+              <ul>
+                <li>Encrypts plaintext 1 bit/byte at a time.</li>
+                <li>Generates a pseudo-random keystream XORed directly with plaintext.</li>
+                <li>Extremely fast, low latency, ideal for real-time video/audio streaming.</li>
+                <li><strong>Critical Rule:</strong> NEVER reuse the same key and IV/nonce (destroys security instantly).</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <div class="col-title">Block Ciphers (e.g. AES, DES, Blowfish)</div>
+              <ul>
+                <li>Encrypts data in fixed-sized chunks called blocks (typically 64 or 128 bits).</li>
+                <li>Requires padding (PKCS#7) if plaintext is not an exact multiple of the block size.</li>
+                <li>Requires a Mode of Operation to secure multiple blocks of data.</li>
+                <li>Less vulnerable to key-reuse attacks than stream ciphers (though still highly vulnerable in CBC mode).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-border-all"></i>2. Cipher Modes of Operation</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>Description</th>
+                <th>Parallelization</th>
+                <th>Security Level & Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ECB (Electronic Codebook)</strong></td>
+                <td>Encrypts each block independently. Identical plaintext blocks yield identical ciphertext blocks.</td>
+                <td>Yes (both Encrypt & Decrypt)</td>
+                <td><span style="color:var(--red); font-weight:700;">UNSAFE</span>: Leaks structural patterns (e.g., the ECB Penguin image leak). Never use in production.</td>
+              </tr>
+              <tr>
+                <td><strong>CBC (Cipher Block Chaining)</strong></td>
+                <td>XORs each plaintext block with the preceding ciphertext block before encryption. Requires an IV.</td>
+                <td>Decrypt only</td>
+                <td><span style="color:var(--yellow); font-weight:700;">LEGACY</span>: Vulnerable to **Padding Oracle Attacks** (Manger's/Lucky13) if error messages leak timing details.</td>
+              </tr>
+              <tr>
+                <td><strong>CTR (Counter Mode)</strong></td>
+                <td>Turns a block cipher into a stream cipher by encrypting an incrementing counter value.</td>
+                <td>Yes (both Encrypt & Decrypt)</td>
+                <td><span style="color:var(--green); font-weight:700;">SECURE</span>: High performance, but does not check data integrity.</td>
+              </tr>
+              <tr>
+                <td><strong>GCM (Galois/Counter Mode)</strong></td>
+                <td>Combines CTR mode with a Galois MAC tag computation to provide **AEAD** (Authenticated Encryption).</td>
+                <td>Yes (both Encrypt & Decrypt)</td>
+                <td><span style="color:var(--green); font-weight:700;">RECOMMENDED</span>: Guarantees confidentiality and data integrity. Modern standard for TLS/Web.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>3. Padding Standards (PKCS#7)</div>
+          <div class="def-card">
+            <strong>PKCS#7 Padding:</strong> Adds bytes to the end of the plaintext so its total length matches a block boundary. The value of each added byte is equal to the number of padded bytes.
+            <br><br>
+            • If 3 bytes of padding are needed for a 16-byte block, the padded bytes are: <code>0x03 0x03 0x03</code>.<br>
+            • If the plaintext is already an exact multiple of the block size, a **full block of padding** is appended (e.g., 16 bytes of <code>0x10</code>) to prevent decryption ambiguity.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-settings"></i>4. AES Block Structure and Rounds</div>
+          <div class="highlight-box">
+            AES (Advanced Encryption Standard) is a Rijndael block cipher. It maps a 128-bit (16-byte) block into a 4x4 matrix of bytes called the **State**. 
+            Each round (10 for AES-128, 12 for AES-192, 14 for AES-256) applies four steps:
+            <ol style="margin-left: 20px; margin-top: 10px;">
+              <li><strong>SubBytes:</strong> Substitution S-box mapping bytes non-linearly to prevent mathematical algebraic exploits.</li>
+              <li><strong>ShiftRows:</strong> Circular shift transpositions of the State rows (row 0: 0 bytes, row 1: 1 byte, row 2: 2 bytes, row 3: 3 bytes).</li>
+              <li><strong>MixColumns:</strong> Matrix multiplication over Galois Fields (GF(2<sup>8</sup>)) to diffuse changes across columns.</li>
+              <li><strong>AddRoundKey:</strong> Bitwise XOR of the State with the subkey derived from the master key.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 5 -->
+      <div class="topic" id="topic-ch5">
+        <div class="page-tag tag-rose"><i class="ti ti-binary"></i>Chapter 05</div>
+        <h1 class="page-title">Asymmetric Cryptography</h1>
+        <p class="page-subtitle">Public/private keypairs, prime integer arithmetic, RSA key generation proof, and Elliptic Curve security benefits.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-repeat"></i>1. Asymmetric Model Concept</div>
+          <div class="def-card">
+            Symmetric ciphers suffer from the **Key Distribution Problem**: how do two remote parties securely share a key without a secure channel? Asymmetric cryptography solves this by using mathematically linked keypairs:
+            <ul>
+              <li><strong>Public Key:</strong> Shared openly with the world. Anyone can use it to encrypt messages or verify signatures.</li>
+              <li><strong>Private Key:</strong> Kept secret by the owner. Only the owner can use it to decrypt messages or sign payloads.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-math"></i>2. Mathematical Principles & RSA Keygen Proof</div>
+          <p>RSA (Rivest-Shamir-Adleman) relies on the **Trapdoor One-Way Function** of prime factorization: multiplying two large primes is easy, but factoring the resulting modulus back into primes is computationally infeasible.</p>
+          <div class="def-card">
+            <strong>RSA Key Generation Algorithm:</strong><br>
+            1. Select two prime integers: <code>p = 61</code> and <code>q = 53</code>.<br>
+            2. Compute modulus:
+            <div class="math-formula">n = p * q = 61 * 53 = 3233</div>
+            3. Compute Euler Totient:
+            <div class="math-formula">φ(n) = (p - 1)(q - 1) = 60 * 52 = 3120</div>
+            4. Choose public exponent <code>e</code> such that <code>gcd(e, φ(n)) == 1</code>. Let <code>e = 17</code>.<br>
+            5. Calculate private exponent <code>d</code> as the modular multiplicative inverse: <code>d * e ≡ 1 mod φ(n)</code>.
+            Using the Extended Euclidean Algorithm:
+            <div class="math-formula">d = 17^-1 mod 3120 = 2753</div>
+            6. Public Key is <code>(e=17, n=3233)</code>. Private Key is <code>(d=2753, n=3233)</code>.
+          </div>
+          <div class="highlight-box">
+            <strong>RSA Encryption & Decryption Example:</strong><br>
+            Let message be <code>M = 65</code>.<br>
+            • <strong>Encrypt:</strong>
+            <div class="math-formula">C = M^e mod n = 65^17 mod 3233 = 2790</div>
+            • <strong>Decrypt:</strong>
+            <div class="math-formula">M = C^d mod n = 2790^2753 mod 3233 = 65</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-arcs"></i>3. Elliptic Curve Cryptography (ECC)</div>
+          <p class="page-subtitle">Stronger security bounds using curve coordinates (y² = x³ + ax + b) with significantly smaller key sizes.</p>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Security Strength (Bits)</th>
+                <th>Symmetric Key Size (AES)</th>
+                <th>Equivalent RSA Key size</th>
+                <th>Equivalent ECC Key size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>80 (Legacy)</strong></td>
+                <td>80 bits</td>
+                <td>1024 bits</td>
+                <td>160 bits</td>
+              </tr>
+              <tr>
+                <td><strong>112 (Deprecated)</strong></td>
+                <td>112 bits</td>
+                <td>2048 bits</td>
+                <td>224 bits</td>
+              </tr>
+              <tr>
+                <td><strong>128 (Secure)</strong></td>
+                <td>128 bits</td>
+                <td>3072 bits</td>
+                <td>256 bits</td>
+              </tr>
+              <tr>
+                <td><strong>256 (Highly Secure)</strong></td>
+                <td>256 bits</td>
+                <td>15360 bits</td>
+                <td>512 bits</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>By shifting to 256-bit ECC, devices gain equivalent security to 3072-bit RSA while reducing processing overhead, transmission packet sizes, and memory usage. This is critical for mobile networks, smart cards, and IoT sensors.</p>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 6 -->
+      <div class="topic" id="topic-ch6">
+        <div class="page-tag tag-rose"><i class="ti ti-hash"></i>Chapter 06</div>
+        <h1 class="page-title">Hash Functions</h1>
+        <p class="page-subtitle">One-way mathematical maps, preimage resistance properties, the Avalanche Effect, and the Birthday Paradox collision math.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-key"></i>1. Core Properties of Cryptographic Hashes</div>
+          <div class="def-card">
+            A cryptographic hash function takes an arbitrary-sized input message and map-digests it into a fixed-size bit string (e.g. 256 bits for SHA-256). It must satisfy:
+            <ul>
+              <li><strong>Pre-image Resistance:</strong> One-way nature. Given hash <code>h</code>, it must be computationally impossible to reconstruct any input <code>x</code> such that <code>H(x) == h</code>.</li>
+              <li><strong>Second Pre-image Resistance:</strong> Given a specific input <code>x1</code>, it must be impossible to find a different input <code>x2</code> that hashes to the same value: <code>H(x1) == H(x2)</code>.</li>
+              <li><strong>Collision Resistance:</strong> It must be impossible to find *any* two arbitrary distinct inputs <code>x</code> and <code>y</code> such that <code>H(x) == H(y)</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-bolt"></i>2. The Avalanche Effect</div>
+          <p>The <strong>Avalanche Effect</strong> means a single bit change in the input completely alters the output digest, making the new hash appear uncorrelated with the original. This prevents attackers from guessing the input based on changes in the output.</p>
+          <div class="highlight-box">
+            <strong>Example using SHA-256:</strong><br>
+            • <code>SHA-256("test")</code> = <code>9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08</code><br>
+            • <code>SHA-256("test1")</code> = <code>1b4f90f239384752c00223df1f82f2c8d239103e3f43cd3f21822cd15b0f00b21</code>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-calculator"></i>3. Collision Math: The Birthday Paradox</div>
+          <p class="page-subtitle">Why finding collisions is much easier than finding the original input for a given hash.</p>
+          <div class="def-card">
+            The **Birthday Paradox** shows that in a room of just 23 random people, there is a 50.7% chance that at least two share the same birthday, even though there are 365 possible birthdays. 
+            Applying this to hash collisions:
+            <br>
+            For a hash function with an output size of <code>n</code> bits (giving 2<sup>n</sup> possible hashes), the number of random inputs needed to find a collision with a 50% probability is not 2<sup>n</sup>, but only:
+            <div class="math-formula">Operations to Collision ≈ sqrt(2^n) = 2^(n/2)</div>
+            Consequently:
+            <br>• For <strong>MD5</strong> (128-bit): Collisions can be found in just 2<sup>64</sup> iterations (practically broken).
+            <br>• For <strong>SHA-256</strong> (256-bit): Collisions require 2<sup>128</sup> operations, which is still computationally infeasible today.
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 7 -->
+      <div class="topic" id="topic-ch7">
+        <div class="page-tag tag-rose"><i class="ti ti-fingerprint"></i>Chapter 07</div>
+        <h1 class="page-title">Digital Signatures</h1>
+        <p class="page-subtitle">Assuring authenticity, integrity, and non-repudiation using asymmetric key pairs.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-signature"></i>1. Step-by-Step Signing and Verification Mechanics</div>
+          <div class="def-card">
+            Asymmetric ciphers are slow and cannot process large files directly. Digital signatures solve this by hashing the message first, then encrypting the hash with the sender's private key.
+          </div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">Signing Process (Sender A)</div>
+              <ol style="margin-left: 20px; color: var(--green);">
+                <li>Sender computes the hash of message <code>M</code>: <code>h = H(M)</code>.</li>
+                <li>Sender encrypts hash <code>h</code> with their private key: <code>S = D(h, K_private_A)</code>.</li>
+                <li>Sender transmits message <code>M</code> and Signature <code>S</code> together.</li>
+              </ol>
+            </div>
+            <div class="cons">
+              <div class="col-title">Verification Process (Receiver B)</div>
+              <ol style="margin-left: 20px; color: var(--red);">
+                <li>Receiver computes the hash of received message <code>M</code>: <code>h' = H(M)</code>.</li>
+                <li>Receiver decrypts signature <code>S</code> using Sender's public key: <code>h = E(S, K_public_A)</code>.</li>
+                <li>If <code>h' == h</code>, the signature is valid.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-math"></i>2. Mathematical Proof of RSA Signatures</div>
+          <p>Using the RSA key generation properties, where <code>e</code> and <code>d</code> are mathematically linked modular inverses:</p>
+          <div class="math-formula">
+            Signing: S = H(M)^d mod n  |  Verification: H(M)' = S^e mod n<br><br>
+            Proof: S^e mod n = (H(M)^d)^e mod n = H(M)^(d*e) mod n = H(M)^1 mod n = H(M)
+          </div>
+          <p>Because only the owner has the private key <code>d</code>, only they can generate signature <code>S</code>. Anyone with the public key <code>e</code> can verify it, proving the message's origin (authentication) and that it has not been modified (integrity).</p>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 8 -->
+      <div class="topic" id="topic-ch8">
+        <div class="page-tag tag-rose"><i class="ti ti-certificate"></i>Chapter 08</div>
+        <h1 class="page-title">Certificates & PKI</h1>
+        <p class="page-subtitle">Managing trust, X.509 certificate formats, certificate chains, and revocation validation.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-certificate"></i>1. X.509 Certificate Fields</div>
+          <div class="def-card">
+            A digital certificate is a cryptographically signed document that binds a public key to an entity's identity (e.g. a domain name). Standardized under the **X.509** format, it contains:
+            <ul style="margin-left: 20px; margin-top: 10px;">
+              <li><strong>Subject:</strong> The entity owning the public key (e.g., Common Name: <code>cnotes.io</code>).</li>
+              <li><strong>Issuer:</strong> The Certificate Authority (CA) that validated the entity and signed the certificate.</li>
+              <li><strong>Public Key:</strong> The entity's public key (RSA or ECC coordinates).</li>
+              <li><strong>Signature Algorithm:</strong> The algorithm used to sign the certificate (e.g. <code>sha256WithRSAEncryption</code>).</li>
+              <li><strong>Validity Period:</strong> The start and end dates for the certificate.</li>
+              <li><strong>CA Signature:</strong> The cryptographic signature of the Issuer CA, generated using the CA's private key.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-hierarchy"></i>2. The Certificate Chain of Trust</div>
+          <p class="page-subtitle">How browsers trust certificates by tracing them back to built-in Root CAs.</p>
+          <pre class="pre-wrap">
++------------------------+
+|   Root CA Certificate  | -> Built into browser/OS trust store. Self-signed.
++------------------------+
+           | Signs
++------------------------+
+| Intermediate CA Cert   | -> Signed by Root. Used to sign leaf certs to protect root.
++------------------------+
+           | Signs
++------------------------+
+|   Leaf Certificate     | -> Installed on the web server (e.g., cnotes.io).
++------------------------+
+          </pre>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield-x"></i>3. Certificate Revocation: CRL vs. OCSP</div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">CRL (Certificate Revocation List)</div>
+              <ul>
+                <li>The CA publishes a signed list of revoked certificate serial numbers.</li>
+                <li>Clients download the entire list periodically to verify certificate status.</li>
+                <li><strong>Drawbacks:</strong> High bandwidth usage, latency, and lists can become stale.</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <div class="col-title">OCSP (Online Certificate Status Protocol)</div>
+              <ul>
+                <li>Clients query the CA's server directly to verify a certificate's status.</li>
+                <li><strong>OCSP Stapling:</strong> The web server queries the CA's status periodically, signs the response, and sends ("staples") it to the client during the TLS handshake, reducing latency and protecting privacy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 9 -->
+      <div class="topic" id="topic-ch9">
+        <div class="page-tag tag-rose"><i class="ti ti-broadcast"></i>Chapter 09</div>
+        <h1 class="page-title">TLS / SSL</h1>
+        <p class="page-subtitle">Transport Layer Security: comparing TLS 1.2 vs 1.3 handshakes, and step-by-step connection walkthroughs.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shuffle"></i>1. Comparison: TLS 1.2 vs. TLS 1.3</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>TLS 1.2 Handshake</th>
+                <th>TLS 1.3 Handshake</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Round Trips (RTT)</strong></td>
+                <td>2-RTT (requires 2 round trips before sending encrypted data).</td>
+                <td>1-RTT (requires only 1 round trip, reducing latency).</td>
+              </tr>
+              <tr>
+                <td><strong>Key Exchange</strong></td>
+                <td>Supports RSA, Static DH, and Ephemeral DH.</td>
+                <td>Mandates Ephemeral DH (ECDHE/DHE) to guarantee **Forward Secrecy**.</td>
+              </tr>
+              <tr>
+                <td><strong>0-RTT Mode</strong></td>
+                <td>Not supported.</td>
+                <td>Supported (allows returning clients to send encrypted data on the first request).</td>
+              </tr>
+              <tr>
+                <td><strong>Cipher Suites</strong></td>
+                <td>Supports old, weak ciphers (RC4, 3DES, CBC mode).</td>
+                <td>Only supports highly secure AEAD ciphers (AES-GCM, ChaCha20-Poly1305).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-left-right"></i>2. TLS 1.3 Handshake Sequence</div>
+          <pre class="pre-wrap">
+Client                                                              Server
+  |                                                                   |
+  |---- ClientHello (Supported ciphers, DH key share A=g^a mod p) --->|
+  |                                                                   |
+  |                                 [Server selects cipher suite]     |
+  |                                 [Calculates Shared Secret]        |
+  |<--- ServerHello (Selected cipher, DH key share B=g^b mod p) ------|
+  |<--- Server Certificate & Signature (Signed with CA Private Key) --|
+  |<--- Finished (Encrypted validation tag) --------------------------|
+  |                                                                   |
+  | [Client verifies Server Certificate]                              |
+  | [Calculates Shared Secret]                                        |
+  |---- Finished (Encrypted validation tag) ------------------------->|
+  |                                                                   |
+  |<================== Encrypted Application Data ===================>|
+          </pre>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 10 -->
+      <div class="topic" id="topic-ch10">
+        <div class="page-tag tag-rose"><i class="ti ti-shield-lock"></i>Chapter 10</div>
+        <h1 class="page-title">Message Authentication Codes</h1>
+        <p class="page-subtitle">Symmetric checksum authentication, hash vulnerabilities, and the HMAC nested mathematical structure.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>1. Why plain Hashes cannot Authenticate Messages</div>
+          <div class="def-card">
+            A cryptographic hash function (like SHA-256) guarantees **Integrity**, but not **Authenticity**. If a message is sent over an insecure network along with its hash, an attacker can modify the message, calculate a new hash for the modified message, and replace the original hash. The receiver will compute the new hash and accept the modified message as valid.
+            <br><br>
+            To prevent this, we use a **Message Authentication Code (MAC)**, which requires a **shared secret key** to compute the tag.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-settings"></i>2. HMAC Mathematical Formula & Design</div>
+          <p>Constructing a MAC by simply prepending the key to the message (<code>H(Key || Message)</code>) is vulnerable to **Length Extension Attacks** in ciphers using the Merkle-Damgård construction (SHA-1, SHA-2). An attacker can append data to the message and compute a valid hash for the extended message without knowing the key.</p>
+          <div class="highlight-box">
+            To prevent length extension attacks, **HMAC** (Hash-based MAC) uses a nested structure with inner and outer padding:
+            <div class="math-formula">
+              HMAC(K, m) = H( (K ⊕ opad) || H( (K ⊕ ipad) || m ) )
+            </div>
+            • <code>K</code>: The shared secret key (padded to the block size of the hash function).<br>
+            • <code>opad</code>: Outer padding (constant byte value <code>0x5C</code> repeated).<br>
+            • <code>ipad</code>: Inner padding (constant byte value <code>0x36</code> repeated).<br>
+            • <code>⊕</code>: Bitwise XOR operation.<br>
+            • <code>||</code>: Concatenation.
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 11 -->
+      <div class="topic" id="topic-ch11">
+        <div class="page-tag tag-rose"><i class="ti ti-tool"></i>Chapter 11</div>
+        <h1 class="page-title">Key Management</h1>
+        <p class="page-subtitle">The key lifecycle: generation entropy rules, key storage security (HSMs), rotation strategies, and split secrets.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-refresh"></i>1. Key Lifecycle Phases</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-settings-automation"></i>1. Generation & Entropy</h3>
+              <p>Keys must be generated using high-entropy random number generators (CSPRNG) inside secure boundary hardware modules. Weak entropy allows attackers to predict generated keys.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-shield-lock"></i>2. Secure Storage</h3>
+              <p>Private keys should never be stored in plain configurations or application source code. Always use dedicated Hardware Security Modules (HSMs) or cloud Key Management Services (KMS).</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-refresh"></i>3. Rotation</h3>
+              <p>Keys must be rotated periodically (e.g. every 90 days) to limit the amount of ciphertext encrypted under a single key, reducing the impact if a key is compromised.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-trash"></i>4. Destruction</h3>
+              <p>When a key is retired or revoked, it must be securely deleted from all systems and media to prevent decryption of historical archives (ensuring Forward Secrecy).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-database"></i>2. KMS & HSM Hardware Boundaries</div>
+          <div class="def-card">
+            • <strong>HSM (Hardware Security Module):</strong> A physical tamper-resistant device that generates, stores, and protects keys. Keys never leave the HSM in plaintext; all cryptographic operations (encryption, decryption, signing) are executed inside the module's secure memory boundary.<br>
+            • <strong>KMS (Key Management Service):</strong> A cloud service (e.g. AWS KMS, GCP KMS) that manages key lifecycles and enforces access policies (IAM) for keys, while using HSMs on the backend.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-fork"></i>3. Shamir's Secret Sharing (SSS)</div>
+          <p>To secure highly sensitive keys (like root keys), **Shamir's Secret Sharing** splits a secret into <code>N</code> unique shares. The secret can only be reconstructed if a threshold of <code>T</code> shares (where <code>T &le; N</code>) are combined, preventing a single point of failure or compromise.</p>
+          <div class="math-formula">
+            SSS relies on polynomial interpolation: any point on a 2D graph can reconstruct a polynomial of degree T-1 if T distinct coordinates are known.
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 12 -->
+      <div class="topic" id="topic-ch12">
+        <div class="page-tag tag-rose"><i class="ti ti-arrows-left-right"></i>Chapter 12</div>
+        <h1 class="page-title">Diffie-Hellman Key Exchange</h1>
+        <p class="page-subtitle">Negotiating shared secrets over public channels, mathematical validation proof, and MITM vulnerabilities.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-left-right"></i>1. Diffie-Hellman Exchange Walkthrough</div>
+          <div class="def-card">
+            Diffie-Hellman allows two remote parties (Alice and Bob) to establish a shared symmetric session key over insecure public channels without sending keys directly.
+          </div>
+          <div class="highlight-box">
+            <strong>Step-by-step Math:</strong><br>
+            1. Alice and Bob agree on public parameters: a prime modulus <code>p = 23</code> and generator <code>g = 5</code>.<br>
+            2. Alice chooses private exponent <code>a = 6</code>, computes public value <code>A</code>:
+            <div class="math-formula">A = g^a mod p = 5^6 mod 23 = 8</div>
+            3. Bob chooses private exponent <code>b = 15</code>, computes public value <code>B</code>:
+            <div class="math-formula">B = g^b mod p = 5^15 mod 23 = 19</div>
+            4. Alice and Bob swap public values <code>A</code> and <code>B</code>.<br>
+            5. Alice computes shared secret <code>S</code>:
+            <div class="math-formula">S = B^a mod p = 19^6 mod 23 = 2</div>
+            6. Bob computes shared secret <code>S</code>:
+            <div class="math-formula">S = A^b mod p = 8^15 mod 23 = 2</div>
+            Both arrive at the identical shared secret <code>2</code> without exposing their private exponents!
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-math"></i>2. Mathematical Proof of Equality</div>
+          <div class="math-formula">
+            Alice's calculation: S_Alice = B^a mod p = (g^b mod p)^a mod p = g^(b*a) mod p<br>
+            Bob's calculation: S_Bob = A^b mod p = (g^a mod p)^b mod p = g^(a*b) mod p<br><br>
+            Since multiplication is commutative (a * b = b * a), g^(a*b) ≡ g^(b*a) mod p.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>3. Man-in-the-Middle (MITM) Vulnerability</div>
+          <div class="warning-box">
+            <strong>Active MITM Vulnerability:</strong> Anonymous Diffie-Hellman does not authenticate the identities of the participants. An active attacker (Eve) can intercept A's public share and exchange a separate key with Alice, while simultaneously exchanging a key with Bob, decrypting and re-encrypting all traffic passing between them.
+            <br><br>
+            <strong>Mitigation:</strong> Authenticate key exchanges by signing the public key shares using digital signatures and certificates (e.g. ECDHE-RSA or ECDHE-ECDSA in TLS).
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 13 -->
+      <div class="topic" id="topic-ch13">
+        <div class="page-tag tag-rose"><i class="ti ti-chart-arcs"></i>Chapter 13</div>
+        <h1 class="page-title">Elliptic Curve Cryptography (ECC)</h1>
+        <p class="page-subtitle">Coordinate geometry, point arithmetic equations, and curve standards (secp256k1 & Curve25519).</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-infinity"></i>1. Elliptic Curve Coordinates & Point Arithmetic</div>
+          <div class="def-card">
+            Elliptic curve cryptography utilizes curves defined by the algebraic equation:
+            <div class="math-formula">y² = x³ + ax + b</div>
+            The coordinates of points on the curve form a group under a defined addition operation:
+            <ul>
+              <li><strong>Point Addition (P + Q):</strong> Draw a line through points P and Q. The line will intersect the curve at a third point, R. Reflect R across the x-axis to find the sum point: <code>P + Q = -R</code>.</li>
+              <li><strong>Point Doubling (2P):</strong> Draw a tangent line to the curve at point P. The line will intersect the curve at another point. Reflect this point across the x-axis to find <code>2P</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>2. The Discrete Logarithm Problem on Curves (ECDLP)</div>
+          <p>Given a starting point <code>P</code> (generator) and a scalar multiplier <code>k</code> (private key), we compute the public key point <code>Q = k * P</code> by repeatedly doubling and adding.
+          <br><br>
+          The security of ECC relies on the difficulty of finding the scalar <code>k</code> given only points <code>P</code> and <code>Q</code>. This is the **Elliptic Curve Discrete Logarithm Problem (ECDLP)**, for which there are no known sub-exponential time solving algorithms.</p>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-activity"></i>3. Industry Standard Curves</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>secp256k1</h3>
+              <p>A Koblitz curve defined by <code>y² = x³ + 7 mod p</code>. 
+              Used in Bitcoin, Ethereum, and other cryptocurrencies due to its efficient point addition properties.</p>
+            </div>
+            <div class="card">
+              <h3>Curve25519</h3>
+              <p>A Montgomery curve optimized for fast ECDH key exchanges. 
+              Designed by Daniel J. Bernstein, it is highly resistant to timing attacks and is the standard curve for SSH, TLS 1.3, Signal, and WireGuard.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 14 -->
+      <div class="topic" id="topic-ch14">
+        <div class="page-tag tag-rose"><i class="ti ti-salt"></i>Chapter 14</div>
+        <h1 class="page-title">Password Security</h1>
+        <p class="page-subtitle">Protecting password databases: salts (preventing rainbow tables), peppers, and key stretching ciphers.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-database-off"></i>1. Why Simple Hashes Fail for Passwords</div>
+          <div class="def-card">
+            Hash functions like MD5 or SHA-256 are designed to be fast, which makes them insecure for password storage. An attacker with a stolen database can use GPUs to test millions of passwords per second.
+            <br><br>
+            Furthermore, without unique salting, users with identical passwords will have identical hashes, allowing attackers to crack multiple accounts simultaneously using **Rainbow Tables** (pre-computed lists of common passwords and their hashes).
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield-lock"></i>2. Salt vs. Pepper</div>
+          <div class="pros-cons">
+            <div class="pros">
+              <div class="col-title">Cryptographic Salt</div>
+              <ul>
+                <li>A unique, cryptographically random string generated for each user.</li>
+                <li>Appended to the password before hashing and stored in plaintext in the database alongside the hash.</li>
+                <li><strong>Purpose:</strong> Ensures identical passwords yield different hashes, preventing rainbow table attacks.</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <div class="col-title">Cryptographic Pepper</div>
+              <ul>
+                <li>A secret key appended to all passwords before hashing.</li>
+                <li>Stored separately from the database (e.g. in environment variables or an HSM).</li>
+                <li><strong>Purpose:</strong> Prevents attackers from cracking passwords even if they steal the database, as they still lack the pepper.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-refresh"></i>3. Key Stretching Algorithms</div>
+          <p class="page-subtitle">Using slow, memory-hard algorithms to resist brute-force attacks.</p>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>bcrypt</h3>
+              <p>Based on the Blowfish cipher. Uses a configurable cost parameter to increase the number of hashing rounds, slowing down brute-force attempts.</p>
+            </div>
+            <div class="card">
+              <h3>scrypt</h3>
+              <p>Designed to require a large amount of memory, making it highly resistant to parallel attacks using custom hardware (ASICs/GPUs).</p>
+            </div>
+            <div class="card">
+              <h3>Argon2id</h3>
+              <p>The winner of the Password Hashing Competition (2015). Provides configurable memory, time, and parallelization parameters. Highly secure.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-code"></i>4. Code Implementation: Hashing with bcrypt</div>
+          <p class="page-subtitle">A standard implementation using Node.js to hash and verify passwords securely.</p>
+          <pre class="code-block">
+<span class="keyword">const</span> bcrypt = <span class="func">require</span>(<span class="string">'bcrypt'</span>);
+
+<span class="comment">// Hash a password</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="func">hashPassword</span>(<span class="param">password</span>) {
+  <span class="keyword">const</span> saltRounds = <span class="string">12</span>; // Cost factor (2^12 rounds)
+  <span class="keyword">const</span> hash = <span class="keyword">await</span> bcrypt.<span class="func">hash</span>(password, saltRounds);
+  <span class="keyword">return</span> hash;
+}
+
+<span class="comment">// Verify a password match</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="func">verifyPassword</span>(<span class="param">password</span>, <span class="param">storedHash</span>) {
+  <span class="keyword">const</span> match = <span class="keyword">await</span> bcrypt.<span class="func">compare</span>(password, storedHash);
+  <span class="keyword">return</span> match;
+}
+          </pre>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 15 -->
+      <div class="topic" id="topic-ch15">
+        <div class="page-tag tag-rose"><i class="ti ti-search"></i>Chapter 15</div>
+        <h1 class="page-title">Cryptographic Attacks</h1>
+        <p class="page-subtitle">Understanding attack classes: ciphertext-only, chosen-plaintext, timing, and padding oracle attacks.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>1. Attack Classifications</div>
+          <table class="schema-table">
+            <thead>
+              <tr>
+                <th>Attack Class</th>
+                <th>Attacker Capability</th>
+                <th>Example Exploits</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ciphertext-Only (COA)</strong></td>
+                <td>Attacker only has access to encrypted ciphertexts.</td>
+                <td>Frequency analysis, brute force key exhaustion.</td>
+              </tr>
+              <tr>
+                <td><strong>Known-Plaintext (KPA)</strong></td>
+                <td>Attacker has access to pairs of plaintext and corresponding ciphertext.</td>
+                <td>Linear cryptanalysis, historical decryption of static files.</td>
+              </tr>
+              <tr>
+                <td><strong>Chosen-Plaintext (CPA)</strong></td>
+                <td>Attacker can obtain ciphertexts for any arbitrary plaintexts they choose.</td>
+                <td>Differential cryptanalysis, block size determination.</td>
+              </tr>
+              <tr>
+                <td><strong>Chosen-Ciphertext (CCA)</strong></td>
+                <td>Attacker can obtain decryptions of any arbitrary ciphertexts they choose.</td>
+                <td>Manger's attack on RSA, Padding Oracle attacks.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-clock"></i>2. Side-Channel and Timing Attacks</div>
+          <div class="def-card">
+            • <strong>Side-Channel Attack:</strong> Analyzes physical characteristics of the cryptographic implementation (e.g. power consumption, electromagnetic emissions) rather than the math itself.<br>
+            • <strong>Timing Attack:</strong> Measures how long a cryptographic operation takes to complete. If string comparisons return early on mismatches (e.g., <code>"apple" === "apricot"</code> returns on index 2), an attacker can guess signature signatures byte-by-byte.
+            <br><br>
+            <strong>Mitigation:</strong> Always use **constant-time comparison** algorithms for secret keys and MAC tags.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-circle-off"></i>3. Padding Oracle Attack</div>
+          <p>A padding oracle attack targets block ciphers in CBC mode. If the decryption server returns different error messages for invalid padding vs. invalid keys/signatures, an attacker can modify ciphertext bytes and send them to the server to decrypt messages byte-by-byte without knowing the key.</p>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 16 -->
+      <div class="topic" id="topic-ch16">
+        <div class="page-tag tag-rose"><i class="ti ti-numbers"></i>Chapter 16</div>
+        <h1 class="page-title">Random Number Generation</h1>
+        <p class="page-subtitle">Entropy, predictability, PRNGs, CSPRNGs, and Linux kernel entropy pools.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-refresh"></i>1. Types of Random Number Generators</div>
+          <div class="card-grid-3">
+            <div class="card">
+              <h3>PRNG</h3>
+              <p>Pseudo-Random Number Generator. Uses mathematical formulas to generate sequences of numbers from a seed value. Fast but deterministic; if the seed is known, the entire sequence is predictable.</p>
+            </div>
+            <div class="card">
+              <h3>CSPRNG</h3>
+              <p>Cryptographically Secure PRNG. Guaranteed to pass statistical randomness tests and be mathematically unpredictable. Essential for generating keys, salts, and session tokens.</p>
+            </div>
+            <div class="card">
+              <h3>TRNG</h3>
+              <p>True Random Number Generator. Uses physical noise (e.g., thermal fluctuation, radio interference) as entropy. Slow but truly non-deterministic.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-cpu"></i>2. Operating System Entropy Pools</div>
+          <p class="page-subtitle">How Linux collects entropy and exposes random devices to userspace.</p>
+          <div class="def-card">
+            The Linux kernel gathers environmental noise (keyboard input, mouse movements, disk seek times) into an entropy pool.
+            <ul>
+              <li><code>/dev/random</code>: Blocks execution if the entropy pool runs dry. Highly secure but slow.</li>
+              <li><code>/dev/urandom</code>: Does not block; if entropy runs dry, it uses a CSPRNG to generate values. Recommended for almost all production security tasks.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-triangle"></i>3. Predictable Hashing Disasters (e.g., Dual_EC_DRBG)</div>
+          <div class="warning-box">
+            In 2013, documents leaked by Edward Snowden confirmed that the NSA had inserted a backdoor into the <strong>Dual_EC_DRBG</strong> standard (an elliptic curve PRNG). By choosing specific public curve parameters, they could predict future random outputs, allowing them to decrypt TLS connections.
+            <br><br>
+            <strong>Developer Rule:</strong> Never use predictable PRNGs like <code>Math.random()</code> in Javascript for security tasks, as their internal states can be reconstructed from just a few outputs. Always use <code>crypto.getRandomValues()</code>.
+          </div>
+        </div>
+      </div>
+    
+      <!-- ROADMAP CHAPTER 17 -->
+      <div class="topic" id="topic-ch17">
+        <div class="page-tag tag-rose"><i class="ti ti-apps"></i>Chapter 17</div>
+        <h1 class="page-title">Modern Applications</h1>
+        <p class="page-subtitle">Real-world cryptographic implementations: Signal's Double Ratchet, PGP, WireGuard, and Zero-Knowledge Proofs.</p>
+        
+        <div class="section">
+          <div class="section-title"><i class="ti ti-route"></i>1. Signal Protocol: Double Ratchet & X3DH</div>
+          <div class="def-card">
+            The Signal Protocol is the industry standard for E2EE messaging.
+            <ul>
+              <li><strong>X3DH (Extended Triple Diffie-Hellman):</strong> Establishes a shared secret session key between two parties, even if one is offline, using pre-published public keys.</li>
+              <li><strong>Double Ratchet:</strong> Updates session keys dynamically for every message exchanged using a combination of KDF chains and ephemeral ECDH exchanges. This guarantees **Forward Secrecy** and **Break-in Recovery** (compromising one key does not expose past or future messages).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-mail"></i>2. PGP (Pretty Good Privacy)</div>
+          <p>PGP encrypts emails and files using a hybrid model:
+          <br>1. Plaintext is encrypted with a fast, random symmetric key (e.g. AES).
+          <br>2. The symmetric key is encrypted using the recipient's public key (RSA) and appended to the message.
+          <br>3. Recipient uses their private key to decrypt the symmetric key, then decrypts the message payload.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock"></i>3. WireGuard VPN</div>
+          <p>A modern VPN protocol that uses **Cryptographic Key Routing**. It binds tunnel IP addresses to peer public keys, using Curve25519 (ECDH), ChaCha20-Poly1305 (encryption), and BLAKE2s (hashing) to provide faster, simpler connections than IPsec or OpenVPN.</p>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-cpu"></i>4. Zero-Knowledge Proofs (ZKP)</div>
+          <p>ZKP is a cryptographic method that allows one party (the prover) to prove to another party (the verifier) that they know a secret value without revealing any information about the secret itself (e.g., proving identity without revealing the password).</p>
+        </div>
+      </div>
+    \n    </div><!-- end main -->\n  </div><!-- end app -->\n
+  <script>
+    // ── Topic order for Prev / Next ─────────────────────────────
+    const TOPIC_ORDER = [
+      'intro', 'lifecycle', 'files', 'sockets', 
+      'crypto_analysis', 'threat_model', 'journey', 'weaknesses', 'diagrams',
+      'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9', 'ch10',
+      'ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16', 'ch17'
+    ];
+
+    const NAV_LABELS = {
+      intro: 'System Overview',
+      lifecycle: 'E2E Encryption Flow',
+      files: 'File Level Breakdown',
+      sockets: 'Socket Architecture',
+      crypto_analysis: 'Cryptographic Analysis',
+      threat_model: 'Threat Model',
+      journey: 'Message Journey',
+      weaknesses: 'Weakness & Refactor',
+      diagrams: 'System Diagrams',
+      ch1: '01. Fundamentals',
+      ch2: '02. Goals of Cryptography',
+      ch3: '03. Classical Cryptography',
+      ch4: '04. Symmetric Key Crypto',
+      ch5: '05. Asymmetric Crypto',
+      ch6: '06. Hash Functions',
+      ch7: '07. Digital Signatures',
+      ch8: '08. Certificates & PKI',
+      ch9: '09. TLS / SSL',
+      ch10: '10. Message Auth Code',
+      ch11: '11. Key Management',
+      ch12: '12. Diffie-Hellman',
+      ch13: '13. Elliptic Curves (ECC)',
+      ch14: '14. Password Security',
+      ch15: '15. Cryptographic Attacks',
+      ch16: '16. Random Numbers (RNG)',
+      ch17: '17. Modern Applications'
+    };
+
+    let currentId = 'intro';
+
+    function show(id) {
+      document.querySelectorAll('.topic').forEach(t => t.classList.remove('visible'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const t = document.getElementById('topic-' + id);
+      const n = document.getElementById('nav-' + id);
+      if (t) t.classList.add('visible');
+      if (n) { 
+        n.classList.add('active'); 
+        n.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+      }
+      
+      // Update mobile navbar title
+      const titleEl = document.getElementById('mobileNavTitle');
+      if (titleEl && NAV_LABELS[id]) titleEl.textContent = NAV_LABELS[id];
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const main = document.querySelector('.main');
+      if (main) main.scrollTop = 0;
+      
+      // Update arrows and track current
+      currentId = id;
+      updateNavArrows(id);
+      
+      // Persist current topic to localStorage
+      try { 
+        localStorage.setItem('crypto_topic', id); 
+        localStorage.setItem('crypto_topic_time', Date.now()); 
+      } catch(e) {}
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function updateNavArrows(id) {
+      const idx = TOPIC_ORDER.indexOf(id);
+      const prevId = idx > 0 ? TOPIC_ORDER[idx - 1] : null;
+      const nextId = idx < TOPIC_ORDER.length - 1 ? TOPIC_ORDER[idx + 1] : null;
+      document.querySelectorAll('.topic-nav-bar').forEach(bar => {
+        const prevBtn = bar.querySelector('.prev');
+        const nextBtn = bar.querySelector('.next');
+        if (prevBtn) {
+          if (prevId) {
+            prevBtn.style.visibility = 'visible';
+            prevBtn.onclick = () => show(prevId);
+            const nm = prevBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[prevId] || prevId;
+          } else {
+            prevBtn.style.visibility = 'hidden';
+          }
+        }
+        if (nextBtn) {
+          if (nextId) {
+            nextBtn.style.visibility = 'visible';
+            nextBtn.onclick = () => show(nextId);
+            const nm = nextBtn.querySelector('.topic-nav-name');
+            if (nm) nm.textContent = NAV_LABELS[nextId] || nextId;
+          } else {
+            nextBtn.style.visibility = 'hidden';
+          }
+        }
+      });
+    }
+
+    function filterNav(q) {
+      q = q.toLowerCase();
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.style.display = (!q || n.textContent.toLowerCase().includes(q)) ? 'flex' : 'none';
+      });
+    }
+
+    // Toggle navigation functions...
+    function openSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      icon.className = 'ti ti-x';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const btn = document.getElementById('hamburgerBtn');
+      const icon = document.getElementById('hamburgerIcon');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      icon.className = 'ti ti-menu-2';
+      document.body.style.overflow = '';
+    }
+
+    function toggleNav() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    }
+
+    // ── Wire everything up after DOM is ready ───────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger
+      const btn = document.getElementById('hamburgerBtn');
+      if (btn) {
+        btn.addEventListener('click', e => { e.stopPropagation(); toggleNav(); });
+      }
+      
+      // Overlay tap closes sidebar
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+      }
+
+      // ── Inject Prev / Next bar into every topic ───────────────
+      const navBarHTML = `
+        <div class="topic-nav-bar">
+          <button class="topic-nav-btn prev" type="button" aria-label="Previous topic">
+            <i class="ti ti-arrow-left"></i>
+            <span class="topic-nav-label">
+              <span class="topic-nav-hint">Previous</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+          </button>
+          <button class="topic-nav-btn next" type="button" aria-label="Next topic">
+            <span class="topic-nav-label" style="text-align:right">
+              <span class="topic-nav-hint">Next</span>
+              <span class="topic-nav-name">—</span>
+            </span>
+            <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>`;
+      document.querySelectorAll('.topic').forEach(topic => {
+        topic.insertAdjacentHTML('beforeend', navBarHTML);
+      });
+
+      // ── Restore last visited topic from localStorage ──────────
+      let startId = 'intro';
+      try {
+        const saved = localStorage.getItem('crypto_topic');
+        if (saved && document.getElementById('topic-' + saved)) startId = saved;
+      } catch(e) {}
+      show(startId);
+    });
+
+    // Escape key closes sidebar
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Register service worker for PWA offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+
+</html>
