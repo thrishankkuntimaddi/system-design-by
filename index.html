@@ -184,6 +184,7 @@
     .card-api  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
     .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
     .card-ml   { --c: #a855f7;   --cg: rgba(168,85,247,.05) }
+    .card-genai { --c: #6366f1;   --cg: rgba(99,102,241,.05) }
     .card-dbms { --c: #f97316;   --cg: rgba(249,115,22,.05) }
     .card-crypto { --c: #e11d48;   --cg: rgba(225,29,72,.05) }
 
@@ -281,7 +282,7 @@
       </div>
     </div>
     <div class="topbar-right">
-      <i class="ti ti-bolt"></i> 9 subjects
+      <i class="ti ti-bolt"></i> 12 subjects
     </div>
   </header>
 
@@ -397,6 +398,21 @@
             <span class="tag">AI / ML</span>
             <span class="tag">Statistics</span>
             <span class="tag">Pipelines</span>
+          </div>
+          <i class="ti ti-arrow-right card-arrow"></i>
+        </div>
+      </a>
+
+      <a href="./subjects/genai_fluency/index.html" class="subject-card card-genai">
+        <span class="card-status status-live">LIVE</span>
+        <div class="card-icon"><i class="ti ti-sparkles"></i></div>
+        <div class="card-title">GenAI Fluency</div>
+        <div class="card-desc">Comprehensive reference covering GenAI concepts, Transformers, RAG architecture, LLM APIs, Agents, optimizations, and interview prep.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">Transformers</span>
+            <span class="tag">RAG & Agents</span>
+            <span class="tag">LLMOps</span>
           </div>
           <i class="ti ti-arrow-right card-arrow"></i>
         </div>
@@ -587,6 +603,34 @@
           ai_ethics: 'AI Ethics & Responsible AI',
           ml_pipeline: 'End-to-End ML Pipeline',
           interview_scenarios: 'Scenario-Based Interview Questions'
+        }
+      },
+      {
+        key: 'genai_topic',
+        href: './subjects/genai_fluency/index.html',
+        name: 'GenAI Fluency',
+        color: '#6366f1',
+        labels: {
+          intro: 'Roadmap & Goals',
+          ai_basics: 'Module 1: AI Basics',
+          trad_ml: 'Module 2: Traditional ML',
+          nlp_basics: 'Module 3: NLP Basics',
+          llm_basics: 'Module 4: LLM Basics',
+          l1_qa: 'L1: Interview Q&A',
+          transformer: 'Transformer Architecture',
+          gpt_bert: 'GPT vs BERT Deep Dive',
+          embeddings: 'Embeddings & Vector Search',
+          rag_pipeline: 'RAG Architecture & Pipeline',
+          prompt_eng: 'Prompt Engineering & System Prompts',
+          fine_tuning: 'Fine-Tuning, LoRA & PEFT',
+          l2_qa: 'L2: Interview Q&A',
+          ai_arch: 'AI Architecture & Latency',
+          agents: 'Agents & Multi-Agent Systems',
+          vector_dbs: 'Vector DBs & Indexing',
+          gen_models: 'Diffusion & GANs',
+          llm_opt: 'LLM Optimization',
+          eval_prod: 'Model Evaluation & Production',
+          l3_qa: 'L3: Interview Q&A'
         }
       },
       {
