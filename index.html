@@ -93,6 +93,137 @@
       padding: 36px 24px 64px;
     }
 
+    /* ── Hero Banner ────────────────────────────────────────── */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(22, 29, 46, 0.9) 0%, rgba(17, 21, 32, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(79, 142, 247, 0.15) 0%, rgba(124, 106, 245, 0) 70%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(124, 106, 245, 0.12) 0%, rgba(79, 142, 247, 0) 70%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+    }
+    
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(79, 142, 247, 0.1);
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(79, 142, 247, 0.2);
+      margin-bottom: 16px;
+    }
+    
+    .hero-title {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text);
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+    
+    .hero-title span {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .hero-stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .hero-stat-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--purple);
+      font-size: 13px;
+    }
+    
+    .hero-stat-text {
+      font-size: 12px;
+      color: var(--text2);
+      font-weight: 500;
+    }
+    
+    .hero-stat-text strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .hero-banner {
+        padding: 32px 24px;
+        margin-bottom: 24px;
+      }
+      .hero-title {
+        font-size: 26px;
+      }
+      .hero-subtitle {
+        font-size: 14px;
+      }
+      .hero-stats {
+        gap: 14px;
+      }
+    }
+
     /* Continue learning row (shown only when there's saved progress) */
     .section-label {
       font-size: 11px;
@@ -287,6 +418,31 @@
   </header>
 
   <div class="page">
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i class="ti ti-sparkles"></i> SDE INTERVIEW MASTER
+        </div>
+        <h1 class="hero-title">Computer Science &amp; System Design <span>Mastery Hub</span></h1>
+        <p class="hero-subtitle">Curated visual reference notes, interactive coding challenges, and key architectural insights designed to help you ace software engineering interviews from fundamentals to advanced systems.</p>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon"><i class="ti ti-books"></i></div>
+            <div class="hero-stat-text"><strong>12</strong> Subject Guides</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon" style="color: var(--blue)"><i class="ti ti-device-laptop"></i></div>
+            <div class="hero-stat-text"><strong>Interactive</strong> Cheatsheets</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon" style="color: var(--green)"><i class="ti ti-checkbox"></i></div>
+            <div class="hero-stat-text"><strong>Offline-first</strong> PWA App</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Continue Learning (shown only when localStorage has data) -->
     <div id="continueSection" style="display:none">
