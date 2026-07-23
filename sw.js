@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cs-notes-v12';
+const CACHE_NAME = 'cs-notes-v13';
 
 const ASSETS = [
   './',

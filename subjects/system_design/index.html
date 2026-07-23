@@ -1069,46 +1069,47 @@
       <div class="nav-item" onclick="show('scaling')" id="nav-scaling"><i class="ti ti-arrow-up"></i>Scaling</div>
       <div class="nav-item" onclick="show('latency')" id="nav-latency"><i class="ti ti-clock"></i>Latency Numbers</div>
       <div class="nav-item" onclick="show('cap')" id="nav-cap"><i class="ti ti-triangle"></i>CAP Theorem</div>
-      <div class="nav-section">Core Concepts</div>
-      <div class="nav-item" onclick="show('lb')" id="nav-lb"><i class="ti ti-adjustments-horizontal"></i>Load Balancing
-      </div>
-      <div class="nav-item" onclick="show('hashing')" id="nav-hashing"><i class="ti ti-circle-dashed"></i>Consistent
-        Hashing</div>
-      <div class="nav-item" onclick="show('caching')" id="nav-caching"><i class="ti ti-stack"></i>Caching</div>
-      <div class="nav-item" onclick="show('msgqueue')" id="nav-msgqueue"><i class="ti ti-list"></i>Message Queues</div>
-      <div class="nav-item" onclick="show('pubsub')" id="nav-pubsub"><i class="ti ti-broadcast"></i>Pub / Sub</div>
+
+      <div class="nav-section">Distributed & Storage</div>
+      <div class="nav-item" onclick="show('distsys')" id="nav-distsys"><i class="ti ti-network"></i>Distributed Systems</div>
+      <div class="nav-item" onclick="show('storage')" id="nav-storage"><i class="ti ti-database-export"></i>Storage Engines</div>
+      <div class="nav-item" onclick="show('dbinternals')" id="nav-dbinternals"><i class="ti ti-database"></i>DB Internals</div>
+      <div class="nav-item" onclick="show('caching')" id="nav-caching"><i class="ti ti-stack"></i>Caching Deep-Dive</div>
+      <div class="nav-item" onclick="show('msgqueue')" id="nav-msgqueue"><i class="ti ti-list-details"></i>Messaging & Eventing</div>
+
+      <div class="nav-section">Core Infrastructure</div>
+      <div class="nav-item" onclick="show('lb')" id="nav-lb"><i class="ti ti-adjustments-horizontal"></i>Load Balancing</div>
+      <div class="nav-item" onclick="show('hashing')" id="nav-hashing"><i class="ti ti-circle-dashed"></i>Consistent Hashing</div>
       <div class="nav-item" onclick="show('sharding')" id="nav-sharding"><i class="ti ti-cut"></i>DB Sharding</div>
-      <div class="nav-item" onclick="show('replication')" id="nav-replication"><i class="ti ti-copy"></i>Replication
-      </div>
-      <div class="nav-item" onclick="show('cdn')" id="nav-cdn"><i class="ti ti-world"></i>CDN</div>
-      <div class="nav-item" onclick="show('microservices')" id="nav-microservices"><i
-          class="ti ti-puzzle"></i>Microservices</div>
-      <div class="nav-item" onclick="show('eventdriven')" id="nav-eventdriven"><i class="ti ti-bolt"></i>Event Driven
-        Arch</div>
-      <div class="nav-item" onclick="show('spof')" id="nav-spof"><i class="ti ti-alert-triangle"></i>Single Point of
-        Failure</div>
-      <div class="nav-item" onclick="show('api')" id="nav-api"><i class="ti ti-code"></i>API Design</div>
-      <div class="nav-item" onclick="show('dbinternals')" id="nav-dbinternals"><i class="ti ti-database"></i>DB
-        Internals</div>
+      <div class="nav-item" onclick="show('replication')" id="nav-replication"><i class="ti ti-copy"></i>Replication</div>
+      <div class="nav-item" onclick="show('cdn')" id="nav-cdn"><i class="ti ti-world"></i>CDN & Edge</div>
+      <div class="nav-item" onclick="show('microservices')" id="nav-microservices"><i class="ti ti-puzzle"></i>Microservices</div>
+      <div class="nav-item" onclick="show('eventdriven')" id="nav-eventdriven"><i class="ti ti-bolt"></i>Event Driven Arch</div>
+      <div class="nav-item" onclick="show('spof')" id="nav-spof"><i class="ti ti-alert-triangle"></i>High Availability</div>
       <div class="nav-item" onclick="show('nosqlsql')" id="nav-nosqlsql"><i class="ti ti-table"></i>SQL vs NoSQL</div>
-      <div class="nav-item" onclick="show('location')" id="nav-location"><i class="ti ti-map-pin"></i>Location Systems
-      </div>
-      <div class="nav-section">Case Studies</div>
-      <div class="nav-item" onclick="show('instagram')" id="nav-instagram"><i
-          class="ti ti-brand-instagram"></i>Instagram<span class="nav-badge">HLD</span></div>
-      <div class="nav-item" onclick="show('whatsapp')" id="nav-whatsapp"><i class="ti ti-message-2"></i>WhatsApp<span
-          class="nav-badge">HLD</span></div>
-      <div class="nav-item" onclick="show('youtube')" id="nav-youtube"><i class="ti ti-brand-youtube"></i>YouTube<span
-          class="nav-badge">HLD</span></div>
-      <div class="nav-item" onclick="show('tinder')" id="nav-tinder"><i class="ti ti-heart"></i>Tinder<span
-          class="nav-badge">HLD</span></div>
-      <div class="nav-item" onclick="show('netflix')" id="nav-netflix"><i class="ti ti-device-tv"></i>Netflix<span
-          class="nav-badge">HLD</span></div>
+
+      <div class="nav-section">APIs, Security & Ops</div>
+      <div class="nav-item" onclick="show('api')" id="nav-api"><i class="ti ti-code"></i>API Design</div>
+      <div class="nav-item" onclick="show('security')" id="nav-security"><i class="ti ti-shield-lock"></i>System Security & Auth</div>
+      <div class="nav-item" onclick="show('observability')" id="nav-observability"><i class="ti ti-activity"></i>Observability</div>
+      <div class="nav-item" onclick="show('cloud')" id="nav-cloud"><i class="ti ti-cloud"></i>Cloud / AWS Architecture</div>
+
+      <div class="nav-section">Real Systems (HLD)</div>
+      <div class="nav-item" onclick="show('whatsapp')" id="nav-whatsapp"><i class="ti ti-message-2"></i>WhatsApp<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('uber')" id="nav-uber"><i class="ti ti-car"></i>Uber Platform<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('instagram')" id="nav-instagram"><i class="ti ti-brand-instagram"></i>Instagram<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('dropbox')" id="nav-dropbox"><i class="ti ti-cloud-upload"></i>Dropbox Sync<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('tinyurl')" id="nav-tinyurl"><i class="ti ti-link"></i>TinyURL Shortener<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('youtube')" id="nav-youtube"><i class="ti ti-brand-youtube"></i>YouTube Video<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('twitter')" id="nav-twitter"><i class="ti ti-brand-twitter"></i>Twitter / X Feed<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('googledocs')" id="nav-googledocs"><i class="ti ti-file-text"></i>Google Docs<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('netflix')" id="nav-netflix"><i class="ti ti-device-tv"></i>Netflix Streaming<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('location')" id="nav-location"><i class="ti ti-map-pin"></i>Geospatial Systems<span class="nav-badge">HLD</span></div>
+      <div class="nav-item" onclick="show('tinder')" id="nav-tinder"><i class="ti ti-heart"></i>Tinder Dating<span class="nav-badge">HLD</span></div>
+
       <div class="nav-section">Estimation & Interview</div>
-      <div class="nav-item" onclick="show('estimation')" id="nav-estimation"><i
-          class="ti ti-calculator"></i>Back-of-Envelope</div>
-      <div class="nav-item" onclick="show('interview')" id="nav-interview"><i class="ti ti-user-check"></i>Interview
-        Tips</div>
+      <div class="nav-item" onclick="show('estimation')" id="nav-estimation"><i class="ti ti-calculator"></i>Back-of-Envelope</div>
+      <div class="nav-item" onclick="show('interview')" id="nav-interview"><i class="ti ti-user-check"></i>Interview Tips</div>
     </div>
     <div class="main">
 
@@ -1433,6 +1434,235 @@
       </div>
 
       <!-- PLACEHOLDER TOPICS - to avoid JS errors when nav items are clicked -->
+      
+      <!-- DISTRIBUTED SYSTEMS -->
+      <div class="topic" id="topic-distsys">
+        <div class="page-tag tag-blue"><i class="ti ti-network"></i>Infrastructure</div>
+        <h1 class="page-title">Distributed Systems & Consensus</h1>
+        <p class="page-subtitle">Fundamental protocols, consensus mechanics, failure detection algorithms, and coordination engines powering global scale systems.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-crown"></i>Leader Election & Consensus Protocols</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3><i class="ti ti-shield-check"></i>Raft Consensus Protocol</h3>
+              <p>Decomposes consensus into Leader Election, Log Replication, and Safety. Nodes operate in 3 states: <strong>Follower</strong>, <strong>Candidate</strong>, or <strong>Leader</strong>.<br><br>
+              • <strong>Election Mechanics:</strong> Randomized election timeouts (150–300ms) prevent split votes. Followers convert to Candidate if no heartbeat received.<br>
+              • <strong>Log Replication:</strong> Leader receives client commands, writes to log, and broadcasts <code>AppendEntries</code> RPCs. Uncommitted entries become committed when replicated to a Quorum majority: <code>Quorum = ⌊N/2⌋ + 1</code>.<br>
+              • <strong>Leader Completeness:</strong> A candidate must contain all committed entries to win an election (Term numbers enforced).</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--purple)">
+              <h3><i class="ti ti-section"></i>Paxos Protocol (Overview)</h3>
+              <p>The foundational consensus protocol for asynchronous networks with crash-stop failures.<br><br>
+              • <strong>Roles:</strong> Proposers (propose values), Acceptors (vote on values), Learners (learn agreed value).<br>
+              • <strong>Phase 1a (Prepare):</strong> Proposer sends <code>Prepare(n)</code> with proposal number <i>n</i>.<br>
+              • <strong>Phase 1b (Promise):</strong> Acceptors respond with <code>Promise</code> not to accept proposals <code>&lt; n</code>, returning highest proposal accepted.<br>
+              • <strong>Phase 2a (Accept):</strong> If Proposer receives majority promises, sends <code>Accept(n, v)</code>.<br>
+              • <strong>Phase 2b (Accepted):</strong> Acceptors accept value if <i>n</i> is still highest seen.<br>
+              • <strong>Multi-Paxos:</strong> Stabilizes a single leader across proposal streams to eliminate Phase 1 round-trips for high throughput.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-broadcast"></i>Gossip Protocol & P2P Membership</div>
+          <div class="def-card" style="margin-bottom:16px">
+            <strong>Gossip Protocol:</strong> A decentralized peer-to-peer communication protocol inspired by epidemic spreading. Every node periodically selects random peers and exchanges cluster state. Offers <code>O(log N)</code> convergence time, extreme fault tolerance, and zero single point of failure.
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-radar"></i>SWIM Protocol</h3>
+              <p><strong>Structured Weakness-Detection & Infection-Style Process Group Membership:</strong> Separates failure detection from membership updates. Node A pings Node B. If no ACK, Node A requests <i>k</i> indirect peers to ping Node B. Prevents false failure detections caused by transient network congestion.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-refresh"></i>Anti-Entropy & Dissemination</h3>
+              <p>• <strong>Rumor-Mongering:</strong> Fast infection mode for immediate state changes.<br>• <strong>Anti-Entropy:</strong> Periodic full background comparison (using Merkle Trees) to guarantee eventual consistency across cluster nodes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-heartbeat"></i>Heartbeats & Failure Detectors</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-clock"></i>Lease Timeouts</h3>
+              <p>Fixed time window heartbeats. Simple but prone to false positives under high garbage collection (GC) pauses or temporary network spikes.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-chart-dots"></i>Phi Accrual Failure Detector</h3>
+              <p>Calculates a continuous suspicion level <code>Φ</code> using historical inter-arrival time distributions:<br>
+              <code>Φ = -log10(P_later(t - t_last))</code><br>
+              Adapts dynamically to fluctuating network latency, enabling configurable sensitivity thresholds without fixed timeouts (used in Cassandra and Akka).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-search"></i>Service Discovery Architecture</div>
+          <div class="card-grid">
+            <div class="card" style="border-left:3px solid var(--accent)">
+              <h3><i class="ti ti-devices"></i>Client-Side Discovery</h3>
+              <p>Client queries Service Registry (e.g., Eureka), obtains healthy instance IP endpoints, and executes local load balancing algorithm (e.g., Round Robin, Least Connections). High speed, no proxy bottleneck.</p>
+            </div>
+            <div class="card" style="border-left:3px solid var(--green)">
+              <h3><i class="ti ti-server"></i>Server-Side Discovery</h3>
+              <p>Client issues request directly to a Load Balancer (e.g., AWS ALB, NGINX). Load Balancer queries Service Registry and routes request to healthy target nodes. Hides infrastructure complexity from clients.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-apps"></i>Coordination Tools Comparison</div>
+          <div class="schema-table">
+            <div class="schema-table-title">Distributed Coordination Engines</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Engine</th>
+                  <th>Consensus</th>
+                  <th>Data Model</th>
+                  <th>Key Features</th>
+                  <th>Primary Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ZooKeeper</strong></td>
+                  <td>Zab</td>
+                  <td>Hierarchical ZNodes (Tree)</td>
+                  <td>Watcher events, Ephemeral nodes, Sequential IDs</td>
+                  <td>Kafka metadata (legacy), Hadoop, Solr</td>
+                </tr>
+                <tr>
+                  <td><strong>etcd</strong></td>
+                  <td>Raft</td>
+                  <td>Flat KV (B+ Tree with MVCC)</td>
+                  <td>gRPC API, Lease grants, Watch streams, Distributed locks</td>
+                  <td>Kubernetes Control Plane state storage</td>
+                </tr>
+                <tr>
+                  <td><strong>Consul</strong></td>
+                  <td>Raft + Serf Gossip</td>
+                  <td>KV Store + Service Registry</td>
+                  <td>Native Service Mesh (Envoy sidecars), DNS interface, Health checks</td>
+                  <td>Microservice discovery & Config management</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>Key Interview Takeaway:</strong> In system design interviews, never state "we use ZooKeeper" without specifying why. ZooKeeper/etcd are designed for <strong>strong consistency and small metadata volumes</strong>. Never use them as primary data stores for high-throughput user traffic.
+        </div>
+      </div>
+
+
+
+      <!-- STORAGE ENGINES -->
+      <div class="topic" id="topic-storage">
+        <div class="page-tag tag-green"><i class="ti ti-database-export"></i>Storage</div>
+        <h1 class="page-title">Storage Engines & On-Disk Data Structures</h1>
+        <p class="page-subtitle">Deep dive into LSM Trees, B+ Trees, SSTables, Bloom Filters, Compaction algorithms, and MemTables driving modern databases.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-binary"></i>LSM Trees (Log-Structured Merge-Trees)</div>
+          <div class="def-card" style="margin-bottom:16px">
+            <strong>LSM Tree Architecture:</strong> Optimized for sequential write performance by converting random writes into sequential disk append operations.<br>
+            Write Path: <code>Client → Write-Ahead Log (WAL) → MemTable (RAM) → Immutable MemTable → Flush to SSTable (Level 0 Disk)</code>.
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-cpu"></i>MemTable & WAL</h3>
+              <p>• <strong>MemTable:</strong> In-memory SkipList or Red-Black Tree. Provides <code>O(log N)</code> insertions and sorted range scans.<br>
+              • <strong>WAL:</strong> Append-only log on disk ensuring crash durability before updating MemTable.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-disc"></i>SSTable (Sorted String Table)</h3>
+              <p>Immutable disk file containing key-value pairs sorted by key. Segmented into data blocks with an appended <strong>Sparse Index</strong> and <strong>Bloom Filter</strong> block for ultra-fast key location.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-trees"></i>B-Trees vs B+ Trees</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3><i class="ti ti-tree"></i>B-Tree</h3>
+              <p>Keys and data pointers stored in both internal nodes and leaf nodes. Range scans require traversing up and down tree levels, incurring random I/O.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--green)">
+              <h3><i class="ti ti-git-fork"></i>B+ Tree (Industry Standard SQL)</h3>
+              <p>Data records (or pointers) stored <strong>only in leaf nodes</strong>. Internal nodes store only routing keys. Leaf nodes are linked via a doubly-linked list. Benefits:<br>
+              • Higher fan-out factor = shallower tree depth (3–4 levels for billions of rows).<br>
+              • Ultra-fast range scans by walking leaf linked list sequentially.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-filter"></i>Bloom Filters</div>
+          <div class="def-card" style="margin-bottom:16px">
+            <strong>Bloom Filter:</strong> A space-efficient probabilistic data structure used to test set membership. Returns either <i>"Definitely Not in Set"</i> (100% accurate) or <i>"Possibly in Set"</i> (low false positive rate). Prevents expensive disk reads for non-existent keys in LSM SSTables.
+          </div>
+          <div class="estimate-box">
+            <div class="estimate-row"><span class="label">Optimal Hash Functions (k)</span><span class="value">k = (m / n) * ln(2)</span></div>
+            <div class="estimate-row"><span class="label">False Positive Probability (p)</span><span class="value">p ≈ (1 - e^(-kn/m))^k</span></div>
+            <div class="estimate-row"><span class="label">Memory Overhead</span><span class="value highlight">~10 bits per key for 1% error rate</span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-layers-subtract"></i>Compaction Strategies</div>
+          <div class="card-grid">
+            <div class="card" style="border-left:3px solid var(--accent4)">
+              <h3><i class="ti ti-stack-2"></i>Size-Tiered Compaction (STCS)</h3>
+              <p>Merges SSTables of similar sizes when count reaches threshold. Writes are fast, but high space amplification (requires up to 50% free disk space) and high read latency. <strong>Best for write-heavy workloads.</strong></p>
+            </div>
+            <div class="card" style="border-left:3px solid var(--accent)">
+              <h3><i class="ti ti-layers-intersect"></i>Leveled Compaction (LCS)</h3>
+              <p>Organizes SSTables into discrete levels (L0, L1, L2...). Each level has fixed total size (10× growth factor). Keys within L1+ are non-overlapping. Low space amplification (~10%), fast reads. <strong>Best for read-heavy workloads (RocksDB, Cassandra default).</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="schema-table" style="margin-top:20px">
+          <div class="schema-table-title">Storage Engine Comparison Matrix</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>B+ Tree (e.g., PostgreSQL, InnoDB)</th>
+                <th>LSM Tree (e.g., Cassandra, RocksDB)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Write Bottleneck</strong></td>
+                <td>Random I/O (Page splits, dirty buffer updates)</td>
+                <td>Sequential I/O (WAL append + MemTable)</td>
+              </tr>
+              <tr>
+                <td><strong>Read Bottleneck</strong></td>
+                <td>Minimal (Direct index lookup O(log N))</td>
+                <td>Compaction background overhead + Multi-file lookups</td>
+              </tr>
+              <tr>
+                <td><strong>Write Amplification</strong></td>
+                <td>High (Full 16KB page rewrite for small updates)</td>
+                <td>Moderate to High (Compaction rewriting SSTables)</td>
+              </tr>
+              <tr>
+                <td><strong>Space Efficiency</strong></td>
+                <td>Fragmentation over time</td>
+                <td>Compact & Compressed block SSTables</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
       <div class="topic" id="topic-lb">
         <div class="page-tag tag-blue"><i class="ti ti-adjustments-horizontal"></i>Core Concepts</div>
         <h1 class="page-title">Load Balancing</h1>
@@ -1512,92 +1742,203 @@
           servers, and further reduces hotspots. Used by Cassandra, DynamoDB, and Riak.</div>
       </div>
 
+      <!-- CACHING (EXPANDED) -->
       <div class="topic" id="topic-caching">
         <div class="page-tag tag-green"><i class="ti ti-stack"></i>Core Concepts</div>
-        <h1 class="page-title">Caching</h1>
-        <p class="page-subtitle">Storing frequently accessed data in fast storage (RAM) to avoid repeated expensive
-          computations or database queries.</p>
+        <h1 class="page-title">Caching & In-Memory Architectures</h1>
+        <p class="page-subtitle">Comprehensive master guide to caching strategies, Redis eviction policies, consistent hashing, cache stampede mitigations, and distributed Redis cluster topology.</p>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-book"></i>Definition</div>
-          <div class="def-card">A <strong>cache</strong> is a high-speed data storage layer that stores a subset of
-            data, typically transient, so that future requests for that data are served faster. Cache hit = data found.
-            Cache miss = must fetch from source.</div>
+          <div class="section-title"><i class="ti ti-refresh"></i>Cache Strategies & Design Patterns</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3><i class="ti ti-clock-off"></i>Cache-Aside (Lazy Loading)</h3>
+              <p>App checks cache first. On miss, app fetches from DB, populates cache, and returns data. <strong>Resilient to cache outages</strong>, but cache misses incur 3 network round-trips.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--green)">
+              <h3><i class="ti ti-arrow-right"></i>Read-Through</h3>
+              <p>App interacts only with Cache abstraction layer. On cache miss, the Cache library automatically fetches from DB, populates itself, and returns data to App.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--yellow)">
+              <h3><i class="ti ti-writing"></i>Write-Through</h3>
+              <p>App writes to Cache. Cache synchronously updates DB before returning success. Guarantees cache consistency, but increases write latency.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--purple)">
+              <h3><i class="ti ti-writing-off"></i>Write-Behind (Write-Back)</h3>
+              <p>App writes to Cache immediately. Cache asynchronously batches and flushes writes to DB in background. Ultra-low write latency, but <strong>risk of data loss</strong> if cache node crashes before DB sync.</p>
+            </div>
+          </div>
         </div>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-refresh"></i>Cache Strategies</div>
+          <div class="section-title"><i class="ti ti-trash"></i>Redis Eviction Policies</div>
+          <div class="schema-table">
+            <div class="schema-table-title">Redis <code>maxmemory-policy</code> Settings</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Scope</th>
+                  <th>Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>noeviction</code></td>
+                  <td>All Keys</td>
+                  <td>Returns error on writes when memory limit reached. Best for critical caches.</td>
+                </tr>
+                <tr>
+                  <td><code>allkeys-lru</code></td>
+                  <td>All Keys</td>
+                  <td>Evicts Least Recently Used keys across entire dataset. (Most popular choice).</td>
+                </tr>
+                <tr>
+                  <td><code>volatile-lru</code></td>
+                  <td>Keys with TTL</td>
+                  <td>Evicts Least Recently Used keys among keys configured with expiration TTL.</td>
+                </tr>
+                <tr>
+                  <td><code>allkeys-lfu</code></td>
+                  <td>All Keys</td>
+                  <td>Evicts Least Frequently Used keys using logarithmic access counters.</td>
+                </tr>
+                <tr>
+                  <td><code>volatile-ttl</code></td>
+                  <td>Keys with TTL</td>
+                  <td>Evicts keys with the shortest remaining Time-To-Live.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-flame"></i>Cache Stampede & Hot Key Mitigation</div>
+          <div class="card-grid">
+            <div class="card" style="border-left:3px solid var(--red)">
+              <h3><i class="ti ti-bolt-off"></i>Cache Stampede (Thundering Herd)</h3>
+              <p>Occurs when a popular cached key expires, causing thousands of concurrent requests to hit the DB simultaneously.<br><br>
+              • <strong>Mutex / Distributed Locking:</strong> First thread acquires lock, populates cache; remaining threads wait.<br>
+              • <strong>Probabilistic Early Expiration (XFetch Algorithm):</strong> Recomputes key early if <code>currentTime - (beta * delta * ln(rnd)) > TTL</code>.</p>
+            </div>
+            <div class="card" style="border-left:3px solid var(--accent4)">
+              <h3><i class="ti ti-flame"></i>Hot Key Bottleneck</h3>
+              <p>Single key receives millions of requests/sec overloading a single cache node.<br><br>
+              • <strong>L1 Local Memory Cache:</strong> In-process cache (Guava/Caffeine) on application servers.<br>
+              • <strong>Key Sharding / Random Suffix:</strong> Replicate key as <code>item_key_1</code>...<code>item_key_N</code> across nodes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-server-cog"></i>Redis Cluster vs Redis Sentinel</div>
           <div class="card-grid">
             <div class="card">
-              <h3><i class="ti ti-writing"></i>Write-Through</h3>
-              <p>Write to cache AND database simultaneously. Data always consistent but higher write latency. Good for
-                read-heavy workloads.</p>
+              <h3><i class="ti ti-shield"></i>Redis Sentinel</h3>
+              <p>High availability solution for single-master topologies. Sentinels monitor primary, trigger automated failover to replica if primary dies, and notify app clients.</p>
             </div>
             <div class="card">
-              <h3><i class="ti ti-writing-off"></i>Write-Back (Write-Behind)</h3>
-              <p>Write to cache only; async flush to DB later. Low write latency but risk of data loss on cache crash.
-              </p>
-            </div>
-            <div class="card">
-              <h3>
-                <h3><i class="ti ti-clock-off"></i>Cache-Aside (Lazy Loading)</h3>
-                <p>App checks cache first. On miss, app fetches from DB and populates cache. Most common pattern. Cache
-                  only holds accessed data.</p>
-            </div>
-            <div class="card">
-              <h3><i class="ti ti-refresh"></i>Read-Through</h3>
-              <p>Cache sits in front of DB. On miss, cache fetches from DB automatically. Transparent to application.
-              </p>
+              <h3><i class="ti ti-layout-grid"></i>Redis Cluster</h3>
+              <p>Distributed horizontal scaling solution. Divides key space into <strong>16,384 Hash Slots</strong> assigned across master nodes using CRC16: <code>slot = CRC16(key) mod 16384</code>.</p>
             </div>
           </div>
         </div>
-        <div class="section">
-          <div class="section-title"><i class="ti ti-trash"></i>Eviction Policies</div>
-          <div class="tag-row">
-            <div class="tag-chip blue">LRU — Least Recently Used</div>
-            <div class="tag-chip green">LFU — Least Frequently Used</div>
-            <div class="tag-chip amber">FIFO — First In First Out</div>
-            <div class="tag-chip purple">Random Replacement</div>
-            <div class="tag-chip pink">TTL — Time To Live</div>
-          </div>
-        </div>
-        <div class="highlight-box" style="margin-top:16px"><strong>Redis vs Memcached:</strong> Redis supports rich data
-          structures (lists, sets, sorted sets, hashes), persistence, pub/sub, and Lua scripting. Memcached is simpler
-          but faster for pure key-value. Redis is the industry standard for most use cases.</div>
       </div>
 
+      <!-- MESSAGING & EVENTING (EXPANDED) -->
       <div class="topic" id="topic-msgqueue">
-        <div class="page-tag tag-amber"><i class="ti ti-list"></i>Core Concepts</div>
-        <h1 class="page-title">Message Queues</h1>
-        <p class="page-subtitle">Asynchronous communication buffers that decouple producers from consumers, enabling
-          independent scaling and fault tolerance.</p>
+        <div class="page-tag tag-blue"><i class="ti ti-list-details"></i>Architecture</div>
+        <h1 class="page-title">Distributed Messaging & Event Streaming</h1>
+        <p class="page-subtitle">Deep comparison of Kafka, RabbitMQ, SQS, Pulsar, NATS, along with delivery semantics, consumer group rebalancing, and DLQ patterns.</p>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-book"></i>Definition</div>
-          <div class="def-card">A <strong>message queue</strong> stores messages sent by producers until consumers are
-            ready to process them. This decouples services — the producer doesn't need to wait for the consumer to be
-            available. Classic examples: RabbitMQ, Amazon SQS, ActiveMQ.</div>
-        </div>
-        <div class="pros-cons">
-          <div class="pros">
-            <div class="col-title">Advantages</div>
-            <ul>
-              <li>Decouples producer and consumer</li>
-              <li>Handles traffic spikes gracefully</li>
-              <li>Messages persisted until consumed</li>
-              <li>Retry logic built in</li>
-            </ul>
+          <div class="section-title"><i class="ti ti-box"></i>Messaging Systems Deep Dive</div>
+          <div class="schema-table">
+            <div class="schema-table-title">Enterprise Messaging Matrix</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Architecture</th>
+                  <th>Ordering</th>
+                  <th>Retention</th>
+                  <th>Throughput</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Apache Kafka</strong></td>
+                  <td>Distributed Commit Log (Partitioned)</td>
+                  <td>Strict within Partition</td>
+                  <td>Log retention by Time/Size/Compaction</td>
+                  <td>Ultra High (1M+ msg/sec)</td>
+                </tr>
+                <tr>
+                  <td><strong>RabbitMQ</strong></td>
+                  <td>AMQP Broker (Exchanges & Queues)</td>
+                  <td>Per Queue basis</td>
+                  <td>Deleted upon Consumer ACK</td>
+                  <td>High (~50k msg/sec)</td>
+                </tr>
+                <tr>
+                  <td><strong>AWS SQS</strong></td>
+                  <td>Managed Queue (Standard vs FIFO)</td>
+                  <td>FIFO mode only</td>
+                  <td>Up to 14 days</td>
+                  <td>Scalable Cloud Managed</td>
+                </tr>
+                <tr>
+                  <td><strong>Apache Pulsar</strong></td>
+                  <td>Stateless Broker + BookKeeper Storage</td>
+                  <td>Per Partition / Key</td>
+                  <td>Tiered Cloud Storage (S3)</td>
+                  <td>Ultra High</td>
+                </tr>
+                <tr>
+                  <td><strong>NATS JetStream</strong></td>
+                  <td>Lightweight Go PubSub Engine</td>
+                  <td>Stream subject ordering</td>
+                  <td>Configurable Stream storage</td>
+                  <td>Ultra High (Low latency)</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="cons">
-            <div class="col-title">Trade-offs</div>
-            <ul>
-              <li>Added latency (async)</li>
-              <li>Ordering not guaranteed (usually)</li>
-              <li>Message duplication possible</li>
-              <li>Operational complexity</li>
-            </ul>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-send"></i>Delivery Semantics</div>
+          <div class="card-grid-3">
+            <div class="card" style="border-top:3px solid var(--yellow)">
+              <h3>At-Most-Once</h3>
+              <p>Producer fires without retry, or consumer commits offset <i>before</i> processing. Zero duplicate risk, but data loss possible.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3>At-Least-Once</h3>
+              <p>Producer retries on failure; consumer commits offset <i>after</i> processing. Zero data loss, but duplicates can occur. <strong>Requires Idempotent Consumer.</strong></p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--green)">
+              <h3>Exactly-Once (EOS)</h3>
+              <p>Combination of Kafka Transactional Producer API (atomic multi-partition write) + Idempotent Consumer deduplication key.</p>
+            </div>
           </div>
         </div>
-        <div class="highlight-box" style="margin-top:16px"><strong>Use cases:</strong> Order processing, email sending,
-          image resizing, video transcoding, payment processing — any task that can be done asynchronously and shouldn't
-          block the user response.</div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-users"></i>Consumer Groups & Offset Management</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-users-group"></i>Consumer Group Rebalancing</h3>
+              <p>• <strong>Eager Rebalance:</strong> All consumers stop reading, drop partition assignments, and rejoin group. Causes temporary pipeline pause.<br>
+              • <strong>Cooperative Sticky Rebalance:</strong> Only revoked partitions are reassigned; remaining consumers continue processing uninterrupted.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-alert-triangle"></i>Dead Letter Queue (DLQ) & Retry</h3>
+              <p>When a consumer fails to process a message after <i>N</i> retries (with exponential backoff + jitter), message is forwarded to a <strong>Dead Letter Queue (DLQ)</strong> for inspection, preventing pipeline head-of-line blocking.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="topic" id="topic-pubsub">
@@ -1902,30 +2243,311 @@
           IDs) to deduplicate retried requests. Critical for payment APIs.</div>
       </div>
 
+      <!-- DATABASE INTERNALS (EXPANDED) -->
       <div class="topic" id="topic-dbinternals">
         <div class="page-tag tag-purple"><i class="ti ti-database"></i>Deep Dive</div>
-        <h1 class="page-title">Database Internals</h1>
-        <p class="page-subtitle">Understanding how databases store, index, and retrieve data — essential for making
-          informed schema and query decisions.</p>
+        <h1 class="page-title">Database Internals: MVCC, Isolation & Query Engine</h1>
+        <p class="page-subtitle">Under the hood mechanics of Multi-Version Concurrency Control, transaction isolation anomalies, 2PL, index types, deadlock detection, and cost-based query optimization.</p>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-tree"></i>B-Tree Index</div>
-          <div class="def-card">The most common index structure. A balanced tree where all leaves are at the same depth.
-            Supports equality and range queries. Read-optimized: O(log n) lookups. Used by PostgreSQL, MySQL (InnoDB),
-            SQLite. <strong>B+ Tree variant:</strong> data only in leaf nodes, leaves linked for efficient range scans.
+          <div class="section-title"><i class="ti ti-versions"></i>MVCC (Multi-Version Concurrency Control)</div>
+          <div class="def-card">
+            <strong>MVCC Mechanics:</strong> Allows concurrent readers and writers without blocking each other ("Readers don't block Writers, Writers don't block Readers").<br><br>
+            • <strong>Tuple Header Fields:</strong> Each row stores metadata fields: <code>xmin</code> (Transaction ID that created the tuple) and <code>xmax</code> (Transaction ID that deleted/overwrote the tuple).<br>
+            • <strong>Read Views:</strong> When a transaction begins, it takes a snapshot view of active transactions. A tuple is visible only if <code>xmin</code> is committed and <code>xmax</code> is uncommitted or <code>> current_tx</code>.<br>
+            • <strong>Undo Logs & Vacuuming:</strong> Old tuple versions are retained in Undo Logs / Dead pages and asynchronously garbage collected by background Vacuum processes.
           </div>
         </div>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-writing"></i>LSM Tree (Log-Structured Merge-Tree)</div>
-          <div class="def-card">Write-optimized structure. Writes go to in-memory buffer (MemTable), flushed to sorted
-            files (SSTables) on disk. Background compaction merges SSTables. Reads may check multiple levels — mitigated
-            by Bloom filters. Used by: Cassandra, RocksDB, LevelDB, HBase. <strong>Trade-off:</strong> faster writes
-            than B-tree, slower reads without optimization.</div>
+          <div class="section-title"><i class="ti ti-shield-half-filled"></i>Isolation Levels & Anomalies Matrix</div>
+          <div class="schema-table">
+            <div class="schema-table-title">ANSI SQL & Snapshot Isolation Anomalies</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Isolation Level</th>
+                  <th>Dirty Read</th>
+                  <th>Non-Repeatable Read</th>
+                  <th>Phantom Read</th>
+                  <th>Write Skew</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Read Uncommitted</strong></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Read Committed</strong></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Repeatable Read</strong></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed (SQL Standard)</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Snapshot Isolation</strong></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--red);font-weight:bold">Allowed</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Serializable (SSI)</strong></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                  <td><span style="color:var(--green);font-weight:bold">Prevented</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
         <div class="section">
-          <div class="section-title"><i class="ti ti-list"></i>WAL — Write-Ahead Log</div>
-          <div class="def-card">Before modifying data, the database writes the change to a WAL (append-only log). If the
-            system crashes, the WAL is replayed to restore consistency. This is how ACID durability is implemented
-            without flushing every write to disk immediately.</div>
+          <div class="section-title"><i class="ti ti-lock"></i>Locking & Concurrency Control</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-lock-access"></i>Lock Types & Intent Locks</h3>
+              <p>• <strong>Shared (S):</strong> Read lock. Multiple transactions can hold S locks.<br>
+              • <strong>Exclusive (X):</strong> Write lock. Only one transaction can hold X lock.<br>
+              • <strong>Intent Locks (IS, IX, SIX):</strong> Placed at table level before acquiring row locks to prevent coarse-grained lock conflicts without scanning rows.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-arrows-double-ne-sw"></i>Two-Phase Locking (2PL)</h3>
+              <p>• <strong>Growing Phase:</strong> Transaction acquires locks, cannot release any.<br>
+              • <strong>Shrinking Phase:</strong> Transaction releases locks, cannot acquire new ones.<br>
+              • <strong>Strict 2PL:</strong> All exclusive locks held until transaction commits/aborts (prevents cascading rollbacks).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-alert-octagon"></i>Deadlock Detection & Prevention</div>
+          <div class="card-grid">
+            <div class="card" style="border-left:3px solid var(--accent4)">
+              <h3><i class="ti ti-graph"></i>Wait-For Graph (WFG)</h3>
+              <p>Background thread periodically builds directed graph of transactions waiting for locks. A cycle indicates a deadlock. System selects a <strong>victim transaction</strong> and aborts it to break the cycle.</p>
+            </div>
+            <div class="card" style="border-left:3px solid var(--accent)">
+              <h3><i class="ti ti-shield"></i>Wait-Die vs Wound-Wait</h3>
+              <p>• <strong>Wait-Die (Non-preemptive):</strong> Older Tx waits for younger Tx; Younger Tx dies if requesting older lock.<br>
+              • <strong>Wound-Wait (Preemptive):</strong> Older Tx preempts ("wounds") younger Tx; Younger Tx waits for older Tx.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-adjustments-alt"></i>Cost-Based Query Optimizer (CBO)</div>
+          <div class="def-card">
+            <strong>CBO Execution Workflow:</strong> SQL Query → Parser (Abstract Syntax Tree) → Query Rewriter → Optimizer (Estimates I/O + CPU costs using column histograms/statistics) → Physical Execution Plan (Nested Loop Join vs Hash Join vs Merge Join).
+          </div>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="topic" id="topic-security">
+        <div class="page-tag tag-red"><i class="ti ti-shield-lock"></i>Security</div>
+        <h1 class="page-title">System Security, Authentication & Authorization</h1>
+        <p class="page-subtitle">Comprehensive reference for OAuth2, OIDC, JWT signatures, refresh token rotation, web vulnerabilities (CSRF, CORS, XSS, SQLi), encryption, and RBAC/ABAC models.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-key-white"></i>OAuth 2.0 & OpenID Connect (OIDC)</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3><i class="ti ti-shield-check"></i>Auth Code Flow with PKCE</h3>
+              <p>Standard for Single Page Apps & Mobile. Client generates <strong>Code Verifier</strong> and <strong>Code Challenge</strong>. Prevents authorization code interception attacks without requiring client secret storage in browser.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--purple)">
+              <h3><i class="ti ti-user-check"></i>OIDC (Identity Layer)</h3>
+              <p>Built on top of OAuth 2.0. OAuth handles <i>Authorization</i> (Access Tokens); OIDC handles <i>Authentication</i> (ID Tokens containing user profile claims like <code>sub</code>, <code>email</code>).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-certificate"></i>JWT & Refresh Token Mechanics</div>
+          <div class="def-card" style="margin-bottom:16px">
+            <strong>JWT Structure:</strong> <code>Header.Payload.Signature</code><br>
+            • <strong>HS256:</strong> Symmetric key (shared secret between auth server & service).<br>
+            • <strong>RS256:</strong> Asymmetric RSA key pair (Auth server signs with Private key, microservices verify with Public key).<br>
+            • <strong>Refresh Token Rotation:</strong> Issuing a new refresh token with every refresh request. If an old refresh token is reused, system triggers security revoking ALL tokens for user.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-bug"></i>Web Security Defenses</div>
+          <div class="schema-table">
+            <div class="schema-table-title">Vulnerability & Defense Matrix</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Vulnerability</th>
+                  <th>Attack Mechanism</th>
+                  <th>Primary Defense</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>CSRF</strong></td>
+                  <td>Unauthorized commands submitted from trusted user browser</td>
+                  <td>Anti-CSRF tokens, <code>SameSite=Strict/Lax</code> cookies</td>
+                </tr>
+                <tr>
+                  <td><strong>CORS</strong></td>
+                  <td>Unauthorized cross-origin API requests</td>
+                  <td>Configure <code>Access-Control-Allow-Origin</code> headers</td>
+                </tr>
+                <tr>
+                  <td><strong>XSS</strong></td>
+                  <td>Malicious JavaScript execution in victim browser</td>
+                  <td>Content Security Policy (CSP), Contextual output escaping</td>
+                </tr>
+                <tr>
+                  <td><strong>SQL Injection</strong></td>
+                  <td>Injecting SQL syntax via untrusted user inputs</td>
+                  <td>Parameterized queries, Prepared statements, ORMs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-lock-access"></i>Encryption: At Rest & In Transit</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-database"></i>Encryption at Rest (KMS)</h3>
+              <p>Envelope Encryption: Data encrypted with Data Encryption Key (DEK); DEK encrypted with Master Key (KEK) managed in Hardware Security Modules (AWS KMS).</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-network"></i>Encryption in Transit (mTLS)</h3>
+              <p>TLS 1.3 for external traffic. Mutual TLS (mTLS) inside Service Mesh: both client and server microservices authenticate each other's X.509 certificates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OBSERVABILITY -->
+      <div class="topic" id="topic-observability">
+        <div class="page-tag tag-amber"><i class="ti ti-activity"></i>Operations</div>
+        <h1 class="page-title">Observability, Telemetry & Reliability</h1>
+        <p class="page-subtitle">Pillars of observability (Logs, Metrics, Traces), Prometheus, Grafana, Jaeger, OpenTelemetry, and SLA/SLO/SLI error budgets.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-chart-bar"></i>Three Pillars of Observability</div>
+          <div class="card-grid-3">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3><i class="ti ti-file-code"></i>Structured Logging</h3>
+              <p>JSON formatted log events enriched with context (<code>trace_id</code>, <code>user_id</code>). Aggregated via Fluentd/Logstash into Elasticsearch/Loki.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--green)">
+              <h3><i class="ti ti-chart-dots"></i>Metrics</h3>
+              <p>Numeric time-series data.<br>
+              • <strong>Counter:</strong> Monotonically increasing (e.g., total requests).<br>
+              • <strong>Gauge:</strong> Instantaneous value (e.g., memory usage).<br>
+              • <strong>Histogram:</strong> Samples observations into buckets (e.g., latency P99).</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--purple)">
+              <h3><i class="ti ti-route-2"></i>Distributed Tracing</h3>
+              <p>Tracks request lifecycle across microservice boundaries. Uses <code>Trace ID</code>, <code>Span ID</code>, and W3C Trace Context headers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-brand-open-source"></i>OpenTelemetry (OTel) Ecosystem</div>
+          <div class="def-card">
+            <strong>OpenTelemetry (OTel):</strong> Vendor-neutral CNCF framework providing unified APIs, SDKs, and the <strong>OTel Collector</strong> (Receiver → Processor → Exporter pipeline) to collect and route telemetry data to Prometheus, Jaeger, Datadog, or Grafana.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-target-arrow"></i>SLA, SLO, SLI & Error Budgets</div>
+          <div class="estimate-box">
+            <div class="estimate-row"><span class="label">SLI (Service Level Indicator)</span><span class="value">Quantifiable metric (e.g., Successful Requests / Total Requests)</span></div>
+            <div class="estimate-row"><span class="label">SLO (Service Level Objective)</span><span class="value">Target reliability goal (e.g., 99.99% success rate)</span></div>
+            <div class="estimate-row"><span class="label">SLA (Service Level Agreement)</span><span class="value">Legal contract with financial penalty (e.g., 99.9%)</span></div>
+            <div class="estimate-row"><span class="label">Monthly Downtime at 99.99%</span><span class="value highlight">4.38 Minutes / Month</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLOUD ARCHITECTURE -->
+      <div class="topic" id="topic-cloud">
+        <div class="page-tag tag-blue"><i class="ti ti-cloud"></i>Infrastructure</div>
+        <h1 class="page-title">Cloud Infrastructure & AWS Architecture</h1>
+        <p class="page-subtitle">In-depth guide to EC2, S3, Lambda, CloudFront, RDS, DynamoDB, SQS/SNS fanout, ALB, ECS/EKS, IAM, and VPC design.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-server"></i>Compute & Storage Foundations</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-box"></i>Amazon EC2 & ASG</h3>
+              <p>On-Demand, Reserved, Spot instances. Auto Scaling Groups (ASG) automatically adjust instance count based on CPU/Memory/Request metrics behind Load Balancers.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-bolt"></i>AWS Lambda (Serverless)</h3>
+              <p>Event-driven compute. Cold starts mitigated by Provisioned Concurrency. Execution limited to 15 min. Automatic scaling up to account concurrency limits.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-bucket"></i>Amazon S3</h3>
+              <p>Object storage (11 9s durability). Storage classes: Standard, Intelligent-Tiering, Glacier. Supports Multipart Uploads for large files and Presigned URLs for direct secure client uploads.</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-world"></i>CloudFront CDN</h3>
+              <p>Global edge distribution network. Reduces latency via edge caching, SSL termination, and edge compute (CloudFront Functions & Lambda@Edge).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-database"></i>Cloud Databases: RDS & DynamoDB</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3>Amazon RDS & Aurora</h3>
+              <p>Managed relational DB. Multi-AZ deployment provides synchronous replication to standby node with automated failover. Read Replicas provide horizontal scale for read workloads.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--accent4)">
+              <h3>Amazon DynamoDB</h3>
+              <p>NoSQL Key-Value & Document store. Single-table design using Partition Key (PK) & Sort Key (SK). Global Secondary Indexes (GSI) for alternate queries. DAX in-memory cache delivers microsecond latency.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-split"></i>SNS + SQS Fanout Pattern</div>
+          <div class="flow">
+            <div class="flow-box">Producer Service</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">SNS Topic</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">SQS Queue A (Order Service)</div>
+          </div>
+          <div class="flow" style="margin-top:4px">
+            <div class="flow-box" style="visibility:hidden">Producer Service</div>
+            <div class="flow-arrow" style="visibility:hidden">→</div>
+            <div class="flow-box" style="visibility:hidden">SNS Topic</div>
+            <div class="flow-arrow">↘</div>
+            <div class="flow-box">SQS Queue B (Email Service)</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-shield"></i>VPC & Security Architecture</div>
+          <div class="def-card">
+            <strong>AWS VPC Layout:</strong> Divide VPC CIDR into <strong>Public Subnets</strong> (connected to Internet Gateway for ALBs & NAT Gateways) and <strong>Private Subnets</strong> (isolated compute servers & DB instances). Security Groups act as stateful firewalls at instance level; Network ACLs act as stateless firewalls at subnet level.
+          </div>
         </div>
       </div>
 
@@ -2271,6 +2893,161 @@
       </div>
 
       <!-- ESTIMATION -->
+      <!-- CASE STUDY: UBER -->
+      <div class="topic" id="topic-uber">
+        <div class="page-tag tag-amber"><i class="ti ti-car"></i>Case Study</div>
+        <h1 class="page-title">Design Uber Platform</h1>
+        <p class="page-subtitle">Real-time geospatial matching platform powering 100M+ rides. Key challenges: geospatial indexing, location ping ingestion, rider-driver matching, surge pricing.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-target"></i>Requirements</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Functional</h3>
+              <p>Drivers update location (every 4s) · Riders request ride · Match nearby drivers · Real-time location tracking · Surge pricing based on demand</p>
+            </div>
+            <div class="card">
+              <h3>Non-Functional</h3>
+              <p>1M active drivers sending pings = 250k write QPS · Low matching latency (&lt;2s) · High availability · Zero lost location pings during active trip</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-map-pin"></i>Geospatial Indexing: H3 / Quadtree</div>
+          <div class="def-card">
+            Uber uses <strong>Uber H3</strong> (Hexagonal hierarchical spatial index). Hexagons are ideal for spatial analysis because all neighbor centroids are equidistant, eliminating edge distortion compared to rectangular grids.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-route"></i>System Architecture Flow</div>
+          <div class="flow">
+            <div class="flow-box">Driver App (WebSockets)</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Location Ingestion Service</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Kafka</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Redis (H3 Spatial Index)</div>
+          </div>
+          <div class="flow" style="margin-top:4px">
+            <div class="flow-box">Rider Request</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Dispatch Service</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Geospatial Matcher</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Driver Notification</div>
+          </div>
+        </div>
+      </div>
+
+<!-- CASE STUDY: DROPBOX -->
+      <div class="topic" id="topic-dropbox">
+        <div class="page-tag tag-blue"><i class="ti ti-cloud-upload"></i>Case Study</div>
+        <h1 class="page-title">Design Dropbox / Google Drive</h1>
+        <p class="page-subtitle">Global file synchronization service storing petabytes of user data. Key challenges: block-level chunking, deduplication, conflict resolution, delta sync.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-cut"></i>Block Chunking & Deduplication</div>
+          <div class="def-card">
+            Files are split into fixed <strong>4MB Chunk Blocks</strong>. Each chunk is hashed using SHA-256.<br>
+            • <strong>Deduplication:</strong> Before uploading a chunk, client queries Metadata DB for the chunk's SHA-256 hash. If hash exists, upload is skipped! Saves ~40% cloud storage.<br>
+            • <strong>Delta Sync:</strong> When a file is edited, only modified 4MB chunks are uploaded.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-components"></i>System Architecture</div>
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="ti ti-file-text"></i>Metadata Service</h3>
+              <p>Stores file directory structures, permissions, chunk manifest lists, and version history in MySQL/PostgreSQL (Sharded).</p>
+            </div>
+            <div class="card">
+              <h3><i class="ti ti-bucket"></i>Block Storage (S3)</h3>
+              <p>Raw encrypted 4MB chunk blocks stored in Amazon S3 object storage with CDN acceleration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- CASE STUDY: TINYURL -->
+      <div class="topic" id="topic-tinyurl">
+        <div class="page-tag tag-green"><i class="ti ti-link"></i>Case Study</div>
+        <h1 class="page-title">Design TinyURL Shortener</h1>
+        <p class="page-subtitle">High-throughput URL shortening service handling 100M URLs/day with sub-10ms redirection latency.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-code"></i>Base62 Encoding vs KGS</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3>Base62 Encoding</h3>
+              <p>Alphabet: <code>[a-z, A-Z, 0-9]</code> (62 chars). A 7-character string yields <code>62^7 = 3.52 Trillion</code> unique URLs.<br>
+              Convert auto-incrementing DB ID integer to Base62: <code>100,000,000 → 'ft7l'</code>.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--purple)">
+              <h3>Key Generation Service (KGS)</h3>
+              <p>Standalone service pre-generates random 7-character keys and stores them in Key DB. Workers load key batches into RAM. Eliminates runtime hashing collisions completely!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-bolt"></i>Redirection Read Path</div>
+          <div class="flow">
+            <div class="flow-box">Client (GET /ft7l)</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Redis Cache</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">301 / 302 Redirect to Original URL</div>
+          </div>
+        </div>
+      </div>
+
+<!-- CASE STUDY: TWITTER / X -->
+      <div class="topic" id="topic-twitter">
+        <div class="page-tag tag-cyan"><i class="ti ti-brand-twitter"></i>Case Study</div>
+        <h1 class="page-title">Design Twitter / X Timeline Service</h1>
+        <p class="page-subtitle">Real-time social network processing 500M tweets/day. Key challenges: hybrid fanout architecture, celebrity problem, counter service.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-arrows-split-2"></i>Hybrid Timeline Fanout</div>
+          <div class="card-grid">
+            <div class="card" style="border-left:3px solid var(--accent)">
+              <h3>Fanout-on-Write (Push Model)</h3>
+              <p>For regular users (&lt;10k followers): When a user tweets, background workers inject tweet ID into every follower's Redis Home Timeline cache. Ultra-fast feed reads!</p>
+            </div>
+            <div class="card" style="border-left:3px solid var(--red)">
+              <h3>Fanout-on-Read (Pull Model)</h3>
+              <p>For celebrities (&gt;100k followers): Pushing a tweet to 100M followers causes write amplification explosion. Celebrity tweets are stored in a celebrity tweet store and merged at read time when follower loads feed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- CASE STUDY: GOOGLE DOCS -->
+      <div class="topic" id="topic-googledocs">
+        <div class="page-tag tag-purple"><i class="ti ti-file-text"></i>Case Study</div>
+        <h1 class="page-title">Design Google Docs (Collaborative Editor)</h1>
+        <p class="page-subtitle">Real-time multi-user collaborative text editing with sub-50ms synchronization latency.</p>
+
+        <div class="section">
+          <div class="section-title"><i class="ti ti-git-merge"></i>OT (Operational Transformation) vs CRDT</div>
+          <div class="card-grid">
+            <div class="card" style="border-top:3px solid var(--accent)">
+              <h3>Operational Transformation (OT)</h3>
+              <p>Requires a centralized server to sequence operations. Operations (Insert/Delete) are transformed against concurrent operations based on revision history. Used by Google Docs.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--green)">
+              <h3>CRDT (Conflict-free Replicated Data Types)</h3>
+              <p>Decentralized state-based or operation-based mathematical data structures. Concurrent edits commute naturally without requiring a central server sequencer (e.g., Yjs, Automerge).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="topic" id="topic-estimation">
         <div class="page-tag tag-amber"><i class="ti ti-calculator"></i>Interview Skill</div>
         <h1 class="page-title">Back-of-Envelope Estimation</h1>
@@ -2409,22 +3186,24 @@
     // ── Topic order for Prev / Next ─────────────────────────────
     const TOPIC_ORDER = [
       'intro','scaling','latency','cap',
-      'lb','hashing','caching','msgqueue','pubsub','sharding',
-      'replication','cdn','microservices','eventdriven','spof',
-      'api','dbinternals','nosqlsql','location',
-      'instagram','whatsapp','youtube','tinder','netflix',
+      'distsys','storage','dbinternals','caching','msgqueue',
+      'lb','hashing','sharding','replication','cdn','microservices','eventdriven','spof','nosqlsql',
+      'api','security','observability','cloud',
+      'whatsapp','uber','instagram','dropbox','tinyurl','youtube','twitter','googledocs','netflix','location','tinder',
       'estimation','interview'
     ];
 
     const NAV_LABELS = {
       intro:'Introduction', scaling:'Scaling', latency:'Latency Numbers', cap:'CAP Theorem',
-      lb:'Load Balancing', hashing:'Consistent Hashing', caching:'Caching',
-      msgqueue:'Message Queues', pubsub:'Pub / Sub', sharding:'DB Sharding',
-      replication:'Replication', cdn:'CDN', microservices:'Microservices',
-      eventdriven:'Event-Driven Arch', spof:'Single Point of Failure',
-      api:'API Design', dbinternals:'DB Internals', nosqlsql:'SQL vs NoSQL',
-      location:'Location Systems', instagram:'Instagram', whatsapp:'WhatsApp',
-      youtube:'YouTube', tinder:'Tinder', netflix:'Netflix',
+      distsys:'Distributed Systems', storage:'Storage Engines', dbinternals:'DB Internals',
+      caching:'Caching Deep-Dive', msgqueue:'Messaging & Eventing',
+      lb:'Load Balancing', hashing:'Consistent Hashing', sharding:'DB Sharding',
+      replication:'Replication', cdn:'CDN & Edge', microservices:'Microservices',
+      eventdriven:'Event-Driven Arch', spof:'High Availability', nosqlsql:'SQL vs NoSQL',
+      api:'API Design', security:'System Security & Auth', observability:'Observability', cloud:'Cloud Architecture (AWS)',
+      whatsapp:'WhatsApp', uber:'Uber Platform', instagram:'Instagram', dropbox:'Dropbox Sync',
+      tinyurl:'TinyURL Shortener', youtube:'YouTube Video', twitter:'Twitter / X Feed',
+      googledocs:'Google Docs', netflix:'Netflix Streaming', location:'Geospatial Systems', tinder:'Tinder Dating',
       estimation:'Back-of-Envelope', interview:'Interview Tips'
     };
 
