@@ -34,24 +34,20 @@
       --mono: 'JetBrains Mono', monospace;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    html { scroll-behavior: smooth; height: 100%; scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
+    html {
+      scroll-behavior: smooth;
+      height: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border2) var(--bg);
+      -webkit-text-size-adjust: 100%;
+    }
     ::selection { background: var(--accent); color: #000; }
     
     /* Custom Sleek Dark Scrollbars */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border2);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--text3);
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
     body {
       font-family: var(--font-sans);
@@ -60,18 +56,22 @@
       line-height: 1.6;
       font-size: 15px;
       min-height: 100vh;
+      width: 100%;
+      max-width: 100vw;
       overflow-x: hidden;
     }
+    
     .layout {
       display: flex;
       min-height: 100vh;
       width: 100%;
+      max-width: 100%;
       position: relative;
     }
     
-    /* Sidebar */
+    /* Desktop Sidebar (>= 992px) */
     .sidebar {
-      width: 300px;
+      width: 280px;
       flex-shrink: 0;
       background: var(--bg2);
       border-right: 1px solid var(--border);
@@ -91,22 +91,13 @@
       scrollbar-width: thin;
       scrollbar-color: var(--border2) transparent;
     }
-    .sidebar::-webkit-scrollbar {
-      width: 5px;
-    }
-    .sidebar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--border2);
-      border-radius: 4px;
-    }
-    .sidebar::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
-    }
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    .sidebar::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
     .sidebar-header {
-      padding: 20px 20px 16px;
+      padding: 18px 18px 14px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
@@ -120,7 +111,7 @@
       text-decoration: none;
       text-transform: uppercase;
       letter-spacing: .06em;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       transition: color .15s;
     }
     .back-link:hover { color: var(--accent); }
@@ -141,7 +132,7 @@
       color: var(--text);
     }
     .sidebar-search {
-      padding: 12px 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       position: relative;
       flex-shrink: 0;
@@ -160,19 +151,19 @@
     .sidebar-search input:focus { border-color: var(--accent); }
     .sidebar-search i {
       position: absolute;
-      left: 26px;
+      left: 24px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text3);
       font-size: 14px;
     }
-    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-list { padding: 10px 8px 40px; list-style: none; flex-grow: 1; }
     .nav-item {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 8px 10px;
       border-radius: 8px;
       font-size: 12.5px;
       color: var(--text2);
@@ -205,20 +196,20 @@
     .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
     .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
 
-    /* Main Content */
+    /* Main Content Area */
     .main-content {
       flex: 1;
-      margin-left: 300px;
-      width: calc(100% - 300px);
-      max-width: 1000px;
+      margin-left: 280px;
+      width: calc(100% - 280px);
+      max-width: 960px;
       min-width: 0;
-      padding: 40px 48px 120px;
+      padding: 36px 36px 100px;
       box-sizing: border-box;
     }
 
     .topic-header {
-      margin-bottom: 40px;
-      padding-bottom: 24px;
+      margin-bottom: 36px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--border);
     }
     .topic-eyebrow {
@@ -231,14 +222,16 @@
       margin-bottom: 8px;
     }
     .topic-header h1 {
-      font-size: 32px;
+      font-size: clamp(24px, 4vw, 32px);
       font-weight: 800;
       letter-spacing: -.02em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      word-break: break-word;
     }
     .topic-header p {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text2);
+      line-height: 1.6;
     }
 
     /* Problem Card */
@@ -246,10 +239,11 @@
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 48px;
+      padding: 28px;
+      margin-bottom: 40px;
       scroll-margin-top: 24px;
       width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       display: block;
     }
@@ -258,11 +252,11 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
     }
-    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
     .problem-tag {
       font-family: var(--mono);
       font-size: 11px;
@@ -270,12 +264,13 @@
       color: var(--accent);
     }
     .problem-header h2 {
-      font-size: 22px;
+      font-size: clamp(18px, 3vw, 22px);
       font-weight: 800;
       color: var(--text);
       letter-spacing: -.01em;
+      word-break: break-word;
     }
-    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .problem-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .lc-link {
       display: inline-flex;
       align-items: center;
@@ -289,19 +284,21 @@
       padding: 4px 10px;
       border-radius: 6px;
       text-decoration: none;
+      white-space: nowrap;
       transition: background .15s;
     }
     .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 
     .sec-block {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       display: block;
       clear: both;
     }
     .sec-title {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .06em;
@@ -309,19 +306,20 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .sec-title i { color: var(--accent); font-size: 16px; }
+    .sec-title i { color: var(--accent); font-size: 15px; }
 
     .desc-box, .naive-box, .intuition-box, .approach-box {
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 16px 20px;
+      padding: 14px 18px;
       font-size: 14px;
       color: var(--text2);
-      line-height: 1.65;
+      line-height: 1.6;
       width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       word-break: break-word;
       overflow-wrap: break-word;
@@ -350,24 +348,27 @@
     ol.step-list li, ul.bullet-list li {
       margin-bottom: 6px;
       color: var(--text2);
+      word-break: break-word;
     }
     ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
 
     .complexity-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       margin-top: 10px;
+      max-width: 100%;
     }
     .c-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 4px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
+      word-break: break-word;
     }
     .c-time {
       background: rgba(56, 189, 248, 0.1);
@@ -402,12 +403,13 @@
       align-items: center;
       justify-content: space-between;
       background: var(--bg3);
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-bottom: 1px solid var(--border);
       font-family: var(--mono);
       font-size: 11px;
       color: var(--text3);
       text-transform: uppercase;
+      gap: 8px;
     }
     .copy-btn {
       background: transparent;
@@ -422,20 +424,22 @@
       align-items: center;
       gap: 4px;
       transition: all .15s;
+      flex-shrink: 0;
     }
     .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
     .code-container pre {
-      padding: 16px;
+      padding: 14px 16px;
       margin: 0;
       overflow-x: auto;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
       color: #bbf7e6;
-      line-height: 1.65;
+      line-height: 1.6;
       white-space: pre;
+      -webkit-overflow-scrolling: touch;
     }
     .code-container pre code {
       display: block;
@@ -448,72 +452,81 @@
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 48px;
+      padding: 28px;
+      margin-bottom: 40px;
       width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       display: block;
     }
     .summary-header {
-      margin-bottom: 24px;
-      padding-bottom: 18px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
     }
     .summary-header h2 {
-      font-size: 24px;
+      font-size: clamp(20px, 3.5vw, 24px);
       font-weight: 800;
       color: var(--text);
       letter-spacing: -.01em;
       display: flex;
       align-items: center;
       gap: 10px;
+      word-break: break-word;
     }
     .summary-header p {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text2);
       margin-top: 4px;
     }
     .pattern-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
     }
     .pattern-item-card {
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 20px;
+      padding: 18px;
+      min-width: 0;
+      word-break: break-word;
     }
     .pattern-item-card h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--accent);
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
+      word-break: break-word;
     }
     .pattern-item-card p {
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--text2);
-      line-height: 1.6;
+      line-height: 1.55;
     }
     .pattern-table-wrapper {
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid var(--border);
       border-radius: 8px;
       margin-top: 16px;
+      width: 100%;
+      max-width: 100%;
     }
     .pattern-table {
       width: 100%;
+      min-width: 540px;
       border-collapse: collapse;
-      font-size: 13.5px;
+      font-size: 13px;
       text-align: left;
     }
     .pattern-table th {
       background: var(--bg3);
-      padding: 12px 16px;
+      padding: 10px 14px;
       color: var(--text);
       font-weight: 700;
       border-bottom: 1px solid var(--border);
@@ -523,7 +536,7 @@
       letter-spacing: .05em;
     }
     .pattern-table td {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
       color: var(--text2);
     }
@@ -531,13 +544,15 @@
       background: #06080e;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 20px;
+      padding: 16px;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--cyan);
       white-space: pre;
       overflow-x: auto;
-      line-height: 1.55;
+      -webkit-overflow-scrolling: touch;
+      line-height: 1.5;
+      max-width: 100%;
     }
     .cheat-grid {
       display: grid;
@@ -549,15 +564,18 @@
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 16px;
+      padding: 14px;
+      min-width: 0;
+      word-break: break-word;
     }
     .cheat-item code {
       display: block;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--accent);
       margin-bottom: 6px;
       font-weight: 700;
+      word-break: break-word;
     }
     .cheat-item p {
       font-size: 12.5px;
@@ -567,29 +585,29 @@
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 20px;
+      padding: 18px;
     }
     .cheatsheet-row {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       align-items: flex-start;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid var(--border);
     }
     .cheatsheet-row:last-child { border-bottom: none; }
     .cs-trigger {
       font-family: var(--mono);
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--accent);
       background: color-mix(in srgb, var(--accent) 8%, transparent);
       border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
       border-radius: 6px;
-      padding: 6px 12px;
+      padding: 5px 10px;
       white-space: nowrap;
       align-self: center;
     }
-    .cs-arrow { color: var(--text3); font-size: 18px; align-self: center; }
-    .cs-answer { font-size: 13.5px; color: var(--text2); }
+    .cs-arrow { color: var(--text3); font-size: 16px; align-self: center; }
+    .cs-answer { font-size: 13px; color: var(--text2); }
     .cs-answer strong { color: var(--text); }
     .group-label {
       font-family: var(--mono);
@@ -598,11 +616,11 @@
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--accent);
-      margin: 24px 0 10px;
+      margin: 20px 0 10px;
     }
 
-    /* Responsive Breakpoints */
-    @media (max-width: 900px) {
+    /* ── RESPONSIVE BREAKPOINTS (MOBILE & TABLET & ZOOM FLUIDITY) ── */
+    @media (max-width: 992px) {
       .layout {
         flex-direction: column;
       }
@@ -610,23 +628,53 @@
         position: relative;
         width: 100%;
         height: auto;
-        max-height: 350px;
+        max-height: 280px;
         border-right: none;
         border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       }
       .main-content {
         margin-left: 0;
         width: 100%;
         max-width: 100%;
-        padding: 24px 16px 60px;
+        padding: 24px 20px 60px;
       }
       .problem-card, .summary-card {
-        padding: 20px;
-        margin-bottom: 32px;
+        padding: 20px 16px;
+        margin-bottom: 28px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .sidebar {
+        max-height: 240px;
+      }
+      .main-content {
+        padding: 18px 12px 48px;
+      }
+      .problem-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .problem-meta {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .desc-box, .naive-box, .intuition-box, .approach-box {
+        padding: 12px 14px;
+        font-size: 13.5px;
+      }
+      .code-container pre {
+        padding: 12px;
+        font-size: 12px;
       }
       .cheatsheet-row {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
+      }
+      .cs-trigger, .cs-arrow {
+        align-self: flex-start;
       }
       .cheat-grid {
         grid-template-columns: 1fr;

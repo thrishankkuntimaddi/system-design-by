@@ -288,13 +288,20 @@
     .card-footer i { transition: transform .15s; }
     .card:hover .card-footer i { transform: translateX(4px); }
 
-    @media (max-width: 900px) {
-      .grid-container { grid-template-columns: repeat(2, 1fr); }
+    /* Responsive & Zoom Rules */
+    @media (max-width: 960px) {
+      .grid-container { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); padding: 0 20px 60px; }
+      .hero { padding: 36px 20px 24px; }
+      .stats-bar { gap: 16px; padding: 12px 20px; border-radius: 24px; width: 100%; max-width: 100%; justify-content: space-around; }
     }
     @media (max-width: 600px) {
-      .grid-container { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 28px; }
-      .topbar { padding: 14px 18px; }
+      .grid-container { grid-template-columns: 1fr; padding: 0 14px 48px; gap: 14px; }
+      .hero h1 { font-size: clamp(24px, 6vw, 32px); }
+      .hero p { font-size: 14px; margin-bottom: 24px; }
+      .topbar { padding: 12px 16px; }
+      .brand-title { font-size: 15px; }
+      .stats-bar { gap: 10px; padding: 10px 14px; border-radius: 16px; }
+      .stat-item { font-size: 12.5px; }
     }
   </style>
 </head>
