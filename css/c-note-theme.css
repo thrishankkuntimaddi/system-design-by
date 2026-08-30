@@ -641,22 +641,22 @@ a:hover {
 
 .search-icon, .search-box .search-icon {
   position: absolute !important;
-  left: 14px !important;
+  left: 16px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
   font-size: 16px !important;
   color: var(--text3) !important;
   pointer-events: none !important;
-  z-index: 2 !important;
+  z-index: 10 !important;
 }
 
 .search-box input, #globalSearchInput {
   width: 100% !important;
-  height: 40px !important;
+  height: 42px !important;
   background: var(--bg2) !important;
   border: 1px solid var(--border-strong) !important;
   border-radius: var(--radius-input, 8px) !important;
-  padding: 0 44px 0 44px !important;
+  padding: 0 44px 0 56px !important;
   font-family: var(--font-sans) !important;
   font-size: 13.5px !important;
   color: var(--text) !important;
@@ -1235,16 +1235,16 @@ pre[data-language]::before {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .mobile-menu-toggle {
     display: inline-flex;
   }
 
   .topbar, header.topbar {
-    min-height: 64px !important;
+    min-height: 72px !important;
     height: auto !important;
-    padding: 14px 14px 12px !important;
-    padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
+    padding: 18px 14px 14px !important;
+    padding-top: max(24px, env(safe-area-inset-top, 24px)) !important;
     gap: 10px !important;
   }
 
@@ -1283,7 +1283,7 @@ pre[data-language]::before {
   .filter-rearrange-bar {
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 10px !important;
+    gap: 12px !important;
     width: 100% !important;
   }
 
@@ -1305,10 +1305,13 @@ pre[data-language]::before {
   .cat-pill {
     flex-shrink: 0 !important;
     white-space: nowrap !important;
-    height: 34px !important;
+    height: 36px !important;
     padding: 0 14px !important;
     font-size: 12.5px !important;
     border-radius: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
   }
 
   .rearrange-actions {
@@ -1639,7 +1642,6 @@ main,
 
 .sidebar-search i,
 .search-wrap i,
-.search-icon,
 .sidebar-search .ti-search,
 .search-wrap .ti-search {
   position: absolute !important;
