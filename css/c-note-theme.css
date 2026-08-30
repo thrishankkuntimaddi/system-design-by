@@ -1525,17 +1525,14 @@ main,
   border-color: var(--accent-border) !important;
 }
 
-@media (max-width: 900px) {
-  .sidebar-close-btn {
-    display: inline-flex !important;
+@media (min-width: 901px) {
+  .sidebar-header {
+    display: none !important;
   }
 }
 
 .sidebar-module-info {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 4px !important;
-  margin-top: 2px !important;
+  display: none !important;
 }
 
 .sidebar-badge-row {
@@ -2179,3 +2176,48 @@ img.brand-icon,
   vertical-align: middle !important;
 }
 
+/* ==========================================================================
+   iOS Safari / Mobile Position: Fixed Reliability Fixes
+   position:fixed breaks when html/body has overflow-x:hidden on iOS Safari.
+   Force GPU-compositing on the mobile-nav so it stays pinned on scroll.
+   ========================================================================== */
+
+.mobile-nav {
+  /* Promote to its own compositing layer — prevents iOS Safari "jumping" */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+  /* Ensure it always sits above all content */
+  isolation: isolate;
+}
+
+/* Safe-area padding for notched phones (iPhone X+) */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .mobile-nav {
+    padding-top: env(safe-area-inset-top);
+    height: calc(56px + env(safe-area-inset-top));
+  }
+  @media (max-width: 900px) {
+    .main-content {
+      padding-top: calc(76px + env(safe-area-inset-top));
+    }
+  }
+}
+
+/* ==========================================================================
+   Sub-topbar back-link inherits theme text correctly
+   ========================================================================== */
+.sub-topbar {
+  /* Prevent topbar text from being clipped by sidebar on desktop */
+  overflow: visible;
+}
+
+.sub-topbar .theme-toggle-btn {
+  flex-shrink: 0;
+}
+
+/* sub-topbar uses position:fixed (not sticky) because html has
+   overflow-x:hidden in c-note-theme.css which breaks sticky positioning.
+   The fixed position is set per-page in each sub-topic's inline <style>. */

@@ -906,6 +906,75 @@
       color: #e2e8f0;
     }
 
+
+    /* ── Desktop Sub-Page Fixed Topbar ── */
+    .sub-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+      min-height: 52px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+    .sub-topbar-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text3);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      transition: color .15s;
+      white-space: nowrap;
+    }
+    .sub-topbar-back:hover { color: var(--accent); }
+    .sub-topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .sub-topbar-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    /* On mobile: hide desktop topbar, show mobile-nav instead */
+    @media (max-width: 900px) {
+      .sub-topbar { display: none !important; }
+    }
+    /* On desktop: offset sidebar and layout below 52px topbar */
+    @media (min-width: 901px) {
+      .sidebar {
+        top: 52px !important;
+        height: calc(100vh - 52px) !important;
+        height: calc(100dvh - 52px) !important;
+        bottom: auto !important;
+      }
+      .layout {
+        padding-top: 52px !important;
+      }
+      .sidebar-header {
+        display: none !important;
+      }
+      .problem-card, .summary-card {
+        scroll-margin-top: 68px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -922,19 +991,25 @@
   </nav>
   <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+  <!-- Desktop Fixed Topbar -->
+  <header class="sub-topbar" id="subTopbar">
+    <a href="./index.html" class="sub-topbar-back">
+      <i class="ti ti-arrow-left"></i> Sheet 150 Hub
+    </a>
+    <div class="sub-topbar-brand">
+      <img src="../../app-icon.png" alt="Sheet 150" style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
+      <span class="sub-topbar-title">Sheet 150</span>
+    </div>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <i class="ti ti-sun"></i>
+    </button>
+  </header>
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-header-top">
           <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
           <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
-        </div>
-        <div class="sidebar-module-info">
-          <div class="sidebar-badge-row">
-            <span class="module-badge">MODULE 05</span>
-            <span class="problem-count-pill">7 Problems</span>
-          </div>
-          <div class="module-title-side">5. Heap & Hash</div>
         </div>
       </div>
       <div class="sidebar-search">
