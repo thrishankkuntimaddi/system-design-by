@@ -1713,37 +1713,64 @@ main,
 /* ── Code Block & Syntax Container Standards ───────────── */
 .code-container,
 .code-block-wrapper,
-.code-box-wrapper {
+.code-box-wrapper,
+.code-block-container {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
   background-color: var(--code-bg) !important;
   color: var(--code-text) !important;
   border: 1px solid var(--code-border) !important;
   border-radius: var(--radius-code) !important;
   margin: 16px 0 !important;
-  overflow: hidden !important;
+}
+
+.code-content,
+.code-content.active {
+  display: block !important;
+  width: 100% !important;
   max-width: 100% !important;
+  min-width: 0 !important;
   box-sizing: border-box !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
 }
 
 pre,
 .code-block,
 div.code-block,
 pre.code-block,
-.code-content,
-.code-box {
+.code-box,
+.code-container pre,
+.code-block-container pre {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   background-color: var(--code-bg) !important;
   color: var(--code-text) !important;
-  border: 1px solid var(--code-border);
-  border-radius: var(--radius-code);
-  margin: 12px 0 !important;
+  margin: 0 !important;
   padding: 14px 16px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
   white-space: pre !important;
   word-break: normal !important;
   word-wrap: normal !important;
-  max-width: 100% !important;
   box-sizing: border-box !important;
+  border: none !important;
 }
 
 .code-container pre,
@@ -1753,7 +1780,6 @@ pre.code-block,
 .code-block-wrapper .code-block {
   border: none !important;
   border-radius: 0 !important;
-  margin: 0 !important;
   background-color: transparent !important;
 }
 
@@ -1769,7 +1795,9 @@ pre code,
   display: block !important;
   width: max-content !important;
   min-width: 100% !important;
+  max-width: none !important;
   box-sizing: border-box !important;
+  touch-action: pan-x pan-y !important;
 }
 
 /* Custom scrollbars for code blocks */

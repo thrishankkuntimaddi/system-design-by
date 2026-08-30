@@ -3940,7 +3940,29 @@ public:
       } catch(e) {}
     }
 
-    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+    function enableMobileCodeTouchScroll() {
+      document.querySelectorAll('.code-container, .code-content, pre, .code-block').forEach(elem => {
+        let startX = 0, scrollLeft = 0, isDragging = false;
+        elem.addEventListener('touchstart', function(e) {
+          if (e.touches.length === 1) {
+            startX = e.touches[0].pageX;
+            scrollLeft = elem.scrollLeft;
+            isDragging = true;
+          }
+        }, { passive: true });
+        elem.addEventListener('touchmove', function(e) {
+          if (!isDragging || e.touches.length !== 1) return;
+          const deltaX = e.touches[0].pageX - startX;
+          elem.scrollLeft = scrollLeft - deltaX;
+        }, { passive: true });
+        elem.addEventListener('touchend', function() { isDragging = false; }, { passive: true });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initLanguagePreference();
+      enableMobileCodeTouchScroll();
+    });
 
     function copyCode(btn) {
       try {
