@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cs-notes-v19';
+const CACHE_NAME = 'cs-notes-v20';
 
 const ASSETS = [
   './',
@@ -25,14 +25,14 @@ const ASSETS = [
 
 // Install — pre-cache all pages
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
   );
 });
 
-// Activate — delete old caches
+// Activate — delete old caches and claim clients immediately
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -43,37 +43,19 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch — network first for navigation, cache first for assets
+// Fetch — Network first for all requests to ensure instant updates
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  const url = new URL(event.request.url);
-
-  // Navigation requests: try network, fall back to cache
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then(res => {
-          // Cache the fresh page
+  event.respondWith(
+    fetch(event.request)
+      .then(res => {
+        if (res && res.status === 200 && res.type === 'basic') {
           const clone = res.clone();
           caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
-          return res;
-        })
-        .catch(() => caches.match(event.request).then(r => r || caches.match('./index.html')))
-    );
-    return;
-  }
-
-  // Assets: cache first, then network
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(res => {
-        if (!res || res.status !== 200 || res.type === 'opaque') return res;
-        const clone = res.clone();
-        caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+        }
         return res;
-      }).catch(() => caches.match('./index.html'));
-    })
+      })
+      .catch(() => caches.match(event.request).then(r => r || caches.match('./index.html')))
   );
 });
