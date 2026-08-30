@@ -45,20 +45,20 @@
     :root {
       --accent: #38bdf8;
       --purple: #a855f7;
-      --pink: #f472b6;
-      --green: #34d399;
-      --amber: #f59e0b;
-      --red: #ef4444;
+      --pink:   #f472b6;
+      --green:  #34d399;
+      --amber:  #f59e0b;
+      --red:    #ef4444;
       --radius: 14px;
     }
 
     html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
     ::selection { background: var(--accent); color: #000; }
-    
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
     body {
       font-family: var(--font-sans);
       background: var(--bg);
@@ -68,105 +68,173 @@
       min-height: 100vh;
     }
 
-    .topbar {
+    /* ───────────────────────────────────────────────────────────────
+       FULL-WIDTH HERO HEADER
+       Always dark so the gradient text + glass elements look great
+       regardless of light/dark system theme.
+    ─────────────────────────────────────────────────────────────── */
+    .hero-header {
+      background: linear-gradient(155deg, #0A1828 0%, #0E1F38 45%, #08131F 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle grid-dot mesh overlay */
+    .hero-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Atmospheric radial glows */
+    .hero-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 65% at 12% 60%, rgba(56,189,248,0.13) 0%, transparent 100%),
+        radial-gradient(ellipse 50% 45% at 88% 18%, rgba(168,85,247,0.09) 0%, transparent 100%),
+        radial-gradient(ellipse 55% 40% at 55% 105%, rgba(52,211,153,0.07) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── TOP NAVIGATION ROW ── */
+    .hero-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 32px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg2);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      padding: 22px 36px;
+      position: relative;
+      z-index: 10;
     }
 
-    .back-btn {
+    .hero-back-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      color: var(--text2);
+      gap: 7px;
+      color: rgba(255,255,255,0.58);
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
-      transition: color .15s;
+      letter-spacing: 0.01em;
+      transition: color .15s, transform .15s;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
     }
-    .back-btn:hover { color: var(--accent); }
+    .hero-back-btn:hover { color: var(--accent); transform: translateX(-2px); }
+    .hero-back-btn i { font-size: 15px; }
 
-    .brand {
+    .hero-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
+      text-decoration: none;
     }
-    .brand-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      display: flex;
+    .hero-brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1.5px rgba(56,189,248,0.35), 0 4px 16px rgba(0,0,0,0.5);
+    }
+    .hero-brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.022em;
+    }
+
+    /* Dark-surface theme toggle — always visible on dark hero */
+    .hero-theme-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.7);
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-size: 16px;
+      cursor: pointer;
+      font-size: 17px;
+      transition: all .15s;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
     }
-    .brand-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -.01em;
+    .hero-theme-btn:hover {
+      background: rgba(56,189,248,0.16);
+      border-color: rgba(56,189,248,0.38);
+      color: var(--accent);
     }
 
-    .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 48px 24px 32px;
+    /* ── HERO CONTENT ── */
+    .hero-content {
       text-align: center;
+      padding: 10px 24px 68px;
+      max-width: 880px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      gap: 7px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.25);
       border-radius: 20px;
       padding: 6px 16px;
       font-size: 11px;
       color: var(--accent);
       font-weight: 700;
-      letter-spacing: .06em;
+      letter-spacing: .07em;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
-    .hero h1 {
-      font-size: 36px;
+    .hero-content h1 {
+      font-size: clamp(26px, 5vw, 54px);
       font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--text2));
+      letter-spacing: -.026em;
+      line-height: 1.12;
+      margin-bottom: 16px;
+      background: linear-gradient(138deg, #ffffff 25%, rgba(148,163,184,0.9) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero p {
+    .hero-content > p {
       font-size: 15.5px;
-      color: var(--text2);
-      max-width: 680px;
-      margin: 0 auto 32px;
-      line-height: 1.65;
+      color: rgba(255,255,255,0.52);
+      max-width: 630px;
+      margin: 0 auto 36px;
+      line-height: 1.72;
     }
 
+    /* Stats pill */
     .stats-bar {
       display: inline-flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 28px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
+      gap: 22px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius: 40px;
-      padding: 12px 32px;
-      margin-bottom: 40px;
+      padding: 11px 30px;
+      margin-bottom: 36px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .stat-item {
       display: flex;
@@ -174,44 +242,54 @@
       gap: 8px;
       font-size: 13.5px;
       font-weight: 600;
-      color: var(--text2);
+      color: rgba(255,255,255,0.58);
+      white-space: nowrap;
     }
     .stat-item i { font-size: 17px; color: var(--accent); }
-    .stat-item strong { color: var(--text); }
+    .stat-item strong { color: #fff; }
 
+    /* Search bar — glassmorphism style */
     .search-box {
-      max-width: 600px;
-      margin: 0 auto 48px;
+      max-width: 580px;
+      margin: 0 auto;
       position: relative;
     }
     .search-box input {
       width: 100%;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 20px 14px 44px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 15px 20px 15px 50px;
       font-size: 14.5px;
-      color: var(--text);
+      color: #fff;
+      font-family: var(--font-sans);
       outline: none;
-      transition: border-color .2s, box-shadow .2s;
+      transition: border-color .2s, background .2s, box-shadow .2s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
+    .search-box input::placeholder { color: rgba(255,255,255,0.36); }
     .search-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      border-color: rgba(56,189,248,0.52);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.12), 0 6px 28px rgba(0,0,0,0.25);
     }
     .search-box i {
       position: absolute;
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text3);
-      font-size: 18px;
+      color: rgba(255,255,255,0.38);
+      font-size: 19px;
+      pointer-events: none;
+      z-index: 1;
     }
 
+    /* ── MODULE CARDS GRID ── */
     .grid-container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 24px 80px;
+      padding: 52px 24px 80px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
@@ -228,29 +306,40 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      transition: transform .2s, border-color .2s, box-shadow .2s;
+      transition: transform .22s ease, border-color .2s ease, box-shadow .22s ease;
+    }
+    /* Top accent line on hover */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--card-color, var(--accent));
+      opacity: 0;
+      transition: opacity .2s;
     }
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       border-color: var(--card-color, var(--accent));
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.11);
     }
+    [data-theme="dark"] .card:hover { box-shadow: 0 14px 36px rgba(0,0,0,0.44); }
+    .card:hover::before { opacity: 1; }
 
     .card-num {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 20px; right: 20px;
       font-family: var(--mono);
       font-size: 16px;
       font-weight: 800;
       color: var(--text3);
-      opacity: 0.25;
+      opacity: 0.22;
     }
 
     .card-icon {
       width: 44px;
       height: 44px;
-      border-radius: 10px;
+      border-radius: 11px;
       background: color-mix(in srgb, var(--card-color, var(--accent)) 12%, transparent);
       border: 1px solid color-mix(in srgb, var(--card-color, var(--accent)) 25%, transparent);
       display: flex;
@@ -281,7 +370,6 @@
       margin-bottom: 20px;
       flex-grow: 1;
     }
-
     .card-footer {
       display: flex;
       align-items: center;
@@ -295,80 +383,92 @@
       color: var(--text3);
       transition: color .15s;
     }
-    .card:hover .card-footer {
-      color: var(--card-color, var(--accent));
-    }
+    .card:hover .card-footer { color: var(--card-color, var(--accent)); }
     .card-footer i { transition: transform .15s; }
     .card:hover .card-footer i { transform: translateX(4px); }
 
-    /* Responsive & Zoom Rules */
-    @media (max-width: 960px) {
-      .grid-container { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); padding: 0 20px 60px; }
-      .hero { padding: 36px 20px 24px; }
-      .stats-bar { gap: 16px; padding: 12px 20px; border-radius: 24px; width: 100%; max-width: 100%; justify-content: space-around; }
+    /* ── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .grid-container { grid-template-columns: repeat(2, 1fr); padding: 44px 24px 70px; }
+    }
+    @media (max-width: 900px) {
+      .hero-nav { padding: 18px 24px; }
+      .hero-content { padding: 8px 20px 56px; }
+      .stats-bar { gap: 16px; padding: 10px 22px; }
+    }
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: clamp(24px, 6.5vw, 38px); }
+      .hero-content > p { font-size: 14.5px; margin-bottom: 28px; }
+      .grid-container { grid-template-columns: 1fr; padding: 36px 20px 60px; gap: 16px; }
     }
     @media (max-width: 600px) {
-      .grid-container { grid-template-columns: 1fr; padding: 0 14px 48px; gap: 14px; }
-      .hero h1 { font-size: clamp(24px, 6vw, 32px); }
-      .hero p { font-size: 14px; margin-bottom: 24px; }
-      .topbar { padding: 12px 16px; }
-      .brand-title { font-size: 15px; }
-      .stats-bar { gap: 10px; padding: 10px 14px; border-radius: 16px; }
-      .stat-item { font-size: 12.5px; }
+      .hero-nav { padding: 14px 16px; }
+      .hero-back-btn .back-label { display: none; }
+      .hero-brand-title { font-size: 15px; }
+      .hero-brand-icon { width: 30px; height: 30px; }
+      .hero-theme-btn { width: 36px; height: 36px; font-size: 15px; }
+      .hero-content { padding: 8px 16px 48px; }
+      .hero-content h1 { font-size: clamp(22px, 7.5vw, 32px); }
+      .hero-content > p { font-size: 14px; margin-bottom: 22px; }
+      .stats-bar { gap: 10px; padding: 10px 16px; border-radius: 20px; }
+      .stat-item { font-size: 12px; gap: 6px; }
+      .stat-item i { font-size: 14px; }
+      .search-box input { padding: 13px 16px 13px 44px; font-size: 14px; border-radius: 12px; }
+      .search-box i { left: 14px; font-size: 17px; }
+      .grid-container { padding: 28px 14px 48px; gap: 14px; }
     }
-    @media (max-width: 480px) {
-      .topbar { padding: 10px 12px; gap: 8px; }
-      .brand-title { font-size: 14px; }
-      .back-btn { font-size: 12px; }
-      .hero { padding: 32px 16px 24px; }
-      .hero h1 { font-size: clamp(20px, 6vw, 26px); }
-      .hero p { font-size: 13.5px; }
-      .grid-container { padding: 0 12px 40px; gap: 12px; }
-      .module-card { padding: 18px; }
-      .stats-bar { flex-wrap: wrap; gap: 8px; border-radius: 14px; padding: 10px 12px; }
-    }
-    @media (max-width: 380px) {
-      .topbar { padding: 9px 10px; }
-      .brand-title { font-size: 13px; }
-      .hero { padding: 24px 12px 18px; }
-      .grid-container { padding: 0 10px 36px; }
-      .module-card { padding: 14px; }
+    @media (max-width: 420px) {
+      .hero-nav { padding: 12px 14px; }
+      .stats-bar { flex-direction: column; gap: 8px; border-radius: 16px; padding: 12px 16px; }
+      .stat-item { width: 100%; justify-content: center; }
+      .grid-container { padding: 20px 12px 40px; gap: 12px; }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a href="../../index.html" class="back-btn">
-      <i class="ti ti-arrow-left"></i> Home Hub
-    </a>
-    <div class="brand">
-      <img src="../../app-icon.png" class="brand-icon" alt="C-Note" style="width:32px;height:32px;object-fit:cover;border-radius:8px;">
-      <div class="brand-title">Sheet 150</div>
-    </div>
-    <div style="display:flex; align-items:center;">
-      <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-        <i class="ti ti-sun" id="themeToggleIcon"></i>
+  <!-- ═══ FULL-WIDTH HERO HEADER ═══════════════════════════════════════ -->
+  <header class="hero-header" role="banner">
+
+    <!-- Top Navigation Row -->
+    <nav class="hero-nav" aria-label="Primary navigation">
+      <a href="../../index.html" class="hero-back-btn" aria-label="Back to Home Hub">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>
+        <span class="back-label">Home Hub</span>
+      </a>
+
+      <div class="hero-brand" aria-label="Sheet 150">
+        <img src="../../app-icon.png" class="hero-brand-icon" alt="C-Note" width="36" height="36">
+        <div class="hero-brand-title">Sheet 150</div>
+      </div>
+
+      <button class="hero-theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
+        <i class="ti ti-sun" id="themeToggleIcon" aria-hidden="true"></i>
       </button>
+    </nav>
+
+    <!-- Hero Content -->
+    <div class="hero-content">
+      <div class="hero-badge"><i class="ti ti-flame" aria-hidden="true"></i> Top 150 LeetCode Essentials</div>
+      <h1>Sheet 150 — Master Interview Notes</h1>
+      <p>A comprehensive 150-problem master roadmap. Each problem features a clear Problem Statement, Naive Solution, Intuition, Algorithmic Approach, Optimized Code, and Time/Space complexity analysis.</p>
+
+      <div class="stats-bar" role="list" aria-label="Sheet statistics">
+        <div class="stat-item" role="listitem"><i class="ti ti-checkup-list" aria-hidden="true"></i> <strong>150</strong>&nbsp;Problems</div>
+        <div class="stat-item" role="listitem"><i class="ti ti-folders" aria-hidden="true"></i> <strong>12</strong>&nbsp;Modules</div>
+        <div class="stat-item" role="listitem"><i class="ti ti-code" aria-hidden="true"></i> <strong>Python</strong>&nbsp;Clean Solns</div>
+        <div class="stat-item" role="listitem"><i class="ti ti-chart-bar" aria-hidden="true"></i> <strong>Full</strong>&nbsp;Complexity Analysis</div>
+      </div>
+
+      <div class="search-box" role="search">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="search" id="searchInput"
+               placeholder="Search topic or problem name (e.g. Subsets, LRU Cache, Trapping Rain Water)..."
+               aria-label="Search problems and topics">
+      </div>
     </div>
+
   </header>
-
-  <section class="hero">
-    <div class="hero-badge"><i class="ti ti-flame"></i> Top 150 LeetCode Essentials</div>
-    <h1>Sheet 150 — Master Interview Notes</h1>
-    <p>A comprehensive 150-problem master roadmap. Each problem features a clear Problem Statement, Naive Solution, Intuition, Algorithmic Approach, Optimized Code, and Time/Space complexity analysis.</p>
-
-    <div class="stats-bar">
-      <div class="stat-item"><i class="ti ti-checkup-list"></i> <strong>150</strong> Problems</div>
-      <div class="stat-item"><i class="ti ti-folders"></i> <strong>12</strong> Modules</div>
-      <div class="stat-item"><i class="ti ti-code"></i> <strong>Python</strong> Clean Solns</div>
-      <div class="stat-item"><i class="ti ti-chart-bar"></i> <strong>Full</strong> Complexity Analysis</div>
-    </div>
-
-    <div class="search-box">
-      <i class="ti ti-search"></i>
-      <input type="text" id="searchInput" placeholder="Search topic or problem name (e.g. Subsets, LRU Cache, Trapping Rain Water)...">
-    </div>
-  </section>
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
 
   <main class="grid-container" id="cardsGrid">
 

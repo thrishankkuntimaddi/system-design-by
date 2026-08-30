@@ -14,65 +14,65 @@
 
 :root {
   /* Base Warm Paper Palette */
-  --bg:                #F7F4ED; /* Warm Ivory Paper Background */
-  --bg2:               #FFFDF8; /* Primary Surface */
-  --bg3:               #F1EEE6; /* Secondary Surface / Sidebar */
+  --bg:                #F4F0E7; /* Warm Ivory Paper Background */
+  --bg2:               #FDFBF5; /* Primary Surface */
+  --bg3:               #ECE8DE; /* Secondary Surface / Sidebar */
   --bg4:               #FFFFFF; /* Elevated Card Surface */
-  --bg-secondary:      #F1EEE6; /* Secondary Surface / Sidebar */
+  --bg-secondary:      #ECE8DE; /* Secondary Surface / Sidebar */
   --bg-elevated:       #FFFFFF; /* Elevated Card Surface */
-  --bg-subtle:         #FAF7F0;
-  
-  --border:            #DED9CE; /* Default Crisp Border */
-  --border2:           #CFC8BA; /* Stronger Border */
-  --border-strong:     #CFC8BA; /* Stronger Border */
-  --border-subtle:     #EBE6DC;
+  --bg-subtle:         #F8F5EE;
+
+  --border:            #D4CEBC; /* Default Crisp Border — slightly more visible */
+  --border2:           #C2BAA8; /* Stronger Border */
+  --border-strong:     #C2BAA8; /* Stronger Border */
+  --border-subtle:     #E5E0D4;
 
   /* Typography Colors */
-  --text:              #252525; /* Primary Graphite Text */
-  --text2:             #68665F; /* Secondary Text */
-  --text3:             #918E85; /* Muted Text */
-  --text-disabled:     #AAA69D; /* Disabled Text */
-  --heading:           #1E1E1C; /* Heading Color */
+  --text:              #1E1D1A; /* Primary Graphite Text */
+  --text2:             #555149; /* Secondary Text */
+  --text3:             #888079; /* Muted Text */
+  --text-disabled:     #A8A39A; /* Disabled Text */
+  --heading:           #161614; /* Heading Color */
 
-  /* Accent - Muted Academic Blue */
-  --accent:            #526A82;
-  --accent-hover:      #435A70;
-  --accent-bg:         #E8EDF2;
-  --accent-border:     #C5D0DA;
-  --accent-text:       #40566B;
+  /* Accent - Vivid Academic Blue (was muted grey-blue) */
+  --accent:            #1A6BB0;
+  --accent-hover:      #155996;
+  --accent-bg:         #DFF0FC;
+  --accent-border:     #94C8EE;
+  --accent-text:       #135490;
 
-  /* Semantic Colors (Muted) */
-  --success:           #5F8068;
-  --success-bg:        #E9F0EA;
-  --success-border:    #C5D8CB;
-  --success-text:      #3E5945;
+  /* Semantic Colors — more saturated for better badge/alert visibility */
+  --success:           #1C7A3C;
+  --success-bg:        #DAF0E3;
+  --success-border:    #8DCFA5;
+  --success-text:      #145428;
 
-  --warning:           #A17A45;
-  --warning-bg:        #F4EBDD;
-  --warning-border:    #E5D4BC;
-  --warning-text:      #6E512B;
+  --warning:           #A85C0E;
+  --warning-bg:        #FEF0D6;
+  --warning-border:    #F2C07A;
+  --warning-text:      #7A400A;
 
-  --error:             #9A5D5D;
-  --error-bg:          #F4E7E5;
-  --error-border:      #E4C3C0;
-  --error-text:        #6D3A3A;
+  --error:             #C02424;
+  --error-bg:          #FEEDEC;
+  --error-border:      #F2A5A5;
+  --error-text:        #8C1616;
 
-  --info:              #607A91;
-  --info-bg:           #E8EDF2;
-  --info-border:       #C5D0DA;
-  --info-text:         #40566B;
+  --info:              #1A6BB0;
+  --info-bg:           #DFF0FC;
+  --info-border:       #94C8EE;
+  --info-text:         #135490;
 
-  /* Category Accents (Restrained Muted Academic Palette) */
-  --cat-dsa:           #526A82;
-  --cat-os:            #68665F;
-  --cat-dbms:          #607A91;
-  --cat-cn:            #5F8068;
-  --cat-oop:           #736254;
-  --cat-ml:            #526A82;
-  --cat-genai:         #6B6082;
-  --cat-git:           #505050;
-  --cat-crypto:        #4B7373;
-  --cat-api:           #665E7D;
+  /* Category Accents — slightly more saturated */
+  --cat-dsa:           #1A6BB0;
+  --cat-os:            #5A5750;
+  --cat-dbms:          #2E6E8E;
+  --cat-cn:            #1C7A3C;
+  --cat-oop:           #6B5644;
+  --cat-ml:            #1A6BB0;
+  --cat-genai:         #5C4E80;
+  --cat-git:           #404040;
+  --cat-crypto:        #1E6A6A;
+  --cat-api:           #5A517A;
 
   /* Geometry & Radii */
   --radius-container:  10px;
@@ -83,9 +83,9 @@
   --radius-code:       8px;
   --radius-progress:   3px;
 
-  /* Shadows */
-  --shadow-subtle:     0 2px 8px rgba(40, 35, 25, 0.05);
-  --shadow-focus:      0 0 0 2px #E8EDF2;
+  /* Shadows — slightly more visible on light bg */
+  --shadow-subtle:     0 2px 10px rgba(30, 25, 15, 0.08);
+  --shadow-focus:      0 0 0 2px #DFF0FC;
 
   /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -93,11 +93,11 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 
   /* Progress Bar */
-  --progress-track:    #E4E0D7;
-  --progress-fill:     #526A82;
+  --progress-track:    #E0DCD2;
+  --progress-fill:     #1A6BB0;
 
   /* Dark Code Block Tokens */
-  --code-bg:           #242424;
+  --code-bg:           #1C1C1C;
   --code-text:         #E8E5DD;
   --code-border:       #383838;
 }

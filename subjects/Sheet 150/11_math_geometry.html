@@ -26,8 +26,8 @@
       updateThemeIcon(next);
     }
     function updateThemeIcon(theme) {
-      const icons = document.querySelectorAll('.themeToggleIcon, #themeToggleIcon');
-      icons.forEach(icon => {
+      // Update every theme-toggle icon button's child <i> element
+      document.querySelectorAll('.theme-toggle-btn i, #themeToggleIcon').forEach(icon => {
         icon.className = theme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
       });
     }
@@ -254,11 +254,13 @@
     .sidebar-search input:focus { border-color: var(--accent); }
     .sidebar-search i {
       position: absolute;
-      left: 24px;
+      left: 26px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text3);
       font-size: 14px;
+      pointer-events: none;
+      z-index: 2;
     }
     .nav-list { padding: 10px 8px 40px; list-style: none; flex-grow: 1; }
     .nav-section-title {
@@ -307,9 +309,9 @@
       align-self: flex-start;
       margin-top: 2px;
     }
-    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
-    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
-    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+    .diff-easy { background: rgba(52, 211, 153, 0.14); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.28); }
+    .diff-medium { background: rgba(245, 158, 11, 0.14); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.28); }
+    .diff-hard { background: rgba(239, 68, 68, 0.14); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.28); }
 
     /* Main Content Area */
     .main-content {
