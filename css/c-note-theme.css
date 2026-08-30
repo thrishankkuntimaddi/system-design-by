@@ -251,14 +251,17 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 54px;
-  padding: 0 24px;
+  min-height: 62px;
+  height: auto;
+  padding: 12px 24px;
+  padding-top: max(14px, env(safe-area-inset-top, 14px));
   background-color: var(--bg2);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
   gap: 16px;
+  box-sizing: border-box;
 }
 
 .topbar .logo, header .logo {
@@ -636,28 +639,30 @@ a:hover {
   width: 100%;
 }
 
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: var(--text3);
-  pointer-events: none;
+.search-icon, .search-box .search-icon {
+  position: absolute !important;
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 16px !important;
+  color: var(--text3) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
 }
 
-.search-box input {
-  width: 100%;
-  height: 38px;
-  background: var(--bg2);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-input);
-  padding: 0 40px 0 38px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  color: var(--text);
-  outline: none;
-  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+.search-box input, #globalSearchInput {
+  width: 100% !important;
+  height: 40px !important;
+  background: var(--bg2) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: var(--radius-input, 8px) !important;
+  padding: 0 44px 0 44px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13.5px !important;
+  color: var(--text) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out !important;
 }
 
 .search-box input:focus {
@@ -1236,9 +1241,11 @@ pre[data-language]::before {
   }
 
   .topbar, header.topbar {
-    height: 52px !important;
-    padding: 0 12px !important;
-    gap: 8px !important;
+    min-height: 64px !important;
+    height: auto !important;
+    padding: 14px 14px 12px !important;
+    padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
+    gap: 10px !important;
   }
 
   .topbar .logo, header .logo {
@@ -1253,7 +1260,7 @@ pre[data-language]::before {
   }
 
   .logo-text, .topbar .logo-text {
-    font-size: 14px !important;
+    font-size: 14.5px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -1271,6 +1278,43 @@ pre[data-language]::before {
   .status-badge-top {
     padding: 3px 8px !important;
     font-size: 11px !important;
+  }
+
+  .filter-rearrange-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .category-filter-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 4px 2px 8px !important;
+    width: 100% !important;
+    scrollbar-width: none !important;
+  }
+
+  .category-filter-bar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .cat-pill {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    height: 34px !important;
+    padding: 0 14px !important;
+    font-size: 12.5px !important;
+    border-radius: 20px !important;
+  }
+
+  .rearrange-actions {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
   }
 
   .sidebar {
@@ -1568,6 +1612,7 @@ main,
 
 .sidebar-search input,
 .search-wrap input,
+.search-input,
 #filterInput,
 #searchInput {
   width: 100% !important;
@@ -1577,7 +1622,7 @@ main,
   border: 1px solid var(--border-strong) !important;
   border-radius: var(--radius-input, 8px) !important;
   color: var(--text) !important;
-  padding: 0 12px 0 38px !important;
+  padding: 0 12px 0 42px !important;
   outline: none !important;
   box-sizing: border-box !important;
   transition: border-color 150ms ease, box-shadow 150ms ease !important;
@@ -1585,6 +1630,7 @@ main,
 
 .sidebar-search input:focus,
 .search-wrap input:focus,
+.search-input:focus,
 #filterInput:focus,
 #searchInput:focus {
   border-color: var(--accent) !important;
@@ -1593,14 +1639,15 @@ main,
 
 .sidebar-search i,
 .search-wrap i,
+.search-icon,
 .sidebar-search .ti-search,
 .search-wrap .ti-search {
   position: absolute !important;
-  left: 23px !important;
+  left: 22px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
   color: var(--text3) !important;
-  font-size: 15px !important;
+  font-size: 14px !important;
   pointer-events: none !important;
   z-index: 2 !important;
 }
