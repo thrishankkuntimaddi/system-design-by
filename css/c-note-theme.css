@@ -14,65 +14,65 @@
 
 :root {
   /* Base Warm Paper Palette */
-  --bg:                #F4F0E7; /* Warm Ivory Paper Background */
-  --bg2:               #FDFBF5; /* Primary Surface */
-  --bg3:               #ECE8DE; /* Secondary Surface / Sidebar */
+  --bg:                #F7F4ED; /* Warm Ivory Paper Background */
+  --bg2:               #FFFDF8; /* Primary Surface */
+  --bg3:               #F1EEE6; /* Secondary Surface / Sidebar */
   --bg4:               #FFFFFF; /* Elevated Card Surface */
-  --bg-secondary:      #ECE8DE; /* Secondary Surface / Sidebar */
+  --bg-secondary:      #F1EEE6; /* Secondary Surface / Sidebar */
   --bg-elevated:       #FFFFFF; /* Elevated Card Surface */
-  --bg-subtle:         #F8F5EE;
-
-  --border:            #D4CEBC; /* Default Crisp Border — slightly more visible */
-  --border2:           #C2BAA8; /* Stronger Border */
-  --border-strong:     #C2BAA8; /* Stronger Border */
-  --border-subtle:     #E5E0D4;
+  --bg-subtle:         #FAF7F0;
+  
+  --border:            #DED9CE; /* Default Crisp Border */
+  --border2:           #CFC8BA; /* Stronger Border */
+  --border-strong:     #CFC8BA; /* Stronger Border */
+  --border-subtle:     #EBE6DC;
 
   /* Typography Colors */
-  --text:              #1E1D1A; /* Primary Graphite Text */
-  --text2:             #555149; /* Secondary Text */
-  --text3:             #888079; /* Muted Text */
-  --text-disabled:     #A8A39A; /* Disabled Text */
-  --heading:           #161614; /* Heading Color */
+  --text:              #252525; /* Primary Graphite Text */
+  --text2:             #68665F; /* Secondary Text */
+  --text3:             #918E85; /* Muted Text */
+  --text-disabled:     #AAA69D; /* Disabled Text */
+  --heading:           #1E1E1C; /* Heading Color */
 
-  /* Accent - Vivid Academic Blue (was muted grey-blue) */
-  --accent:            #1A6BB0;
-  --accent-hover:      #155996;
-  --accent-bg:         #DFF0FC;
-  --accent-border:     #94C8EE;
-  --accent-text:       #135490;
+  /* Accent - Muted Academic Blue */
+  --accent:            #526A82;
+  --accent-hover:      #435A70;
+  --accent-bg:         #E8EDF2;
+  --accent-border:     #C5D0DA;
+  --accent-text:       #40566B;
 
-  /* Semantic Colors — more saturated for better badge/alert visibility */
-  --success:           #1C7A3C;
-  --success-bg:        #DAF0E3;
-  --success-border:    #8DCFA5;
-  --success-text:      #145428;
+  /* Semantic Colors (Muted) */
+  --success:           #5F8068;
+  --success-bg:        #E9F0EA;
+  --success-border:    #C5D8CB;
+  --success-text:      #3E5945;
 
-  --warning:           #A85C0E;
-  --warning-bg:        #FEF0D6;
-  --warning-border:    #F2C07A;
-  --warning-text:      #7A400A;
+  --warning:           #A17A45;
+  --warning-bg:        #F4EBDD;
+  --warning-border:    #E5D4BC;
+  --warning-text:      #6E512B;
 
-  --error:             #C02424;
-  --error-bg:          #FEEDEC;
-  --error-border:      #F2A5A5;
-  --error-text:        #8C1616;
+  --error:             #9A5D5D;
+  --error-bg:          #F4E7E5;
+  --error-border:      #E4C3C0;
+  --error-text:        #6D3A3A;
 
-  --info:              #1A6BB0;
-  --info-bg:           #DFF0FC;
-  --info-border:       #94C8EE;
-  --info-text:         #135490;
+  --info:              #607A91;
+  --info-bg:           #E8EDF2;
+  --info-border:       #C5D0DA;
+  --info-text:         #40566B;
 
-  /* Category Accents — slightly more saturated */
-  --cat-dsa:           #1A6BB0;
-  --cat-os:            #5A5750;
-  --cat-dbms:          #2E6E8E;
-  --cat-cn:            #1C7A3C;
-  --cat-oop:           #6B5644;
-  --cat-ml:            #1A6BB0;
-  --cat-genai:         #5C4E80;
-  --cat-git:           #404040;
-  --cat-crypto:        #1E6A6A;
-  --cat-api:           #5A517A;
+  /* Category Accents (Restrained Muted Academic Palette) */
+  --cat-dsa:           #526A82;
+  --cat-os:            #68665F;
+  --cat-dbms:          #607A91;
+  --cat-cn:            #5F8068;
+  --cat-oop:           #736254;
+  --cat-ml:            #526A82;
+  --cat-genai:         #6B6082;
+  --cat-git:           #505050;
+  --cat-crypto:        #4B7373;
+  --cat-api:           #665E7D;
 
   /* Geometry & Radii */
   --radius-container:  10px;
@@ -83,9 +83,9 @@
   --radius-code:       8px;
   --radius-progress:   3px;
 
-  /* Shadows — slightly more visible on light bg */
-  --shadow-subtle:     0 2px 10px rgba(30, 25, 15, 0.08);
-  --shadow-focus:      0 0 0 2px #DFF0FC;
+  /* Shadows */
+  --shadow-subtle:     0 2px 8px rgba(40, 35, 25, 0.05);
+  --shadow-focus:      0 0 0 2px #E8EDF2;
 
   /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -93,11 +93,11 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 
   /* Progress Bar */
-  --progress-track:    #E0DCD2;
-  --progress-fill:     #1A6BB0;
+  --progress-track:    #E4E0D7;
+  --progress-fill:     #526A82;
 
   /* Dark Code Block Tokens */
-  --code-bg:           #1C1C1C;
+  --code-bg:           #242424;
   --code-text:         #E8E5DD;
   --code-border:       #383838;
 }
@@ -1235,9 +1235,42 @@ pre[data-language]::before {
     display: inline-flex;
   }
 
-  .topbar {
-    height: 52px;
-    padding: 0 16px;
+  .topbar, header.topbar {
+    height: 52px !important;
+    padding: 0 12px !important;
+    gap: 8px !important;
+  }
+
+  .topbar .logo, header .logo {
+    gap: 8px !important;
+    min-width: 0 !important;
+    flex-shrink: 1 !important;
+  }
+
+  .logo-text-area {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .logo-text, .topbar .logo-text {
+    font-size: 14px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .logo-sub {
+    display: none !important;
+  }
+
+  .topbar-right {
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .status-badge-top {
+    padding: 3px 8px !important;
+    font-size: 11px !important;
   }
 
   .sidebar {
@@ -1270,6 +1303,80 @@ pre[data-language]::before {
   .hero-title {
     font-size: 20px;
   }
+}
+
+@media (max-width: 480px) {
+  .status-badge-top {
+    display: none !important;
+  }
+}
+
+/* ── Universal Mobile Nav Header Bar for Subject Pages ──── */
+.mobile-nav,
+.mobile-header-bar {
+  display: none;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 52px !important;
+  padding: 0 12px !important;
+  background-color: var(--bg2) !important;
+  border-bottom: 1px solid var(--border) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  gap: 8px !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav,
+  .mobile-header-bar {
+    display: flex !important;
+  }
+}
+
+.mobile-nav-title,
+.mobile-header-title,
+#mobileNavTitle {
+  flex: 1 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: var(--heading) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin: 0 4px !important;
+  text-align: left !important;
+}
+
+.mobile-nav-logo,
+.mobile-logo-text {
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.hamburger-btn,
+.mobile-nav-btn {
+  flex-shrink: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text) !important;
+  font-size: 20px !important;
+  padding: 6px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--radius-control) !important;
+}
+
+.hamburger-btn:hover,
+.mobile-nav-btn:hover {
+  background: var(--bg-secondary) !important;
 }
 
 /* ==========================================================================
@@ -1604,16 +1711,92 @@ main,
 }
 
 /* ── Code Block & Syntax Container Standards ───────────── */
-pre,
-.code-block,
 .code-container,
-.code-block-wrapper {
+.code-block-wrapper,
+.code-box-wrapper {
   background-color: var(--code-bg) !important;
   color: var(--code-text) !important;
   border: 1px solid var(--code-border) !important;
   border-radius: var(--radius-code) !important;
   margin: 16px 0 !important;
   overflow: hidden !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+pre,
+.code-block,
+div.code-block,
+pre.code-block,
+.code-content,
+.code-box {
+  background-color: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-code);
+  margin: 12px 0 !important;
+  padding: 14px 16px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.code-container pre,
+.code-container .code-block,
+.code-container .code-content,
+.code-block-wrapper pre,
+.code-block-wrapper .code-block {
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+}
+
+pre code,
+.code-block code,
+.code-content code {
+  white-space: pre !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  font-family: var(--font-mono) !important;
+  display: inline-block !important;
+  min-width: 100% !important;
+}
+
+/* Custom scrollbars for code blocks */
+pre::-webkit-scrollbar,
+.code-block::-webkit-scrollbar,
+.code-content::-webkit-scrollbar,
+.code-container pre::-webkit-scrollbar {
+  height: 6px !important;
+}
+
+pre::-webkit-scrollbar-track,
+.code-block::-webkit-scrollbar-track,
+.code-content::-webkit-scrollbar-track,
+.code-container pre::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 4px !important;
+}
+
+pre::-webkit-scrollbar-thumb,
+.code-block::-webkit-scrollbar-thumb,
+.code-content::-webkit-scrollbar-thumb,
+.code-container pre::-webkit-scrollbar-thumb {
+  background: var(--border-strong, #4a4a4a) !important;
+  border-radius: 4px !important;
+}
+
+pre::-webkit-scrollbar-thumb:hover,
+.code-block::-webkit-scrollbar-thumb:hover,
+.code-content::-webkit-scrollbar-thumb:hover,
+.code-container pre::-webkit-scrollbar-thumb:hover {
+  background: var(--accent, #f59e0b) !important;
 }
 
 .code-block-header {
