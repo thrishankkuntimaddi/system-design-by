@@ -1759,13 +1759,17 @@ pre.code-block,
 
 pre code,
 .code-block code,
-.code-content code {
+.code-content code,
+.code-container pre code,
+.code-block-container pre code {
   white-space: pre !important;
   word-break: normal !important;
   word-wrap: normal !important;
   font-family: var(--font-mono) !important;
-  display: inline-block !important;
+  display: block !important;
+  width: max-content !important;
   min-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Custom scrollbars for code blocks */
