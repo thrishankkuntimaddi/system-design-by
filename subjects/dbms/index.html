@@ -23,25 +23,31 @@
     (function() {
       const savedTheme = localStorage.getItem('cnote_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', savedTheme);
+      try { localStorage.setItem('cnote_theme', savedTheme); } catch(e) {}
     })();
+
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme') || 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('cnote_theme', next);
+      try { localStorage.setItem('cnote_theme', next); } catch(e) {}
       updateThemeIcon(next);
     }
+
     function updateThemeIcon(theme) {
-      const icons = document.querySelectorAll('.themeToggleIcon, #themeToggleIcon');
+      const currentTheme = theme || document.documentElement.getAttribute('data-theme') || 'light';
+      const icons = document.querySelectorAll('.theme-toggle-btn i, .themeToggleIcon, #themeToggleIcon');
       icons.forEach(icon => {
-        icon.className = theme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+        icon.className = currentTheme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
       });
     }
+
     document.addEventListener('DOMContentLoaded', () => {
       const theme = document.documentElement.getAttribute('data-theme') || 'light';
       updateThemeIcon(theme);
     });
   </script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0 }
 

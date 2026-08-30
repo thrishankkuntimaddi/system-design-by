@@ -22,6 +22,35 @@
 
   <!-- Central C-Note Design System -->
   <link rel="stylesheet" href="./css/c-note-theme.css?v=20">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('cnote_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      try { localStorage.setItem('cnote_theme', savedTheme); } catch(e) {}
+    })();
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('cnote_theme', next); } catch(e) {}
+      updateThemeIcon(next);
+    }
+
+    function updateThemeIcon(theme) {
+      const currentTheme = theme || document.documentElement.getAttribute('data-theme') || 'light';
+      const icons = document.querySelectorAll('.theme-toggle-btn i, .themeToggleIcon, #themeToggleIcon');
+      icons.forEach(icon => {
+        icon.className = currentTheme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      updateThemeIcon(theme);
+    });
+  </script>
+
 
   <style>
     .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0 }
@@ -999,28 +1028,7 @@
       }
     });
 
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      const target = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', target);
-      try { localStorage.setItem('cnote_theme', target); } catch(e) {}
-      updateThemeIcon(target);
-    }
-    function updateThemeIcon(theme) {
-      const icon = document.getElementById('themeToggleIcon');
-      if (icon) {
-        icon.className = theme === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
-      }
-    }
-    (function initTheme() {
-      try {
-        const saved = localStorage.getItem('cnote_theme');
-        if (saved) {
-          document.documentElement.setAttribute('data-theme', saved);
-          updateThemeIcon(saved);
-        }
-      } catch(e) {}
-    })();
+    
 
     document.addEventListener('DOMContentLoaded', () => {
       initGridOrder();
