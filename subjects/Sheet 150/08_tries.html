@@ -873,7 +873,7 @@
         <div class="code-container">
           <div class="code-header">
             <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class Trie:
 
@@ -919,7 +919,7 @@
         <div class="code-container">
           <div class="code-header">
             <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
 
@@ -1016,7 +1016,7 @@ class Trie:
         <div class="code-container">
           <div class="code-header">
             <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class WordDictionary:
 
@@ -1074,7 +1074,7 @@ class Trie:
         <div class="code-container">
           <div class="code-header">
             <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
 
@@ -1174,7 +1174,7 @@ class WordDictionary:
         <div class="code-container">
           <div class="code-header">
             <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class Solution:
 
@@ -1248,7 +1248,7 @@ class WordDictionary:
         <div class="code-container">
           <div class="code-header">
             <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
 
@@ -1434,7 +1434,7 @@ return True          # don't check is_word</code></pre>
     </main>
   </div>
 
-        <script>
+          <script>
     const filterInput = document.getElementById('filterInput');
     const navItems = document.querySelectorAll('.nav-item');
     const cards = document.querySelectorAll('.problem-card');
@@ -1528,6 +1528,55 @@ return True          # don't check is_word</code></pre>
       }, { rootMargin: '-70px 0px -60% 0px', threshold: 0 });
 
       cards.forEach(card => observer.observe(card));
+    }
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const codeEl = container ? container.querySelector('code') : null;
+        if (!codeEl) return;
+
+        const textToCopy = codeEl.textContent || codeEl.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
+    function fallbackCopy(text, onSuccess) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '0';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        const successful = document.execCommand('copy');
+        if (successful && onSuccess) onSuccess();
+      } catch (err) {
+        console.error('Fallback copy error:', err);
+      }
+      document.body.removeChild(textarea);
     }
   </script>
 </body>
