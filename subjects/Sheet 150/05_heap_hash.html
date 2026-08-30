@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -918,10 +1013,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class KthLargest:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class KthLargest:
 
     def __init__(self, k, nums):
         self.k = k
@@ -932,6 +1040,39 @@
         self.nums.sort(reverse=True)
 
         return self.nums[self.k - 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void add(int self, int val, vector&lt;int&gt;&amp; nums) {
+        nums.push_back(val);
+        nums.sort(reverse=true);
+        return nums[k - 1];
+    }
+
+public:
+    int __init__(int k, vector&lt;int&gt;&amp; nums) {
+        class KthLargest:;
+        k = k;
+        nums = nums;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void add(int self, int val, int[] nums) {
+        nums.add(val);
+        nums.sort(reverse=true);
+        return nums[k - 1];
+    }
+
+    public int __init__(int k, int[] nums) {
+        class KthLargest:;
+        k = k;
+        nums = nums;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -967,10 +1108,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class KthLargest:
 
@@ -990,6 +1144,53 @@ class KthLargest:
             heapq.heappop(self.heap)
 
         return self.heap[0]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void add(int self, int val, vector&lt;int&gt;&amp; nums) {
+        heapq.heappush(heap, val);
+        if (heap.size() &gt; k) {
+            heapq.heappop(heap);
+        }
+        return heap[0];
+    }
+
+public:
+    int __init__(int k, vector&lt;int&gt;&amp; nums) {
+        import heapq;
+        class KthLargest:;
+        k = k;
+        heap = nums;
+        heapq.heapify(heap);
+        while (heap.size() &gt; k) {
+            heapq.heappop(heap);
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void add(int self, int val, int[] nums) {
+        heapq.heappush(heap, val);
+        if (heap.length &gt; k) {
+            heapq.heappop(heap);
+        }
+        return heap[0];
+    }
+
+    public int __init__(int k, int[] nums) {
+        import heapq;
+        class KthLargest:;
+        k = k;
+        heap = nums;
+        heapq.heapify(heap);
+        while (heap.length &gt; k) {
+            heapq.heappop(heap);
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1049,10 +1250,23 @@ class KthLargest:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lastStoneWeight(self, stones):
 
         while len(stones) &gt; 1:
@@ -1065,6 +1279,38 @@ class KthLargest:
                 stones.append(y - x)
 
         return stones[0] if stones else 0</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int lastStoneWeight(int stones) {
+        while (stones.size() &gt; 1) {
+            stones.sort();
+            y = stones.pop_back();
+            x = stones.pop_back();
+            if (y != x) {
+                stones.push_back(y - x);
+            }
+        }
+        return stones[0] if stones else 0;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int lastStoneWeight(int stones) {
+        while (stones.length &gt; 1) {
+            stones.sort();
+            y = stones.remove(y = stones.size() - 1);
+            x = stones.remove(x = stones.size() - 1);
+            if (y != x) {
+                stones.add(y - x);
+            }
+        }
+        return stones[0] if stones else 0;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1100,10 +1346,23 @@ class KthLargest:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def lastStoneWeight(self, stones):
@@ -1122,6 +1381,48 @@ class Solution:
                 )
 
         return -heap[0] if heap else 0</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int lastStoneWeight(int stones) {
+        import heapq;
+        heap = [-stone for stone in stones];
+        heapq.heapify(heap);
+        while (heap.size() &gt; 1) {
+            y = -heapq.heappop(heap);
+            x = -heapq.heappop(heap);
+            if (y != x) {
+                heapq.heappush(;
+                heap,;
+                -(y - x);
+                );
+            }
+        }
+        return -heap[0] if heap else 0;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int lastStoneWeight(int stones) {
+        import heapq;
+        heap = [-stone for stone in stones];
+        heapq.heapify(heap);
+        while (heap.length &gt; 1) {
+            y = -heapq.heappop(heap);
+            x = -heapq.heappop(heap);
+            if (y != x) {
+                heapq.heappush(;
+                heap,;
+                -(y - x);
+                );
+            }
+        }
+        return -heap[0] if heap else 0;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1181,10 +1482,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def kClosest(self, points, k):
 
         points.sort(
@@ -1192,6 +1506,28 @@ class Solution:
         )
 
         return points[:k]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int kClosest(int points, int k) {
+        points.sort(;
+        key=lambda p: p[0] ** 2 + p[1] ** 2;
+        );
+        return points[:k];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int kClosest(int points, int k) {
+        points.sort(;
+        key=lambda p: p[0] ** 2 + p[1] ** 2;
+        );
+        return points[:k];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1227,10 +1563,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def kClosest(self, points, k):
@@ -1252,6 +1601,54 @@ class Solution:
             [x, y]
             for _, x, y in heap
         ]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int kClosest(int points, int k) {
+        import heapq;
+        heap = [];
+        for x, y in points:
+            distance = x * x + y * y;
+            heapq.heappush(;
+            heap,;
+            (-distance, x, y);
+            );
+            if (heap.size() &gt; k) {
+                heapq.heappop(heap);
+            }
+        }
+        return [;
+        [x, y];
+        for _, x, y in heap
+        }
+        ];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int kClosest(int points, int k) {
+        import heapq;
+        heap = [];
+        for x, y in points:
+            distance = x * x + y * y;
+            heapq.heappush(;
+            heap,;
+            (-distance, x, y);
+            );
+            if (heap.length &gt; k) {
+                heapq.heappop(heap);
+            }
+        }
+        return [;
+        [x, y];
+        for _, x, y in heap
+        }
+        ];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1311,14 +1708,45 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findKthLargest(self, nums, k):
         nums.sort(reverse=True)
 
         return nums[k - 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) {
+        nums.sort(reverse=true);
+        return nums[k - 1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        nums.sort(reverse=true);
+        return nums[k - 1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1354,10 +1782,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def findKthLargest(self, nums, k):
@@ -1398,6 +1839,85 @@ class SolutionQuickselect:
             return quickselect(left, partition_index - 1)
 
         return quickselect(0, len(nums) - 1)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void quickselect(int left, int right, vector&lt;int&gt;&amp; nums) {
+        pivot = nums[right];
+        partition_index = left;
+        for (int i = left; i &lt; right; ++i) {
+            if (nums[i] &lt;= pivot) {
+                nums[i], nums[partition_index] = nums[partition_index], nums[i];
+                partition_index += 1;
+            }
+        }
+        nums[partition_index], nums[right] = nums[right], nums[partition_index];
+        if (partition_index == target) {
+            return nums[partition_index];
+        }
+        if (partition_index &lt; target) {
+            return quickselect(partition_index + 1, right);
+        }
+        return quickselect(left, partition_index - 1);
+    }
+
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) {
+        import heapq;
+        heap = [];
+        for (auto num : nums) {
+            heapq.heappush(heap, num);
+            if (heap.size() &gt; k) {
+                heapq.heappop(heap);
+            }
+        }
+        return heap[0];
+        // --- Alternative: Quickselect O(n) average ---
+        class SolutionQuickselect:;
+        target = nums.size() - k;
+        return quickselect(0, nums.size() - 1);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void quickselect(int left, int right, int[] nums) {
+        pivot = nums[right];
+        partition_index = left;
+        for (int i = left; i &lt; right; ++i) {
+            if (nums[i] &lt;= pivot) {
+                nums[i], nums[partition_index] = nums[partition_index], nums[i];
+                partition_index += 1;
+            }
+        }
+        nums[partition_index], nums[right] = nums[right], nums[partition_index];
+        if (partition_index == target) {
+            return nums[partition_index];
+        }
+        if (partition_index &lt; target) {
+            return quickselect(partition_index + 1, right);
+        }
+        return quickselect(left, partition_index - 1);
+    }
+
+    public int findKthLargest(int[] nums, int k) {
+        import heapq;
+        heap = [];
+        for (int num : nums) {
+            heapq.heappush(heap, num);
+            if (heap.length &gt; k) {
+                heapq.heappop(heap);
+            }
+        }
+        return heap[0];
+        // --- Alternative: Quickselect O(n) average ---
+        class SolutionQuickselect:;
+        target = nums.length - k;
+        return quickselect(0, nums.length - 1);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1457,10 +1977,23 @@ class SolutionQuickselect:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from collections import Counter
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import Counter
 
 class Solution:
     def leastInterval(self, tasks, n):
@@ -1494,6 +2027,74 @@ class Solution:
                 time += executed
 
         return time</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int leastInterval(int tasks, int n) {
+        from collections import Counter;
+        count = Counter(tasks);
+        time = 0;
+        while (count) {
+            executed = 0;
+            // Sort by frequency each round
+            available = sorted(;
+            count,;
+            key=count.get,;
+            reverse=true;
+            );
+            for task in available[:n + 1]:
+                if (task in count) {
+                    count[task] -= 1;
+                    executed += 1;
+                    if (count[task] == 0) {
+                        del count[task];
+                    }
+                }
+            }
+            if (count) {
+                time += n + 1;
+            }
+            else:;
+            time += executed;
+        }
+        return time;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int leastInterval(int tasks, int n) {
+        from collections import Counter;
+        count = Counter(tasks);
+        time = 0;
+        while (count) {
+            executed = 0;
+            // Sort by frequency each round
+            available = sorted(;
+            count,;
+            key=count.get,;
+            reverse=true;
+            );
+            for task in available[:n + 1]:
+                if (task in count) {
+                    count[task] -= 1;
+                    executed += 1;
+                    if (count[task] == 0) {
+                        del count[task];
+                    }
+                }
+            }
+            if (count) {
+                time += n + 1;
+            }
+            else:;
+            time += executed;
+        }
+        return time;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1529,10 +2130,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 from collections import Counter, deque
 
 class Solution:
@@ -1572,6 +2186,84 @@ class Solution:
                     )
 
         return time</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int leastInterval(int tasks, int n) {
+        import heapq;
+        from collections import Counter, deque;
+        count = Counter(tasks);
+        heap = [;
+        -freq;
+        for freq in count.values()
+        }
+        ];
+        heapq.heapify(heap);
+        cooldown = deque();
+        time = 0;
+        while (heap || cooldown) {
+            time += 1;
+            // Add tasks whose cooldown is over
+            while (() {
+                cooldown;
+                and cooldown[0][1] == time;
+            }
+            ):;
+            freq, _ = cooldown.popleft();
+            heapq.heappush(heap, freq);
+            if (heap) {
+                freq = heapq.heappop(heap);
+                freq += 1;
+                if (freq != 0) {
+                    cooldown.append(;
+                    (freq, time + n + 1);
+                    );
+                }
+            }
+        }
+        return time;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int leastInterval(int tasks, int n) {
+        import heapq;
+        from collections import Counter, deque;
+        count = Counter(tasks);
+        heap = [;
+        -freq;
+        for freq in count.values()
+        }
+        ];
+        heapq.heapify(heap);
+        cooldown = deque();
+        time = 0;
+        while (heap || cooldown) {
+            time += 1;
+            // Add tasks whose cooldown is over
+            while (() {
+                cooldown;
+                and cooldown[0][1] == time;
+            }
+            ):;
+            freq, _ = cooldown.popleft();
+            heapq.heappush(heap, freq);
+            if (heap) {
+                freq = heapq.heappop(heap);
+                freq += 1;
+                if (freq != 0) {
+                    cooldown.append(;
+                    (freq, time + n + 1);
+                    );
+                }
+            }
+        }
+        return time;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1631,10 +2323,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from collections import defaultdict
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import defaultdict
 
 class Twitter:
 
@@ -1680,6 +2385,91 @@ class Twitter:
         self.following[followerId].discard(
             followeeId
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self) {
+        time = 0;
+        tweets = defaultdict(list);
+        following = defaultdict(set);
+        time += 1;
+        tweets[userId].append(;
+        (time, tweetId);
+        );
+        users = following[userId] | {userId}
+        all_tweets = [];
+        for (auto user : users) {
+            all_tweets.extend(;
+            tweets[user];
+            );
+        }
+        all_tweets.sort(;
+        reverse=true;
+        );
+        return [;
+        tweet_id;
+        for _, tweet_id in all_tweets[:10]
+        }
+        ];
+        if (followerId != followeeId) {
+            following[followerId].add(;
+            followeeId;
+            );
+        }
+        following[followerId].discard(;
+        followeeId;
+        );
+    }
+
+public:
+    int postTweet(int userId, int tweetId) {
+        from collections import defaultdict;
+        class Twitter:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self) {
+        time = 0;
+        tweets = defaultdict(list);
+        following = defaultdict(set);
+        time += 1;
+        tweets[userId].append(;
+        (time, tweetId);
+        );
+        users = following[userId] | {userId}
+        all_tweets = [];
+        for (int user : users) {
+            all_tweets.extend(;
+            tweets[user];
+            );
+        }
+        all_tweets.sort(;
+        reverse=true;
+        );
+        return [;
+        tweet_id;
+        for _, tweet_id in all_tweets[:10]
+        }
+        ];
+        if (followerId != followeeId) {
+            following[followerId].add(;
+            followeeId;
+            );
+        }
+        following[followerId].discard(;
+        followeeId;
+        );
+    }
+
+    public int postTweet(int userId, int tweetId) {
+        from collections import defaultdict;
+        class Twitter:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1715,10 +2505,23 @@ class Twitter:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 from collections import defaultdict
 
 class Twitter:
@@ -1787,6 +2590,125 @@ class Twitter:
                 )
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        time = 0;
+        tweets = defaultdict(list);
+        following = defaultdict(set);
+        time += 1;
+        tweets[userId].append(;
+        (time, tweetId);
+        );
+        if (followerId != followeeId) {
+            following[followerId].add(;
+            followeeId;
+            );
+        }
+        following[followerId].discard(;
+        followeeId;
+        );
+        users = following[userId] | {userId}
+        heap = [];
+        for (auto user : users) {
+            tweets = tweets[user];
+            if (tweets) {
+                index = tweets.size() - 1;
+                time, tweet_id = tweets[index];
+                heapq.heappush(;
+                heap,;
+                (-time, tweet_id, user, index);
+                );
+            }
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        while (heap &amp;&amp; result.size() &lt; 10) {
+            _, tweet_id, user, index = (;
+            heapq.heappop(heap);
+            );
+            result.push_back(tweet_id);
+            index -= 1;
+            if (index &gt;= 0) {
+                time, tweet_id = (;
+                tweets[user][index];
+                );
+                heapq.heappush(;
+                heap,;
+                (-time, tweet_id, user, index);
+                );
+            }
+        }
+        return result;
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; postTweet(int userId, int tweetId) {
+        import heapq;
+        from collections import defaultdict;
+        class Twitter:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self, List&lt;List&lt;Integer&gt;&gt; result) {
+        time = 0;
+        tweets = defaultdict(list);
+        following = defaultdict(set);
+        time += 1;
+        tweets[userId].append(;
+        (time, tweetId);
+        );
+        if (followerId != followeeId) {
+            following[followerId].add(;
+            followeeId;
+            );
+        }
+        following[followerId].discard(;
+        followeeId;
+        );
+        users = following[userId] | {userId}
+        heap = [];
+        for (int user : users) {
+            tweets = tweets[user];
+            if (tweets) {
+                index = tweets.length - 1;
+                time, tweet_id = tweets[index];
+                heapq.heappush(;
+                heap,;
+                (-time, tweet_id, user, index);
+                );
+            }
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        while (heap &amp;&amp; result.length &lt; 10) {
+            _, tweet_id, user, index = (;
+            heapq.heappop(heap);
+            );
+            result.add(tweet_id);
+            index -= 1;
+            if (index &gt;= 0) {
+                time, tweet_id = (;
+                tweets[user][index];
+                );
+                heapq.heappush(;
+                heap,;
+                (-time, tweet_id, user, index);
+                );
+            }
+        }
+        return result;
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; postTweet(int userId, int tweetId) {
+        import heapq;
+        from collections import defaultdict;
+        class Twitter:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1846,10 +2768,23 @@ class Twitter:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class MedianFinder:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class MedianFinder:
 
     def __init__(self):
         self.nums = []
@@ -1869,6 +2804,51 @@ class Twitter:
             self.nums[n // 2 - 1]
             + self.nums[n // 2]
         ) / 2</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self, vector&lt;int&gt;&amp; nums) {
+        nums = [];
+        nums.push_back(num);
+        nums.sort();
+        n = nums.size();
+        if (n % 2) {
+            return nums[n // 2];
+        }
+        return (;
+        nums[n // 2 - 1];
+        + nums[n // 2];
+        ) / 2;
+    }
+
+public:
+    int addNum(int num) {
+        class MedianFinder:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self, int[] nums) {
+        nums = [];
+        nums.add(num);
+        nums.sort();
+        n = nums.length;
+        if (n % 2) {
+            return nums[n // 2];
+        }
+        return (;
+        nums[n // 2 - 1];
+        + nums[n // 2];
+        ) / 2;
+    }
+
+    public int addNum(int num) {
+        class MedianFinder:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1904,10 +2884,23 @@ class Twitter:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class MedianFinder:
 
@@ -1961,6 +2954,111 @@ class MedianFinder:
             -self.small[0]
             + self.large[0]
         ) / 2</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self) {
+        small = []  # max heap;
+        large = []  # min heap;
+        heapq.heappush(;
+        small,;
+        -num;
+        );
+        // Ensure every small &lt;= every large
+        if (() {
+            small;
+            and large;
+            and -small[0] &gt; large[0];
+        }
+        ):;
+        value = -heapq.heappop(small);
+        heapq.heappush(;
+        large,;
+        value;
+        );
+        // Balance sizes
+        if (small.size() &gt; large.size() + 1) {
+            value = -heapq.heappop(small);
+            heapq.heappush(;
+            large,;
+            value;
+            );
+        }
+        else if (large.size() &gt; small.size()) {
+            value = heapq.heappop(large);
+            heapq.heappush(;
+            small,;
+            -value;
+            );
+        }
+        if (small.size() &gt; large.size()) {
+            return -small[0];
+        }
+        return (;
+        -small[0];
+        + large[0];
+        ) / 2;
+    }
+
+public:
+    int addNum(int num) {
+        import heapq;
+        class MedianFinder:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self) {
+        small = []  # max heap;
+        large = []  # min heap;
+        heapq.heappush(;
+        small,;
+        -num;
+        );
+        // Ensure every small &lt;= every large
+        if (() {
+            small;
+            and large;
+            and -small[0] &gt; large[0];
+        }
+        ):;
+        value = -heapq.heappop(small);
+        heapq.heappush(;
+        large,;
+        value;
+        );
+        // Balance sizes
+        if (small.length &gt; large.length + 1) {
+            value = -heapq.heappop(small);
+            heapq.heappush(;
+            large,;
+            value;
+            );
+        }
+        else if (large.length &gt; small.length) {
+            value = heapq.heappop(large);
+            heapq.heappush(;
+            small,;
+            -value;
+            );
+        }
+        if (small.length &gt; large.length) {
+            return -small[0];
+        }
+        return (;
+        -small[0];
+        + large[0];
+        ) / 2;
+    }
+
+    public int addNum(int num) {
+        import heapq;
+        class MedianFinder:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2223,6 +3321,77 @@ class MedianFinder:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

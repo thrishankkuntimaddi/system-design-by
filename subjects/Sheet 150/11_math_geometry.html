@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -881,10 +976,23 @@
         <div class="naive-box"><p>Allocate a second matrix, copy cells to their rotated positions, then copy back.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rotate(self, matrix):
         n = len(matrix)
 
@@ -900,6 +1008,52 @@
         for r in range(n):
             for c in range(n):
                 matrix[r][c] = result[r][c]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    void rotate(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        n = matrix.size();
+        result = [;
+        [0] * n;
+        for _ in range(n)
+        }
+        ];
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = 0; c &lt; n; ++c) {
+                result[c][n - 1 - r] = matrix[r][c];
+            }
+        }
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = 0; c &lt; n; ++c) {
+                matrix[r][c] = result[r][c];
+            }
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public void rotate(int[][] matrix) {
+        n = matrix.length;
+        result = [;
+        [0] * n;
+        for _ in range(n)
+        }
+        ];
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = 0; c &lt; n; ++c) {
+                result[c][n - 1 - r] = matrix[r][c];
+            }
+        }
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = 0; c &lt; n; ++c) {
+                matrix[r][c] = result[r][c];
+            }
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -925,10 +1079,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rotate(self, matrix):
         n = len(matrix)
 
@@ -943,6 +1110,48 @@
         # Step 2 — Reverse each row
         for row in matrix:
             row.reverse()</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    void rotate(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        n = matrix.size();
+        // Step 1 — Transpose
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = r + 1; c &lt; n; ++c) {
+                matrix[r][c], matrix[c][r] = (;
+                matrix[c][r],;
+                matrix[r][c];
+                );
+            }
+        }
+        // Step 2 — Reverse each row
+        for (auto row : matrix) {
+            row.reverse();
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public void rotate(int[][] matrix) {
+        n = matrix.length;
+        // Step 1 — Transpose
+        for (int r = 0; r &lt; n; ++r) {
+            for (int c = r + 1; c &lt; n; ++c) {
+                matrix[r][c], matrix[c][r] = (;
+                matrix[c][r],;
+                matrix[r][c];
+                );
+            }
+        }
+        // Step 2 — Reverse each row
+        for (int row : matrix) {
+            row.reverse();
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -987,10 +1196,23 @@
         <div class="naive-box"><p>Use a visited boolean matrix and change direction when hitting a boundary or visited cell.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def spiralOrder(self, matrix):
         rows = len(matrix)
         cols = len(matrix[0])
@@ -1021,6 +1243,74 @@
             r, c = nr, nc
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; spiralOrder(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        visited = [;
+        [false] * cols;
+        for _ in range(rows)
+        }
+        ];
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+        vector&lt;vector&lt;int&gt;&gt; result;
+        r = c = direction = 0;
+        for (int _ = 0; _ &lt; rows * cols; ++_) {
+            result.push_back(matrix[r][c]);
+            visited[r][c] = true;
+            nr = r + directions[direction][0];
+            nc = c + directions[direction][1];
+            if (() {
+                nr &lt; 0 || nr &gt;= rows;
+                or nc &lt; 0 || nc &gt;= cols;
+                or visited[nr][nc];
+            }
+            ):;
+            direction = (direction + 1) % 4;
+            nr = r + directions[direction][0];
+            nc = c + directions[direction][1];
+            r, c = nr, nc;
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; spiralOrder(int[][] matrix) {
+        rows = matrix.length;
+        cols = matrix[0].length;
+        visited = [;
+        [false] * cols;
+        for _ in range(rows)
+        }
+        ];
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        r = c = direction = 0;
+        for (int _ = 0; _ &lt; rows * cols; ++_) {
+            result.add(matrix[r][c]);
+            visited[r][c] = true;
+            nr = r + directions[direction][0];
+            nc = c + directions[direction][1];
+            if (() {
+                nr &lt; 0 || nr &gt;= rows;
+                or nc &lt; 0 || nc &gt;= cols;
+                or visited[nr][nc];
+            }
+            ):;
+            direction = (direction + 1) % 4;
+            nr = r + directions[direction][0];
+            nc = c + directions[direction][1];
+            r, c = nr, nc;
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1046,10 +1336,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def spiralOrder(self, matrix):
         result = []
         top = 0
@@ -1082,6 +1385,84 @@
                 left += 1
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; spiralOrder(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        top = 0;
+        bottom = matrix.size() - 1;
+        left = 0;
+        right = matrix[0].size() - 1;
+        while (top &lt;= bottom &amp;&amp; left &lt;= right) {
+            // Left → Right
+            for (int c = left; c &lt; right + 1; ++c) {
+                result.push_back(matrix[top][c]);
+            }
+            top += 1;
+            // Top → Bottom
+            for (int r = top; r &lt; bottom + 1; ++r) {
+                result.push_back(matrix[r][right]);
+            }
+            right -= 1;
+            if (top &lt;= bottom) {
+                // Right → Left
+                for c in range(right, left - 1, -1):
+                    result.push_back(matrix[bottom][c]);
+                }
+                bottom -= 1;
+            }
+            if (left &lt;= right) {
+                // Bottom → Top
+                for r in range(bottom, top - 1, -1):
+                    result.push_back(matrix[r][left]);
+                }
+                left += 1;
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; spiralOrder(int[][] matrix) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        top = 0;
+        bottom = matrix.length - 1;
+        left = 0;
+        right = matrix[0].length - 1;
+        while (top &lt;= bottom &amp;&amp; left &lt;= right) {
+            // Left → Right
+            for (int c = left; c &lt; right + 1; ++c) {
+                result.add(matrix[top][c]);
+            }
+            top += 1;
+            // Top → Bottom
+            for (int r = top; r &lt; bottom + 1; ++r) {
+                result.add(matrix[r][right]);
+            }
+            right -= 1;
+            if (top &lt;= bottom) {
+                // Right → Left
+                for c in range(right, left - 1, -1):
+                    result.add(matrix[bottom][c]);
+                }
+                bottom -= 1;
+            }
+            if (left &lt;= right) {
+                // Bottom → Top
+                for r in range(bottom, top - 1, -1):
+                    result.add(matrix[r][left]);
+                }
+                left += 1;
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1126,10 +1507,23 @@
         <div class="naive-box"><p>Use two sets to record which rows and columns contain zeros, then zero them.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def setZeroes(self, matrix):
         rows = set()
         cols = set()
@@ -1147,6 +1541,60 @@
         for c in cols:
             for r in range(len(matrix)):
                 matrix[r][c] = 0</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    void setZeroes(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        rows = set();
+        cols = set();
+        for (int r = 0; r &lt; matrix.size(); ++r) {
+            for (int c = 0; c &lt; matrix[0].size(); ++c) {
+                if (matrix[r][c] == 0) {
+                    rows.insert(r);
+                    cols.insert(c);
+                }
+            }
+        }
+        for (auto r : rows) {
+            for (int c = 0; c &lt; matrix[0].size(); ++c) {
+                matrix[r][c] = 0;
+            }
+        }
+        for (auto c : cols) {
+            for (int r = 0; r &lt; matrix.size(); ++r) {
+                matrix[r][c] = 0;
+            }
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public void setZeroes(int[][] matrix) {
+        rows = set();
+        cols = set();
+        for (int r = 0; r &lt; matrix.length; ++r) {
+            for (int c = 0; c &lt; matrix[0].length; ++c) {
+                if (matrix[r][c] == 0) {
+                    rows.add(r);
+                    cols.add(c);
+                }
+            }
+        }
+        for (int r : rows) {
+            for (int c = 0; c &lt; matrix[0].length; ++c) {
+                matrix[r][c] = 0;
+            }
+        }
+        for (int c : cols) {
+            for (int r = 0; r &lt; matrix.length; ++r) {
+                matrix[r][c] = 0;
+            }
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1172,10 +1620,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def setZeroes(self, matrix):
         rows = len(matrix)
         cols = len(matrix[0])
@@ -1216,6 +1677,116 @@
         if first_col_zero:
             for r in range(rows):
                 matrix[r][0] = 0</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    void setZeroes(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        first_row_zero = any(;
+        matrix[0][c] == 0;
+        for c in range(cols)
+        }
+        );
+        first_col_zero = any(;
+        matrix[r][0] == 0;
+        for r in range(rows)
+        }
+        );
+        // Use first row/col as markers
+        for (int r = 1; r &lt; rows; ++r) {
+            for (int c = 1; c &lt; cols; ++c) {
+                if (matrix[r][c] == 0) {
+                    matrix[r][0] = 0;
+                    matrix[0][c] = 0;
+                }
+            }
+        }
+        // Zero marked rows
+        for (int r = 1; r &lt; rows; ++r) {
+            if (matrix[r][0] == 0) {
+                for (int c = 1; c &lt; cols; ++c) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+        // Zero marked columns
+        for (int c = 1; c &lt; cols; ++c) {
+            if (matrix[0][c] == 0) {
+                for (int r = 1; r &lt; rows; ++r) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+        // Handle first row and column
+        if (first_row_zero) {
+            for (int c = 0; c &lt; cols; ++c) {
+                matrix[0][c] = 0;
+            }
+        }
+        if (first_col_zero) {
+            for (int r = 0; r &lt; rows; ++r) {
+                matrix[r][0] = 0;
+            }
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public void setZeroes(int[][] matrix) {
+        rows = matrix.length;
+        cols = matrix[0].length;
+        first_row_zero = any(;
+        matrix[0][c] == 0;
+        for c in range(cols)
+        }
+        );
+        first_col_zero = any(;
+        matrix[r][0] == 0;
+        for r in range(rows)
+        }
+        );
+        // Use first row/col as markers
+        for (int r = 1; r &lt; rows; ++r) {
+            for (int c = 1; c &lt; cols; ++c) {
+                if (matrix[r][c] == 0) {
+                    matrix[r][0] = 0;
+                    matrix[0][c] = 0;
+                }
+            }
+        }
+        // Zero marked rows
+        for (int r = 1; r &lt; rows; ++r) {
+            if (matrix[r][0] == 0) {
+                for (int c = 1; c &lt; cols; ++c) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+        // Zero marked columns
+        for (int c = 1; c &lt; cols; ++c) {
+            if (matrix[0][c] == 0) {
+                for (int r = 1; r &lt; rows; ++r) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+        // Handle first row and column
+        if (first_row_zero) {
+            for (int c = 0; c &lt; cols; ++c) {
+                matrix[0][c] = 0;
+            }
+        }
+        if (first_col_zero) {
+            for (int r = 0; r &lt; rows; ++r) {
+                matrix[r][0] = 0;
+            }
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1260,10 +1831,23 @@
         <div class="naive-box"><p>Keep a <code>seen</code> set; stop when 1 is reached or a repeated value is detected.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isHappy(self, n):
         seen = set()
 
@@ -1283,6 +1867,50 @@
             n = total
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set&lt;int&gt; seen;
+        while (n != 1) {
+            if (seen.count(n)) {
+                return false;
+            }
+            seen.insert(n);
+            total = 0;
+            while (n &gt; 0) {
+                digit = n % 10;
+                total += digit * digit;
+                n //= 10;
+            }
+            n = total;
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isHappy(int n) {
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        while (n != 1) {
+            if (seen.contains(n)) {
+                return false;
+            }
+            seen.add(n);
+            total = 0;
+            while (n &gt; 0) {
+                digit = n % 10;
+                total += digit * digit;
+                n //= 10;
+            }
+            n = total;
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1308,10 +1936,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isHappy(self, n):
 
         def next_number(num):
@@ -1332,6 +1973,55 @@
             fast = next_number(next_number(fast))
 
         return fast == 1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void next_number(int num) {
+        total = 0;
+        while (num &gt; 0) {
+            digit = num % 10;
+            total += digit * digit;
+            num //= 10;
+        }
+        return total;
+    }
+
+public:
+    bool isHappy(int n) {
+        slow = n;
+        fast = next_number(n);
+        while (fast != 1 &amp;&amp; slow != fast) {
+            slow = next_number(slow);
+            fast = next_number(next_number(fast));
+        }
+        return fast == 1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void next_number(int num) {
+        total = 0;
+        while (num &gt; 0) {
+            digit = num % 10;
+            total += digit * digit;
+            num //= 10;
+        }
+        return total;
+    }
+
+    public boolean isHappy(int n) {
+        slow = n;
+        fast = next_number(n);
+        while (fast != 1 &amp;&amp; slow != fast) {
+            slow = next_number(slow);
+            fast = next_number(next_number(fast));
+        }
+        return fast == 1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1376,10 +2066,23 @@
         <div class="naive-box"><p>Reconstruct the integer, add 1, convert back to a digit array.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def plusOne(self, digits):
         number = 0
 
@@ -1389,6 +2092,32 @@
         number += 1
 
         return [int(d) for d in str(number)]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int plusOne(int digits) {
+        number = 0;
+        for (auto digit : digits) {
+            number = number * 10 + digit;
+        }
+        number += 1;
+        return [int(d) for d in str(number)];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int plusOne(int digits) {
+        number = 0;
+        for (int digit : digits) {
+            number = number * 10 + digit;
+        }
+        number += 1;
+        return [int(d) for d in str(number)];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1414,10 +2143,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def plusOne(self, digits):
         for i in range(len(digits) - 1, -1, -1):
             if digits[i] &lt; 9:
@@ -1427,6 +2169,36 @@
             digits[i] = 0
 
         return [1] + digits</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int plusOne(int digits) {
+        for i in range(digits.size() - 1, -1, -1):
+            if (digits[i] &lt; 9) {
+                digits[i] += 1;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        return [1] + digits;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int plusOne(int digits) {
+        for i in range(digits.length - 1, -1, -1):
+            if (digits[i] &lt; 9) {
+                digits[i] += 1;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        return [1] + digits;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1471,10 +2243,23 @@
         <div class="naive-box"><p>Multiply <code>x</code> by itself <code>n</code> times in a loop.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def myPow(self, x, n):
         if n &lt; 0:
             x = 1 / x
@@ -1486,6 +2271,38 @@
             result *= x
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; myPow(int x, int n) {
+        if (n &lt; 0) {
+            x = 1 / x;
+            n = -n;
+        }
+        result = 1;
+        for (int _ = 0; _ &lt; n; ++_) {
+            result *= x;
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; myPow(int x, int n) {
+        if (n &lt; 0) {
+            x = 1 / x;
+            n = -n;
+        }
+        result = 1;
+        for (int _ = 0; _ &lt; n; ++_) {
+            result *= x;
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1511,10 +2328,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def myPow(self, x, n):
         if n &lt; 0:
             x = 1 / x
@@ -1530,6 +2360,46 @@
             n //= 2
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; myPow(int x, int n) {
+        if (n &lt; 0) {
+            x = 1 / x;
+            n = -n;
+        }
+        result = 1;
+        while (n) {
+            if (n % 2 == 1) {
+                result *= x;
+            }
+            x *= x;
+            n //= 2;
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; myPow(int x, int n) {
+        if (n &lt; 0) {
+            x = 1 / x;
+            n = -n;
+        }
+        result = 1;
+        while (n) {
+            if (n % 2 == 1) {
+                result *= x;
+            }
+            x *= x;
+            n //= 2;
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1574,12 +2444,41 @@
         <div class="naive-box"><p>Convert both strings to integers, multiply, return the result as a string. (Violates the problem constraint but useful baseline.)</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def multiply(self, num1, num2):
         return str(int(num1) * int(num2))</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int multiply(int num1, int num2) {
+        return str(int(num1) * int(num2));
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int multiply(int num1, int num2) {
+        return str(int(num1) * int(num2));
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1605,13 +2504,26 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def multiply(self, num1, num2):
-        if num1 == &quot;0&quot; or num2 == &quot;0&quot;:
-            return &quot;0&quot;
+        if num1 == "0" or num2 == "0":
+            return "0"
 
         n = len(num1)
         m = len(num2)
@@ -1631,7 +2543,63 @@
         while start &lt; len(result) - 1 and result[start] == 0:
             start += 1
 
-        return &quot;&quot;.join(str(d) for d in result[start:])</code></pre>
+        return "".join(str(d) for d in result[start:])</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int multiply(int num1, int num2) {
+        if (num1 == "0" || num2 == "0") {
+            return "0";
+        }
+        n = num1.size();
+        m = num2.size();
+        result = [0] * (n + m);
+        for i in range(n - 1, -1, -1):
+            for j in range(m - 1, -1, -1):
+                product = int(num1[i]) * int(num2[j]);
+                pos = i + j + 1;
+                result[pos] += product;
+                result[pos - 1] += result[pos] // 10;
+                result[pos] %= 10;
+            }
+        }
+        // Strip leading zeros
+        start = 0;
+        while (start &lt; result.size() - 1 &amp;&amp; result[start] == 0) {
+            start += 1;
+        }
+        return "".join(str(d) for d in result[start:]);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int multiply(int num1, int num2) {
+        if (num1 == "0" || num2 == "0") {
+            return "0";
+        }
+        n = num1.length;
+        m = num2.length;
+        result = [0] * (n + m);
+        for i in range(n - 1, -1, -1):
+            for j in range(m - 1, -1, -1):
+                product = int(num1[i]) * int(num2[j]);
+                pos = i + j + 1;
+                result[pos] += product;
+                result[pos - 1] += result[pos] // 10;
+                result[pos] %= 10;
+            }
+        }
+        // Strip leading zeros
+        start = 0;
+        while (start &lt; result.length - 1 &amp;&amp; result[start] == 0) {
+            start += 1;
+        }
+        return "".join(str(d) for d in result[start:]);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1676,10 +2644,23 @@
         <div class="naive-box"><p>Store all points in a list; for each <code>count</code> query, scan all pairs and check the square condition.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from collections import Counter
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import Counter
 
 class DetectSquares:
 
@@ -1707,6 +2688,67 @@ class DetectSquares:
             )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self) {
+        points = Counter();
+        points[tuple(point)] += 1;
+        x, y = point;
+        answer = 0;
+        for (x2, y2), cnt_diag in points.items():
+            if (x2 == x || y2 == y) {
+                continue;
+            }
+            if (abs(x2 - x) != abs(y2 - y)) {
+                continue;
+            }
+            answer += (;
+            cnt_diag;
+            * points[(x2, y)];
+            * points[(x, y2)];
+            );
+        }
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; add(int point) {
+        from collections import Counter;
+        class DetectSquares:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self) {
+        points = Counter();
+        points[tuple(point)] += 1;
+        x, y = point;
+        answer = 0;
+        for (x2, y2), cnt_diag in points.items():
+            if (x2 == x || y2 == y) {
+                continue;
+            }
+            if (abs(x2 - x) != abs(y2 - y)) {
+                continue;
+            }
+            answer += (;
+            cnt_diag;
+            * points[(x2, y)];
+            * points[(x, y2)];
+            );
+        }
+        return answer;
+    }
+
+    public List&lt;Integer&gt; add(int point) {
+        from collections import Counter;
+        class DetectSquares:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1732,10 +2774,23 @@ class DetectSquares:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from collections import defaultdict, Counter
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import defaultdict, Counter
 
 class DetectSquares:
 
@@ -1769,6 +2824,77 @@ class DetectSquares:
                 answer += cnt_diag * cnt_corner * cnt_base
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self) {
+        // points[x][y] = frequency
+        points = defaultdict(Counter);
+        x, y = point;
+        points[x][y] += 1;
+        x, y = point;
+        answer = 0;
+        for x2, ys in points.items():
+            if (x2 == x) {
+                continue;
+            }
+            side = abs(x2 - x);
+            // Two possible diagonal y-coords
+            for y2 in (y + side, y - side):
+                if (y2 !in ys) {
+                    continue;
+                }
+                cnt_diag   = ys[y2]           # (x2, y2);
+                cnt_corner = points[x][y2] # (x,  y2);
+                cnt_base   = points[x2][y] # (x2, y );
+                answer += cnt_diag * cnt_corner * cnt_base;
+            }
+        }
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; add(int point) {
+        from collections import defaultdict, Counter;
+        class DetectSquares:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self) {
+        // points[x][y] = frequency
+        points = defaultdict(Counter);
+        x, y = point;
+        points[x][y] += 1;
+        x, y = point;
+        answer = 0;
+        for x2, ys in points.items():
+            if (x2 == x) {
+                continue;
+            }
+            side = abs(x2 - x);
+            // Two possible diagonal y-coords
+            for y2 in (y + side, y - side):
+                if (y2 !in ys) {
+                    continue;
+                }
+                cnt_diag   = ys[y2]           # (x2, y2);
+                cnt_corner = points[x][y2] # (x,  y2);
+                cnt_base   = points[x2][y] # (x2, y );
+                answer += cnt_diag * cnt_corner * cnt_base;
+            }
+        }
+        return answer;
+    }
+
+    public List&lt;Integer&gt; add(int point) {
+        from collections import defaultdict, Counter;
+        class DetectSquares:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2045,6 +3171,77 @@ class DetectSquares:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -879,10 +974,23 @@
         <div class="naive-box"><p>Append the new interval, sort everything, then run standard merge-intervals.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def insert(self, intervals, newInterval):
         intervals.append(newInterval)
         intervals.sort()
@@ -896,6 +1004,42 @@
                 result[-1][1] = max(result[-1][1], end)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; insert(vector&lt;int&gt;&amp; intervals, int newInterval) {
+        intervals.push_back(newInterval);
+        intervals.sort();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for start, end in intervals:
+            if (!result || start &gt; result[-1][1]) {
+                result.push_back([start, end]);
+            }
+            else:;
+            result[-1][1] = max(result[-1][1], end);
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; insert(int[] intervals, int newInterval) {
+        intervals.add(newInterval);
+        intervals.sort();
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for start, end in intervals:
+            if (!result || start &gt; result[-1][1]) {
+                result.add([start, end]);
+            }
+            else:;
+            result[-1][1] = max(result[-1][1], end);
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -921,10 +1065,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def insert(self, intervals, newInterval):
         result = []
         i = 0
@@ -949,6 +1106,62 @@
             i += 1
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; insert(vector&lt;int&gt;&amp; intervals, int newInterval) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        i = 0;
+        n = intervals.size();
+        // Phase 1 — completely before new interval
+        while (i &lt; n &amp;&amp; intervals[i][1] &lt; newInterval[0]) {
+            result.push_back(intervals[i]);
+            i += 1;
+        }
+        // Phase 2 — overlapping: merge into newInterval
+        while (i &lt; n &amp;&amp; intervals[i][0] &lt;= newInterval[1]) {
+            newInterval[0] = min(newInterval[0], intervals[i][0]);
+            newInterval[1] = max(newInterval[1], intervals[i][1]);
+            i += 1;
+        }
+        result.push_back(newInterval);
+        // Phase 3 — completely after new interval
+        while (i &lt; n) {
+            result.push_back(intervals[i]);
+            i += 1;
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; insert(int[] intervals, int newInterval) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        i = 0;
+        n = intervals.length;
+        // Phase 1 — completely before new interval
+        while (i &lt; n &amp;&amp; intervals[i][1] &lt; newInterval[0]) {
+            result.add(intervals[i]);
+            i += 1;
+        }
+        // Phase 2 — overlapping: merge into newInterval
+        while (i &lt; n &amp;&amp; intervals[i][0] &lt;= newInterval[1]) {
+            newInterval[0] = min(newInterval[0], intervals[i][0]);
+            newInterval[1] = max(newInterval[1], intervals[i][1]);
+            i += 1;
+        }
+        result.add(newInterval);
+        // Phase 3 — completely after new interval
+        while (i &lt; n) {
+            result.add(intervals[i]);
+            i += 1;
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -993,10 +1206,23 @@
         <div class="naive-box"><p>Repeatedly scan for any overlapping pair and merge them until no overlaps remain.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def merge(self, intervals):
         intervals = [x[:] for x in intervals]
         changed = True
@@ -1034,6 +1260,86 @@
             intervals = result
 
         return intervals</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int merge(vector&lt;int&gt;&amp; intervals) {
+        intervals = [x[:] for x in intervals];
+        changed = true;
+        while (changed) {
+            changed = false;
+            vector&lt;vector&lt;int&gt;&gt; result;
+            used = [false] * intervals.size();
+            for (int i = 0; i &lt; intervals.size(); ++i) {
+                if (used[i]) {
+                    continue;
+                }
+                current = intervals[i];
+                for (int j = i + 1; j &lt; intervals.size(); ++j) {
+                    if (used[j]) {
+                        continue;
+                    }
+                    other = intervals[j];
+                    if (() {
+                        current[0] &lt;= other[1];
+                        and other[0] &lt;= current[1];
+                    }
+                    ):;
+                    current = [;
+                    min(current[0], other[0]),;
+                    max(current[1], other[1]),;
+                    ];
+                    used[j] = true;
+                    changed = true;
+                }
+                result.push_back(current);
+            }
+            intervals = result;
+        }
+        return intervals;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int merge(int[] intervals) {
+        intervals = [x[:] for x in intervals];
+        changed = true;
+        while (changed) {
+            changed = false;
+            List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+            used = [false] * intervals.length;
+            for (int i = 0; i &lt; intervals.length; ++i) {
+                if (used[i]) {
+                    continue;
+                }
+                current = intervals[i];
+                for (int j = i + 1; j &lt; intervals.length; ++j) {
+                    if (used[j]) {
+                        continue;
+                    }
+                    other = intervals[j];
+                    if (() {
+                        current[0] &lt;= other[1];
+                        and other[0] &lt;= current[1];
+                    }
+                    ):;
+                    current = [;
+                    min(current[0], other[0]),;
+                    max(current[1], other[1]),;
+                    ];
+                    used[j] = true;
+                    changed = true;
+                }
+                result.add(current);
+            }
+            intervals = result;
+        }
+        return intervals;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1059,10 +1365,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def merge(self, intervals):
         intervals.sort()
         result = []
@@ -1074,6 +1393,40 @@
                 result[-1][1] = max(result[-1][1], end)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; merge(vector&lt;int&gt;&amp; intervals) {
+        intervals.sort();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for start, end in intervals:
+            if (!result || start &gt; result[-1][1]) {
+                result.push_back([start, end]);
+            }
+            else:;
+            result[-1][1] = max(result[-1][1], end);
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; merge(int[] intervals) {
+        intervals.sort();
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for start, end in intervals:
+            if (!result || start &gt; result[-1][1]) {
+                result.add([start, end]);
+            }
+            else:;
+            result[-1][1] = max(result[-1][1], end);
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1118,10 +1471,23 @@
         <div class="naive-box"><p>DFS: try all combinations of kept/removed intervals and find the minimum removals.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def eraseOverlapIntervals(self, intervals):
         n = len(intervals)
         best = [n]
@@ -1148,6 +1514,69 @@
 
         dfs(0, [])
         return best[0]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void overlaps(int a, int b) {
+        return a[0] &lt; b[1] &amp;&amp; b[0] &lt; a[1];
+        if (index == n) {
+            best[0] = min(best[0], n - chosen.size());
+            return;
+        }
+        // Skip this interval
+        dfs(index + 1, chosen);
+        // Take if compatible
+        if (all() {
+            !overlaps(intervals[index], x);
+            for x in chosen
+            }
+        }
+        ):;
+        chosen.push_back(intervals[index]);
+        dfs(index + 1, chosen);
+        chosen.pop_back();
+    }
+
+public:
+    int eraseOverlapIntervals(vector&lt;int&gt;&amp; intervals) {
+        n = intervals.size();
+        best = [n];
+        dfs(0, []);
+        return best[0];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void overlaps(int a, int b) {
+        return a[0] &lt; b[1] &amp;&amp; b[0] &lt; a[1];
+        if (index == n) {
+            best[0] = min(best[0], n - chosen.length);
+            return;
+        }
+        // Skip this interval
+        dfs(index + 1, chosen);
+        // Take if compatible
+        if (all() {
+            !overlaps(intervals[index], x);
+            for x in chosen
+            }
+        }
+        ):;
+        chosen.add(intervals[index]);
+        dfs(index + 1, chosen);
+        chosen.remove(chosen.size() - 1);
+    }
+
+    public int eraseOverlapIntervals(int[] intervals) {
+        n = intervals.length;
+        best = [n];
+        dfs(0, []);
+        return best[0];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1173,15 +1602,28 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def eraseOverlapIntervals(self, intervals):
         intervals.sort(key=lambda x: x[1])
 
         removed = 0
-        previous_end = float(&quot;-inf&quot;)
+        previous_end = float("-inf")
 
         for start, end in intervals:
             if start &lt; previous_end:
@@ -1190,6 +1632,42 @@
                 previous_end = end
 
         return removed</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int eraseOverlapIntervals(vector&lt;int&gt;&amp; intervals) {
+        intervals.sort(key=lambda x: x[1]);
+        removed = 0;
+        previous_end = float("-inf");
+        for start, end in intervals:
+            if (start &lt; previous_end) {
+                removed += 1;
+            }
+            else:;
+            previous_end = end;
+        }
+        return removed;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int eraseOverlapIntervals(int[] intervals) {
+        intervals.sort(key=lambda x: x[1]);
+        removed = 0;
+        previous_end = float("-inf");
+        for start, end in intervals:
+            if (start &lt; previous_end) {
+                removed += 1;
+            }
+            else:;
+            previous_end = end;
+        }
+        return removed;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1234,10 +1712,23 @@
         <div class="naive-box"><p>Compare every pair of meetings for overlap.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def canAttendMeetings(self, intervals):
         n = len(intervals)
 
@@ -1250,6 +1741,42 @@
                     return False
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool canAttendMeetings(vector&lt;int&gt;&amp; intervals) {
+        n = intervals.size();
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = i + 1; j &lt; n; ++j) {
+                start1, end1 = intervals[i];
+                start2, end2 = intervals[j];
+                if (start1 &lt; end2 &amp;&amp; start2 &lt; end1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean canAttendMeetings(int[] intervals) {
+        n = intervals.length;
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = i + 1; j &lt; n; ++j) {
+                start1, end1 = intervals[i];
+                start2, end2 = intervals[j];
+                if (start1 &lt; end2 &amp;&amp; start2 &lt; end1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1275,10 +1802,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def canAttendMeetings(self, intervals):
         intervals.sort()
 
@@ -1287,6 +1827,34 @@
                 return False
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool canAttendMeetings(vector&lt;int&gt;&amp; intervals) {
+        intervals.sort();
+        for (int i = 1; i &lt; intervals.size(); ++i) {
+            if (intervals[i][0] &lt; intervals[i - 1][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean canAttendMeetings(int[] intervals) {
+        intervals.sort();
+        for (int i = 1; i &lt; intervals.length; ++i) {
+            if (intervals[i][0] &lt; intervals[i - 1][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1331,10 +1899,23 @@
         <div class="naive-box"><p>For every meeting, count how many other meetings overlap with it.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minMeetingRooms(self, intervals):
         answer = 0
 
@@ -1348,6 +1929,42 @@
             answer = max(answer, rooms)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; minMeetingRooms(vector&lt;int&gt;&amp; intervals) {
+        answer = 0;
+        for start, end in intervals:
+            rooms = 0;
+            for other_start, other_end in intervals:
+                if (other_start &lt; end &amp;&amp; start &lt; other_end) {
+                    rooms += 1;
+                }
+            }
+            answer = max(answer, rooms);
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; minMeetingRooms(int[] intervals) {
+        answer = 0;
+        for start, end in intervals:
+            rooms = 0;
+            for other_start, other_end in intervals:
+                if (other_start &lt; end &amp;&amp; start &lt; other_end) {
+                    rooms += 1;
+                }
+            }
+            answer = max(answer, rooms);
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1373,10 +1990,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def minMeetingRooms(self, intervals):
@@ -1394,6 +2024,48 @@ class Solution:
             heapq.heappush(rooms, end)
 
         return len(rooms)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int minMeetingRooms(vector&lt;int&gt;&amp; intervals) {
+        import heapq;
+        if (!intervals) {
+            return 0;
+        }
+        intervals.sort();
+        rooms = [];
+        for start, end in intervals:
+            // Reuse the room that ends earliest
+            if (rooms &amp;&amp; rooms[0] &lt;= start) {
+                heapq.heappop(rooms);
+            }
+            heapq.heappush(rooms, end);
+        }
+        return rooms.size();
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int minMeetingRooms(int[] intervals) {
+        import heapq;
+        if (!intervals) {
+            return 0;
+        }
+        intervals.sort();
+        rooms = [];
+        for start, end in intervals:
+            // Reuse the room that ends earliest
+            if (rooms &amp;&amp; rooms[0] &lt;= start) {
+                heapq.heappop(rooms);
+            }
+            heapq.heappush(rooms, end);
+        }
+        return rooms.length;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1438,24 +2110,75 @@ class Solution:
         <div class="naive-box"><p>For every query, scan all intervals linearly and find the smallest containing one.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minInterval(self, intervals, queries):
         result = []
 
         for query in queries:
-            best = float(&quot;inf&quot;)
+            best = float("inf")
 
             for start, end in intervals:
                 if start &lt;= query &lt;= end:
                     size = end - start + 1
                     best = min(best, size)
 
-            result.append(-1 if best == float(&quot;inf&quot;) else best)
+            result.append(-1 if best == float("inf") else best)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; minInterval(vector&lt;int&gt;&amp; intervals, int queries) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (auto query : queries) {
+            best = float("inf");
+            for start, end in intervals:
+                if (start &lt;= query &lt;= end) {
+                    size = end - start + 1;
+                    best = min(best, size);
+                }
+            }
+            result.push_back(-1 if best == float("inf") else best);
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; minInterval(int[] intervals, int queries) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for (int query : queries) {
+            best = float("inf");
+            for start, end in intervals:
+                if (start &lt;= query &lt;= end) {
+                    size = end - start + 1;
+                    best = min(best, size);
+                }
+            }
+            result.add(-1 if best == float("inf") else best);
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1481,10 +2204,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def minInterval(self, intervals, queries):
@@ -1516,6 +2252,74 @@ class Solution:
                 result[original_index] = heap[0][0]
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; minInterval(vector&lt;int&gt;&amp; intervals, int queries) {
+        import heapq;
+        intervals.sort();
+        sorted_queries = sorted(;
+        (query, i);
+        for i, query in enumerate(queries)
+        }
+        );
+        result = [-1] * queries.size();
+        heap = [];
+        i = 0;
+        for query, original_index in sorted_queries:
+            // Add all intervals whose start &lt;= query
+            while (i &lt; intervals.size() &amp;&amp; intervals[i][0] &lt;= query) {
+                start, end = intervals[i];
+                size = end - start + 1;
+                heapq.heappush(heap, (size, end));
+                i += 1;
+            }
+            // Remove intervals that ended before this query
+            while (heap &amp;&amp; heap[0][1] &lt; query) {
+                heapq.heappop(heap);
+            }
+            if (heap) {
+                result[original_index] = heap[0][0];
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; minInterval(int[] intervals, int queries) {
+        import heapq;
+        intervals.sort();
+        sorted_queries = sorted(;
+        (query, i);
+        for i, query in enumerate(queries)
+        }
+        );
+        result = [-1] * queries.length;
+        heap = [];
+        i = 0;
+        for query, original_index in sorted_queries:
+            // Add all intervals whose start &lt;= query
+            while (i &lt; intervals.length &amp;&amp; intervals[i][0] &lt;= query) {
+                start, end = intervals[i];
+                size = end - start + 1;
+                heapq.heappush(heap, (size, end));
+                i += 1;
+            }
+            // Remove intervals that ended before this query
+            while (heap &amp;&amp; heap[0][1] &lt; query) {
+                heapq.heappop(heap);
+            }
+            if (heap) {
+                result[original_index] = heap[0][0];
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1784,6 +2588,77 @@ class Solution:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

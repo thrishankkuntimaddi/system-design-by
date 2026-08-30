@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -1012,10 +1107,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def climbStairs(self, n):
         def dfs(step):
             if step == n:
@@ -1027,6 +1135,43 @@
             return dfs(step + 1) + dfs(step + 2)
 
         return dfs(0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int step) {
+        if (step == n) {
+            return 1;
+        }
+        if (step &gt; n) {
+            return 0;
+        }
+        return dfs(step + 1) + dfs(step + 2);
+    }
+
+public:
+    int climbStairs(int n) {
+        return dfs(0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int step) {
+        if (step == n) {
+            return 1;
+        }
+        if (step &gt; n) {
+            return 0;
+        }
+        return dfs(step + 1) + dfs(step + 2);
+    }
+
+    public int climbStairs(int n) {
+        return dfs(0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1065,10 +1210,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Bottom-Up DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def climbStairs(self, n):
         if n &lt;= 2:
             return n
@@ -1081,6 +1239,40 @@
             dp[i] = dp[i - 1] + dp[i - 2]
 
         return dp[n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int climbStairs(int n) {
+        if (n &lt;= 2) {
+            return n;
+        }
+        dp = [0] * (n + 1);
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i &lt; n + 1; ++i) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int climbStairs(int n) {
+        if (n &lt;= 2) {
+            return n;
+        }
+        dp = [0] * (n + 1);
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i &lt; n + 1; ++i) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -1160,10 +1352,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minCostClimbingStairs(self, cost):
 
         def dfs(i):
@@ -1176,6 +1381,43 @@
             )
 
         return min(dfs(0), dfs(1))</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i) {
+        if (i &gt;= cost.size()) {
+            return 0;
+        }
+        return cost[i] + min(;
+        dfs(i + 1), result);
+        dfs(i + 2, result);
+        );
+    }
+
+public:
+    int minCostClimbingStairs(int cost) {
+        return min(dfs(0), dfs(1));
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i) {
+        if (i &gt;= cost.length) {
+            return 0;
+        }
+        return cost[i] + min(;
+        dfs(i + 1), result);
+        dfs(i + 2, result);
+        );
+    }
+
+    public int minCostClimbingStairs(int cost) {
+        return min(dfs(0), dfs(1));
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1214,10 +1456,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minCostClimbingStairs(self, cost):
         n = len(cost)
 
@@ -1230,6 +1485,38 @@
             )
 
         return dp[n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int minCostClimbingStairs(int cost) {
+        n = cost.size();
+        dp = [0] * (n + 1);
+        for (int i = 2; i &lt; n + 1; ++i) {
+            dp[i] = min(;
+            dp[i - 1] + cost[i - 1],;
+            dp[i - 2] + cost[i - 2];
+            );
+        }
+        return dp[n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int minCostClimbingStairs(int cost) {
+        n = cost.length;
+        dp = [0] * (n + 1);
+        for (int i = 2; i &lt; n + 1; ++i) {
+            dp[i] = min(;
+            dp[i - 1] + cost[i - 1],;
+            dp[i - 2] + cost[i - 2];
+            );
+        }
+        return dp[n];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -1310,10 +1597,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rob(self, nums):
 
         def dfs(i):
@@ -1326,6 +1626,41 @@
             return max(rob, skip)
 
         return dfs(0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, vector&lt;int&gt;&amp; nums) {
+        if (i &gt;= nums.size()) {
+            return 0;
+        }
+        rob = nums[i] + dfs(i + 2);
+        skip = dfs(i + 1);
+        return max(rob, skip);
+    }
+
+public:
+    int rob(vector&lt;int&gt;&amp; nums) {
+        return dfs(0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int[] nums) {
+        if (i &gt;= nums.length) {
+            return 0;
+        }
+        rob = nums[i] + dfs(i + 2);
+        skip = dfs(i + 1);
+        return max(rob, skip);
+    }
+
+    public int rob(int[] nums) {
+        return dfs(0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1364,10 +1699,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rob(self, nums):
         n = len(nums)
 
@@ -1389,6 +1737,54 @@
             )
 
         return dp[-1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int rob(vector&lt;int&gt;&amp; nums) {
+        n = nums.size();
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return nums[0];
+        }
+        dp = [0] * n;
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+        for (int i = 2; i &lt; n; ++i) {
+            dp[i] = max(;
+            dp[i - 1],;
+            nums[i] + dp[i - 2];
+            );
+        }
+        return dp[-1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int rob(int[] nums) {
+        n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return nums[0];
+        }
+        dp = [0] * n;
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+        for (int i = 2; i &lt; n; ++i) {
+            dp[i] = max(;
+            dp[i - 1],;
+            nums[i] + dp[i - 2];
+            );
+        }
+        return dp[-1];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -1469,10 +1865,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rob(self, nums):
 
         def dfs(i, first_robbed, previous_robbed):
@@ -1498,6 +1907,67 @@
             return max(skip, take)
 
         return dfs(0, False, False)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int first_robbed, int previous_robbed, vector&lt;int&gt;&amp; nums) {
+        if (i == nums.size()) {
+            return 0;
+        }
+        skip = dfs(;
+        i + 1,;
+        first_robbed,;
+        false;
+        );
+        take = 0;
+        if (!previous_robbed) {
+            if (i != nums.size() - 1 || !first_robbed) {
+                take = nums[i] + dfs(;
+                i + 1,;
+                first_robbed || i == 0,;
+                true;
+                );
+            }
+        }
+        return max(skip, take);
+    }
+
+public:
+    int rob(vector&lt;int&gt;&amp; nums) {
+        return dfs(0, false, false);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int first_robbed, int previous_robbed, int[] nums) {
+        if (i == nums.length) {
+            return 0;
+        }
+        skip = dfs(;
+        i + 1,;
+        first_robbed,;
+        false;
+        );
+        take = 0;
+        if (!previous_robbed) {
+            if (i != nums.length - 1 || !first_robbed) {
+                take = nums[i] + dfs(;
+                i + 1,;
+                first_robbed || i == 0,;
+                true;
+                );
+            }
+        }
+        return max(skip, take);
+    }
+
+    public int rob(int[] nums) {
+        return dfs(0, false, false);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1535,10 +2005,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rob(self, nums):
 
         if len(nums) == 1:
@@ -1563,6 +2046,56 @@
             rob_linear(nums[:-1]),
             rob_linear(nums[1:])
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int rob(vector&lt;int&gt;&amp; nums) {
+        if (nums.size() == 1) {
+            return nums[0];
+            prev2 = 0;
+            prev1 = 0;
+            for (auto money : arr) {
+                current = max(;
+                prev1,;
+                money + prev2;
+                );
+                prev2 = prev1;
+                prev1 = current;
+            }
+            return prev1;
+        }
+        return max(;
+        rob_linear(nums[:-1]),;
+        rob_linear(nums[1:]);
+        );
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+            prev2 = 0;
+            prev1 = 0;
+            for (int money : arr) {
+                current = max(;
+                prev1,;
+                money + prev2;
+                );
+                prev2 = prev1;
+                prev1 = current;
+            }
+            return prev1;
+        }
+        return max(;
+        rob_linear(nums[:-1]),;
+        rob_linear(nums[1:]);
+        );
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1622,10 +2155,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestPalindrome(self, s):
 
         def is_palindrome(left, right):
@@ -1638,7 +2184,7 @@
 
             return True
 
-        longest = &quot;&quot;
+        longest = ""
 
         for i in range(len(s)):
             for j in range(i, len(s)):
@@ -1647,6 +2193,65 @@
                         longest = s[i:j + 1]
 
         return longest</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void is_palindrome(int left, int right) {
+        while (left &lt; right) {
+            if (s[left] != s[right]) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+
+public:
+    bool longestPalindrome(string s) {
+        longest = "";
+        for (int i = 0; i &lt; s.size(); ++i) {
+            for (int j = i; j &lt; s.size(); ++j) {
+                if (is_palindrome(i, j)) {
+                    if (j - i + 1 &gt; longest.size()) {
+                        longest = s[i:j + 1];
+                    }
+                }
+            }
+        }
+        return longest;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void is_palindrome(int left, int right) {
+        while (left &lt; right) {
+            if (s[left] != s[right]) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+
+    public boolean longestPalindrome(String s) {
+        longest = "";
+        for (int i = 0; i &lt; s.length; ++i) {
+            for (int j = i; j &lt; s.length; ++j) {
+                if (is_palindrome(i, j)) {
+                    if (j - i + 1 &gt; longest.length) {
+                        longest = s[i:j + 1];
+                    }
+                }
+            }
+        }
+        return longest;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1684,10 +2289,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Expand Around Center (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestPalindrome(self, s):
 
         start = 0
@@ -1715,6 +2333,71 @@
                 start, end = left2, right2
 
         return s[start:end + 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void expand(int left, int right) {
+        while (() {
+            left &gt;= 0;
+            and right &lt; s.size();
+            and s[left] == s[right];
+        }
+        ):;
+        left -= 1;
+        right += 1;
+        return left + 1, right - 1;
+    }
+
+public:
+    int longestPalindrome(string s) {
+        start = 0;
+        end = 0;
+        for (int i = 0; i &lt; s.size(); ++i) {
+            left1, right1 = expand(i, i);
+            left2, right2 = expand(i, i + 1);
+            if (right1 - left1 &gt; end - start) {
+                start, end = left1, right1;
+            }
+            if (right2 - left2 &gt; end - start) {
+                start, end = left2, right2;
+            }
+        }
+        return s[start:end + 1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void expand(int left, int right) {
+        while (() {
+            left &gt;= 0;
+            and right &lt; s.length;
+            and s[left] == s[right];
+        }
+        ):;
+        left -= 1;
+        right += 1;
+        return left + 1, right - 1;
+    }
+
+    public int longestPalindrome(String s) {
+        start = 0;
+        end = 0;
+        for (int i = 0; i &lt; s.length; ++i) {
+            left1, right1 = expand(i, i);
+            left2, right2 = expand(i, i + 1);
+            if (right1 - left1 &gt; end - start) {
+                start, end = left1, right1;
+            }
+            if (right2 - left2 &gt; end - start) {
+                start, end = left2, right2;
+            }
+        }
+        return s[start:end + 1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1774,10 +2457,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def countSubstrings(self, s):
 
         def is_palindrome(left, right):
@@ -1798,6 +2494,61 @@
                     count += 1
 
         return count</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void is_palindrome(int left, int right) {
+        while (left &lt; right) {
+            if (s[left] != s[right]) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+
+public:
+    bool countSubstrings(string s) {
+        count = 0;
+        for (int i = 0; i &lt; s.size(); ++i) {
+            for (int j = i; j &lt; s.size(); ++j) {
+                if (is_palindrome(i, j)) {
+                    count += 1;
+                }
+            }
+        }
+        return count;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void is_palindrome(int left, int right) {
+        while (left &lt; right) {
+            if (s[left] != s[right]) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+
+    public boolean countSubstrings(String s) {
+        count = 0;
+        for (int i = 0; i &lt; s.length; ++i) {
+            for (int j = i; j &lt; s.length; ++j) {
+                if (is_palindrome(i, j)) {
+                    count += 1;
+                }
+            }
+        }
+        return count;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1835,10 +2586,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def countSubstrings(self, s):
 
         count = 0
@@ -1860,6 +2624,59 @@
             expand(i, i + 1)
 
         return count</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void expand(int left, int right) {
+        nonlocal count;
+        while (() {
+            left &gt;= 0;
+            and right &lt; s.size();
+            and s[left] == s[right];
+        }
+        ):;
+        count += 1;
+        left -= 1;
+        right += 1;
+    }
+
+public:
+    int countSubstrings(string s) {
+        count = 0;
+        for (int i = 0; i &lt; s.size(); ++i) {
+            expand(i, i, result);
+            expand(i, i + 1, result);
+        }
+        return count;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void expand(int left, int right) {
+        nonlocal count;
+        while (() {
+            left &gt;= 0;
+            and right &lt; s.length;
+            and s[left] == s[right];
+        }
+        ):;
+        count += 1;
+        left -= 1;
+        right += 1;
+    }
+
+    public int countSubstrings(String s) {
+        count = 0;
+        for (int i = 0; i &lt; s.length; ++i) {
+            expand(i, i, result);
+            expand(i, i + 1, result);
+        }
+        return count;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1911,17 +2728,30 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numDecodings(self, s):
 
         def dfs(i):
             if i == len(s):
                 return 1
 
-            if s[i] == &quot;0&quot;:
+            if s[i] == "0":
                 return 0
 
             result = dfs(i + 1)
@@ -1935,6 +2765,57 @@
             return result
 
         return dfs(0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (i == s.size()) {
+            return 1;
+        }
+        if (s[i] == "0") {
+            return 0;
+        }
+        result = dfs(i + 1);
+        if (() {
+            i + 1 &lt; s.size();
+            and 10 &lt;= int(s[i:i + 2]) &lt;= 26;
+        }
+        ):;
+        result += dfs(i + 2);
+        return result;
+    }
+
+public:
+    vector&lt;int&gt; numDecodings(string s) {
+        return dfs(0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (i == s.length) {
+            return 1;
+        }
+        if (s[i] == "0") {
+            return 0;
+        }
+        result = dfs(i + 1);
+        if (() {
+            i + 1 &lt; s.length;
+            and 10 &lt;= int(s[i:i + 2]) &lt;= 26;
+        }
+        ):;
+        result += dfs(i + 2);
+        return result;
+    }
+
+    public List&lt;Integer&gt; numDecodings(String s) {
+        return dfs(0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1973,14 +2854,27 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numDecodings(self, s):
         n = len(s)
 
-        if not s or s[0] == &quot;0&quot;:
+        if not s or s[0] == "0":
             return 0
 
         dp = [0] * (n + 1)
@@ -1989,7 +2883,7 @@
 
         for i in range(2, n + 1):
 
-            if s[i - 1] != &quot;0&quot;:
+            if s[i - 1] != "0":
                 dp[i] += dp[i - 1]
 
             two_digit = int(s[i - 2:i])
@@ -1998,6 +2892,54 @@
                 dp[i] += dp[i - 2]
 
         return dp[n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int numDecodings(string s) {
+        n = s.size();
+        if (!s || s[0] == "0") {
+            return 0;
+        }
+        dp = [0] * (n + 1);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i &lt; n + 1; ++i) {
+            if (s[i - 1] != "0") {
+                dp[i] += dp[i - 1];
+            }
+            two_digit = int(s[i - 2:i]);
+            if (10 &lt;= two_digit &lt;= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int numDecodings(String s) {
+        n = s.length;
+        if (!s || s[0] == "0") {
+            return 0;
+        }
+        dp = [0] * (n + 1);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i &lt; n + 1; ++i) {
+            if (s[i - 1] != "0") {
+                dp[i] += dp[i - 1];
+            }
+            two_digit = int(s[i - 2:i]);
+            if (10 &lt;= two_digit &lt;= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[n];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -2078,10 +3020,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def coinChange(self, coins, amount):
 
         def dfs(remaining):
@@ -2089,9 +3044,9 @@
                 return 0
 
             if remaining &lt; 0:
-                return float(&quot;inf&quot;)
+                return float("inf")
 
-            answer = float(&quot;inf&quot;)
+            answer = float("inf")
 
             for coin in coins:
                 answer = min(
@@ -2103,7 +3058,60 @@
 
         result = dfs(amount)
 
-        return -1 if result == float(&quot;inf&quot;) else result</code></pre>
+        return -1 if result == float("inf") else result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int remaining, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (remaining == 0) {
+            return 0;
+        }
+        if (remaining &lt; 0) {
+            return float("inf");
+        }
+        answer = float("inf");
+        for (auto coin : coins) {
+            answer = min(;
+            answer,;
+            1 + dfs(remaining - coin);
+            );
+        }
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; coinChange(vector&lt;int&gt;&amp; coins, int amount) {
+        result = dfs(amount);
+        return -1 if result == float("inf") else result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int remaining, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (remaining == 0) {
+            return 0;
+        }
+        if (remaining &lt; 0) {
+            return float("inf");
+        }
+        answer = float("inf");
+        for (int coin : coins) {
+            answer = min(;
+            answer,;
+            1 + dfs(remaining - coin);
+            );
+        }
+        return answer;
+    }
+
+    public List&lt;Integer&gt; coinChange(int[] coins, int amount) {
+        result = dfs(amount);
+        return -1 if result == float("inf") else result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2141,10 +3149,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Bottom-Up DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def coinChange(self, coins, amount):
 
         dp = [amount + 1] * (amount + 1)
@@ -2160,6 +3181,46 @@
                     )
 
         return -1 if dp[amount] &gt; amount else dp[amount]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int coinChange(vector&lt;int&gt;&amp; coins, int amount) {
+        dp = [amount + 1] * (amount + 1);
+        dp[0] = 0;
+        for (int current = 1; current &lt; amount + 1; ++current) {
+            for (auto coin : coins) {
+                if (coin &lt;= current) {
+                    dp[current] = min(;
+                    dp[current],;
+                    dp[current - coin] + 1;
+                    );
+                }
+            }
+        }
+        return -1 if dp[amount] &gt; amount else dp[amount];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int coinChange(int[] coins, int amount) {
+        dp = [amount + 1] * (amount + 1);
+        dp[0] = 0;
+        for (int current = 1; current &lt; amount + 1; ++current) {
+            for (int coin : coins) {
+                if (coin &lt;= current) {
+                    dp[current] = min(;
+                    dp[current],;
+                    dp[current - coin] + 1;
+                    );
+                }
+            }
+        }
+        return -1 if dp[amount] &gt; amount else dp[amount];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2219,10 +3280,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProduct(self, nums):
 
         answer = nums[0]
@@ -2235,6 +3309,38 @@
                 answer = max(answer, product)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxProduct(vector&lt;int&gt;&amp; nums) {
+        answer = nums[0];
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            product = 1;
+            for (int j = i; j &lt; nums.size(); ++j) {
+                product *= nums[j];
+                answer = max(answer, product);
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxProduct(int[] nums) {
+        answer = nums[0];
+        for (int i = 0; i &lt; nums.length; ++i) {
+            product = 1;
+            for (int j = i; j &lt; nums.length; ++j) {
+                product *= nums[j];
+                answer = max(answer, product);
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2273,10 +3379,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProduct(self, nums):
 
         current_max = nums[0]
@@ -2304,6 +3423,62 @@
             answer = max(answer, current_max)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxProduct(vector&lt;int&gt;&amp; nums) {
+        current_max = nums[0];
+        current_min = nums[0];
+        answer = nums[0];
+        for num in nums[1:]:
+            if (num &lt; 0) {
+                current_max, current_min = (;
+                current_min,;
+                current_max;
+                );
+            }
+            current_max = max(;
+            num,;
+            current_max * num;
+            );
+            current_min = min(;
+            num,;
+            current_min * num;
+            );
+            answer = max(answer, current_max);
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxProduct(int[] nums) {
+        current_max = nums[0];
+        current_min = nums[0];
+        answer = nums[0];
+        for num in nums[1:]:
+            if (num &lt; 0) {
+                current_max, current_min = (;
+                current_min,;
+                current_max;
+                );
+            }
+            current_max = max(;
+            num,;
+            current_max * num;
+            );
+            current_min = min(;
+            num,;
+            current_min * num;
+            );
+            answer = max(answer, current_max);
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2363,10 +3538,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def wordBreak(self, s, wordDict):
 
         words = set(wordDict)
@@ -2383,6 +3571,53 @@
             return False
 
         return dfs(0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int start) {
+        if (start == s.size()) {
+            return true;
+        }
+        for (int end = start + 1; end &lt; s.size() + 1; ++end) {
+            if (s[start:end] in words) {
+                if (dfs(end)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+public:
+    bool wordBreak(string s, int wordDict) {
+        words = set(wordDict);
+        return dfs(0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int start) {
+        if (start == s.length) {
+            return true;
+        }
+        for (int end = start + 1; end &lt; s.length + 1; ++end) {
+            if (s[start:end] in words) {
+                if (dfs(end)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean wordBreak(String s, int wordDict) {
+        words = set(wordDict);
+        return dfs(0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2421,10 +3656,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def wordBreak(self, s, wordDict):
 
         words = set(wordDict)
@@ -2441,6 +3689,46 @@
                     break
 
         return dp[n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int wordBreak(string s, int wordDict) {
+        words = set(wordDict);
+        n = s.size();
+        dp = [false] * (n + 1);
+        dp[0] = true;
+        for (int i = 1; i &lt; n + 1; ++i) {
+            for (int j = 0; j &lt; i; ++j) {
+                if (dp[j] &amp;&amp; s[j:i] in words) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int wordBreak(String s, int wordDict) {
+        words = set(wordDict);
+        n = s.length;
+        dp = [false] * (n + 1);
+        dp[0] = true;
+        for (int i = 1; i &lt; n + 1; ++i) {
+            for (int j = 0; j &lt; i; ++j) {
+                if (dp[j] &amp;&amp; s[j:i] in words) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2493,10 +3781,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lengthOfLIS(self, nums):
 
         def dfs(index, previous):
@@ -2513,6 +3814,47 @@
             return max(take, skip)
 
         return dfs(0, -1)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int index, int previous, vector&lt;int&gt;&amp; nums) {
+        if (index == nums.size()) {
+            return 0;
+        }
+        skip = dfs(index + 1, previous);
+        take = 0;
+        if (previous == -1 || nums[index] &gt; nums[previous]) {
+            take = 1 + dfs(index + 1, index);
+        }
+        return max(take, skip);
+    }
+
+public:
+    int lengthOfLIS(vector&lt;int&gt;&amp; nums) {
+        return dfs(0, -1);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int index, int previous, int[] nums) {
+        if (index == nums.length) {
+            return 0;
+        }
+        skip = dfs(index + 1, previous);
+        take = 0;
+        if (previous == -1 || nums[index] &gt; nums[previous]) {
+            take = 1 + dfs(index + 1, index);
+        }
+        return max(take, skip);
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        return dfs(0, -1);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2551,10 +3893,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>O(n²) DP Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lengthOfLIS(self, nums):
 
         n = len(nums)
@@ -2574,6 +3929,50 @@
             answer = max(answer, dp[i])
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; lengthOfLIS(vector&lt;int&gt;&amp; nums) {
+        n = nums.size();
+        dp = [1] * n;
+        answer = 1;
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = 0; j &lt; i; ++j) {
+                if (nums[j] &lt; nums[i]) {
+                    dp[i] = max(;
+                    dp[i],;
+                    dp[j] + 1;
+                    );
+                }
+            }
+            answer = max(answer, dp[i]);
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; lengthOfLIS(int[] nums) {
+        n = nums.length;
+        dp = [1] * n;
+        answer = 1;
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = 0; j &lt; i; ++j) {
+                if (nums[j] &lt; nums[i]) {
+                    dp[i] = max(;
+                    dp[i],;
+                    dp[j] + 1;
+                    );
+                }
+            }
+            answer = max(answer, dp[i]);
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -2655,10 +4054,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def canPartition(self, nums):
 
         total = sum(nums)
@@ -2682,6 +4094,61 @@ class Solution:
             )
 
         return dfs(0, target)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int index, int remaining, vector&lt;int&gt;&amp; nums) {
+        if (remaining == 0) {
+            return true;
+        }
+        if (index == nums.size() || remaining &lt; 0) {
+            return false;
+        }
+        return (;
+        dfs(index + 1, remaining - nums[index], result, nums);
+        or;
+        dfs(index + 1, remaining, result, nums);
+        );
+    }
+
+public:
+    bool canPartition(vector&lt;int&gt;&amp; nums) {
+        total = sum(nums);
+        if (total % 2) {
+            return false;
+        }
+        target = total // 2;
+        return dfs(0, target);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int index, int remaining, int[] nums) {
+        if (remaining == 0) {
+            return true;
+        }
+        if (index == nums.length || remaining &lt; 0) {
+            return false;
+        }
+        return (;
+        dfs(index + 1, remaining - nums[index], result, nums);
+        or;
+        dfs(index + 1, remaining, result, nums);
+        );
+    }
+
+    public boolean canPartition(int[] nums) {
+        total = sum(nums);
+        if (total % 2) {
+            return false;
+        }
+        target = total // 2;
+        return dfs(0, target);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2720,10 +4187,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 0/1 Knapsack DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def canPartition(self, nums):
 
         total = sum(nums)
@@ -2745,6 +4225,54 @@ class Solution:
                 )
 
         return dp[target]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool canPartition(vector&lt;int&gt;&amp; nums) {
+        total = sum(nums);
+        if (total % 2) {
+            return false;
+        }
+        target = total // 2;
+        dp = [false] * (target + 1);
+        dp[0] = true;
+        for (auto num : nums) {
+            for current in range(target, num - 1, -1):
+                dp[current] = (;
+                dp[current];
+                or;
+                dp[current - num];
+                );
+            }
+        }
+        return dp[target];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean canPartition(int[] nums) {
+        total = sum(nums);
+        if (total % 2) {
+            return false;
+        }
+        target = total // 2;
+        dp = [false] * (target + 1);
+        dp[0] = true;
+        for (int num : nums) {
+            for current in range(target, num - 1, -1):
+                dp[current] = (;
+                dp[current];
+                or;
+                dp[current - num];
+                );
+            }
+        }
+        return dp[target];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2804,10 +4332,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def uniquePaths(self, m, n):
 
         def dfs(r, c):
@@ -2824,6 +4365,51 @@ class Solution:
             )
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (r == m - 1 &amp;&amp; c == n - 1) {
+            return 1;
+        }
+        if (r &gt;= m || c &gt;= n) {
+            return 0;
+        }
+        return (;
+        dfs(r + 1, c, result);
+        +;
+        dfs(r, c + 1, result);
+        );
+    }
+
+public:
+    int uniquePaths(int m, int n) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (r == m - 1 &amp;&amp; c == n - 1) {
+            return 1;
+        }
+        if (r &gt;= m || c &gt;= n) {
+            return 0;
+        }
+        return (;
+        dfs(r + 1, c, result);
+        +;
+        dfs(r, c + 1, result);
+        );
+    }
+
+    public int uniquePaths(int m, int n) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2861,10 +4447,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 2D Grid DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def uniquePaths(self, m, n):
 
         dp = [[0] * n for _ in range(m)]
@@ -2884,6 +4483,54 @@ class Solution:
                 )
 
         return dp[m - 1][n - 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        dp = [[0] * n for _ in range(m)];
+        for (int r = 0; r &lt; m; ++r) {
+            dp[r][0] = 1;
+        }
+        for (int c = 0; c &lt; n; ++c) {
+            dp[0][c] = 1;
+        }
+        for (int r = 1; r &lt; m; ++r) {
+            for (int c = 1; c &lt; n; ++c) {
+                dp[r][c] = (;
+                dp[r - 1][c];
+                +;
+                dp[r][c - 1];
+                );
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int uniquePaths(int m, int n) {
+        dp = [[0] * n for _ in range(m)];
+        for (int r = 0; r &lt; m; ++r) {
+            dp[r][0] = 1;
+        }
+        for (int c = 0; c &lt; n; ++c) {
+            dp[0][c] = 1;
+        }
+        for (int r = 1; r &lt; m; ++r) {
+            for (int c = 1; c &lt; n; ++c) {
+                dp[r][c] = (;
+                dp[r - 1][c];
+                +;
+                dp[r][c - 1];
+                );
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -2959,10 +4606,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestCommonSubsequence(self, text1, text2):
 
         def dfs(i, j):
@@ -2978,6 +4638,49 @@ class Solution:
             )
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        if (i == text1.size() || j == text2.size()) {
+            return 0;
+        }
+        if (text1[i] == text2[j]) {
+            return 1 + dfs(i + 1, j + 1);
+        }
+        return max(;
+        dfs(i + 1, j), result);
+        dfs(i, j + 1, result);
+        );
+    }
+
+public:
+    int longestCommonSubsequence(int text1, int text2) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        if (i == text1.length || j == text2.length) {
+            return 0;
+        }
+        if (text1[i] == text2[j]) {
+            return 1 + dfs(i + 1, j + 1);
+        }
+        return max(;
+        dfs(i + 1, j), result);
+        dfs(i, j + 1, result);
+        );
+    }
+
+    public int longestCommonSubsequence(int text1, int text2) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3016,10 +4719,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 2D DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestCommonSubsequence(self, text1, text2):
 
         m = len(text1)
@@ -3043,6 +4759,60 @@ class Solution:
                     )
 
         return dp[m][n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int longestCommonSubsequence(int text1, int text2) {
+        m = text1.size();
+        n = text2.size();
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                else:;
+                dp[i][j] = max(;
+                dp[i - 1][j],;
+                dp[i][j - 1];
+                );
+            }
+        }
+        return dp[m][n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int longestCommonSubsequence(int text1, int text2) {
+        m = text1.length;
+        n = text2.length;
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                else:;
+                dp[i][j] = max(;
+                dp[i - 1][j],;
+                dp[i][j - 1];
+                );
+            }
+        }
+        return dp[m][n];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -3132,10 +4902,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProfit(self, prices):
 
         def dfs(i, buying):
@@ -3154,6 +4937,51 @@ class Solution:
             return max(sell, hold)
 
         return dfs(0, True)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int buying) {
+        if (i &gt;= prices.size()) {
+            return 0;
+        }
+        if (buying) {
+            buy = -prices[i] + dfs(i + 1, false);
+            skip = dfs(i + 1, true);
+            return max(buy, skip);
+        }
+        sell = prices[i] + dfs(i + 2, true);
+        hold = dfs(i + 1, false);
+        return max(sell, hold);
+    }
+
+public:
+    int maxProfit(vector&lt;int&gt;&amp; prices) {
+        return dfs(0, true);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int buying) {
+        if (i &gt;= prices.length) {
+            return 0;
+        }
+        if (buying) {
+            buy = -prices[i] + dfs(i + 1, false);
+            skip = dfs(i + 1, true);
+            return max(buy, skip);
+        }
+        sell = prices[i] + dfs(i + 2, true);
+        hold = dfs(i + 1, false);
+        return max(sell, hold);
+    }
+
+    public int maxProfit(int[] prices) {
+        return dfs(0, true);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3191,10 +5019,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Memoization Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProfit(self, prices):
 
         memo = {}
@@ -3223,6 +5064,65 @@ class Solution:
             return memo[key]
 
         return dfs(0, True)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int buying) {
+        if (i &gt;= prices.size()) {
+            return 0;
+        }
+        key = (i, buying);
+        if (key in memo) {
+            return memo[key];
+        }
+        if (buying) {
+            buy = -prices[i] + dfs(i + 1, false);
+            skip = dfs(i + 1, true);
+            memo[key] = max(buy, skip);
+        }
+        else:;
+        sell = prices[i] + dfs(i + 2, true);
+        hold = dfs(i + 1, false);
+        memo[key] = max(sell, hold);
+        return memo[key];
+    }
+
+public:
+    int maxProfit(vector&lt;int&gt;&amp; prices) {
+        memo = {}
+        return dfs(0, true);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int buying) {
+        if (i &gt;= prices.length) {
+            return 0;
+        }
+        key = (i, buying);
+        if (key in memo) {
+            return memo[key];
+        }
+        if (buying) {
+            buy = -prices[i] + dfs(i + 1, false);
+            skip = dfs(i + 1, true);
+            memo[key] = max(buy, skip);
+        }
+        else:;
+        sell = prices[i] + dfs(i + 2, true);
+        hold = dfs(i + 1, false);
+        memo[key] = max(sell, hold);
+        return memo[key];
+    }
+
+    public int maxProfit(int[] prices) {
+        memo = {}
+        return dfs(0, true);
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -3312,10 +5212,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def change(self, amount, coins):
 
         def dfs(index, remaining):
@@ -3340,6 +5253,63 @@ class Solution:
             return use + skip
 
         return dfs(0, amount)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int index, int remaining) {
+        if (remaining == 0) {
+            return 1;
+        }
+        if (index == coins.size() || remaining &lt; 0) {
+            return 0;
+        }
+        // Use current coin
+        use = dfs(;
+        index,;
+        remaining - coins[index];
+        );
+        // Skip current coin
+        skip = dfs(;
+        index + 1,;
+        remaining;
+        );
+        return use + skip;
+    }
+
+public:
+    int change(int amount, vector&lt;int&gt;&amp; coins) {
+        return dfs(0, amount);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int index, int remaining) {
+        if (remaining == 0) {
+            return 1;
+        }
+        if (index == coins.length || remaining &lt; 0) {
+            return 0;
+        }
+        // Use current coin
+        use = dfs(;
+        index,;
+        remaining - coins[index];
+        );
+        // Skip current coin
+        skip = dfs(;
+        index + 1,;
+        remaining;
+        );
+        return use + skip;
+    }
+
+    public int change(int amount, int[] coins) {
+        return dfs(0, amount);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3377,10 +5347,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def change(self, amount, coins):
 
         dp = [0] * (amount + 1)
@@ -3394,6 +5377,42 @@ class Solution:
                 dp[current] += dp[current - coin]
 
         return dp[amount]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int change(int amount, vector&lt;int&gt;&amp; coins) {
+        dp = [0] * (amount + 1);
+        dp[0] = 1;
+        for (auto coin : coins) {
+            for current in range(
+                coin,;
+                amount + 1;
+            }
+            ):;
+            dp[current] += dp[current - coin];
+        }
+        return dp[amount];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int change(int amount, int[] coins) {
+        dp = [0] * (amount + 1);
+        dp[0] = 1;
+        for (int coin : coins) {
+            for current in range(
+                coin,;
+                amount + 1;
+            }
+            ):;
+            dp[current] += dp[current - coin];
+        }
+        return dp[amount];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3453,10 +5472,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findTargetSumWays(self, nums, target):
 
         def dfs(index, total):
@@ -3470,6 +5502,45 @@ class Solution:
             )
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int index, int total, vector&lt;int&gt;&amp; nums) {
+        if (index == nums.size()) {
+            return total == target;
+        }
+        return (;
+        dfs(index + 1, total + nums[index], result, nums);
+        +;
+        dfs(index + 1, total - nums[index], result, nums);
+        );
+    }
+
+public:
+    int findTargetSumWays(vector&lt;int&gt;&amp; nums, int target) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int index, int total, int[] nums) {
+        if (index == nums.length) {
+            return total == target;
+        }
+        return (;
+        dfs(index + 1, total + nums[index], result, nums);
+        +;
+        dfs(index + 1, total - nums[index], result, nums);
+        );
+    }
+
+    public int findTargetSumWays(int[] nums, int target) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3508,10 +5579,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Memoization Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findTargetSumWays(self, nums, target):
 
         memo = {}
@@ -3534,6 +5618,57 @@ class Solution:
             return memo[key]
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int index, int total, vector&lt;int&gt;&amp; nums) {
+        if (index == nums.size()) {
+            return 1 if total == target else 0;
+        }
+        key = (index, total);
+        if (key in memo) {
+            return memo[key];
+        }
+        memo[key] = (;
+        dfs(index + 1, total + nums[index], result, nums);
+        +;
+        dfs(index + 1, total - nums[index], result, nums);
+        );
+        return memo[key];
+    }
+
+public:
+    int findTargetSumWays(vector&lt;int&gt;&amp; nums, int target) {
+        memo = {}
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int index, int total, int[] nums) {
+        if (index == nums.length) {
+            return 1 if total == target else 0;
+        }
+        key = (index, total);
+        if (key in memo) {
+            return memo[key];
+        }
+        memo[key] = (;
+        dfs(index + 1, total + nums[index], result, nums);
+        +;
+        dfs(index + 1, total - nums[index], result, nums);
+        );
+        return memo[key];
+    }
+
+    public int findTargetSumWays(int[] nums, int target) {
+        memo = {}
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -3624,10 +5759,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isInterleave(self, s1, s2, s3):
 
         if len(s1) + len(s2) != len(s3):
@@ -3650,6 +5798,65 @@ class Solution:
             return False
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        k = i + j;
+        if (k == s3.size()) {
+            return true;
+        }
+        if (i &lt; s1.size() &amp;&amp; s1[i] == s3[k]) {
+            if (dfs(i + 1, j)) {
+                return true;
+            }
+        }
+        if (j &lt; s2.size() &amp;&amp; s2[j] == s3[k]) {
+            if (dfs(i, j + 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+public:
+    bool isInterleave(int s1, int s2, int s3) {
+        if (s1.size() + s2.size() != s3.size()) {
+            return false;
+        }
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        k = i + j;
+        if (k == s3.length) {
+            return true;
+        }
+        if (i &lt; s1.length &amp;&amp; s1[i] == s3[k]) {
+            if (dfs(i + 1, j)) {
+                return true;
+            }
+        }
+        if (j &lt; s2.length &amp;&amp; s2[j] == s3[k]) {
+            if (dfs(i, j + 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isInterleave(int s1, int s2, int s3) {
+        if (s1.length + s2.length != s3.length) {
+            return false;
+        }
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3688,10 +5895,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 2D DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isInterleave(self, s1, s2, s3):
 
         if len(s1) + len(s2) != len(s3):
@@ -3724,6 +5944,80 @@ class Solution:
                         dp[i][j] = True
 
         return dp[m][n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isInterleave(int s1, int s2, int s3) {
+        if (s1.size() + s2.size() != s3.size()) {
+            return false;
+        }
+        m = s1.size();
+        n = s2.size();
+        dp = [;
+        [false] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        dp[0][0] = true;
+        for (int i = 0; i &lt; m + 1; ++i) {
+            for (int j = 0; j &lt; n + 1; ++j) {
+                if (i == 0 &amp;&amp; j == 0) {
+                    continue;
+                }
+                k = i + j - 1;
+                if (i &gt; 0 &amp;&amp; dp[i - 1][j]) {
+                    if (s1[i - 1] == s3[k]) {
+                        dp[i][j] = true;
+                    }
+                }
+                if (j &gt; 0 &amp;&amp; dp[i][j - 1]) {
+                    if (s2[j - 1] == s3[k]) {
+                        dp[i][j] = true;
+                    }
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isInterleave(int s1, int s2, int s3) {
+        if (s1.length + s2.length != s3.length) {
+            return false;
+        }
+        m = s1.length;
+        n = s2.length;
+        dp = [;
+        [false] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        dp[0][0] = true;
+        for (int i = 0; i &lt; m + 1; ++i) {
+            for (int j = 0; j &lt; n + 1; ++j) {
+                if (i == 0 &amp;&amp; j == 0) {
+                    continue;
+                }
+                k = i + j - 1;
+                if (i &gt; 0 &amp;&amp; dp[i - 1][j]) {
+                    if (s1[i - 1] == s3[k]) {
+                        dp[i][j] = true;
+                    }
+                }
+                if (j &gt; 0 &amp;&amp; dp[i][j - 1]) {
+                    if (s2[j - 1] == s3[k]) {
+                        dp[i][j] = true;
+                    }
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3783,10 +6077,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestIncreasingPath(self, matrix):
 
         rows = len(matrix)
@@ -3823,6 +6130,87 @@ class Solution:
                 )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        best = 1;
+        for dr, dc in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nr, nc = r + dr, c + dc;
+        if (() {
+            0 &lt;= nr &lt; rows;
+            and 0 &lt;= nc &lt; cols;
+            and matrix[nr][nc] &gt; matrix[r][c];
+        }
+        ):;
+        best = max(;
+        best,;
+        1 + dfs(nr, nc);
+        );
+        return best;
+    }
+
+public:
+    vector&lt;int&gt; longestIncreasingPath(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                answer = max(;
+                answer,;
+                dfs(r, c, result);
+                );
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        best = 1;
+        for dr, dc in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nr, nc = r + dr, c + dc;
+        if (() {
+            0 &lt;= nr &lt; rows;
+            and 0 &lt;= nc &lt; cols;
+            and matrix[nr][nc] &gt; matrix[r][c];
+        }
+        ):;
+        best = max(;
+        best,;
+        1 + dfs(nr, nc);
+        );
+        return best;
+    }
+
+    public List&lt;Integer&gt; longestIncreasingPath(int[][] matrix) {
+        rows = matrix.length;
+        cols = matrix[0].length;
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                answer = max(;
+                answer,;
+                dfs(r, c, result);
+                );
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3861,10 +6249,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>DFS + Memoization (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestIncreasingPath(self, matrix):
 
         rows = len(matrix)
@@ -3907,6 +6308,97 @@ class Solution:
                 )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (memo[r][c]) {
+            return memo[r][c];
+        }
+        best = 1;
+        for dr, dc in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nr, nc = r + dr, c + dc;
+        if (() {
+            0 &lt;= nr &lt; rows;
+            and 0 &lt;= nc &lt; cols;
+            and matrix[nr][nc] &gt; matrix[r][c];
+        }
+        ):;
+        best = max(;
+        best,;
+        1 + dfs(nr, nc);
+        );
+        memo[r][c] = best;
+        return best;
+    }
+
+public:
+    vector&lt;int&gt; longestIncreasingPath(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        memo = [[0] * cols for _ in range(rows)];
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                answer = max(;
+                answer,;
+                dfs(r, c, result);
+                );
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (memo[r][c]) {
+            return memo[r][c];
+        }
+        best = 1;
+        for dr, dc in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nr, nc = r + dr, c + dc;
+        if (() {
+            0 &lt;= nr &lt; rows;
+            and 0 &lt;= nc &lt; cols;
+            and matrix[nr][nc] &gt; matrix[r][c];
+        }
+        ):;
+        best = max(;
+        best,;
+        1 + dfs(nr, nc);
+        );
+        memo[r][c] = best;
+        return best;
+    }
+
+    public List&lt;Integer&gt; longestIncreasingPath(int[][] matrix) {
+        rows = matrix.length;
+        cols = matrix[0].length;
+        memo = [[0] * cols for _ in range(rows)];
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                answer = max(;
+                answer,;
+                dfs(r, c, result);
+                );
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3966,10 +6458,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numDistinct(self, s, t):
 
         def dfs(i, j):
@@ -3989,6 +6494,57 @@ class Solution:
             return dfs(i + 1, j)
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        if (j == t.size()) {
+            return 1;
+        }
+        if (i == s.size()) {
+            return 0;
+        }
+        if (s[i] == t[j]) {
+            return (;
+            dfs(i + 1, j + 1, result);
+            +;
+            dfs(i + 1, j, result);
+            );
+        }
+        return dfs(i + 1, j);
+    }
+
+public:
+    bool numDistinct(string s, string t) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        if (j == t.length) {
+            return 1;
+        }
+        if (i == s.length) {
+            return 0;
+        }
+        if (s[i] == t[j]) {
+            return (;
+            dfs(i + 1, j + 1, result);
+            +;
+            dfs(i + 1, j, result);
+            );
+        }
+        return dfs(i + 1, j);
+    }
+
+    public boolean numDistinct(String s, String t) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4027,10 +6583,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 2D DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numDistinct(self, s, t):
 
         m = len(s)
@@ -4053,6 +6622,58 @@ class Solution:
                     dp[i][j] += dp[i - 1][j - 1]
 
         return dp[m][n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool numDistinct(string s, string t) {
+        m = s.size();
+        n = t.size();
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 0; i &lt; m + 1; ++i) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                dp[i][j] = dp[i - 1][j];
+                if (s[i - 1] == t[j - 1]) {
+                    dp[i][j] += dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean numDistinct(String s, String t) {
+        m = s.length;
+        n = t.length;
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 0; i &lt; m + 1; ++i) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                dp[i][j] = dp[i - 1][j];
+                if (s[i - 1] == t[j - 1]) {
+                    dp[i][j] += dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4112,10 +6733,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minDistance(self, word1, word2):
 
         def dfs(i, j):
@@ -4139,6 +6773,63 @@ class Solution:
             )
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        if (i == word1.size()) {
+            return word2.size() - j;
+        }
+        if (j == word2.size()) {
+            return word1.size() - i;
+        }
+        if (word1[i] == word2[j]) {
+            return dfs(i + 1, j + 1);
+        }
+        insert = dfs(i, j + 1);
+        delete = dfs(i + 1, j);
+        replace = dfs(i + 1, j + 1);
+        return 1 + min(;
+        insert,;
+        delete,;
+        replace;
+        );
+    }
+
+public:
+    bool minDistance(int word1, int word2) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        if (i == word1.length) {
+            return word2.length - j;
+        }
+        if (j == word2.length) {
+            return word1.length - i;
+        }
+        if (word1[i] == word2[j]) {
+            return dfs(i + 1, j + 1);
+        }
+        insert = dfs(i, j + 1);
+        delete = dfs(i + 1, j);
+        replace = dfs(i + 1, j + 1);
+        return 1 + min(;
+        insert,;
+        delete,;
+        replace;
+        );
+    }
+
+    public boolean minDistance(int word1, int word2) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4177,10 +6868,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized 2D DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minDistance(self, word1, word2):
 
         m = len(word1)
@@ -4211,6 +6915,74 @@ class Solution:
                     )
 
         return dp[m][n]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool minDistance(int word1, int word2) {
+        m = word1.size();
+        n = word2.size();
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 0; i &lt; m + 1; ++i) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j &lt; n + 1; ++j) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                if (word1[i - 1] == word2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                else:;
+                dp[i][j] = 1 + min(;
+                dp[i - 1][j],       # delete;
+                dp[i][j - 1],       # insert;
+                dp[i - 1][j - 1]    # replace;
+                );
+            }
+        }
+        return dp[m][n];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean minDistance(int word1, int word2) {
+        m = word1.length;
+        n = word2.length;
+        dp = [;
+        [0] * (n + 1);
+        for _ in range(m + 1)
+        }
+        ];
+        for (int i = 0; i &lt; m + 1; ++i) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j &lt; n + 1; ++j) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i &lt; m + 1; ++i) {
+            for (int j = 1; j &lt; n + 1; ++j) {
+                if (word1[i - 1] == word2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                else:;
+                dp[i][j] = 1 + min(;
+                dp[i - 1][j],       # delete;
+                dp[i][j - 1],       # insert;
+                dp[i - 1][j - 1]    # replace;
+                );
+            }
+        }
+        return dp[m][n];
+    }
+}</code></pre>
+          </div>
         </div>
         <div class="code-container" style="margin-top: 12px;">
           <div class="code-header">
@@ -4306,10 +7078,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxCoins(self, nums):
 
         def dfs(nums):
@@ -4338,6 +7123,67 @@ class Solution:
             return answer
 
         return dfs(nums)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(vector&lt;int&gt;&amp; nums) {
+        if (!nums) {
+            return 0;
+        }
+        answer = 0;
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            left = nums[i - 1] if i &gt; 0 else 1;
+            right = nums[i + 1] if i + 1 &lt; nums.size() else 1;
+            coins = (;
+            left *;
+            nums[i] *;
+            right;
+            );
+            remaining = nums[:i] + nums[i + 1:];
+            answer = max(;
+            answer,;
+            coins + dfs(remaining);
+            );
+        }
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; maxCoins(vector&lt;int&gt;&amp; nums) {
+        return dfs(nums);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int[] nums) {
+        if (!nums) {
+            return 0;
+        }
+        answer = 0;
+        for (int i = 0; i &lt; nums.length; ++i) {
+            left = nums[i - 1] if i &gt; 0 else 1;
+            right = nums[i + 1] if i + 1 &lt; nums.length else 1;
+            coins = (;
+            left *;
+            nums[i] *;
+            right;
+            );
+            remaining = nums[:i] + nums[i + 1:];
+            answer = max(;
+            answer,;
+            coins + dfs(remaining);
+            );
+        }
+        return answer;
+    }
+
+    public List&lt;Integer&gt; maxCoins(int[] nums) {
+        return dfs(nums);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4377,10 +7223,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Interval DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxCoins(self, nums):
 
         nums = [1] + nums + [1]
@@ -4417,6 +7276,84 @@ class Solution:
                     )
 
         return dp[0][n - 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int maxCoins(vector&lt;int&gt;&amp; nums) {
+        nums = [1] + nums + [1];
+        n = nums.size();
+        dp = [;
+        [0] * n;
+        for _ in range(n)
+        }
+        ];
+        for (int length = 2; length &lt; n; ++length) {
+            for left in range(
+                0,;
+                n - length;
+            }
+            ):;
+            right = left + length;
+            for k in range(
+                left + 1,;
+                right;
+            }
+            ):;
+            coins = (;
+            nums[left];
+            * nums[k];
+            * nums[right];
+            );
+            dp[left][right] = max(;
+            dp[left][right],;
+            dp[left][k];
+            + coins;
+            + dp[k][right];
+            );
+        }
+        return dp[0][n - 1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int maxCoins(int[] nums) {
+        nums = [1] + nums + [1];
+        n = nums.length;
+        dp = [;
+        [0] * n;
+        for _ in range(n)
+        }
+        ];
+        for (int length = 2; length &lt; n; ++length) {
+            for left in range(
+                0,;
+                n - length;
+            }
+            ):;
+            right = left + length;
+            for k in range(
+                left + 1,;
+                right;
+            }
+            ):;
+            coins = (;
+            nums[left];
+            * nums[k];
+            * nums[right];
+            );
+            dp[left][right] = max(;
+            dp[left][right],;
+            dp[left][k];
+            + coins;
+            + dp[k][right];
+            );
+        }
+        return dp[0][n - 1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4476,10 +7413,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isMatch(self, s, p):
 
         def dfs(i, j):
@@ -4491,13 +7441,13 @@ class Solution:
                 i &lt; len(s)
                 and (
                     p[j] == s[i]
-                    or p[j] == &quot;.&quot;
+                    or p[j] == "."
                 )
             )
 
             if (
                 j + 1 &lt; len(p)
-                and p[j + 1] == &quot;*&quot;
+                and p[j + 1] == "*"
             ):
                 return (
                     dfs(i, j + 2)
@@ -4514,6 +7464,83 @@ class Solution:
             )
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        if (j == p.size()) {
+            return i == s.size();
+        }
+        first_match = (;
+        i &lt; s.size();
+        and (;
+        p[j] == s[i];
+        or p[j] == ".";
+        );
+        );
+        if (() {
+            j + 1 &lt; p.size();
+            and p[j + 1] == "*";
+        }
+        ):;
+        return (;
+        dfs(i, j + 2, result);
+        or;
+        (;
+        first_match;
+        and dfs(i + 1, j);
+        );
+        );
+        return (;
+        first_match;
+        and dfs(i + 1, j + 1);
+        );
+    }
+
+public:
+    bool isMatch(string s, string p) {
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        if (j == p.length) {
+            return i == s.length;
+        }
+        first_match = (;
+        i &lt; s.length;
+        and (;
+        p[j] == s[i];
+        or p[j] == ".";
+        );
+        );
+        if (() {
+            j + 1 &lt; p.length;
+            and p[j + 1] == "*";
+        }
+        ):;
+        return (;
+        dfs(i, j + 2, result);
+        or;
+        (;
+        first_match;
+        and dfs(i + 1, j);
+        );
+        );
+        return (;
+        first_match;
+        and dfs(i + 1, j + 1);
+        );
+    }
+
+    public boolean isMatch(String s, String p) {
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4554,10 +7581,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Memoization DP (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isMatch(self, s, p):
 
         memo = {}
@@ -4574,13 +7614,13 @@ class Solution:
                 i &lt; len(s)
                 and (
                     p[j] == s[i]
-                    or p[j] == &quot;.&quot;
+                    or p[j] == "."
                 )
             )
 
             if (
                 j + 1 &lt; len(p)
-                and p[j + 1] == &quot;*&quot;
+                and p[j + 1] == "*"
             ):
                 answer = (
                     dfs(i, j + 2)
@@ -4601,6 +7641,97 @@ class Solution:
             return answer
 
         return dfs(0, 0)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int i, int j) {
+        if ((i, j) in memo) {
+            return memo[(i, j)];
+        }
+        if (j == p.size()) {
+            return i == s.size();
+        }
+        first_match = (;
+        i &lt; s.size();
+        and (;
+        p[j] == s[i];
+        or p[j] == ".";
+        );
+        );
+        if (() {
+            j + 1 &lt; p.size();
+            and p[j + 1] == "*";
+        }
+        ):;
+        answer = (;
+        dfs(i, j + 2, result);
+        or;
+        (;
+        first_match;
+        and dfs(i + 1, j);
+        );
+        );
+        else:;
+        answer = (;
+        first_match;
+        and dfs(i + 1, j + 1);
+        );
+        memo[(i, j)] = answer;
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; isMatch(string s, string p) {
+        memo = {}
+        return dfs(0, 0);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int i, int j) {
+        if ((i, j) in memo) {
+            return memo[(i, j)];
+        }
+        if (j == p.length) {
+            return i == s.length;
+        }
+        first_match = (;
+        i &lt; s.length;
+        and (;
+        p[j] == s[i];
+        or p[j] == ".";
+        );
+        );
+        if (() {
+            j + 1 &lt; p.length;
+            and p[j + 1] == "*";
+        }
+        ):;
+        answer = (;
+        dfs(i, j + 2, result);
+        or;
+        (;
+        first_match;
+        and dfs(i + 1, j);
+        );
+        );
+        else:;
+        answer = (;
+        first_match;
+        and dfs(i + 1, j + 1);
+        );
+        memo[(i, j)] = answer;
+        return answer;
+    }
+
+    public List&lt;Integer&gt; isMatch(String s, String p) {
+        memo = {}
+        return dfs(0, 0);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4967,6 +8098,77 @@ class Solution:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

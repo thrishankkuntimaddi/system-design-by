@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -1050,12 +1145,23 @@
         <div class="naive-box"><p>Recursively swap the left and right children.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def invertTree(self, root):
         if not root:
             return None
@@ -1067,6 +1173,36 @@
         root.right = left
 
         return root</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (!root) {
+            return nullptr;
+        }
+        left = invertTree(root.left);
+        right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (!root) {
+            return null;
+        }
+        left = invertTree(root.left);
+        right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1098,12 +1234,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def invertTree(self, root):
@@ -1124,6 +1271,52 @@ class Solution:
                 queue.append(node.right)
 
         return root</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        from collections import deque;
+        if (!root) {
+            return nullptr;
+        }
+        queue = deque([root]);
+        while (queue) {
+            node = queue.popleft();
+            node.left, node.right = node.right, node.left;
+            if (node.left) {
+                queue.push_back(node.left);
+            }
+            if (node.right) {
+                queue.push_back(node.right);
+            }
+        }
+        return root;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        from collections import deque;
+        if (!root) {
+            return null;
+        }
+        queue = deque([root]);
+        while (queue) {
+            node = queue.popleft();
+            node.left, node.right = node.right, node.left;
+            if (node.left) {
+                queue.add(node.left);
+            }
+            if (node.right) {
+                queue.add(node.right);
+            }
+        }
+        return root;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1171,12 +1364,23 @@ class Solution:
         <div class="naive-box"><p>Recursive postorder traversal returning height at each node.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxDepth(self, root):
         if not root:
             return 0
@@ -1185,6 +1389,34 @@ class Solution:
             self.maxDepth(root.left),
             self.maxDepth(root.right)
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (!root) {
+            return 0;
+        }
+        return 1 + max(;
+        maxDepth(root.left),;
+        maxDepth(root.right);
+        );
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int maxDepth(TreeNode root) {
+        if (!root) {
+            return 0;
+        }
+        return 1 + max(;
+        maxDepth(root.left),;
+        maxDepth(root.right);
+        );
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1214,12 +1446,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def maxDepth(self, root):
@@ -1242,6 +1485,58 @@ class Solution:
             depth += 1
 
         return depth</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        from collections import deque;
+        if (!root) {
+            return 0;
+        }
+        queue = deque([root]);
+        depth = 0;
+        while (queue) {
+            for (int _ = 0; _ &lt; queue.size(); ++_) {
+                node = queue.popleft();
+                if (node.left) {
+                    queue.push_back(node.left);
+                }
+                if (node.right) {
+                    queue.push_back(node.right);
+                }
+            }
+            depth += 1;
+        }
+        return depth;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int maxDepth(TreeNode root) {
+        from collections import deque;
+        if (!root) {
+            return 0;
+        }
+        queue = deque([root]);
+        depth = 0;
+        while (queue) {
+            for (int _ = 0; _ &lt; queue.length; ++_) {
+                node = queue.popleft();
+                if (node.left) {
+                    queue.add(node.left);
+                }
+                if (node.right) {
+                    queue.add(node.right);
+                }
+            }
+            depth += 1;
+        }
+        return depth;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1294,12 +1589,23 @@ class Solution:
         <div class="naive-box"><p>For every node, separately calculate the height of its left and right subtree.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def diameterOfBinaryTree(self, root):
 
         def height(node):
@@ -1320,6 +1626,55 @@ class Solution:
         current = height(root.left) + height(root.right)
 
         return max(current, left_diameter, right_diameter)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void height(int node) {
+        if (!node) {
+            return 0;
+        }
+        return 1 + max(;
+        height(node.left), result);
+        height(node.right, result);
+        );
+    }
+
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        if (!root) {
+            return 0;
+        }
+        left_diameter = diameterOfBinaryTree(root.left);
+        right_diameter = diameterOfBinaryTree(root.right);
+        current = height(root.left) + height(root.right);
+        return max(current, left_diameter, right_diameter);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void height(int node) {
+        if (!node) {
+            return 0;
+        }
+        return 1 + max(;
+        height(node.left), result);
+        height(node.right, result);
+        );
+    }
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (!root) {
+            return 0;
+        }
+        left_diameter = diameterOfBinaryTree(root.left);
+        right_diameter = diameterOfBinaryTree(root.right);
+        current = height(root.left) + height(root.right);
+        return max(current, left_diameter, right_diameter);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1349,12 +1704,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def diameterOfBinaryTree(self, root):
         diameter = 0
 
@@ -1373,6 +1739,49 @@ class Solution:
 
         dfs(root)
         return diameter</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node) {
+        nonlocal diameter;
+        if (!node) {
+            return 0;
+        }
+        left = dfs(node.left);
+        right = dfs(node.right);
+        diameter = max(diameter, left + right);
+        return 1 + max(left, right);
+    }
+
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        diameter = 0;
+        dfs(root, result);
+        return diameter;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node) {
+        nonlocal diameter;
+        if (!node) {
+            return 0;
+        }
+        left = dfs(node.left);
+        right = dfs(node.right);
+        diameter = max(diameter, left + right);
+        return 1 + max(left, right);
+    }
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameter = 0;
+        dfs(root, result);
+        return diameter;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1425,12 +1834,23 @@ class Solution:
         <div class="naive-box"><p>Repeatedly calculate subtree heights.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isBalanced(self, root):
 
         def height(node):
@@ -1448,13 +1868,72 @@ class Solution:
         left = height(root.left)
         right = height(root.right)
 
-        if abs(left - right) > 1:
+        if abs(left - right) &gt; 1:
             return False
 
         return (
             self.isBalanced(root.left) and
             self.isBalanced(root.right)
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void height(int node) {
+        if (!node) {
+            return 0;
+        }
+        return 1 + max(;
+        height(node.left), result);
+        height(node.right, result);
+        );
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        if (!root) {
+            return true;
+        }
+        left = height(root.left);
+        right = height(root.right);
+        if (abs(left - right) &gt; 1) {
+            return false;
+        }
+        return (;
+        isBalanced(root.left) and;
+        isBalanced(root.right);
+        );
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void height(int node) {
+        if (!node) {
+            return 0;
+        }
+        return 1 + max(;
+        height(node.left), result);
+        height(node.right, result);
+        );
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        if (!root) {
+            return true;
+        }
+        left = height(root.left);
+        right = height(root.right);
+        if (abs(left - right) &gt; 1) {
+            return false;
+        }
+        return (;
+        isBalanced(root.left) and;
+        isBalanced(root.right);
+        );
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1484,12 +1963,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isBalanced(self, root):
 
         def dfs(node):
@@ -1504,12 +1994,65 @@ class Solution:
             if right == -1:
                 return -1
 
-            if abs(left - right) > 1:
+            if abs(left - right) &gt; 1:
                 return -1
 
             return 1 + max(left, right)
 
         return dfs(root) != -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node) {
+        if (!node) {
+            return 0;
+        }
+        left = dfs(node.left);
+        if (left == -1) {
+            return -1;
+        }
+        right = dfs(node.right);
+        if (right == -1) {
+            return -1;
+        }
+        if (abs(left - right) &gt; 1) {
+            return -1;
+        }
+        return 1 + max(left, right);
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        return dfs(root) != -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node) {
+        if (!node) {
+            return 0;
+        }
+        left = dfs(node.left);
+        if (left == -1) {
+            return -1;
+        }
+        right = dfs(node.right);
+        if (right == -1) {
+            return -1;
+        }
+        if (abs(left - right) &gt; 1) {
+            return -1;
+        }
+        return 1 + max(left, right);
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        return dfs(root) != -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1556,12 +2099,23 @@ class Solution:
         <div class="naive-box"><p>Recursive comparison.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isSameTree(self, p, q):
         if not p and not q:
             return True
@@ -1577,6 +2131,48 @@ class Solution:
             and
             self.isSameTree(p.right, q.right)
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isSameTree(string p, TreeNode* q) {
+        if (!p &amp;&amp; !q) {
+            return true;
+        }
+        if (!p || !q) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+        return (;
+        isSameTree(p.left, q.left);
+        and;
+        isSameTree(p.right, q.right);
+        );
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isSameTree(String p, TreeNode q) {
+        if (!p &amp;&amp; !q) {
+            return true;
+        }
+        if (!p || !q) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+        return (;
+        isSameTree(p.left, q.left);
+        and;
+        isSameTree(p.right, q.right);
+        );
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1606,12 +2202,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def isSameTree(self, p, q):
@@ -1633,6 +2240,54 @@ class Solution:
             queue.append((a.right, b.right))
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isSameTree(string p, TreeNode* q) {
+        from collections import deque;
+        queue = deque([(p, q)]);
+        while (queue) {
+            a, b = queue.popleft();
+            if (!a &amp;&amp; !b) {
+                continue;
+            }
+            if (!a || !b) {
+                return false;
+            }
+            if (a.val != b.val) {
+                return false;
+            }
+            queue.push_back((a.left, b.left));
+            queue.push_back((a.right, b.right));
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isSameTree(String p, TreeNode q) {
+        from collections import deque;
+        queue = deque([(p, q)]);
+        while (queue) {
+            a, b = queue.popleft();
+            if (!a &amp;&amp; !b) {
+                continue;
+            }
+            if (!a || !b) {
+                return false;
+            }
+            if (a.val != b.val) {
+                return false;
+            }
+            queue.add((a.left, b.left));
+            queue.add((a.right, b.right));
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1678,12 +2333,23 @@ class Solution:
         <div class="naive-box"><p>For every node in root, check whether subRoot is identical to the subtree.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isSubtree(self, root, subRoot):
         
         def same(a, b):
@@ -1710,6 +2376,71 @@ class Solution:
             or
             self.isSubtree(root.right, subRoot)
         )</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void same(int a, int b) {
+        if (!a &amp;&amp; !b) {
+            return true;
+        }
+        if (!a || !b) {
+            return false;
+        }
+        return (;
+        a.val == b.val;
+        and same(a.left, b.left);
+        and same(a.right, b.right);
+        );
+    }
+
+public:
+    bool isSubtree(TreeNode* root, int subRoot) {
+        if (!root) {
+            return false;
+        }
+        if (same(root, subRoot)) {
+            return true;
+        }
+        return (;
+        isSubtree(root.left, subRoot);
+        or;
+        isSubtree(root.right, subRoot);
+        );
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void same(int a, int b) {
+        if (!a &amp;&amp; !b) {
+            return true;
+        }
+        if (!a || !b) {
+            return false;
+        }
+        return (;
+        a.val == b.val;
+        and same(a.left, b.left);
+        and same(a.right, b.right);
+        );
+    }
+
+    public boolean isSubtree(TreeNode root, int subRoot) {
+        if (!root) {
+            return false;
+        }
+        if (same(root, subRoot)) {
+            return true;
+        }
+        return (;
+        isSubtree(root.left, subRoot);
+        or;
+        isSubtree(root.right, subRoot);
+        );
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1740,12 +2471,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (KMP)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isSubtree(self, root, subRoot):
 
         def serialize(node):
@@ -1766,7 +2508,7 @@ class Solution:
 
         j = 0
         for i in range(1, len(pattern)):
-            while j > 0 and pattern[i] != pattern[j]:
+            while j &gt; 0 and pattern[i] != pattern[j]:
                 j = lps[j - 1]
 
             if pattern[i] == pattern[j]:
@@ -1777,7 +2519,7 @@ class Solution:
         j = 0
 
         for i in range(len(text)):
-            while j > 0 and text[i] != pattern[j]:
+            while j &gt; 0 and text[i] != pattern[j]:
                 j = lps[j - 1]
 
             if text[i] == pattern[j]:
@@ -1787,6 +2529,97 @@ class Solution:
                 return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void serialize(int node) {
+        if (!node) {
+            return "#";
+        }
+        return (;
+        "," + str(node.val) +;
+        serialize(node.left) +, result);
+        serialize(node.right, result);
+        );
+    }
+
+public:
+    bool isSubtree(TreeNode* root, int subRoot) {
+        text = serialize(root);
+        pattern = serialize(subRoot);
+        // KMP algorithm
+        lps = [0] * pattern.size();
+        j = 0;
+        for (int i = 1; i &lt; pattern.size(); ++i) {
+            while (j &gt; 0 &amp;&amp; pattern[i] != pattern[j]) {
+                j = lps[j - 1];
+            }
+            if (pattern[i] == pattern[j]) {
+                j += 1;
+            }
+            lps[i] = j;
+        }
+        j = 0;
+        for (int i = 0; i &lt; text.size(); ++i) {
+            while (j &gt; 0 &amp;&amp; text[i] != pattern[j]) {
+                j = lps[j - 1];
+            }
+            if (text[i] == pattern[j]) {
+                j += 1;
+            }
+            if (j == pattern.size()) {
+                return true;
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void serialize(int node) {
+        if (!node) {
+            return "#";
+        }
+        return (;
+        "," + str(node.val) +;
+        serialize(node.left) +, result);
+        serialize(node.right, result);
+        );
+    }
+
+    public boolean isSubtree(TreeNode root, int subRoot) {
+        text = serialize(root);
+        pattern = serialize(subRoot);
+        // KMP algorithm
+        lps = [0] * pattern.length;
+        j = 0;
+        for (int i = 1; i &lt; pattern.length; ++i) {
+            while (j &gt; 0 &amp;&amp; pattern[i] != pattern[j]) {
+                j = lps[j - 1];
+            }
+            if (pattern[i] == pattern[j]) {
+                j += 1;
+            }
+            lps[i] = j;
+        }
+        j = 0;
+        for (int i = 0; i &lt; text.length; ++i) {
+            while (j &gt; 0 &amp;&amp; text[i] != pattern[j]) {
+                j = lps[j - 1];
+            }
+            if (text[i] == pattern[j]) {
+                j += 1;
+            }
+            if (j == pattern.length) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1833,12 +2666,23 @@ class Solution:
         <div class="naive-box"><p>Build paths from root to both nodes.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lowestCommonAncestor(self, root, p, q):
 
         def path_to(node, target):
@@ -1847,9 +2691,9 @@ class Solution:
             while node:
                 path.append(node)
 
-                if target.val < node.val:
+                if target.val &lt; node.val:
                     node = node.left
-                elif target.val > node.val:
+                elif target.val &gt; node.val:
                     node = node.right
                 else:
                     break
@@ -1867,6 +2711,73 @@ class Solution:
             answer = a
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void path_to(int node, int target) {
+        vector&lt;int&gt; path;
+        while (node) {
+            path.push_back(node);
+            if (target.val &lt; node.val) {
+                node = node.left;
+            }
+            else if (target.val &gt; node.val) {
+                node = node.right;
+            }
+            else:;
+            break;
+        }
+        return path;
+    }
+
+public:
+    vector&lt;int&gt; lowestCommonAncestor(TreeNode* root, string p, TreeNode* q) {
+        p_path = path_to(root, p);
+        q_path = path_to(root, q);
+        answer = root;
+        for a, b in zip(p_path, q_path):
+            if (a != b) {
+                break;
+            }
+            answer = a;
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void path_to(int node, int target) {
+        List&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+        while (node) {
+            path.add(node);
+            if (target.val &lt; node.val) {
+                node = node.left;
+            }
+            else if (target.val &gt; node.val) {
+                node = node.right;
+            }
+            else:;
+            break;
+        }
+        return path;
+    }
+
+    public List&lt;Integer&gt; lowestCommonAncestor(TreeNode root, String p, TreeNode q) {
+        p_path = path_to(root, p);
+        q_path = path_to(root, q);
+        answer = root;
+        for a, b in zip(p_path, q_path):
+            if (a != b) {
+                break;
+            }
+            answer = a;
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1896,23 +2807,68 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lowestCommonAncestor(self, root, p, q):
 
         while root:
-            if p.val < root.val and q.val < root.val:
+            if p.val &lt; root.val and q.val &lt; root.val:
                 root = root.left
 
-            elif p.val > root.val and q.val > root.val:
+            elif p.val &gt; root.val and q.val &gt; root.val:
                 root = root.right
 
             else:
                 return root</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, string p, TreeNode* q) {
+        while (root) {
+            if (p.val &lt; root.val &amp;&amp; q.val &lt; root.val) {
+                root = root.left;
+            }
+            else if (p.val &gt; root.val &amp;&amp; q.val &gt; root.val) {
+                root = root.right;
+            }
+            else:;
+            return root;
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, String p, TreeNode q) {
+        while (root) {
+            if (p.val &lt; root.val &amp;&amp; q.val &lt; root.val) {
+                root = root.left;
+            }
+            else if (p.val &gt; root.val &amp;&amp; q.val &gt; root.val) {
+                root = root.right;
+            }
+            else:;
+            return root;
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1959,12 +2915,23 @@ class Solution:
         <div class="naive-box"><p>DFS while storing the level index.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def levelOrder(self, root):
         result = []
 
@@ -1982,6 +2949,51 @@ class Solution:
 
         dfs(root, 0)
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, int level, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (!node) {
+            return;
+        }
+        if (level == result.size()) {
+            result.push_back([]);
+        }
+        result[level].push_back(node.val);
+        dfs(node.left, level + 1, result);
+        dfs(node.right, level + 1, result);
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        dfs(root, 0, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, int level, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (!node) {
+            return;
+        }
+        if (level == result.length) {
+            result.add([]);
+        }
+        result[level].add(node.val);
+        dfs(node.left, level + 1, result);
+        dfs(node.right, level + 1, result);
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        dfs(root, 0, result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2011,12 +3023,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def levelOrder(self, root):
@@ -2042,6 +3065,62 @@ class Solution:
             result.append(level)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root) {
+        from collections import deque;
+        if (!root) {
+            return [];
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        queue = deque([root]);
+        while (queue) {
+            level = [];
+            for (int _ = 0; _ &lt; queue.size(); ++_) {
+                node = queue.popleft();
+                level.push_back(node.val);
+                if (node.left) {
+                    queue.push_back(node.left);
+                }
+                if (node.right) {
+                    queue.push_back(node.right);
+                }
+            }
+            result.push_back(level);
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+        from collections import deque;
+        if (!root) {
+            return [];
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        queue = deque([root]);
+        while (queue) {
+            level = [];
+            for (int _ = 0; _ &lt; queue.length; ++_) {
+                node = queue.popleft();
+                level.add(node.val);
+                if (node.left) {
+                    queue.add(node.left);
+                }
+                if (node.right) {
+                    queue.add(node.right);
+                }
+            }
+            result.add(level);
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2089,12 +3168,23 @@ class Solution:
         <div class="naive-box"><p>DFS right-first and take the first node encountered at every level.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def rightSideView(self, root):
         result = []
 
@@ -2110,6 +3200,49 @@ class Solution:
 
         dfs(root, 0)
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, int depth, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (!node) {
+            return;
+        }
+        if (depth == result.size()) {
+            result.push_back(node.val);
+        }
+        dfs(node.right, depth + 1, result);
+        dfs(node.left, depth + 1, result);
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; rightSideView(TreeNode* root) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        dfs(root, 0, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, int depth, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (!node) {
+            return;
+        }
+        if (depth == result.length) {
+            result.add(node.val);
+        }
+        dfs(node.right, depth + 1, result);
+        dfs(node.left, depth + 1, result);
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; rightSideView(TreeNode root) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        dfs(root, 0, result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2139,12 +3272,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def rightSideView(self, root):
@@ -2170,6 +3314,64 @@ class Solution:
                     result.append(node.val)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; rightSideView(TreeNode* root) {
+        from collections import deque;
+        if (!root) {
+            return [];
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        queue = deque([root]);
+        while (queue) {
+            size = queue.size();
+            for (int i = 0; i &lt; size; ++i) {
+                node = queue.popleft();
+                if (node.left) {
+                    queue.push_back(node.left);
+                }
+                if (node.right) {
+                    queue.push_back(node.right);
+                }
+                if (i == size - 1) {
+                    result.push_back(node.val);
+                }
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; rightSideView(TreeNode root) {
+        from collections import deque;
+        if (!root) {
+            return [];
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        queue = deque([root]);
+        while (queue) {
+            size = queue.length;
+            for (int i = 0; i &lt; size; ++i) {
+                node = queue.popleft();
+                if (node.left) {
+                    queue.add(node.left);
+                }
+                if (node.right) {
+                    queue.add(node.right);
+                }
+                if (i == size - 1) {
+                    result.add(node.val);
+                }
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2216,12 +3418,23 @@ class Solution:
         <div class="naive-box"><p>Pass complete path array and check <code>node.val == max(path)</code>.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def goodNodes(self, root):
 
         def dfs(node, path):
@@ -2241,6 +3454,53 @@ class Solution:
             return count
 
         return dfs(root, [])</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, vector&lt;int&gt;&amp; path) {
+        if (!node) {
+            return 0;
+        }
+        path.push_back(node.val);
+        count = 0;
+        if (node.val == max(path)) {
+            count += 1;
+        }
+        count += dfs(node.left, path);
+        count += dfs(node.right, path);
+        path.pop_back();
+        return count;
+    }
+
+public:
+    int goodNodes(TreeNode* root) {
+        return dfs(root, []);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, List&lt;Integer&gt; path) {
+        if (!node) {
+            return 0;
+        }
+        path.add(node.val);
+        count = 0;
+        if (node.val == max(path)) {
+            count += 1;
+        }
+        count += dfs(node.left, path);
+        count += dfs(node.right, path);
+        path.remove(path.size() - 1);
+        return count;
+    }
+
+    public int goodNodes(TreeNode root) {
+        return dfs(root, []);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2270,19 +3530,30 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def goodNodes(self, root):
 
         def dfs(node, max_so_far):
             if not node:
                 return 0
 
-            good = node.val >= max_so_far
+            good = node.val &gt;= max_so_far
 
             max_so_far = max(max_so_far, node.val)
 
@@ -2293,6 +3564,49 @@ class Solution:
             )
 
         return dfs(root, root.val)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, int max_so_far) {
+        if (!node) {
+            return 0;
+        }
+        good = node.val &gt;= max_so_far;
+        max_so_far = max(max_so_far, node.val);
+        return (;
+        good;
+        + dfs(node.left, max_so_far);
+        + dfs(node.right, max_so_far);
+        );
+    }
+
+public:
+    int goodNodes(TreeNode* root) {
+        return dfs(root, root.val);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, int max_so_far) {
+        if (!node) {
+            return 0;
+        }
+        good = node.val &gt;= max_so_far;
+        max_so_far = max(max_so_far, node.val);
+        return (;
+        good;
+        + dfs(node.left, max_so_far);
+        + dfs(node.right, max_so_far);
+        );
+    }
+
+    public int goodNodes(TreeNode root) {
+        return dfs(root, root.val);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2344,12 +3658,23 @@ class Solution:
         <div class="naive-box"><p>For every node, calculate max of left subtree and min of right subtree.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isValidBST(self, root):
 
         def min_value(node):
@@ -2377,12 +3702,85 @@ class Solution:
             left_max = max_value(node.left)
             right_min = min_value(node.right)
 
-            if node.val <= left_max or node.val >= right_min:
+            if node.val &lt;= left_max or node.val &gt;= right_min:
                 return False
 
             return check(node.left) and check(node.right)
 
         return check(root)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void min_value(int node) {
+        if (!node) {
+            return float("inf");
+        }
+        return min(;
+        node.val,;
+        min_value(node.left), result);
+        min_value(node.right, result);
+        );
+        if (!node) {
+            return -float("inf");
+        }
+        return max(;
+        node.val,;
+        max_value(node.left),;
+        max_value(node.right);
+        );
+        if (!node) {
+            return true;
+        }
+        left_max = max_value(node.left);
+        right_min = min_value(node.right);
+        if (node.val &lt;= left_max || node.val &gt;= right_min) {
+            return false;
+        }
+        return check(node.left) &amp;&amp; check(node.right);
+    }
+
+public:
+    bool isValidBST(TreeNode* root) {
+        return check(root);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void min_value(int node) {
+        if (!node) {
+            return float("inf");
+        }
+        return min(;
+        node.val,;
+        min_value(node.left), result);
+        min_value(node.right, result);
+        );
+        if (!node) {
+            return -float("inf");
+        }
+        return max(;
+        node.val,;
+        max_value(node.left),;
+        max_value(node.right);
+        );
+        if (!node) {
+            return true;
+        }
+        left_max = max_value(node.left);
+        right_min = min_value(node.right);
+        if (node.val &lt;= left_max || node.val &gt;= right_min) {
+            return false;
+        }
+        return check(node.left) &amp;&amp; check(node.right);
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        return check(root);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2412,19 +3810,30 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isValidBST(self, root):
 
         def dfs(node, low, high):
             if not node:
                 return True
 
-            if not (low < node.val < high):
+            if not (low &lt; node.val &lt; high):
                 return False
 
             return (
@@ -2434,6 +3843,51 @@ class Solution:
             )
 
         return dfs(root, -float("inf"), float("inf"))</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, int low, int high) {
+        if (!node) {
+            return true;
+        }
+        if (!(low &lt; node.val &lt; high)) {
+            return false;
+        }
+        return (;
+        dfs(node.left, low, node.val, result);
+        and;
+        dfs(node.right, node.val, high, result);
+        );
+    }
+
+public:
+    bool isValidBST(TreeNode* root) {
+        return dfs(root, -float("inf"), float("inf"));
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, int low, int high) {
+        if (!node) {
+            return true;
+        }
+        if (!(low &lt; node.val &lt; high)) {
+            return false;
+        }
+        return (;
+        dfs(node.left, low, node.val, result);
+        and;
+        dfs(node.right, node.val, high, result);
+        );
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        return dfs(root, -float("inf"), float("inf"));
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2480,12 +3934,23 @@ class Solution:
         <div class="naive-box"><p>Store the complete inorder traversal in a list and return <code>values[k-1]</code>.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def kthSmallest(self, root, k):
         values = []
 
@@ -2500,6 +3965,45 @@ class Solution:
         inorder(root)
 
         return values[k - 1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void inorder(int node) {
+        if (!node) {
+            return;
+        }
+        inorder(node.left, result);
+        values.push_back(node.val);
+        inorder(node.right, result);
+    }
+
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        values = [];
+        inorder(root, result);
+        return values[k - 1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void inorder(int node) {
+        if (!node) {
+            return;
+        }
+        inorder(node.left, result);
+        values.add(node.val);
+        inorder(node.right, result);
+    }
+
+    public int kthSmallest(TreeNode root, int k) {
+        values = [];
+        inorder(root, result);
+        return values[k - 1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2529,12 +4033,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def kthSmallest(self, root, k):
         stack = []
         node = root
@@ -2551,6 +4066,48 @@ class Solution:
                 return node.val
 
             node = node.right</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        vector&lt;int&gt; stack;
+        node = root;
+        while (true) {
+            while (node) {
+                stack.push_back(node);
+                node = node.left;
+            }
+            node = stack.pop_back();
+            k -= 1;
+            if (k == 0) {
+                return node.val;
+            }
+            node = node.right;
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        ArrayDeque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+        node = root;
+        while (true) {
+            while (node) {
+                stack.add(node);
+                node = node.left;
+            }
+            node = stack.remove(node = stack.size() - 1);
+            k -= 1;
+            if (k == 0) {
+                return node.val;
+            }
+            node = node.right;
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2603,12 +4160,23 @@ class Solution:
         <div class="naive-box"><p>Slicing arrays and using <code>.index()</code> search.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def buildTree(self, preorder, inorder):
         if not preorder or not inorder:
             return None
@@ -2629,6 +4197,50 @@ class Solution:
         )
 
         return root</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    TreeNode* buildTree(int preorder, int inorder) {
+        if (!preorder || !inorder) {
+            return nullptr;
+        }
+        root_val = preorder[0];
+        root = TreeNode(root_val);
+        index = inorder.index(root_val);
+        root.left = buildTree(;
+        preorder[1:index + 1],;
+        inorder[:index];
+        );
+        root.right = buildTree(;
+        preorder[index + 1:],;
+        inorder[index + 1:];
+        );
+        return root;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public TreeNode buildTree(int preorder, int inorder) {
+        if (!preorder || !inorder) {
+            return null;
+        }
+        root_val = preorder[0];
+        root = TreeNode(root_val);
+        index = inorder.index(root_val);
+        root.left = buildTree(;
+        preorder[1:index + 1],;
+        inorder[:index];
+        );
+        root.right = buildTree(;
+        preorder[index + 1:],;
+        inorder[index + 1:];
+        );
+        return root;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2658,12 +4270,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def buildTree(self, preorder, inorder):
 
         positions = {
@@ -2676,7 +4299,7 @@ class Solution:
         def build(left, right):
             nonlocal preorder_index
 
-            if left > right:
+            if left &gt; right:
                 return None
 
             root_val = preorder[preorder_index]
@@ -2692,6 +4315,63 @@ class Solution:
             return root
 
         return build(0, len(inorder) - 1)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void build(int left, int right) {
+        nonlocal preorder_index;
+        if (left &gt; right) {
+            return nullptr;
+        }
+        root_val = preorder[preorder_index];
+        preorder_index += 1;
+        root = TreeNode(root_val);
+        mid = positions[root_val];
+        root.left = build(left, mid - 1);
+        root.right = build(mid + 1, right);
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(int preorder, int inorder) {
+        positions = {
+        value: i;
+        for i, value in enumerate(inorder)
+        }
+        }
+        preorder_index = 0;
+        return build(0, inorder.size() - 1);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void build(int left, int right) {
+        nonlocal preorder_index;
+        if (left &gt; right) {
+            return null;
+        }
+        root_val = preorder[preorder_index];
+        preorder_index += 1;
+        root = TreeNode(root_val);
+        mid = positions[root_val];
+        root.left = build(left, mid - 1);
+        root.right = build(mid + 1, right);
+        return root;
+    }
+
+    public TreeNode buildTree(int preorder, int inorder) {
+        positions = {
+        value: i;
+        for i, value in enumerate(inorder)
+        }
+        }
+        preorder_index = 0;
+        return build(0, inorder.length - 1);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2738,12 +4418,23 @@ class Solution:
         <div class="naive-box"><p>For every node, calculate maximum gain separately.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxPathSum(self, root):
 
         def gain(node):
@@ -2772,6 +4463,67 @@ class Solution:
             )
 
         return path(root)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void gain(int node) {
+        if (!node) {
+            return 0;
+        }
+        return node.val + max(;
+        0,;
+        gain(node.left), result);
+        gain(node.right, result);
+        );
+        if (!node) {
+            return -float("inf");
+        }
+        left = gain(node.left);
+        right = gain(node.right);
+        current = node.val + max(0, left) + max(0, right);
+        return max(;
+        current,;
+        path(node.left),;
+        path(node.right);
+        );
+    }
+
+public:
+    int maxPathSum(TreeNode* root) {
+        return path(root);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void gain(int node) {
+        if (!node) {
+            return 0;
+        }
+        return node.val + max(;
+        0,;
+        gain(node.left), result);
+        gain(node.right, result);
+        );
+        if (!node) {
+            return -float("inf");
+        }
+        left = gain(node.left);
+        right = gain(node.right);
+        current = node.val + max(0, left) + max(0, right);
+        return max(;
+        current,;
+        path(node.left),;
+        path(node.right);
+        );
+    }
+
+    public int maxPathSum(TreeNode root) {
+        return path(root);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2801,12 +4553,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxPathSum(self, root):
         answer = -float("inf")
 
@@ -2827,6 +4590,51 @@ class Solution:
 
         dfs(root)
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node) {
+        nonlocal answer;
+        if (!node) {
+            return 0;
+        }
+        left = max(0, dfs(node.left));
+        right = max(0, dfs(node.right));
+        current = node.val + left + right;
+        answer = max(answer, current);
+        return node.val + max(left, right);
+    }
+
+public:
+    vector&lt;int&gt; maxPathSum(TreeNode* root) {
+        answer = -float("inf");
+        dfs(root, result);
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node) {
+        nonlocal answer;
+        if (!node) {
+            return 0;
+        }
+        left = max(0, dfs(node.left));
+        right = max(0, dfs(node.right));
+        current = node.val + left + right;
+        answer = max(answer, current);
+        return node.val + max(left, right);
+    }
+
+    public List&lt;Integer&gt; maxPathSum(TreeNode root) {
+        answer = -float("inf");
+        dfs(root, result);
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2879,12 +4687,23 @@ class Solution:
         <div class="naive-box"><p>Preorder traversal with <code>#</code> null markers using string index pointer.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python Solution (Codec)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Codec:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Codec:
 
     def serialize(self, root):
         result = []
@@ -2921,6 +4740,75 @@ class Solution:
             return node
 
         return dfs()</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (!node) {
+            result.push_back("#");
+            return;
+        }
+        result.push_back(str(node.val));
+        dfs(node.left, result);
+        dfs(node.right, result);
+    }
+
+public:
+    int serialize(TreeNode* root) {
+        class Codec:;
+        vector&lt;vector&lt;int&gt;&gt; result;
+        dfs(root, result);
+        return ",".join(result);
+        values = data.split(",");
+        index = 0;
+        nonlocal index;
+        if (values[index] == "#") {
+            index += 1;
+            return nullptr;
+        }
+        node = TreeNode(int(values[index]));
+        index += 1;
+        node.left = dfs();
+        node.right = dfs();
+        return node;
+        return dfs();
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (!node) {
+            result.add("#");
+            return;
+        }
+        result.add(str(node.val));
+        dfs(node.left, result);
+        dfs(node.right, result);
+    }
+
+    public int serialize(TreeNode root) {
+        class Codec:;
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        dfs(root, result);
+        return ",".join(result);
+        values = data.split(",");
+        index = 0;
+        nonlocal index;
+        if (values[index] == "#") {
+            index += 1;
+            return null;
+        }
+        node = TreeNode(int(values[index]));
+        index += 1;
+        node.left = dfs();
+        node.right = dfs();
+        return node;
+        return dfs();
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2966,12 +4854,23 @@ class Solution:
         <div class="naive-box"><p>DFS using explicit <code>visited</code> set.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numIslands(self, grid):
         rows = len(grid)
         cols = len(grid[0])
@@ -2980,8 +4879,8 @@ class Solution:
 
         def dfs(r, c):
             if (
-                r < 0 or r >= rows or
-                c < 0 or c >= cols or
+                r &lt; 0 or r &gt;= rows or
+                c &lt; 0 or c &gt;= cols or
                 grid[r][c] == "0" or
                 (r, c) in visited
             ):
@@ -3003,6 +4902,79 @@ class Solution:
                     dfs(r, c)
 
         return count</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == "0" or;
+            (r, c) in visited;
+        }
+        ):;
+        return;
+        visited.insert((r, c));
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+public:
+    int numIslands(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        rows = grid.size();
+        cols = grid[0].size();
+        visited = set();
+        count = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == "1" &amp;&amp; (r, c) !in visited) {
+                    count += 1;
+                    dfs(r, c, result);
+                }
+            }
+        }
+        return count;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == "0" or;
+            (r, c) in visited;
+        }
+        ):;
+        return;
+        visited.add((r, c));
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+    public int numIslands(int[][] grid) {
+        rows = grid.length;
+        cols = grid[0].length;
+        visited = set();
+        count = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == "1" &amp;&amp; (r, c) !in visited) {
+                    count += 1;
+                    dfs(r, c, result);
+                }
+            }
+        }
+        return count;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3032,20 +5004,31 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def numIslands(self, grid):
         rows = len(grid)
         cols = len(grid[0])
 
         def dfs(r, c):
             if (
-                r < 0 or r >= rows or
-                c < 0 or c >= cols or
+                r &lt; 0 or r &gt;= rows or
+                c &lt; 0 or c &gt;= cols or
                 grid[r][c] == "0"
             ):
                 return
@@ -3066,6 +5049,75 @@ class Solution:
                     dfs(r, c)
 
         return count</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == "0";
+        }
+        ):;
+        return;
+        grid[r][c] = "0";
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+public:
+    int numIslands(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        rows = grid.size();
+        cols = grid[0].size();
+        count = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == "1") {
+                    count += 1;
+                    dfs(r, c, result);
+                }
+            }
+        }
+        return count;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == "0";
+        }
+        ):;
+        return;
+        grid[r][c] = "0";
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+    public int numIslands(int[][] grid) {
+        rows = grid.length;
+        cols = grid[0].length;
+        count = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == "1") {
+                    count += 1;
+                    dfs(r, c, result);
+                }
+            }
+        }
+        return count;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3113,12 +5165,23 @@ class Solution:
         <div class="naive-box"><p>DFS recursive cloning with map.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution (DFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def cloneGraph(self, node):
         if not node:
             return None
@@ -3140,6 +5203,59 @@ class Solution:
             return clone
 
         return dfs(node)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int original) {
+        if (original in visited) {
+            return visited[original];
+        }
+        clone = Node(original.val);
+        visited[original] = clone;
+        for neighbor in original.neighbors:
+            clone.neighbors.append(;
+            dfs(neighbor, result);
+            );
+        }
+        return clone;
+    }
+
+public:
+    int cloneGraph(TreeNode* node) {
+        if (!node) {
+            return nullptr;
+        }
+        visited = {}
+        return dfs(node);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int original) {
+        if (original in visited) {
+            return visited[original];
+        }
+        clone = Node(original.val);
+        visited[original] = clone;
+        for neighbor in original.neighbors:
+            clone.neighbors.append(;
+            dfs(neighbor, result);
+            );
+        }
+        return clone;
+    }
+
+    public int cloneGraph(TreeNode node) {
+        if (!node) {
+            return null;
+        }
+        visited = {}
+        return dfs(node);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3169,12 +5285,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def cloneGraph(self, node):
@@ -3200,6 +5327,62 @@ class Solution:
                 )
 
         return clones[node]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int cloneGraph(TreeNode* node) {
+        from collections import deque;
+        if (!node) {
+            return nullptr;
+        }
+        clones = {
+        node: Node(node.val);
+        }
+        queue = deque([node]);
+        while (queue) {
+            current = queue.popleft();
+            for neighbor in current.neighbors:
+                if (neighbor !in clones) {
+                    clones[neighbor] = Node(neighbor.val);
+                    queue.push_back(neighbor);
+                }
+                clones[current].neighbors.append(;
+                clones[neighbor];
+                );
+            }
+        }
+        return clones[node];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int cloneGraph(TreeNode node) {
+        from collections import deque;
+        if (!node) {
+            return null;
+        }
+        clones = {
+        node: Node(node.val);
+        }
+        queue = deque([node]);
+        while (queue) {
+            current = queue.popleft();
+            for neighbor in current.neighbors:
+                if (neighbor !in clones) {
+                    clones[neighbor] = Node(neighbor.val);
+                    queue.add(neighbor);
+                }
+                clones[current].neighbors.append(;
+                clones[neighbor];
+                );
+            }
+        }
+        return clones[node];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3272,20 +5455,31 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxAreaOfIsland(self, grid):
         rows = len(grid)
         cols = len(grid[0])
 
         def dfs(r, c):
             if (
-                r < 0 or r >= rows or
-                c < 0 or c >= cols or
+                r &lt; 0 or r &gt;= rows or
+                c &lt; 0 or c &gt;= cols or
                 grid[r][c] == 0
             ):
                 return 0
@@ -3308,6 +5502,79 @@ class Solution:
                     answer = max(answer, dfs(r, c))
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == 0;
+        }
+        ):;
+        return 0;
+        grid[r][c] = 0;
+        return (;
+        1;
+        + dfs(r + 1, c);
+        + dfs(r - 1, c);
+        + dfs(r, c + 1);
+        + dfs(r, c - 1);
+        );
+    }
+
+public:
+    vector&lt;int&gt; maxAreaOfIsland(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        rows = grid.size();
+        cols = grid[0].size();
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == 1) {
+                    answer = max(answer, dfs(r, c));
+                }
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            grid[r][c] == 0;
+        }
+        ):;
+        return 0;
+        grid[r][c] = 0;
+        return (;
+        1;
+        + dfs(r + 1, c);
+        + dfs(r - 1, c);
+        + dfs(r, c + 1);
+        + dfs(r, c - 1);
+        );
+    }
+
+    public List&lt;Integer&gt; maxAreaOfIsland(int[][] grid) {
+        rows = grid.length;
+        cols = grid[0].length;
+        answer = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == 1) {
+                    answer = max(answer, dfs(r, c));
+                }
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3355,12 +5622,23 @@ class Solution:
         <div class="naive-box"><p>For every cell, perform DFS to check if it reaches both oceans.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def pacificAtlantic(self, heights):
         rows = len(heights)
         cols = len(heights[0])
@@ -3391,9 +5669,9 @@ class Solution:
                     nx, ny = x + dx, y + dy
 
                     if (
-                        0 <= nx < rows and
-                        0 <= ny < cols and
-                        heights[nx][ny] <= heights[x][y]
+                        0 &lt;= nx &lt; rows and
+                        0 &lt;= ny &lt; cols and
+                        heights[nx][ny] &lt;= heights[x][y]
                     ):
                         if dfs(nx, ny):
                             return True
@@ -3411,6 +5689,115 @@ class Solution:
                     result.append([r, c])
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void can_reach(int r, int c, int target, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        visited = set();
+        if ((x, y) in visited) {
+            return false;
+        }
+        if (target == "P" &amp;&amp; (x == 0 || y == 0)) {
+            return true;
+        }
+        if (target == "A" &amp;&amp; () {
+            x == rows - 1 || y == cols - 1;
+        }
+        ):;
+        return true;
+        visited.insert((x, y));
+        for dx, dy in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nx, ny = x + dx, y + dy;
+        if (() {
+            0 &lt;= nx &lt; rows and;
+            0 &lt;= ny &lt; cols and;
+            heights[nx][ny] &lt;= heights[x][y];
+        }
+        ):;
+        if (dfs(nx, ny)) {
+            return true;
+        }
+        return false;
+        return dfs(r, c);
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; pacificAtlantic(vector&lt;int&gt;&amp; heights) {
+        rows = heights.size();
+        cols = heights[0].size();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (() {
+                    can_reach(r, c, "P", result);
+                    and can_reach(r, c, "A");
+                }
+                ):;
+                result.push_back([r, c]);
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void can_reach(int r, int c, int target, List&lt;List&lt;Integer&gt;&gt; result) {
+        visited = set();
+        if ((x, y) in visited) {
+            return false;
+        }
+        if (target == "P" &amp;&amp; (x == 0 || y == 0)) {
+            return true;
+        }
+        if (target == "A" &amp;&amp; () {
+            x == rows - 1 || y == cols - 1;
+        }
+        ):;
+        return true;
+        visited.add((x, y));
+        for dx, dy in [
+            (1, 0), (-1, 0),;
+            (0, 1), (0, -1);
+        }
+        ]:;
+        nx, ny = x + dx, y + dy;
+        if (() {
+            0 &lt;= nx &lt; rows and;
+            0 &lt;= ny &lt; cols and;
+            heights[nx][ny] &lt;= heights[x][y];
+        }
+        ):;
+        if (dfs(nx, ny)) {
+            return true;
+        }
+        return false;
+        return dfs(r, c);
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(int[] heights) {
+        rows = heights.length;
+        cols = heights[0].length;
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (() {
+                    can_reach(r, c, "P", result);
+                    and can_reach(r, c, "A");
+                }
+                ):;
+                result.add([r, c]);
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3440,12 +5827,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Multi-Source BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def pacificAtlantic(self, heights):
@@ -3469,10 +5867,10 @@ class Solution:
                     nr, nc = r + dr, c + dc
 
                     if (
-                        0 <= nr < rows and
-                        0 <= nc < cols
+                        0 &lt;= nr &lt; rows and
+                        0 &lt;= nc &lt; cols
                         and (nr, nc) not in visited
-                        and heights[nr][nc] >= heights[r][c]
+                        and heights[nr][nc] &gt;= heights[r][c]
                     ):
                         visited.add((nr, nc))
                         queue.append((nr, nc))
@@ -3500,8 +5898,125 @@ class Solution:
 
         return [
             [r, c]
-            for r, c in p & a
+            for r, c in p &amp; a
         ]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void bfs(int starts) {
+        visited = set();
+        queue = deque(starts);
+        for (auto cell : starts) {
+            visited.insert(cell);
+        }
+        while (queue) {
+            r, c = queue.popleft();
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; rows and;
+                0 &lt;= nc &lt; cols;
+                and (nr, nc) !in visited;
+                and heights[nr][nc] &gt;= heights[r][c];
+            }
+            ):;
+            visited.insert((nr, nc));
+            queue.push_back((nr, nc));
+        }
+        return visited;
+    }
+
+public:
+    int pacificAtlantic(vector&lt;int&gt;&amp; heights) {
+        from collections import deque;
+        rows = heights.size();
+        cols = heights[0].size();
+        pacific = [];
+        for (int r = 0; r &lt; rows; ++r) {
+            pacific.push_back((r, 0));
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            pacific.push_back((0, c));
+        }
+        atlantic = [];
+        for (int r = 0; r &lt; rows; ++r) {
+            atlantic.push_back((r, cols - 1));
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            atlantic.push_back((rows - 1, c));
+        }
+        p = bfs(pacific);
+        a = bfs(atlantic);
+        return [;
+        [r, c];
+        for r, c in p &amp; a
+        }
+        ];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void bfs(int starts) {
+        visited = set();
+        queue = deque(starts);
+        for (int cell : starts) {
+            visited.add(cell);
+        }
+        while (queue) {
+            r, c = queue.popleft();
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; rows and;
+                0 &lt;= nc &lt; cols;
+                and (nr, nc) !in visited;
+                and heights[nr][nc] &gt;= heights[r][c];
+            }
+            ):;
+            visited.add((nr, nc));
+            queue.add((nr, nc));
+        }
+        return visited;
+    }
+
+    public int pacificAtlantic(int[] heights) {
+        from collections import deque;
+        rows = heights.length;
+        cols = heights[0].length;
+        pacific = [];
+        for (int r = 0; r &lt; rows; ++r) {
+            pacific.add((r, 0));
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            pacific.add((0, c));
+        }
+        atlantic = [];
+        for (int r = 0; r &lt; rows; ++r) {
+            atlantic.add((r, cols - 1));
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            atlantic.add((rows - 1, c));
+        }
+        p = bfs(pacific);
+        a = bfs(atlantic);
+        return [;
+        [r, c];
+        for r, c in p &amp; a
+        }
+        ];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3580,20 +6095,31 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def solve(self, board):
         rows = len(board)
         cols = len(board[0])
 
         def dfs(r, c):
             if (
-                r < 0 or r >= rows or
-                c < 0 or c >= cols or
+                r &lt; 0 or r &gt;= rows or
+                c &lt; 0 or c &gt;= cols or
                 board[r][c] != "O"
             ):
                 return
@@ -3621,6 +6147,95 @@ class Solution:
                     board[r][c] = "X"
                 elif board[r][c] == "#":
                     board[r][c] = "O"</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            board[r][c] != "O";
+        }
+        ):;
+        return;
+        board[r][c] = "#";
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+public:
+    void solve(vector&lt;vector&lt;char&gt;&gt;&amp; board) {
+        rows = board.size();
+        cols = board[0].size();
+        // Mark boundary-connected O's
+        for (int r = 0; r &lt; rows; ++r) {
+            dfs(r, 0, result);
+            dfs(r, cols - 1, result);
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            dfs(0, c, result);
+            dfs(rows - 1, c, result);
+        }
+        // Capture surrounded regions
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (board[r][c] == "O") {
+                    board[r][c] = "X";
+                }
+                else if (board[r][c] == "#") {
+                    board[r][c] = "O";
+                }
+            }
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c) {
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            board[r][c] != "O";
+        }
+        ):;
+        return;
+        board[r][c] = "#";
+        dfs(r + 1, c, result);
+        dfs(r - 1, c, result);
+        dfs(r, c + 1, result);
+        dfs(r, c - 1, result);
+    }
+
+    public void solve(char[][] board) {
+        rows = board.length;
+        cols = board[0].length;
+        // Mark boundary-connected O's
+        for (int r = 0; r &lt; rows; ++r) {
+            dfs(r, 0, result);
+            dfs(r, cols - 1, result);
+        }
+        for (int c = 0; c &lt; cols; ++c) {
+            dfs(0, c, result);
+            dfs(rows - 1, c, result);
+        }
+        // Capture surrounded regions
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (board[r][c] == "O") {
+                    board[r][c] = "X";
+                }
+                else if (board[r][c] == "#") {
+                    board[r][c] = "O";
+                }
+            }
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3698,12 +6313,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Multi-Source BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def orangesRotting(self, grid):
@@ -3733,8 +6359,8 @@ class Solution:
                     nr, nc = r + dr, c + dc
 
                     if (
-                        0 <= nr < rows and
-                        0 <= nc < cols
+                        0 &lt;= nr &lt; rows and
+                        0 &lt;= nc &lt; cols
                         and grid[nr][nc] == 1
                     ):
                         grid[nr][nc] = 2
@@ -3744,6 +6370,96 @@ class Solution:
             minutes += 1
 
         return minutes if fresh == 0 else -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int orangesRotting(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        from collections import deque;
+        rows = grid.size();
+        cols = grid[0].size();
+        queue = deque();
+        fresh = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == 2) {
+                    queue.push_back((r, c));
+                }
+                else if (grid[r][c] == 1) {
+                    fresh += 1;
+                }
+            }
+        }
+        minutes = 0;
+        while (queue &amp;&amp; fresh) {
+            for (int _ = 0; _ &lt; queue.size(); ++_) {
+                r, c = queue.popleft();
+                for dr, dc in [
+                    (1, 0), (-1, 0),;
+                    (0, 1), (0, -1);
+                }
+                ]:;
+                nr, nc = r + dr, c + dc;
+                if (() {
+                    0 &lt;= nr &lt; rows and;
+                    0 &lt;= nc &lt; cols;
+                    and grid[nr][nc] == 1;
+                }
+                ):;
+                grid[nr][nc] = 2;
+                fresh -= 1;
+                queue.push_back((nr, nc));
+            }
+            minutes += 1;
+        }
+        return minutes if fresh == 0 else -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int orangesRotting(int[][] grid) {
+        from collections import deque;
+        rows = grid.length;
+        cols = grid[0].length;
+        queue = deque();
+        fresh = 0;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (grid[r][c] == 2) {
+                    queue.add((r, c));
+                }
+                else if (grid[r][c] == 1) {
+                    fresh += 1;
+                }
+            }
+        }
+        minutes = 0;
+        while (queue &amp;&amp; fresh) {
+            for (int _ = 0; _ &lt; queue.length; ++_) {
+                r, c = queue.popleft();
+                for dr, dc in [
+                    (1, 0), (-1, 0),;
+                    (0, 1), (0, -1);
+                }
+                ]:;
+                nr, nc = r + dr, c + dc;
+                if (() {
+                    0 &lt;= nr &lt; rows and;
+                    0 &lt;= nc &lt; cols;
+                    and grid[nr][nc] == 1;
+                }
+                ):;
+                grid[nr][nc] = 2;
+                fresh -= 1;
+                queue.add((nr, nc));
+            }
+            minutes += 1;
+        }
+        return minutes if fresh == 0 else -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3822,12 +6538,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def wallsAndGates(self, rooms):
@@ -3851,12 +6578,82 @@ class Solution:
                 nr, nc = r + dr, c + dc
 
                 if (
-                    0 <= nr < rows
-                    and 0 <= nc < cols
+                    0 &lt;= nr &lt; rows
+                    and 0 &lt;= nc &lt; cols
                     and rooms[nr][nc] == 2147483647
                 ):
                     rooms[nr][nc] = rooms[r][c] + 1
                     queue.append((nr, nc))</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    void wallsAndGates(int rooms) {
+        from collections import deque;
+        rows = rooms.size();
+        cols = rooms[0].size();
+        queue = deque();
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (rooms[r][c] == 0) {
+                    queue.push_back((r, c));
+                }
+            }
+        }
+        while (queue) {
+            r, c = queue.popleft();
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; rows;
+                and 0 &lt;= nc &lt; cols;
+                and rooms[nr][nc] == 2147483647;
+            }
+            ):;
+            rooms[nr][nc] = rooms[r][c] + 1;
+            queue.push_back((nr, nc));
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public void wallsAndGates(int rooms) {
+        from collections import deque;
+        rows = rooms.length;
+        cols = rooms[0].length;
+        queue = deque();
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (rooms[r][c] == 0) {
+                    queue.add((r, c));
+                }
+            }
+        }
+        while (queue) {
+            r, c = queue.popleft();
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; rows;
+                and 0 &lt;= nc &lt; cols;
+                and rooms[nr][nc] == 2147483647;
+            }
+            ):;
+            rooms[nr][nc] = rooms[r][c] + 1;
+            queue.add((nr, nc));
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3903,12 +6700,23 @@ class Solution:
         <div class="naive-box"><p>DFS cycle detection with <code>visiting</code> and <code>visited</code> sets.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution (DFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def canFinish(self, numCourses, prerequisites):
         graph = [[] for _ in range(numCourses)]
 
@@ -3941,6 +6749,81 @@ class Solution:
                 return False
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int course) {
+        if (course in visiting) {
+            return false;
+        }
+        if (course in visited) {
+            return true;
+        }
+        visiting.insert(course);
+        for prerequisite in graph[course]:
+            if (!dfs(prerequisite)) {
+                return false;
+            }
+        }
+        visiting.remove(course);
+        visited.insert(course);
+        return true;
+    }
+
+public:
+    bool canFinish(int numCourses, int prerequisites) {
+        graph = [[] for _ in range(numCourses)];
+        for course, prerequisite in prerequisites:
+            graph[course].push_back(prerequisite);
+        }
+        visiting = set();
+        visited = set();
+        for (int course = 0; course &lt; numCourses; ++course) {
+            if (!dfs(course)) {
+                return false;
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int course) {
+        if (course in visiting) {
+            return false;
+        }
+        if (course in visited) {
+            return true;
+        }
+        visiting.add(course);
+        for prerequisite in graph[course]:
+            if (!dfs(prerequisite)) {
+                return false;
+            }
+        }
+        visiting.remove(course);
+        visited.add(course);
+        return true;
+    }
+
+    public boolean canFinish(int numCourses, int prerequisites) {
+        graph = [[] for _ in range(numCourses)];
+        for course, prerequisite in prerequisites:
+            graph[course].add(prerequisite);
+        }
+        visiting = set();
+        visited = set();
+        for (int course = 0; course &lt; numCourses; ++course) {
+            if (!dfs(course)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3970,12 +6853,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Kahn's BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def canFinish(self, numCourses, prerequisites):
@@ -4004,6 +6898,68 @@ class Solution:
                     queue.append(next_course)
 
         return completed == numCourses</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool canFinish(int numCourses, int prerequisites) {
+        from collections import deque;
+        graph = [[] for _ in range(numCourses)];
+        indegree = [0] * numCourses;
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].push_back(course);
+            indegree[course] += 1;
+        }
+        queue = deque(;
+        i for i in range(numCourses);
+        if (indegree[i] == 0) {
+        }
+        );
+        completed = 0;
+        while (queue) {
+            course = queue.popleft();
+            completed += 1;
+            for next_course in graph[course]:
+                indegree[next_course] -= 1;
+                if (indegree[next_course] == 0) {
+                    queue.push_back(next_course);
+                }
+            }
+        }
+        return completed == numCourses;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean canFinish(int numCourses, int prerequisites) {
+        from collections import deque;
+        graph = [[] for _ in range(numCourses)];
+        indegree = [0] * numCourses;
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].add(course);
+            indegree[course] += 1;
+        }
+        queue = deque(;
+        i for i in range(numCourses);
+        if (indegree[i] == 0) {
+        }
+        );
+        completed = 0;
+        while (queue) {
+            course = queue.popleft();
+            completed += 1;
+            for next_course in graph[course]:
+                indegree[next_course] -= 1;
+                if (indegree[next_course] == 0) {
+                    queue.add(next_course);
+                }
+            }
+        }
+        return completed == numCourses;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4076,12 +7032,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Kahn's BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def findOrder(self, numCourses, prerequisites):
@@ -4110,6 +7077,68 @@ class Solution:
                     queue.append(next_course)
 
         return result if len(result) == numCourses else []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; findOrder(int numCourses, int prerequisites) {
+        from collections import deque;
+        graph = [[] for _ in range(numCourses)];
+        indegree = [0] * numCourses;
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].push_back(course);
+            indegree[course] += 1;
+        }
+        queue = deque(;
+        i for i in range(numCourses);
+        if (indegree[i] == 0) {
+        }
+        );
+        vector&lt;vector&lt;int&gt;&gt; result;
+        while (queue) {
+            course = queue.popleft();
+            result.push_back(course);
+            for next_course in graph[course]:
+                indegree[next_course] -= 1;
+                if (indegree[next_course] == 0) {
+                    queue.push_back(next_course);
+                }
+            }
+        }
+        return result if result.size() == numCourses else [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; findOrder(int numCourses, int prerequisites) {
+        from collections import deque;
+        graph = [[] for _ in range(numCourses)];
+        indegree = [0] * numCourses;
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].add(course);
+            indegree[course] += 1;
+        }
+        queue = deque(;
+        i for i in range(numCourses);
+        if (indegree[i] == 0) {
+        }
+        );
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        while (queue) {
+            course = queue.popleft();
+            result.add(course);
+            for next_course in graph[course]:
+                indegree[next_course] -= 1;
+                if (indegree[next_course] == 0) {
+                    queue.add(next_course);
+                }
+            }
+        }
+        return result if result.length == numCourses else [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4156,12 +7185,23 @@ class Solution:
         <div class="naive-box"><p>DFS cycle and connectivity check.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution (DFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def validTree(self, n, edges):
         if len(edges) != n - 1:
             return False
@@ -4190,6 +7230,73 @@ class Solution:
             return True
 
         return dfs(0, -1) and len(visited) == n</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int node, int parent) {
+        if (node in visited) {
+            return false;
+        }
+        visited.insert(node);
+        for neighbor in graph[node]:
+            if (neighbor == parent) {
+                continue;
+            }
+            if (!dfs(neighbor, node)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+public:
+    bool validTree(int n, int edges) {
+        if (edges.size() != n - 1) {
+            return false;
+        }
+        graph = [[] for _ in range(n)];
+        for a, b in edges:
+            graph[a].push_back(b);
+            graph[b].push_back(a);
+        }
+        visited = set();
+        return dfs(0, -1) &amp;&amp; visited.size() == n;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int node, int parent) {
+        if (node in visited) {
+            return false;
+        }
+        visited.add(node);
+        for neighbor in graph[node]:
+            if (neighbor == parent) {
+                continue;
+            }
+            if (!dfs(neighbor, node)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validTree(int n, int edges) {
+        if (edges.length != n - 1) {
+            return false;
+        }
+        graph = [[] for _ in range(n)];
+        for a, b in edges:
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+        visited = set();
+        return dfs(0, -1) &amp;&amp; visited.length == n;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4219,12 +7326,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Union-Find)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def validTree(self, n, edges):
         if len(edges) != n - 1:
             return False
@@ -4246,7 +7364,7 @@ class Solution:
             if root_a == root_b:
                 return False
 
-            if rank[root_a] < rank[root_b]:
+            if rank[root_a] &lt; rank[root_b]:
                 root_a, root_b = root_b, root_a
 
             parent[root_b] = root_a
@@ -4259,6 +7377,81 @@ class Solution:
                 return False
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return false;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        return true;
+    }
+
+public:
+    bool validTree(int n, int edges) {
+        if (edges.size() != n - 1) {
+            return false;
+        }
+        parent = list(range(n));
+        rank = [1] * n;
+        for a, b in edges:
+            if (!union(a, b)) {
+                return false;
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return false;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        return true;
+    }
+
+    public boolean validTree(int n, int edges) {
+        if (edges.length != n - 1) {
+            return false;
+        }
+        parent = list(range(n));
+        rank = [1] * n;
+        for a, b in edges:
+            if (!union(a, b)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4331,12 +7524,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Union-Find)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def countComponents(self, n, edges):
         parent = list(range(n))
         rank = [1] * n
@@ -4358,7 +7562,7 @@ class Solution:
             if root_a == root_b:
                 return
 
-            if rank[root_a] < rank[root_b]:
+            if rank[root_a] &lt; rank[root_b]:
                 root_a, root_b = root_b, root_a
 
             parent[root_b] = root_a
@@ -4370,6 +7574,75 @@ class Solution:
             union(a, b)
 
         return components</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        nonlocal components;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        components -= 1;
+    }
+
+public:
+    int countComponents(int n, int edges) {
+        parent = list(range(n));
+        rank = [1] * n;
+        components = n;
+        for a, b in edges:
+            union(a, b);
+        }
+        return components;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        nonlocal components;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        components -= 1;
+    }
+
+    public int countComponents(int n, int edges) {
+        parent = list(range(n));
+        rank = [1] * n;
+        components = n;
+        for a, b in edges:
+            union(a, b);
+        }
+        return components;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4441,12 +7714,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Union-Find)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findRedundantConnection(self, edges):
         n = len(edges)
         parent = list(range(n + 1))
@@ -4466,7 +7750,7 @@ class Solution:
             if root_a == root_b:
                 return False
 
-            if rank[root_a] < rank[root_b]:
+            if rank[root_a] &lt; rank[root_b]:
                 root_a, root_b = root_b, root_a
 
             parent[root_b] = root_a
@@ -4479,6 +7763,77 @@ class Solution:
                 return [u, v]
 
         return []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return false;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        return true;
+    }
+
+public:
+    bool findRedundantConnection(int edges) {
+        n = edges.size();
+        parent = list(range(n + 1));
+        rank = [1] * (n + 1);
+        for u, v in edges:
+            if (!union(u, v)) {
+                return [u, v];
+            }
+        }
+        return [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+        root_a = find(a);
+        root_b = find(b);
+        if (root_a == root_b) {
+            return false;
+        }
+        if (rank[root_a] &lt; rank[root_b]) {
+            root_a, root_b = root_b, root_a;
+        }
+        parent[root_b] = root_a;
+        rank[root_a] += rank[root_b];
+        return true;
+    }
+
+    public boolean findRedundantConnection(int edges) {
+        n = edges.length;
+        parent = list(range(n + 1));
+        rank = [1] * (n + 1);
+        for u, v in edges:
+            if (!union(u, v)) {
+                return [u, v];
+            }
+        }
+        return [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4551,12 +7906,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (BFS)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import defaultdict, deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import defaultdict, deque
 
 class Solution:
     def ladderLength(self, beginWord, endWord, wordList):
@@ -4590,6 +7956,80 @@ class Solution:
                 patterns[pattern] = []
 
         return 0</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int ladderLength(int beginWord, int endWord, int wordList) {
+        from collections import defaultdict, deque;
+        if (endWord !in wordList) {
+            return 0;
+        }
+        patterns = defaultdict(list);
+        for (auto word : wordList) {
+            for (int i = 0; i &lt; word.size(); ++i) {
+                pattern = word[:i] + "*" + word[i + 1:];
+                patterns[pattern].push_back(word);
+            }
+        }
+        visited = {beginWord}
+        queue = deque([(beginWord, 1)]);
+        while (queue) {
+            word, distance = queue.popleft();
+            if (word == endWord) {
+                return distance;
+            }
+            for (int i = 0; i &lt; word.size(); ++i) {
+                pattern = word[:i] + "*" + word[i + 1:];
+                for neighbor in patterns[pattern]:
+                    if (neighbor !in visited) {
+                        visited.insert(neighbor);
+                        queue.push_back((neighbor, distance + 1));
+                    }
+                }
+                patterns[pattern] = [];
+            }
+        }
+        return 0;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int ladderLength(int beginWord, int endWord, int wordList) {
+        from collections import defaultdict, deque;
+        if (endWord !in wordList) {
+            return 0;
+        }
+        patterns = defaultdict(list);
+        for (int word : wordList) {
+            for (int i = 0; i &lt; word.length; ++i) {
+                pattern = word[:i] + "*" + word[i + 1:];
+                patterns[pattern].add(word);
+            }
+        }
+        visited = {beginWord}
+        queue = deque([(beginWord, 1)]);
+        while (queue) {
+            word, distance = queue.popleft();
+            if (word == endWord) {
+                return distance;
+            }
+            for (int i = 0; i &lt; word.length; ++i) {
+                pattern = word[:i] + "*" + word[i + 1:];
+                for neighbor in patterns[pattern]:
+                    if (neighbor !in visited) {
+                        visited.add(neighbor);
+                        queue.add((neighbor, distance + 1));
+                    }
+                }
+                patterns[pattern] = [];
+            }
+        }
+        return 0;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4662,12 +8102,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Hierholzer's)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import defaultdict
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import defaultdict
 
 class Solution:
     def findItinerary(self, tickets):
@@ -4689,6 +8140,55 @@ class Solution:
 
         dfs("JFK")
         return itinerary[::-1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int airport) {
+        while (graph[airport]) {
+            next_airport = graph[airport].pop_back();
+            dfs(next_airport, result);
+        }
+        itinerary.push_back(airport);
+    }
+
+public:
+    int findItinerary(int tickets) {
+        from collections import defaultdict;
+        graph = defaultdict(list);
+        tickets.sort(reverse=true);
+        for src, dst in tickets:
+            graph[src].push_back(dst);
+        }
+        itinerary = [];
+        dfs("JFK", result);
+        return itinerary[::-1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int airport) {
+        while (graph[airport]) {
+            next_airport = graph[airport].remove(next_airport = graph[airport].size() - 1);
+            dfs(next_airport, result);
+        }
+        itinerary.add(airport);
+    }
+
+    public int findItinerary(int tickets) {
+        from collections import defaultdict;
+        graph = defaultdict(list);
+        tickets.sort(reverse=true);
+        for src, dst in tickets:
+            graph[src].add(dst);
+        }
+        itinerary = [];
+        dfs("JFK", result);
+        return itinerary[::-1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4761,12 +8261,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Prim's)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def minCostConnectPoints(self, points):
@@ -4776,7 +8287,7 @@ class Solution:
 
         total_cost = 0
 
-        while len(visited) < n:
+        while len(visited) &lt; n:
             cost, u = heapq.heappop(min_heap)
 
             if u in visited:
@@ -4794,6 +8305,64 @@ class Solution:
                     heapq.heappush(min_heap, (dist, v))
 
         return total_cost</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int minCostConnectPoints(int points) {
+        import heapq;
+        n = points.size();
+        visited = set();
+        min_heap = [(0, 0)]  # (cost, point_index);
+        total_cost = 0;
+        while (visited.size() &lt; n) {
+            cost, u = heapq.heappop(min_heap);
+            if (u in visited) {
+                continue;
+            }
+            visited.insert(u);
+            total_cost += cost;
+            x1, y1 = points[u];
+            for (int v = 0; v &lt; n; ++v) {
+                if (v !in visited) {
+                    x2, y2 = points[v];
+                    dist = abs(x1 - x2) + abs(y1 - y2);
+                    heapq.heappush(min_heap, (dist, v));
+                }
+            }
+        }
+        return total_cost;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int minCostConnectPoints(int points) {
+        import heapq;
+        n = points.length;
+        visited = set();
+        min_heap = [(0, 0)]  # (cost, point_index);
+        total_cost = 0;
+        while (visited.length &lt; n) {
+            cost, u = heapq.heappop(min_heap);
+            if (u in visited) {
+                continue;
+            }
+            visited.add(u);
+            total_cost += cost;
+            x1, y1 = points[u];
+            for (int v = 0; v &lt; n; ++v) {
+                if (v !in visited) {
+                    x2, y2 = points[v];
+                    dist = abs(x1 - x2) + abs(y1 - y2);
+                    heapq.heappush(min_heap, (dist, v));
+                }
+            }
+        }
+        return total_cost;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4866,12 +8435,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Dijkstra's)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import defaultdict
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import defaultdict
 import heapq
 
 class Solution:
@@ -4903,6 +8483,74 @@ class Solution:
             return max(distances.values())
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int networkDelayTime(int times, int n, int k) {
+        from collections import defaultdict;
+        import heapq;
+        graph = defaultdict(list);
+        for u, v, w in times:
+            graph[u].push_back((v, w));
+        }
+        min_heap = [(0, k)];
+        distances = {}
+        while (min_heap) {
+            time, node = heapq.heappop(min_heap);
+            if (node in distances) {
+                continue;
+            }
+            distances[node] = time;
+            for neighbor, weight in graph[node]:
+                if (neighbor !in distances) {
+                    heapq.heappush(;
+                    min_heap,;
+                    (time + weight, neighbor);
+                    );
+                }
+            }
+        }
+        if (distances.size() == n) {
+            return max(distances.values());
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int networkDelayTime(int times, int n, int k) {
+        from collections import defaultdict;
+        import heapq;
+        graph = defaultdict(list);
+        for u, v, w in times:
+            graph[u].add((v, w));
+        }
+        min_heap = [(0, k)];
+        distances = {}
+        while (min_heap) {
+            time, node = heapq.heappop(min_heap);
+            if (node in distances) {
+                continue;
+            }
+            distances[node] = time;
+            for neighbor, weight in graph[node]:
+                if (neighbor !in distances) {
+                    heapq.heappush(;
+                    min_heap,;
+                    (time + weight, neighbor);
+                    );
+                }
+            }
+        }
+        if (distances.length == n) {
+            return max(distances.values());
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4975,12 +8623,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Dijkstra's)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def swimInWater(self, grid):
@@ -5002,8 +8661,8 @@ class Solution:
                 nr, nc = r + dr, c + dc
 
                 if (
-                    0 <= nr < n and
-                    0 <= nc < n and
+                    0 &lt;= nr &lt; n and
+                    0 &lt;= nc &lt; n and
                     (nr, nc) not in visited
                 ):
                     visited.add((nr, nc))
@@ -5013,6 +8672,76 @@ class Solution:
                     )
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int swimInWater(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        import heapq;
+        n = grid.size();
+        min_heap = [(grid[0][0], 0, 0)];
+        visited = {(0, 0)}
+        while (min_heap) {
+            time, r, c = heapq.heappop(min_heap);
+            if (r == n - 1 &amp;&amp; c == n - 1) {
+                return time;
+            }
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; n and;
+                0 &lt;= nc &lt; n and;
+                (nr, nc) !in visited;
+            }
+            ):;
+            visited.insert((nr, nc));
+            heapq.heappush(;
+            min_heap,;
+            (max(time, grid[nr][nc]), nr, nc);
+            );
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int swimInWater(int[][] grid) {
+        import heapq;
+        n = grid.length;
+        min_heap = [(grid[0][0], 0, 0)];
+        visited = {(0, 0)}
+        while (min_heap) {
+            time, r, c = heapq.heappop(min_heap);
+            if (r == n - 1 &amp;&amp; c == n - 1) {
+                return time;
+            }
+            for dr, dc in [
+                (1, 0), (-1, 0),;
+                (0, 1), (0, -1);
+            }
+            ]:;
+            nr, nc = r + dr, c + dc;
+            if (() {
+                0 &lt;= nr &lt; n and;
+                0 &lt;= nc &lt; n and;
+                (nr, nc) !in visited;
+            }
+            ):;
+            visited.add((nr, nc));
+            heapq.heappush(;
+            min_heap,;
+            (max(time, grid[nr][nc]), nr, nc);
+            );
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5085,12 +8814,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Topological Sort)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def alienOrder(self, words):
         graph = {
             char: set()
@@ -5102,7 +8842,7 @@ class Solution:
             w1, w2 = words[i], words[i + 1]
             min_length = min(len(w1), len(w2))
 
-            if len(w1) > len(w2) and w1[:min_length] == w2[:min_length]:
+            if len(w1) &gt; len(w2) and w1[:min_length] == w2[:min_length]:
                 return ""
 
             for j in range(min_length):
@@ -5133,6 +8873,107 @@ class Solution:
                 return ""
 
         return "".join(result[::-1])</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int char, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (char in visited) {
+            return visited[char];
+        }
+        visited[char] = true;
+        for neighbor in graph[char]:
+            if (dfs(neighbor)) {
+                return true;
+            }
+        }
+        visited[char] = false;
+        result.push_back(char);
+        return false;
+    }
+
+public:
+    bool alienOrder(vector&lt;string&gt;&amp; words) {
+        graph = {
+        char: set();
+        for word in words
+        }
+        for char in word
+        }
+        }
+        for (int i = 0; i &lt; words.size() - 1; ++i) {
+            w1, w2 = words[i], words[i + 1];
+            min_length = min(w1.size(), w2.size());
+            if (w1.size() &gt; w2.size() &amp;&amp; w1[:min_length] == w2[:min_length]) {
+                return "";
+            }
+            for (int j = 0; j &lt; min_length; ++j) {
+                if (w1[j] != w2[j]) {
+                    graph[w1[j]].insert(w2[j]);
+                    break;
+                }
+            }
+        }
+        visited = {}
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (auto char : graph) {
+            if (dfs(char)) {
+                return "";
+            }
+        }
+        return "".join(result[::-1]);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int char, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (char in visited) {
+            return visited[char];
+        }
+        visited[char] = true;
+        for neighbor in graph[char]:
+            if (dfs(neighbor)) {
+                return true;
+            }
+        }
+        visited[char] = false;
+        result.add(char);
+        return false;
+    }
+
+    public boolean alienOrder(String[] words) {
+        graph = {
+        char: set();
+        for word in words
+        }
+        for char in word
+        }
+        }
+        for (int i = 0; i &lt; words.length - 1; ++i) {
+            w1, w2 = words[i], words[i + 1];
+            min_length = min(w1.length, w2.length);
+            if (w1.length &gt; w2.length &amp;&amp; w1[:min_length] == w2[:min_length]) {
+                return "";
+            }
+            for (int j = 0; j &lt; min_length; ++j) {
+                if (w1[j] != w2[j]) {
+                    graph[w1[j]].add(w2[j]);
+                    break;
+                }
+            }
+        }
+        visited = {}
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for (int char : graph) {
+            if (dfs(char)) {
+                return "";
+            }
+        }
+        return "".join(result[::-1]);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5205,12 +9046,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution (Bellman-Ford)</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findCheapestPrice(self, n, flights, src, dst, k):
         prices = [float("inf")] * n
         prices[src] = 0
@@ -5222,7 +9074,7 @@ class Solution:
                 if prices[u] == float("inf"):
                     continue
 
-                if prices[u] + price < tmp[v]:
+                if prices[u] + price &lt; tmp[v]:
                     tmp[v] = prices[u] + price
 
             prices = tmp
@@ -5231,6 +9083,56 @@ class Solution:
             return prices[dst]
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findCheapestPrice(int n, int flights, int src, int dst, int k) {
+        prices = [float("inf")] * n;
+        prices[src] = 0;
+        for (int _ = 0; _ &lt; k + 1; ++_) {
+            tmp = list(prices);
+            for u, v, price in flights:
+                if (prices[u] == float("inf")) {
+                    continue;
+                }
+                if (prices[u] + price &lt; tmp[v]) {
+                    tmp[v] = prices[u] + price;
+                }
+            }
+            prices = tmp;
+        }
+        if (prices[dst] != float("inf")) {
+            return prices[dst];
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findCheapestPrice(int n, int flights, int src, int dst, int k) {
+        prices = [float("inf")] * n;
+        prices[src] = 0;
+        for (int _ = 0; _ &lt; k + 1; ++_) {
+            tmp = list(prices);
+            for u, v, price in flights:
+                if (prices[u] == float("inf")) {
+                    continue;
+                }
+                if (prices[u] + price &lt; tmp[v]) {
+                    tmp[v] = prices[u] + price;
+                }
+            }
+            prices = tmp;
+        }
+        if (prices[dst] != float("inf")) {
+            return prices[dst];
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5391,6 +9293,77 @@ class Solution:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

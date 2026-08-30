@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -918,16 +1013,55 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def search(self, nums, target):
         for i, num in enumerate(nums):
             if num == target:
                 return i
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) {
+        for i, num in enumerate(nums):
+            if (num == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int search(int[] nums, int target) {
+        for i, num in enumerate(nums):
+            if (num == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -963,10 +1097,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def search(self, nums, target):
         left = 0
         right = len(nums) - 1
@@ -983,6 +1130,48 @@
                 right = mid - 1
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) {
+        left = 0;
+        right = nums.size() - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+            if (nums[mid] &lt; target) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int search(int[] nums, int target) {
+        left = 0;
+        right = nums.length - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+            if (nums[mid] &lt; target) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1042,10 +1231,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def searchMatrix(self, matrix, target):
 
         for row in matrix:
@@ -1054,6 +1256,36 @@
                     return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool searchMatrix(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target) {
+        for (auto row : matrix) {
+            for (auto value : row) {
+                if (value == target) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        for (int row : matrix) {
+            for (int value : row) {
+                if (value == target) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1089,10 +1321,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def searchMatrix(self, matrix, target):
 
         rows = len(matrix)
@@ -1118,6 +1363,58 @@
                 right = mid - 1
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool searchMatrix(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        left = 0;
+        right = rows * cols - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            row = mid // cols;
+            col = mid % cols;
+            value = matrix[row][col];
+            if (value == target) {
+                return true;
+            }
+            if (value &lt; target) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        rows = matrix.length;
+        cols = matrix[0].length;
+        left = 0;
+        right = rows * cols - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            row = mid // cols;
+            col = mid % cols;
+            value = matrix[row][col];
+            if (value == target) {
+                return true;
+            }
+            if (value &lt; target) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1177,10 +1474,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minEatingSpeed(self, piles, h):
 
         for speed in range(1, max(piles) + 1):
@@ -1196,6 +1506,44 @@
                 return speed
 
         return max(piles)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int minEatingSpeed(int piles, int h) {
+        for (int speed = 1; speed &lt; max(piles) + 1; ++speed) {
+            hours = 0;
+            for (auto pile : piles) {
+                hours += (;
+                pile + speed - 1;
+                ) // speed;
+            }
+            if (hours &lt;= h) {
+                return speed;
+            }
+        }
+        return max(piles);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int minEatingSpeed(int piles, int h) {
+        for (int speed = 1; speed &lt; max(piles) + 1; ++speed) {
+            hours = 0;
+            for (int pile : piles) {
+                hours += (;
+                pile + speed - 1;
+                ) // speed;
+            }
+            if (hours &lt;= h) {
+                return speed;
+            }
+        }
+        return max(piles);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1231,10 +1579,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minEatingSpeed(self, piles, h):
 
         left = 1
@@ -1259,6 +1620,58 @@
                 left = speed + 1
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; minEatingSpeed(int piles, int h) {
+        left = 1;
+        right = max(piles);
+        answer = right;
+        while (left &lt;= right) {
+            speed = left + (right - left) // 2;
+            hours = 0;
+            for (auto pile : piles) {
+                hours += (;
+                pile + speed - 1;
+                ) // speed;
+            }
+            if (hours &lt;= h) {
+                answer = speed;
+                right = speed - 1;
+            }
+            else:;
+            left = speed + 1;
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; minEatingSpeed(int piles, int h) {
+        left = 1;
+        right = max(piles);
+        answer = right;
+        while (left &lt;= right) {
+            speed = left + (right - left) // 2;
+            hours = 0;
+            for (int pile : piles) {
+                hours += (;
+                pile + speed - 1;
+                ) // speed;
+            }
+            if (hours &lt;= h) {
+                answer = speed;
+                right = speed - 1;
+            }
+            else:;
+            left = speed + 1;
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1318,10 +1731,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findMin(self, nums):
         answer = nums[0]
 
@@ -1329,6 +1755,30 @@
             answer = min(answer, num)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; findMin(vector&lt;int&gt;&amp; nums) {
+        answer = nums[0];
+        for (auto num : nums) {
+            answer = min(answer, num);
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; findMin(int[] nums) {
+        answer = nums[0];
+        for (int num : nums) {
+            answer = min(answer, num);
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1364,10 +1814,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findMin(self, nums):
 
         left = 0
@@ -1383,6 +1846,42 @@
                 right = mid
 
         return nums[left]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findMin(vector&lt;int&gt;&amp; nums) {
+        left = 0;
+        right = nums.size() - 1;
+        while (left &lt; right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] &gt; nums[right]) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid;
+        }
+        return nums[left];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findMin(int[] nums) {
+        left = 0;
+        right = nums.length - 1;
+        while (left &lt; right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] &gt; nums[right]) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid;
+        }
+        return nums[left];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1442,10 +1941,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def search(self, nums, target):
 
         for i, num in enumerate(nums):
@@ -1453,6 +1965,32 @@
                 return i
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) {
+        for i, num in enumerate(nums):
+            if (num == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int search(int[] nums, int target) {
+        for i, num in enumerate(nums):
+            if (num == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1488,10 +2026,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def search(self, nums, target):
 
         left = 0
@@ -1521,6 +2072,68 @@
                     right = mid - 1
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) {
+        left = 0;
+        right = nums.size() - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+            // Left half is sorted
+            if (nums[left] &lt;= nums[mid]) {
+                if (nums[left] &lt;= target &lt; nums[mid]) {
+                    right = mid - 1;
+                }
+                else:;
+                left = mid + 1;
+            }
+            // Right half is sorted
+            else:;
+            if (nums[mid] &lt; target &lt;= nums[right]) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int search(int[] nums, int target) {
+        left = 0;
+        right = nums.length - 1;
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+            // Left half is sorted
+            if (nums[left] &lt;= nums[mid]) {
+                if (nums[left] &lt;= target &lt; nums[mid]) {
+                    right = mid - 1;
+                }
+                else:;
+                left = mid + 1;
+            }
+            // Right half is sorted
+            else:;
+            if (nums[mid] &lt; target &lt;= nums[right]) {
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1580,10 +2193,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class TimeMap:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class TimeMap:
 
     def __init__(self):
         self.store = {}
@@ -1600,9 +2226,9 @@
     def get(self, key, timestamp):
 
         if key not in self.store:
-            return &quot;&quot;
+            return ""
 
-        result = &quot;&quot;
+        result = ""
 
         for time, value in reversed(
             self.store[key]
@@ -1611,6 +2237,67 @@
                 return value
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        store = {}
+        if (key !in store) {
+            store[key] = [];
+        }
+        store[key].append(;
+        (timestamp, value);
+        );
+        if (key !in store) {
+            return "";
+        }
+        result = "";
+        for time, value in reversed(
+            store[key];
+        }
+        ):;
+        if (time &lt;= timestamp) {
+            return value;
+        }
+        return result;
+    }
+
+public:
+    vector&lt;int&gt; set(int key, int value, int timestamp) {
+        class TimeMap:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self, List&lt;List&lt;Integer&gt;&gt; result) {
+        store = {}
+        if (key !in store) {
+            store[key] = [];
+        }
+        store[key].append(;
+        (timestamp, value);
+        );
+        if (key !in store) {
+            return "";
+        }
+        result = "";
+        for time, value in reversed(
+            store[key];
+        }
+        ):;
+        if (time &lt;= timestamp) {
+            return value;
+        }
+        return result;
+    }
+
+    public List&lt;Integer&gt; set(int key, int value, int timestamp) {
+        class TimeMap:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1646,10 +2333,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class TimeMap:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class TimeMap:
 
     def __init__(self):
         self.store = {}
@@ -1666,14 +2366,14 @@
     def get(self, key, timestamp):
 
         if key not in self.store:
-            return &quot;&quot;
+            return ""
 
         values = self.store[key]
 
         left = 0
         right = len(values) - 1
 
-        answer = &quot;&quot;
+        answer = ""
 
         while left &lt;= right:
 
@@ -1686,6 +2386,77 @@
                 right = mid - 1
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void __init__(int self) {
+        store = {}
+        if (key !in store) {
+            store[key] = [];
+        }
+        store[key].append(;
+        (timestamp, value);
+        );
+        if (key !in store) {
+            return "";
+        }
+        values = store[key];
+        left = 0;
+        right = values.size() - 1;
+        answer = "";
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (values[mid][0] &lt;= timestamp) {
+                answer = values[mid][1];
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return answer;
+    }
+
+public:
+    vector&lt;int&gt; set(int key, int value, int timestamp) {
+        class TimeMap:;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void __init__(int self) {
+        store = {}
+        if (key !in store) {
+            store[key] = [];
+        }
+        store[key].append(;
+        (timestamp, value);
+        );
+        if (key !in store) {
+            return "";
+        }
+        values = store[key];
+        left = 0;
+        right = values.length - 1;
+        answer = "";
+        while (left &lt;= right) {
+            mid = left + (right - left) // 2;
+            if (values[mid][0] &lt;= timestamp) {
+                answer = values[mid][1];
+                left = mid + 1;
+            }
+            else:;
+            right = mid - 1;
+        }
+        return answer;
+    }
+
+    public List&lt;Integer&gt; set(int key, int value, int timestamp) {
+        class TimeMap:;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1745,10 +2516,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
 
         merged = []
@@ -1777,6 +2561,64 @@
             merged[n // 2 - 1]
             + merged[n // 2]
         ) / 2</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findMedianSortedArrays(int nums1, int nums2) {
+        merged = [];
+        i = 0;
+        j = 0;
+        while (i &lt; nums1.size() &amp;&amp; j &lt; nums2.size()) {
+            if (nums1[i] &lt;= nums2[j]) {
+                merged.push_back(nums1[i]);
+                i += 1;
+            }
+            else:;
+            merged.push_back(nums2[j]);
+            j += 1;
+        }
+        merged.extend(nums1[i:]);
+        merged.extend(nums2[j:]);
+        n = merged.size();
+        if (n % 2) {
+            return merged[n // 2];
+        }
+        return (;
+        merged[n // 2 - 1];
+        + merged[n // 2];
+        ) / 2;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findMedianSortedArrays(int nums1, int nums2) {
+        merged = [];
+        i = 0;
+        j = 0;
+        while (i &lt; nums1.length &amp;&amp; j &lt; nums2.length) {
+            if (nums1[i] &lt;= nums2[j]) {
+                merged.add(nums1[i]);
+                i += 1;
+            }
+            else:;
+            merged.add(nums2[j]);
+            j += 1;
+        }
+        merged.extend(nums1[i:]);
+        merged.extend(nums2[j:]);
+        n = merged.length;
+        if (n % 2) {
+            return merged[n // 2];
+        }
+        return (;
+        merged[n // 2 - 1];
+        + merged[n // 2];
+        ) / 2;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1812,10 +2654,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
 
         if len(nums1) &gt; len(nums2):
@@ -1842,25 +2697,25 @@
             left1 = (
                 nums1[partition1 - 1]
                 if partition1 &gt; 0
-                else float(&quot;-inf&quot;)
+                else float("-inf")
             )
 
             right1 = (
                 nums1[partition1]
                 if partition1 &lt; m
-                else float(&quot;inf&quot;)
+                else float("inf")
             )
 
             left2 = (
                 nums2[partition2 - 1]
                 if partition2 &gt; 0
-                else float(&quot;-inf&quot;)
+                else float("-inf")
             )
 
             right2 = (
                 nums2[partition2]
                 if partition2 &lt; n
-                else float(&quot;inf&quot;)
+                else float("inf")
             )
 
             # Correct partition
@@ -1881,6 +2736,134 @@
             # Partition1 is too far left
             else:
                 left = partition1 + 1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findMedianSortedArrays(int nums1, int nums2) {
+        if (nums1.size() &gt; nums2.size()) {
+            nums1, nums2 = nums2, nums1;
+        }
+        m = nums1.size();
+        n = nums2.size();
+        left = 0;
+        right = m;
+        half = (m + n + 1) // 2;
+        while (left &lt;= right) {
+            partition1 = (;
+            left + right;
+            ) // 2;
+            partition2 = (;
+            half - partition1;
+            );
+            left1 = (;
+            nums1[partition1 - 1];
+            if (partition1 &gt; 0) {
+            }
+            else float("-inf");
+            );
+            right1 = (;
+            nums1[partition1];
+            if (partition1 &lt; m) {
+            }
+            else float("inf");
+            );
+            left2 = (;
+            nums2[partition2 - 1];
+            if (partition2 &gt; 0) {
+            }
+            else float("-inf");
+            );
+            right2 = (;
+            nums2[partition2];
+            if (partition2 &lt; n) {
+            }
+            else float("inf");
+            );
+            // Correct partition
+            if (left1 &lt;= right2 &amp;&amp; left2 &lt;= right1) {
+                if ((m + n) % 2) {
+                    return max(left1, left2);
+                }
+                return (;
+                max(left1, left2);
+                + min(right1, right2);
+                ) / 2;
+            }
+            // Partition1 is too far right
+            else if (left1 &gt; right2) {
+                right = partition1 - 1;
+            }
+            // Partition1 is too far left
+            else:;
+            left = partition1 + 1;
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findMedianSortedArrays(int nums1, int nums2) {
+        if (nums1.length &gt; nums2.length) {
+            nums1, nums2 = nums2, nums1;
+        }
+        m = nums1.length;
+        n = nums2.length;
+        left = 0;
+        right = m;
+        half = (m + n + 1) // 2;
+        while (left &lt;= right) {
+            partition1 = (;
+            left + right;
+            ) // 2;
+            partition2 = (;
+            half - partition1;
+            );
+            left1 = (;
+            nums1[partition1 - 1];
+            if (partition1 &gt; 0) {
+            }
+            else float("-inf");
+            );
+            right1 = (;
+            nums1[partition1];
+            if (partition1 &lt; m) {
+            }
+            else float("inf");
+            );
+            left2 = (;
+            nums2[partition2 - 1];
+            if (partition2 &gt; 0) {
+            }
+            else float("-inf");
+            );
+            right2 = (;
+            nums2[partition2];
+            if (partition2 &lt; n) {
+            }
+            else float("inf");
+            );
+            // Correct partition
+            if (left1 &lt;= right2 &amp;&amp; left2 &lt;= right1) {
+                if ((m + n) % 2) {
+                    return max(left1, left2);
+                }
+                return (;
+                max(left1, left2);
+                + min(right1, right2);
+                ) / 2;
+            }
+            // Partition1 is too far right
+            else if (left1 &gt; right2) {
+                right = partition1 - 1;
+            }
+            // Partition1 is too far left
+            else:;
+            left = partition1 + 1;
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2136,6 +3119,77 @@
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

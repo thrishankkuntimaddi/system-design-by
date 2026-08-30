@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -1025,10 +1120,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def containsDuplicate(self, nums):
         for i in range(len(nums)):
             for j in range(i + 1, len(nums)):
@@ -1036,6 +1144,36 @@
                     return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool containsDuplicate(vector&lt;int&gt;&amp; nums) {
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            for (int j = i + 1; j &lt; nums.size(); ++j) {
+                if (nums[i] == nums[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        for (int i = 0; i &lt; nums.length; ++i) {
+            for (int j = i + 1; j &lt; nums.length; ++j) {
+                if (nums[i] == nums[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1071,10 +1209,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def containsDuplicate(self, nums):
         seen = set()
 
@@ -1085,6 +1236,36 @@
             seen.add(num)
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool containsDuplicate(vector&lt;int&gt;&amp; nums) {
+        unordered_set&lt;int&gt; seen;
+        for (auto num : nums) {
+            if (seen.count(num)) {
+                return true;
+            }
+            seen.insert(num);
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        for (int num : nums) {
+            if (seen.contains(num)) {
+                return true;
+            }
+            seen.add(num);
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1144,12 +1325,41 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        return sorted(s) == sorted(t);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isAnagram(String s, String t) {
+        return sorted(s) == sorted(t);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1185,10 +1395,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isAnagram(self, s, t):
         if len(s) != len(t):
             return False
@@ -1208,6 +1431,54 @@
                 return False
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) {
+            return false;
+        }
+        count = {}
+        for (auto char : s) {
+            count[char] = count.get(char, 0) + 1;
+        }
+        for (auto char : t) {
+            if (char !in count) {
+                return false;
+            }
+            count[char] -= 1;
+            if (count[char] &lt; 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length != t.length) {
+            return false;
+        }
+        count = {}
+        for (char char : s.toCharArray()) {
+            count[char] = count.get(char, 0) + 1;
+        }
+        for (char char : t.toCharArray()) {
+            if (char !in count) {
+                return false;
+            }
+            count[char] -= 1;
+            if (count[char] &lt; 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1267,10 +1538,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def twoSum(self, nums, target):
         for i in range(len(nums)):
             for j in range(i + 1, len(nums)):
@@ -1278,6 +1562,36 @@
                     return [i, j]
 
         return []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            for (int j = i + 1; j &lt; nums.size(); ++j) {
+                if (nums[i] + nums[j] == target) {
+                    return [i, j];
+                }
+            }
+        }
+        return [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int twoSum(int[] nums, int target) {
+        for (int i = 0; i &lt; nums.length; ++i) {
+            for (int j = i + 1; j &lt; nums.length; ++j) {
+                if (nums[i] + nums[j] == target) {
+                    return [i, j];
+                }
+            }
+        }
+        return [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1313,10 +1627,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def twoSum(self, nums, target):
         seen = {}
 
@@ -1329,6 +1656,38 @@
             seen[num] = i
 
         return []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num;
+            if (seen.count(complement)) {
+                return [seen[complement], i];
+            }
+            seen[num] = i;
+        }
+        return [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int twoSum(int[] nums, int target) {
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num;
+            if (seen.contains(complement)) {
+                return [seen[complement], i];
+            }
+            seen[num] = i;
+        }
+        return [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1388,10 +1747,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def groupAnagrams(self, strs):
         groups = []
 
@@ -1409,6 +1781,52 @@
                 groups.append([word])
 
         return groups</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int groupAnagrams(vector&lt;string&gt;&amp; strs) {
+        groups = [];
+        for (auto word : strs) {
+            found = false;
+            sorted_word = sorted(word);
+            for (auto group : groups) {
+                if (sorted(group[0]) == sorted_word) {
+                    group.push_back(word);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                groups.push_back([word]);
+            }
+        }
+        return groups;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int groupAnagrams(String[] strs) {
+        groups = [];
+        for (int word : strs) {
+            found = false;
+            sorted_word = sorted(word);
+            for (int group : groups) {
+                if (sorted(group[0]) == sorted_word) {
+                    group.add(word);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                groups.add([word]);
+            }
+        }
+        return groups;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1444,10 +1862,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def groupAnagrams(self, strs):
         groups = {}
 
@@ -1455,7 +1886,7 @@
             count = [0] * 26
 
             for char in word:
-                count[ord(char) - ord(&#x27;a&#x27;)] += 1
+                count[ord(char) - ord('a')] += 1
 
             key = tuple(count)
 
@@ -1465,6 +1896,46 @@
             groups[key].append(word)
 
         return list(groups.values())</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int groupAnagrams(vector&lt;string&gt;&amp; strs) {
+        groups = {}
+        for (auto word : strs) {
+            count = [0] * 26;
+            for (auto char : word) {
+                count[ord(char) - ord('a')] += 1;
+            }
+            key = tuple(count);
+            if (key !in groups) {
+                groups[key] = [];
+            }
+            groups[key].push_back(word);
+        }
+        return list(groups.values());
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int groupAnagrams(String[] strs) {
+        groups = {}
+        for (int word : strs) {
+            count = [0] * 26;
+            for (int char : word) {
+                count[ord(char) - ord('a')] += 1;
+            }
+            key = tuple(count);
+            if (key !in groups) {
+                groups[key] = [];
+            }
+            groups[key].add(word);
+        }
+        return list(groups.values());
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1524,10 +1995,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def topKFrequent(self, nums, k):
         count = {}
 
@@ -1541,6 +2025,40 @@
         )
 
         return [num for num, freq in items[:k]]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int topKFrequent(vector&lt;int&gt;&amp; nums, int k) {
+        count = {}
+        for (auto num : nums) {
+            count[num] = count.get(num, 0) + 1;
+        }
+        items = sorted(;
+        count.items(),;
+        key=lambda x: x[1],;
+        reverse=true;
+        );
+        return [num for num, freq in items[:k]];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int topKFrequent(int[] nums, int k) {
+        count = {}
+        for (int num : nums) {
+            count[num] = count.get(num, 0) + 1;
+        }
+        items = sorted(;
+        count.items(),;
+        key=lambda x: x[1],;
+        reverse=true;
+        );
+        return [num for num, freq in items[:k]];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1576,10 +2094,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def topKFrequent(self, nums, k):
         count = {}
 
@@ -1601,6 +2132,56 @@
                     return result
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; topKFrequent(vector&lt;int&gt;&amp; nums, int k) {
+        count = {}
+        for (auto num : nums) {
+            count[num] = count.get(num, 0) + 1;
+        }
+        buckets = [[] for _ in range(nums.size() + 1)];
+        for num, freq in count.items():
+            buckets[freq].push_back(num);
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for freq in range(buckets.size() - 1, 0, -1):
+            for num in buckets[freq]:
+                result.push_back(num);
+                if (result.size() == k) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; topKFrequent(int[] nums, int k) {
+        count = {}
+        for (int num : nums) {
+            count[num] = count.get(num, 0) + 1;
+        }
+        buckets = [[] for _ in range(nums.length + 1)];
+        for num, freq in count.items():
+            buckets[freq].add(num);
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for freq in range(buckets.length - 1, 0, -1):
+            for num in buckets[freq]:
+                result.add(num);
+                if (result.length == k) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1660,10 +2241,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def productExceptSelf(self, nums):
         result = []
 
@@ -1677,6 +2271,42 @@
             result.append(product)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; productExceptSelf(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            product = 1;
+            for (int j = 0; j &lt; nums.size(); ++j) {
+                if (i != j) {
+                    product *= nums[j];
+                }
+            }
+            result.push_back(product);
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; productExceptSelf(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; nums.length; ++i) {
+            product = 1;
+            for (int j = 0; j &lt; nums.length; ++j) {
+                if (i != j) {
+                    product *= nums[j];
+                }
+            }
+            result.add(product);
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1712,10 +2342,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def productExceptSelf(self, nums):
         n = len(nums)
         result = [1] * n
@@ -1733,6 +2376,46 @@
             suffix *= nums[i]
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; productExceptSelf(vector&lt;int&gt;&amp; nums) {
+        n = nums.size();
+        result = [1] * n;
+        prefix = 1;
+        for (int i = 0; i &lt; n; ++i) {
+            result[i] = prefix;
+            prefix *= nums[i];
+        }
+        suffix = 1;
+        for i in range(n - 1, -1, -1):
+            result[i] *= suffix;
+            suffix *= nums[i];
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; productExceptSelf(int[] nums) {
+        n = nums.length;
+        result = [1] * n;
+        prefix = 1;
+        for (int i = 0; i &lt; n; ++i) {
+            result[i] = prefix;
+            prefix *= nums[i];
+        }
+        suffix = 1;
+        for i in range(n - 1, -1, -1):
+            result[i] *= suffix;
+            suffix *= nums[i];
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1792,10 +2475,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isValidSudoku(self, board):
         n = 9
 
@@ -1803,7 +2499,7 @@
             seen = set()
 
             for c in range(n):
-                if board[r][c] == &quot;.&quot;:
+                if board[r][c] == ".":
                     continue
 
                 if board[r][c] in seen:
@@ -1815,7 +2511,7 @@
             seen = set()
 
             for r in range(n):
-                if board[r][c] == &quot;.&quot;:
+                if board[r][c] == ".":
                     continue
 
                 if board[r][c] in seen:
@@ -1829,7 +2525,7 @@
 
                 for r in range(box_r, box_r + 3):
                     for c in range(box_c, box_c + 3):
-                        if board[r][c] == &quot;.&quot;:
+                        if board[r][c] == ".":
                             continue
 
                         if board[r][c] in seen:
@@ -1838,6 +2534,104 @@
                         seen.add(board[r][c])
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isValidSudoku(vector&lt;vector&lt;char&gt;&gt;&amp; board) {
+        n = 9;
+        for (int r = 0; r &lt; n; ++r) {
+            unordered_set&lt;int&gt; seen;
+            for (int c = 0; c &lt; n; ++c) {
+                if (board[r][c] == ".") {
+                    continue;
+                }
+                if (board[r][c] in seen) {
+                    return false;
+                }
+                seen.insert(board[r][c]);
+            }
+        }
+        for (int c = 0; c &lt; n; ++c) {
+            unordered_set&lt;int&gt; seen;
+            for (int r = 0; r &lt; n; ++r) {
+                if (board[r][c] == ".") {
+                    continue;
+                }
+                if (board[r][c] in seen) {
+                    return false;
+                }
+                seen.insert(board[r][c]);
+            }
+        }
+        for box_r in range(0, n, 3):
+            for box_c in range(0, n, 3):
+                unordered_set&lt;int&gt; seen;
+                for (int r = box_r; r &lt; box_r + 3; ++r) {
+                    for (int c = box_c; c &lt; box_c + 3; ++c) {
+                        if (board[r][c] == ".") {
+                            continue;
+                        }
+                        if (board[r][c] in seen) {
+                            return false;
+                        }
+                        seen.insert(board[r][c]);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        n = 9;
+        for (int r = 0; r &lt; n; ++r) {
+            Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+            for (int c = 0; c &lt; n; ++c) {
+                if (board[r][c] == ".") {
+                    continue;
+                }
+                if (board[r][c] in seen) {
+                    return false;
+                }
+                seen.add(board[r][c]);
+            }
+        }
+        for (int c = 0; c &lt; n; ++c) {
+            Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+            for (int r = 0; r &lt; n; ++r) {
+                if (board[r][c] == ".") {
+                    continue;
+                }
+                if (board[r][c] in seen) {
+                    return false;
+                }
+                seen.add(board[r][c]);
+            }
+        }
+        for box_r in range(0, n, 3):
+            for box_c in range(0, n, 3):
+                Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+                for (int r = box_r; r &lt; box_r + 3; ++r) {
+                    for (int c = box_c; c &lt; box_c + 3; ++c) {
+                        if (board[r][c] == ".") {
+                            continue;
+                        }
+                        if (board[r][c] in seen) {
+                            return false;
+                        }
+                        seen.add(board[r][c]);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1873,10 +2667,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isValidSudoku(self, board):
         rows = [set() for _ in range(9)]
         cols = [set() for _ in range(9)]
@@ -1886,7 +2693,7 @@
             for c in range(9):
                 value = board[r][c]
 
-                if value == &quot;.&quot;:
+                if value == ".":
                     continue
 
                 box = (r // 3) * 3 + (c // 3)
@@ -1905,6 +2712,70 @@
                 boxes[box].add(value)
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isValidSudoku(vector&lt;vector&lt;char&gt;&gt;&amp; board) {
+        rows = [set() for _ in range(9)];
+        cols = [set() for _ in range(9)];
+        boxes = [set() for _ in range(9)];
+        for (int r = 0; r &lt; 9; ++r) {
+            for (int c = 0; c &lt; 9; ++c) {
+                value = board[r][c];
+                if (value == ".") {
+                    continue;
+                }
+                box = (r // 3) * 3 + (c // 3);
+                if (value in rows[r]) {
+                    return false;
+                }
+                if (value in cols[c]) {
+                    return false;
+                }
+                if (value in boxes[box]) {
+                    return false;
+                }
+                rows[r].insert(value);
+                cols[c].insert(value);
+                boxes[box].insert(value);
+            }
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        rows = [set() for _ in range(9)];
+        cols = [set() for _ in range(9)];
+        boxes = [set() for _ in range(9)];
+        for (int r = 0; r &lt; 9; ++r) {
+            for (int c = 0; c &lt; 9; ++c) {
+                value = board[r][c];
+                if (value == ".") {
+                    continue;
+                }
+                box = (r // 3) * 3 + (c // 3);
+                if (value in rows[r]) {
+                    return false;
+                }
+                if (value in cols[c]) {
+                    return false;
+                }
+                if (value in boxes[box]) {
+                    return false;
+                }
+                rows[r].add(value);
+                cols[c].add(value);
+                boxes[box].add(value);
+            }
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1964,16 +2835,56 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Codec:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Codec:
 
     def encode(self, strs):
-        return &quot;#&quot;.join(strs)
+        return "#".join(strs)
 
     def decode(self, s):
-        return s.split(&quot;#&quot;)</code></pre>
+        return s.split("#")</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void decode(int self, int s) {
+        return s.split("#");
+    }
+
+public:
+    int encode(vector&lt;string&gt;&amp; strs) {
+        class Codec:;
+        return "#".join(strs);
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void decode(int self, int s) {
+        return s.split("#");
+    }
+
+    public int encode(String[] strs) {
+        class Codec:;
+        return "#".join(strs);
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2009,16 +2920,29 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Codec:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Codec:
 
     def encode(self, strs):
-        result = &quot;&quot;
+        result = ""
 
         for word in strs:
-            result += str(len(word)) + &quot;#&quot; + word
+            result += str(len(word)) + "#" + word
 
         return result
 
@@ -2029,7 +2953,7 @@
         while i &lt; len(s):
             j = i
 
-            while s[j] != &quot;#&quot;:
+            while s[j] != "#":
                 j += 1
 
             length = int(s[i:j])
@@ -2043,6 +2967,69 @@
             i = j + length
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void decode(int self, int s, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        i = 0;
+        while (i &lt; s.size()) {
+            j = i;
+            while (s[j] != "#") {
+                j += 1;
+            }
+            length = int(s[i:j]);
+            j += 1;
+            result.append(;
+            s[j:j + length];
+            );
+            i = j + length;
+        }
+        return result;
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; encode(vector&lt;string&gt;&amp; strs) {
+        class Codec:;
+        result = "";
+        for (auto word : strs) {
+            result += str(word.size()) + "#" + word;
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void decode(int self, int s, List&lt;List&lt;Integer&gt;&gt; result) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        i = 0;
+        while (i &lt; s.length) {
+            j = i;
+            while (s[j] != "#") {
+                j += 1;
+            }
+            length = int(s[i:j]);
+            j += 1;
+            result.append(;
+            s[j:j + length];
+            );
+            i = j + length;
+        }
+        return result;
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; encode(String[] strs) {
+        class Codec:;
+        result = "";
+        for (int word : strs) {
+            result += str(word.length) + "#" + word;
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2102,10 +3089,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestConsecutive(self, nums):
         longest = 0
 
@@ -2120,6 +3120,42 @@
             longest = max(longest, length)
 
         return longest</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int longestConsecutive(vector&lt;int&gt;&amp; nums) {
+        longest = 0;
+        for (auto num : nums) {
+            current = num;
+            length = 1;
+            while (current + 1 in nums) {
+                current += 1;
+                length += 1;
+            }
+            longest = max(longest, length);
+        }
+        return longest;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int longestConsecutive(int[] nums) {
+        longest = 0;
+        for (int num : nums) {
+            current = num;
+            length = 1;
+            while (current + 1 in nums) {
+                current += 1;
+                length += 1;
+            }
+            longest = max(longest, length);
+        }
+        return longest;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2155,10 +3191,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def longestConsecutive(self, nums):
         numbers = set(nums)
         longest = 0
@@ -2177,6 +3226,50 @@
                 )
 
         return longest</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int longestConsecutive(vector&lt;int&gt;&amp; nums) {
+        numbers = set(nums);
+        longest = 0;
+        for (auto num : numbers) {
+            if (num - 1 !in numbers) {
+                length = 1;
+                while (num + length in numbers) {
+                    length += 1;
+                }
+                longest = max(;
+                longest,;
+                length;
+                );
+            }
+        }
+        return longest;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int longestConsecutive(int[] nums) {
+        numbers = set(nums);
+        longest = 0;
+        for (int num : numbers) {
+            if (num - 1 !in numbers) {
+                length = 1;
+                while (num + length in numbers) {
+                    length += 1;
+                }
+                longest = max(;
+                longest,;
+                length;
+                );
+            }
+        }
+        return longest;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2236,18 +3329,59 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isPalindrome(self, s):
-        cleaned = &quot;&quot;
+        cleaned = ""
 
         for char in s:
             if char.isalnum():
                 cleaned += char.lower()
 
         return cleaned == cleaned[::-1]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isPalindrome(string s) {
+        cleaned = "";
+        for (auto char : s) {
+            if (char.isalnum()) {
+                cleaned += char.lower();
+            }
+        }
+        return cleaned == cleaned[::-1];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isPalindrome(String s) {
+        cleaned = "";
+        for (char char : s.toCharArray()) {
+            if (char.isalnum()) {
+                cleaned += char.lower();
+            }
+        }
+        return cleaned == cleaned[::-1];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2283,10 +3417,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def isPalindrome(self, s):
         left = 0
         right = len(s) - 1
@@ -2306,6 +3453,52 @@
             right -= 1
 
         return True</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool isPalindrome(string s) {
+        left = 0;
+        right = s.size() - 1;
+        while (left &lt; right) {
+            while (left &lt; right &amp;&amp; !s[left].isalnum()) {
+                left += 1;
+            }
+            while (left &lt; right &amp;&amp; !s[right].isalnum()) {
+                right -= 1;
+            }
+            if (s[left].lower() != s[right].lower()) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean isPalindrome(String s) {
+        left = 0;
+        right = s.length - 1;
+        while (left &lt; right) {
+            while (left &lt; right &amp;&amp; !s[left].isalnum()) {
+                left += 1;
+            }
+            while (left &lt; right &amp;&amp; !s[right].isalnum()) {
+                right -= 1;
+            }
+            if (s[left].lower() != s[right].lower()) {
+                return false;
+            }
+            left += 1;
+            right -= 1;
+        }
+        return true;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2365,10 +3558,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def twoSum(self, numbers, target):
         for i in range(len(numbers)):
             for j in range(i + 1, len(numbers)):
@@ -2376,6 +3582,36 @@
                     return [i + 1, j + 1]
 
         return []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int twoSum(int numbers, int target) {
+        for (int i = 0; i &lt; numbers.size(); ++i) {
+            for (int j = i + 1; j &lt; numbers.size(); ++j) {
+                if (numbers[i] + numbers[j] == target) {
+                    return [i + 1, j + 1];
+                }
+            }
+        }
+        return [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int twoSum(int numbers, int target) {
+        for (int i = 0; i &lt; numbers.length; ++i) {
+            for (int j = i + 1; j &lt; numbers.length; ++j) {
+                if (numbers[i] + numbers[j] == target) {
+                    return [i + 1, j + 1];
+                }
+            }
+        }
+        return [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2411,10 +3647,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def twoSum(self, numbers, target):
         left = 0
         right = len(numbers) - 1
@@ -2431,6 +3680,48 @@
                 right -= 1
 
         return []</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int twoSum(int numbers, int target) {
+        left = 0;
+        right = numbers.size() - 1;
+        while (left &lt; right) {
+            total = numbers[left] + numbers[right];
+            if (total == target) {
+                return [left + 1, right + 1];
+            }
+            if (total &lt; target) {
+                left += 1;
+            }
+            else:;
+            right -= 1;
+        }
+        return [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int twoSum(int numbers, int target) {
+        left = 0;
+        right = numbers.length - 1;
+        while (left &lt; right) {
+            total = numbers[left] + numbers[right];
+            if (total == target) {
+                return [left + 1, right + 1];
+            }
+            if (total &lt; target) {
+                left += 1;
+            }
+            else:;
+            right -= 1;
+        }
+        return [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2490,10 +3781,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def threeSum(self, nums):
         result = set()
         n = len(nums)
@@ -2509,6 +3813,52 @@
                         )
 
         return [list(x) for x in result]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int threeSum(vector&lt;int&gt;&amp; nums) {
+        result = set();
+        n = nums.size();
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = i + 1; j &lt; n; ++j) {
+                for (int k = j + 1; k &lt; n; ++k) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        result.add(;
+                        tuple(sorted(;
+                        [nums[i], nums[j], nums[k]];
+                        ));
+                        );
+                    }
+                }
+            }
+        }
+        return [list(x) for x in result];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int threeSum(int[] nums) {
+        result = set();
+        n = nums.length;
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = i + 1; j &lt; n; ++j) {
+                for (int k = j + 1; k &lt; n; ++k) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        result.add(;
+                        tuple(sorted(;
+                        [nums[i], nums[j], nums[k]];
+                        ));
+                        );
+                    }
+                }
+            }
+        }
+        return [list(x) for x in result];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2544,10 +3894,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def threeSum(self, nums):
         nums.sort()
         result = []
@@ -2598,6 +3961,108 @@
                     right -= 1
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; threeSum(vector&lt;int&gt;&amp; nums) {
+        nums.sort();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        n = nums.size();
+        for (int i = 0; i &lt; n - 2; ++i) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) {
+                continue;
+            }
+            left = i + 1;
+            right = n - 1;
+            while (left &lt; right) {
+                total = (;
+                nums[i];
+                + nums[left];
+                + nums[right];
+                );
+                if (total == 0) {
+                    result.append([;
+                    nums[i],;
+                    nums[left],;
+                    nums[right];
+                    ]);
+                    left += 1;
+                    right -= 1;
+                    while (() {
+                        left &lt; right;
+                        and nums[left] == nums[left - 1];
+                    }
+                    ):;
+                    left += 1;
+                    while (() {
+                        left &lt; right;
+                        and nums[right] == nums[right + 1];
+                    }
+                    ):;
+                    right -= 1;
+                }
+                else if (total &lt; 0) {
+                    left += 1;
+                }
+                else:;
+                right -= 1;
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+        nums.sort();
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        n = nums.length;
+        for (int i = 0; i &lt; n - 2; ++i) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) {
+                continue;
+            }
+            left = i + 1;
+            right = n - 1;
+            while (left &lt; right) {
+                total = (;
+                nums[i];
+                + nums[left];
+                + nums[right];
+                );
+                if (total == 0) {
+                    result.append([;
+                    nums[i],;
+                    nums[left],;
+                    nums[right];
+                    ]);
+                    left += 1;
+                    right -= 1;
+                    while (() {
+                        left &lt; right;
+                        and nums[left] == nums[left - 1];
+                    }
+                    ):;
+                    left += 1;
+                    while (() {
+                        left &lt; right;
+                        and nums[right] == nums[right + 1];
+                    }
+                    ):;
+                    right -= 1;
+                }
+                else if (total &lt; 0) {
+                    left += 1;
+                }
+                else:;
+                right -= 1;
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2657,10 +4122,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxArea(self, height):
         answer = 0
 
@@ -2676,6 +4154,44 @@
                 answer = max(answer, area)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxArea(int height) {
+        answer = 0;
+        for (int i = 0; i &lt; height.size(); ++i) {
+            for (int j = i + 1; j &lt; height.size(); ++j) {
+                width = j - i;
+                area = width * min(;
+                height[i],;
+                height[j];
+                );
+                answer = max(answer, area);
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxArea(int height) {
+        answer = 0;
+        for (int i = 0; i &lt; height.length; ++i) {
+            for (int j = i + 1; j &lt; height.length; ++j) {
+                width = j - i;
+                area = width * min(;
+                height[i],;
+                height[j];
+                );
+                answer = max(answer, area);
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2711,10 +4227,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxArea(self, height):
         left = 0
         right = len(height) - 1
@@ -2737,6 +4266,54 @@
                 right -= 1
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxArea(int height) {
+        left = 0;
+        right = height.size() - 1;
+        answer = 0;
+        while (left &lt; right) {
+            width = right - left;
+            area = width * min(;
+            height[left],;
+            height[right];
+            );
+            answer = max(answer, area);
+            if (height[left] &lt; height[right]) {
+                left += 1;
+            }
+            else:;
+            right -= 1;
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxArea(int height) {
+        left = 0;
+        right = height.length - 1;
+        answer = 0;
+        while (left &lt; right) {
+            width = right - left;
+            area = width * min(;
+            height[left],;
+            height[right];
+            );
+            answer = max(answer, area);
+            if (height[left] &lt; height[right]) {
+                left += 1;
+            }
+            else:;
+            right -= 1;
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2796,10 +4373,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def trap(self, height):
         water = 0
         n = len(height)
@@ -2814,6 +4404,42 @@
             ) - height[i]
 
         return water</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int trap(int height) {
+        water = 0;
+        n = height.size();
+        for (int i = 0; i &lt; n; ++i) {
+            left_max = max(height[:i + 1]);
+            right_max = max(height[i:]);
+            water += min(;
+            left_max,;
+            right_max;
+            ) - height[i];
+        }
+        return water;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int trap(int height) {
+        water = 0;
+        n = height.length;
+        for (int i = 0; i &lt; n; ++i) {
+            left_max = max(height[:i + 1]);
+            right_max = max(height[i:]);
+            water += min(;
+            left_max,;
+            right_max;
+            ) - height[i];
+        }
+        return water;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2849,10 +4475,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def trap(self, height):
         left = 0
         right = len(height) - 1
@@ -2883,6 +4522,66 @@
                 right -= 1
 
         return water</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int trap(int height) {
+        left = 0;
+        right = height.size() - 1;
+        left_max = 0;
+        right_max = 0;
+        water = 0;
+        while (left &lt; right) {
+            if (height[left] &lt;= height[right]) {
+                if (height[left] &gt;= left_max) {
+                    left_max = height[left];
+                }
+                else:;
+                water += left_max - height[left];
+                left += 1;
+            }
+            else:;
+            if (height[right] &gt;= right_max) {
+                right_max = height[right];
+            }
+            else:;
+            water += right_max - height[right];
+            right -= 1;
+        }
+        return water;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int trap(int height) {
+        left = 0;
+        right = height.length - 1;
+        left_max = 0;
+        right_max = 0;
+        water = 0;
+        while (left &lt; right) {
+            if (height[left] &lt;= height[right]) {
+                if (height[left] &gt;= left_max) {
+                    left_max = height[left];
+                }
+                else:;
+                water += left_max - height[left];
+                left += 1;
+            }
+            else:;
+            if (height[right] &gt;= right_max) {
+                right_max = height[right];
+            }
+            else:;
+            water += right_max - height[right];
+            right -= 1;
+        }
+        return water;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2942,10 +4641,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProfit(self, prices):
         answer = 0
 
@@ -2957,6 +4669,40 @@
                 )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxProfit(vector&lt;int&gt;&amp; prices) {
+        answer = 0;
+        for (int i = 0; i &lt; prices.size(); ++i) {
+            for (int j = i + 1; j &lt; prices.size(); ++j) {
+                answer = max(;
+                answer,;
+                prices[j] - prices[i];
+                );
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxProfit(int[] prices) {
+        answer = 0;
+        for (int i = 0; i &lt; prices.length; ++i) {
+            for (int j = i + 1; j &lt; prices.length; ++j) {
+                answer = max(;
+                answer,;
+                prices[j] - prices[i];
+                );
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2992,12 +4738,25 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxProfit(self, prices):
-        min_price = float(&quot;inf&quot;)
+        min_price = float("inf")
         answer = 0
 
         for price in prices:
@@ -3012,6 +4771,46 @@
             )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; maxProfit(vector&lt;int&gt;&amp; prices) {
+        min_price = float("inf");
+        answer = 0;
+        for (auto price : prices) {
+            min_price = min(;
+            min_price,;
+            price;
+            );
+            answer = max(;
+            answer,;
+            price - min_price;
+            );
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; maxProfit(int[] prices) {
+        min_price = float("inf");
+        answer = 0;
+        for (int price : prices) {
+            min_price = min(;
+            min_price,;
+            price;
+            );
+            answer = max(;
+            answer,;
+            price - min_price;
+            );
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3071,10 +4870,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lengthOfLongestSubstring(self, s):
         answer = 0
 
@@ -3092,6 +4904,50 @@
                 )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;string&gt;&gt; lengthOfLongestSubstring(string s) {
+        answer = 0;
+        for (int i = 0; i &lt; s.size(); ++i) {
+            unordered_set&lt;int&gt; seen;
+            for (int j = i; j &lt; s.size(); ++j) {
+                if (s[j] in seen) {
+                    break;
+                }
+                seen.insert(s[j]);
+                answer = max(;
+                answer,;
+                j - i + 1;
+                );
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;String&gt;&gt; lengthOfLongestSubstring(String s) {
+        answer = 0;
+        for (int i = 0; i &lt; s.length; ++i) {
+            Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+            for (int j = i; j &lt; s.length; ++j) {
+                if (s[j] in seen) {
+                    break;
+                }
+                seen.add(s[j]);
+                answer = max(;
+                answer,;
+                j - i + 1;
+                );
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3127,10 +4983,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def lengthOfLongestSubstring(self, s):
         seen = set()
 
@@ -3151,6 +5020,50 @@
             )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;string&gt;&gt; lengthOfLongestSubstring(string s) {
+        unordered_set&lt;int&gt; seen;
+        left = 0;
+        answer = 0;
+        for (int right = 0; right &lt; s.size(); ++right) {
+            while (s[right] in seen) {
+                seen.remove(s[left]);
+                left += 1;
+            }
+            seen.insert(s[right]);
+            answer = max(;
+            answer,;
+            right - left + 1;
+            );
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;String&gt;&gt; lengthOfLongestSubstring(String s) {
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        left = 0;
+        answer = 0;
+        for (int right = 0; right &lt; s.length; ++right) {
+            while (s[right] in seen) {
+                seen.remove(s[left]);
+                left += 1;
+            }
+            seen.add(s[right]);
+            answer = max(;
+            answer,;
+            right - left + 1;
+            );
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3210,10 +5123,23 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def characterReplacement(self, s, k):
         answer = 0
 
@@ -3232,6 +5158,50 @@
                     answer = max(answer, length)
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; characterReplacement(string s, int k) {
+        answer = 0;
+        for (int left = 0; left &lt; s.size(); ++left) {
+            count = {}
+            for (int right = left; right &lt; s.size(); ++right) {
+                count[s[right]] = (;
+                count.get(s[right], 0) + 1;
+                );
+                length = right - left + 1;
+                most_frequent = max(count.values());
+                if (length - most_frequent &lt;= k) {
+                    answer = max(answer, length);
+                }
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; characterReplacement(String s, int k) {
+        answer = 0;
+        for (int left = 0; left &lt; s.length; ++left) {
+            count = {}
+            for (int right = left; right &lt; s.length; ++right) {
+                count[s[right]] = (;
+                count.get(s[right], 0) + 1;
+                );
+                length = right - left + 1;
+                most_frequent = max(count.values());
+                if (length - most_frequent &lt;= k) {
+                    answer = max(answer, length);
+                }
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3267,10 +5237,23 @@
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def characterReplacement(self, s, k):
         count = {}
 
@@ -3302,6 +5285,72 @@
             )
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; characterReplacement(string s, int k) {
+        count = {}
+        left = 0;
+        max_frequency = 0;
+        answer = 0;
+        for (int right = 0; right &lt; s.size(); ++right) {
+            count[s[right]] = (;
+            count.get(s[right], 0) + 1;
+            );
+            max_frequency = max(;
+            max_frequency,;
+            count[s[right]];
+            );
+            while (() {
+                right - left + 1;
+                - max_frequency;
+                &gt; k;
+            }
+            ):;
+            count[s[left]] -= 1;
+            left += 1;
+            answer = max(;
+            answer,;
+            right - left + 1;
+            );
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; characterReplacement(String s, int k) {
+        count = {}
+        left = 0;
+        max_frequency = 0;
+        answer = 0;
+        for (int right = 0; right &lt; s.length; ++right) {
+            count[s[right]] = (;
+            count.get(s[right], 0) + 1;
+            );
+            max_frequency = max(;
+            max_frequency,;
+            count[s[right]];
+            );
+            while (() {
+                right - left + 1;
+                - max_frequency;
+                &gt; k;
+            }
+            ):;
+            count[s[left]] -= 1;
+            left += 1;
+            answer = max(;
+            answer,;
+            right - left + 1;
+            );
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3361,15 +5410,28 @@
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from itertools import permutations
+          <div class="code-content active" data-lang="python">
+            <pre><code>from itertools import permutations
 
 class Solution:
     def checkInclusion(self, s1, s2):
         target = set(
-            &quot;&quot;.join(p)
+            "".join(p)
             for p in permutations(s1)
         )
 
@@ -3382,6 +5444,50 @@ class Solution:
                 return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool checkInclusion(int s1, int s2) {
+        from itertools import permutations;
+        target = set(;
+        "".join(p);
+        for p in permutations(s1)
+        }
+        );
+        length = s1.size();
+        for i in range(
+            s2.size() - length + 1;
+        }
+        ):;
+        if (s2[i:i + length] in target) {
+            return true;
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean checkInclusion(int s1, int s2) {
+        from itertools import permutations;
+        target = set(;
+        "".join(p);
+        for p in permutations(s1)
+        }
+        );
+        length = s1.length;
+        for i in range(
+            s2.length - length + 1;
+        }
+        ):;
+        if (s2[i:i + length] in target) {
+            return true;
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3417,10 +5523,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def checkInclusion(self, s1, s2):
         if len(s1) &gt; len(s2):
             return False
@@ -3430,23 +5549,85 @@ class Solution:
 
         for char in s1:
             target[
-                ord(char) - ord(&#x27;a&#x27;)
+                ord(char) - ord('a')
             ] += 1
 
         for i in range(len(s2)):
             window[
-                ord(s2[i]) - ord(&#x27;a&#x27;)
+                ord(s2[i]) - ord('a')
             ] += 1
 
             if i &gt;= len(s1):
                 window[
-                    ord(s2[i - len(s1)]) - ord(&#x27;a&#x27;)
+                    ord(s2[i - len(s1)]) - ord('a')
                 ] -= 1
 
             if window == target:
                 return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool checkInclusion(int s1, int s2) {
+        if (s1.size() &gt; s2.size()) {
+            return false;
+        }
+        target = [0] * 26;
+        window = [0] * 26;
+        for (auto char : s1) {
+            target[;
+            ord(char) - ord('a');
+            ] += 1;
+        }
+        for (int i = 0; i &lt; s2.size(); ++i) {
+            window[;
+            ord(s2[i]) - ord('a');
+            ] += 1;
+            if (i &gt;= s1.size()) {
+                window[;
+                ord(s2[i - s1.size()]) - ord('a');
+                ] -= 1;
+            }
+            if (window == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean checkInclusion(int s1, int s2) {
+        if (s1.length &gt; s2.length) {
+            return false;
+        }
+        target = [0] * 26;
+        window = [0] * 26;
+        for (int char : s1) {
+            target[;
+            ord(char) - ord('a');
+            ] += 1;
+        }
+        for (int i = 0; i &lt; s2.length; ++i) {
+            window[;
+            ord(s2[i]) - ord('a');
+            ] += 1;
+            if (i &gt;= s1.length) {
+                window[;
+                ord(s2[i - s1.length]) - ord('a');
+                ] -= 1;
+            }
+            if (window == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3506,15 +5687,28 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minWindow(self, s, t):
         if not t:
-            return &quot;&quot;
+            return ""
 
-        answer = &quot;&quot;
+        answer = ""
 
         for left in range(len(s)):
             count = {}
@@ -3543,6 +5737,80 @@ class Solution:
                     break
 
         return answer</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;int&gt; minWindow(string s, string t) {
+        if (!t) {
+            return "";
+        }
+        answer = "";
+        for (int left = 0; left &lt; s.size(); ++left) {
+            count = {}
+            for (int right = left; right &lt; s.size(); ++right) {
+                count[s[right]] = (;
+                count.get(s[right], 0) + 1;
+                );
+                valid = true;
+                for (auto char : t) {
+                    if (count.get(char, 0) &lt; t.count(char)) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid) {
+                    current = s[left:right + 1];
+                    if (() {
+                        !answer;
+                        or current.size() &lt; answer.size();
+                    }
+                    ):;
+                    answer = current;
+                    break;
+                }
+            }
+        }
+        return answer;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;Integer&gt; minWindow(String s, String t) {
+        if (!t) {
+            return "";
+        }
+        answer = "";
+        for (int left = 0; left &lt; s.length; ++left) {
+            count = {}
+            for (int right = left; right &lt; s.length; ++right) {
+                count[s[right]] = (;
+                count.get(s[right], 0) + 1;
+                );
+                valid = true;
+                for (char char : t.toCharArray()) {
+                    if (count.get(char, 0) &lt; t.count(char)) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid) {
+                    current = s[left:right + 1];
+                    if (() {
+                        !answer;
+                        or current.length &lt; answer.length;
+                    }
+                    ):;
+                    answer = current;
+                    break;
+                }
+            }
+        }
+        return answer;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3578,13 +5846,26 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def minWindow(self, s, t):
         if not t:
-            return &quot;&quot;
+            return ""
 
         need = {}
 
@@ -3597,7 +5878,7 @@ class Solution:
 
         left = 0
 
-        best_length = float(&quot;inf&quot;)
+        best_length = float("inf")
         best_start = 0
 
         for right in range(len(s)):
@@ -3630,13 +5911,123 @@ class Solution:
 
                 left += 1
 
-        if best_length == float(&quot;inf&quot;):
-            return &quot;&quot;
+        if best_length == float("inf"):
+            return ""
 
         return s[
             best_start:
             best_start + best_length
         ]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int minWindow(string s, string t) {
+        if (!t) {
+            return "";
+        }
+        need = {}
+        for (auto char : t) {
+            need[char] = need.get(char, 0) + 1;
+        }
+        have = {}
+        required = need.size();
+        formed = 0;
+        left = 0;
+        best_length = float("inf");
+        best_start = 0;
+        for (int right = 0; right &lt; s.size(); ++right) {
+            char = s[right];
+            have[char] = have.get(char, 0) + 1;
+            if (() {
+                char in need;
+                and have[char] == need[char];
+            }
+            ):;
+            formed += 1;
+            while (formed == required) {
+                if (() {
+                    right - left + 1;
+                    &lt; best_length;
+                }
+                ):;
+                best_length = right - left + 1;
+                best_start = left;
+                left_char = s[left];
+                have[left_char] -= 1;
+                if (() {
+                    left_char in need;
+                    and have[left_char] &lt; need[left_char];
+                }
+                ):;
+                formed -= 1;
+                left += 1;
+            }
+        }
+        if (best_length == float("inf")) {
+            return "";
+        }
+        return s[;
+        best_start:;
+        best_start + best_length;
+        ];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int minWindow(String s, String t) {
+        if (!t) {
+            return "";
+        }
+        need = {}
+        for (char char : t.toCharArray()) {
+            need[char] = need.get(char, 0) + 1;
+        }
+        have = {}
+        required = need.length;
+        formed = 0;
+        left = 0;
+        best_length = float("inf");
+        best_start = 0;
+        for (int right = 0; right &lt; s.length; ++right) {
+            char = s[right];
+            have[char] = have.get(char, 0) + 1;
+            if (() {
+                char in need;
+                and have[char] == need[char];
+            }
+            ):;
+            formed += 1;
+            while (formed == required) {
+                if (() {
+                    right - left + 1;
+                    &lt; best_length;
+                }
+                ):;
+                best_length = right - left + 1;
+                best_start = left;
+                left_char = s[left];
+                have[left_char] -= 1;
+                if (() {
+                    left_char in need;
+                    and have[left_char] &lt; need[left_char];
+                }
+                ):;
+                formed -= 1;
+                left += 1;
+            }
+        }
+        if (best_length == float("inf")) {
+            return "";
+        }
+        return s[;
+        best_start:;
+        best_start + best_length;
+        ];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3696,10 +6087,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def maxSlidingWindow(self, nums, k):
         result = []
 
@@ -3711,6 +6115,38 @@ class Solution:
             )
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; maxSlidingWindow(vector&lt;int&gt;&amp; nums, int k) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for i in range(
+            nums.size() - k + 1;
+        }
+        ):;
+        result.append(;
+        max(nums[i:i + k]);
+        );
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; maxSlidingWindow(int[] nums, int k) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        for i in range(
+            nums.length - k + 1;
+        }
+        ):;
+        result.append(;
+        max(nums[i:i + k]);
+        );
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3746,10 +6182,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>from collections import deque
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import deque
 
 class Solution:
     def maxSlidingWindow(self, nums, k):
@@ -3780,6 +6229,70 @@ class Solution:
                 )
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; maxSlidingWindow(vector&lt;int&gt;&amp; nums, int k) {
+        from collections import deque;
+        vector&lt;vector&lt;int&gt;&gt; result;
+        deque_indices = deque();
+        for (int right = 0; right &lt; nums.size(); ++right) {
+            // Remove smaller values
+            while (() {
+                deque_indices;
+                and nums[deque_indices[-1]];
+                &lt;= nums[right];
+            }
+            ):;
+            deque_indices.pop_back();
+            deque_indices.push_back(right);
+            // Remove indices outside window
+            left = right - k + 1;
+            if (deque_indices[0] &lt; left) {
+                deque_indices.popleft();
+            }
+            if (right &gt;= k - 1) {
+                result.append(;
+                nums[deque_indices[0]];
+                );
+            }
+        }
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; maxSlidingWindow(int[] nums, int k) {
+        from collections import deque;
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        deque_indices = deque();
+        for (int right = 0; right &lt; nums.length; ++right) {
+            // Remove smaller values
+            while (() {
+                deque_indices;
+                and nums[deque_indices[-1]];
+                &lt;= nums[right];
+            }
+            ):;
+            deque_indices.remove(deque_indices.size() - 1);
+            deque_indices.add(right);
+            // Remove indices outside window
+            left = right - k + 1;
+            if (deque_indices[0] &lt; left) {
+                deque_indices.popleft();
+            }
+            if (right &gt;= k - 1) {
+                result.append(;
+                nums[deque_indices[0]];
+                );
+            }
+        }
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3839,10 +6352,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reverseList(self, head):
         if not head or not head.next:
             return head
@@ -3853,6 +6379,34 @@ class Solution:
         head.next = None
 
         return new_head</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool reverseList(ListNode* head) {
+        if (!head || !head.next) {
+            return head;
+        }
+        new_head = reverseList(head.next);
+        head.next.next = head;
+        head.next = nullptr;
+        return new_head;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean reverseList(ListNode head) {
+        if (!head || !head.next) {
+            return head;
+        }
+        new_head = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return new_head;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3888,10 +6442,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reverseList(self, head):
         previous = None
         current = head
@@ -3905,6 +6472,38 @@ class Solution:
             current = next_node
 
         return previous</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool reverseList(ListNode* head) {
+        previous = nullptr;
+        current = head;
+        while (current) {
+            next_node = current.next;
+            current.next = previous;
+            previous = current;
+            current = next_node;
+        }
+        return previous;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean reverseList(ListNode head) {
+        previous = null;
+        current = head;
+        while (current) {
+            next_node = current.next;
+            current.next = previous;
+            previous = current;
+            current = next_node;
+        }
+        return previous;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -3964,10 +6563,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def mergeTwoLists(self, list1, list2):
         values = []
 
@@ -3989,6 +6601,54 @@ class Solution:
             current = current.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool mergeTwoLists(int list1, int list2) {
+        values = [];
+        while (list1) {
+            values.push_back(list1.val);
+            list1 = list1.next;
+        }
+        while (list2) {
+            values.push_back(list2.val);
+            list2 = list2.next;
+        }
+        values.sort();
+        dummy = ListNode();
+        current = dummy;
+        for (auto value : values) {
+            current.next = ListNode(value);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean mergeTwoLists(int list1, int list2) {
+        values = [];
+        while (list1) {
+            values.add(list1.val);
+            list1 = list1.next;
+        }
+        while (list2) {
+            values.add(list2.val);
+            list2 = list2.next;
+        }
+        values.sort();
+        dummy = ListNode();
+        current = dummy;
+        for (int value : values) {
+            current.next = ListNode(value);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4024,10 +6684,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def mergeTwoLists(self, list1, list2):
         dummy = ListNode()
         current = dummy
@@ -4046,6 +6719,48 @@ class Solution:
         current.next = list1 or list2
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool mergeTwoLists(int list1, int list2) {
+        dummy = ListNode();
+        current = dummy;
+        while (list1 &amp;&amp; list2) {
+            if (list1.val &lt;= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            }
+            else:;
+            current.next = list2;
+            list2 = list2.next;
+            current = current.next;
+        }
+        current.next = list1 || list2;
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean mergeTwoLists(int list1, int list2) {
+        dummy = ListNode();
+        current = dummy;
+        while (list1 &amp;&amp; list2) {
+            if (list1.val &lt;= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            }
+            else:;
+            current.next = list2;
+            list2 = list2.next;
+            current = current.next;
+        }
+        current.next = list1 || list2;
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4105,10 +6820,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reorderList(self, head):
         nodes = []
 
@@ -4132,6 +6860,56 @@ class Solution:
             right -= 1
 
         nodes[left].next = None</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool reorderList(ListNode* head) {
+        nodes = [];
+        current = head;
+        while (current) {
+            nodes.push_back(current);
+            current = current.next;
+        }
+        left = 0;
+        right = nodes.size() - 1;
+        while (left &lt; right) {
+            nodes[left].next = nodes[right];
+            left += 1;
+            if (left == right) {
+                break;
+            }
+            nodes[right].next = nodes[left];
+            right -= 1;
+        }
+        nodes[left].next = nullptr;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean reorderList(ListNode head) {
+        nodes = [];
+        current = head;
+        while (current) {
+            nodes.add(current);
+            current = current.next;
+        }
+        left = 0;
+        right = nodes.length - 1;
+        while (left &lt; right) {
+            nodes[left].next = nodes[right];
+            left += 1;
+            if (left == right) {
+                break;
+            }
+            nodes[right].next = nodes[left];
+            right -= 1;
+        }
+        nodes[left].next = null;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4167,10 +6945,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reorderList(self, head):
         if not head or not head.next:
             return
@@ -4208,6 +6999,82 @@ class Solution:
 
             first = first_next
             second = second_next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool reorderList(ListNode* head) {
+        if (!head || !head.next) {
+            return;
+        }
+        // Find middle
+        slow = head;
+        fast = head;
+        while (fast &amp;&amp; fast.next) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // Reverse second half
+        second = slow.next;
+        slow.next = nullptr;
+        previous = nullptr;
+        while (second) {
+            next_node = second.next;
+            second.next = previous;
+            previous = second;
+            second = next_node;
+        }
+        second = previous;
+        first = head;
+        // Merge
+        while (second) {
+            first_next = first.next;
+            second_next = second.next;
+            first.next = second;
+            second.next = first_next;
+            first = first_next;
+            second = second_next;
+        }
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean reorderList(ListNode head) {
+        if (!head || !head.next) {
+            return;
+        }
+        // Find middle
+        slow = head;
+        fast = head;
+        while (fast &amp;&amp; fast.next) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // Reverse second half
+        second = slow.next;
+        slow.next = null;
+        previous = null;
+        while (second) {
+            next_node = second.next;
+            second.next = previous;
+            previous = second;
+            second = next_node;
+        }
+        second = previous;
+        first = head;
+        // Merge
+        while (second) {
+            first_next = first.next;
+            second_next = second.next;
+            first.next = second;
+            second.next = first_next;
+            first = first_next;
+            second = second_next;
+        }
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4267,10 +7134,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def removeNthFromEnd(self, head, n):
         length = 0
         current = head
@@ -4288,6 +7168,46 @@ class Solution:
         current.next = current.next.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int removeNthFromEnd(ListNode* head, int n) {
+        length = 0;
+        current = head;
+        while (current) {
+            length += 1;
+            current = current.next;
+        }
+        dummy = ListNode(0, head);
+        current = dummy;
+        for (int _ = 0; _ &lt; length - n; ++_) {
+            current = current.next;
+        }
+        current.next = current.next.next;
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int removeNthFromEnd(ListNode head, int n) {
+        length = 0;
+        current = head;
+        while (current) {
+            length += 1;
+            current = current.next;
+        }
+        dummy = ListNode(0, head);
+        current = dummy;
+        for (int _ = 0; _ &lt; length - n; ++_) {
+            current = current.next;
+        }
+        current.next = current.next.next;
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4323,10 +7243,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def removeNthFromEnd(self, head, n):
         dummy = ListNode(0, head)
 
@@ -4343,6 +7276,44 @@ class Solution:
         slow.next = slow.next.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int removeNthFromEnd(ListNode* head, int n) {
+        dummy = ListNode(0, head);
+        slow = dummy;
+        fast = dummy;
+        for (int _ = 0; _ &lt; n; ++_) {
+            fast = fast.next;
+        }
+        while (fast.next) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int removeNthFromEnd(ListNode head, int n) {
+        dummy = ListNode(0, head);
+        slow = dummy;
+        fast = dummy;
+        for (int _ = 0; _ &lt; n; ++_) {
+            fast = fast.next;
+        }
+        while (fast.next) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4402,10 +7373,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def copyRandomList(self, head):
         if not head:
             return None
@@ -4432,6 +7416,60 @@ class Solution:
             current = current.next
 
         return copies[head]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool copyRandomList(ListNode* head) {
+        if (!head) {
+            return nullptr;
+        }
+        copies = {}
+        current = head;
+        while (current) {
+            copies[current] = Node(current.val);
+            current = current.next;
+        }
+        current = head;
+        while (current) {
+            copies[current].next = copies.get(;
+            current.next;
+            );
+            copies[current].random = copies.get(;
+            current.random;
+            );
+            current = current.next;
+        }
+        return copies[head];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean copyRandomList(ListNode head) {
+        if (!head) {
+            return null;
+        }
+        copies = {}
+        current = head;
+        while (current) {
+            copies[current] = Node(current.val);
+            current = current.next;
+        }
+        current = head;
+        while (current) {
+            copies[current].next = copies.get(;
+            current.next;
+            );
+            copies[current].random = copies.get(;
+            current.random;
+            );
+            current = current.next;
+        }
+        return copies[head];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4467,10 +7505,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def copyRandomList(self, head):
         if not head:
             return None
@@ -4512,6 +7563,86 @@ class Solution:
             current = current.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool copyRandomList(ListNode* head) {
+        if (!head) {
+            return nullptr;
+        }
+        current = head;
+        // Create copied nodes
+        while (current) {
+            copy = Node(current.val);
+            copy.next = current.next;
+            current.next = copy;
+            current = copy.next;
+        }
+        // Set random pointers
+        current = head;
+        while (current) {
+            if (current.random) {
+                current.next.random = (;
+                current.random.next;
+                );
+            }
+            current = current.next.next;
+        }
+        // Separate lists
+        dummy = Node(0);
+        copy_current = dummy;
+        current = head;
+        while (current) {
+            copy = current.next;
+            copy_current.next = copy;
+            copy_current = copy;
+            current.next = copy.next;
+            current = current.next;
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean copyRandomList(ListNode head) {
+        if (!head) {
+            return null;
+        }
+        current = head;
+        // Create copied nodes
+        while (current) {
+            copy = Node(current.val);
+            copy.next = current.next;
+            current.next = copy;
+            current = copy.next;
+        }
+        // Set random pointers
+        current = head;
+        while (current) {
+            if (current.random) {
+                current.next.random = (;
+                current.random.next;
+                );
+            }
+            current = current.next.next;
+        }
+        // Separate lists
+        dummy = Node(0);
+        copy_current = dummy;
+        current = head;
+        while (current) {
+            copy = current.next;
+            copy_current.next = copy;
+            copy_current = copy;
+            current.next = copy.next;
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4571,10 +7702,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def addTwoNumbers(self, l1, l2):
         def to_number(node):
             number = 0
@@ -4601,6 +7745,67 @@ class Solution:
             current = current.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void to_number(int node) {
+        number = 0;
+        multiplier = 1;
+        while (node) {
+            number += node.val * multiplier;
+            multiplier *= 10;
+            node = node.next;
+        }
+        return number;
+    }
+
+public:
+    int addTwoNumbers(int l1, int l2) {
+        total = to_number(l1) + to_number(l2);
+        dummy = ListNode();
+        current = dummy;
+        if (total == 0) {
+            return ListNode(0);
+        }
+        while (total) {
+            current.next = ListNode(total % 10);
+            total //= 10;
+            current = current.next;
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void to_number(int node) {
+        number = 0;
+        multiplier = 1;
+        while (node) {
+            number += node.val * multiplier;
+            multiplier *= 10;
+            node = node.next;
+        }
+        return number;
+    }
+
+    public int addTwoNumbers(int l1, int l2) {
+        total = to_number(l1) + to_number(l2);
+        dummy = ListNode();
+        current = dummy;
+        if (total == 0) {
+            return ListNode(0);
+        }
+        while (total) {
+            current.next = ListNode(total % 10);
+            total //= 10;
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4636,10 +7841,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def addTwoNumbers(self, l1, l2):
         dummy = ListNode()
         current = dummy
@@ -4667,6 +7885,60 @@ class Solution:
                 l2 = l2.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int addTwoNumbers(int l1, int l2) {
+        dummy = ListNode();
+        current = dummy;
+        carry = 0;
+        while (l1 || l2 || carry) {
+            a = l1.val if l1 else 0;
+            b = l2.val if l2 else 0;
+            total = a + b + carry;
+            carry = total // 10;
+            current.next = ListNode(;
+            total % 10;
+            );
+            current = current.next;
+            if (l1) {
+                l1 = l1.next;
+            }
+            if (l2) {
+                l2 = l2.next;
+            }
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int addTwoNumbers(int l1, int l2) {
+        dummy = ListNode();
+        current = dummy;
+        carry = 0;
+        while (l1 || l2 || carry) {
+            a = l1.val if l1 else 0;
+            b = l2.val if l2 else 0;
+            total = a + b + carry;
+            carry = total // 10;
+            current.next = ListNode(;
+            total % 10;
+            );
+            current = current.next;
+            if (l1) {
+                l1 = l1.next;
+            }
+            if (l2) {
+                l2 = l2.next;
+            }
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4726,10 +7998,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def hasCycle(self, head):
         visited = set()
 
@@ -4741,6 +8026,38 @@ class Solution:
             head = head.next
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        visited = set();
+        while (head) {
+            if (head in visited) {
+                return true;
+            }
+            visited.insert(head);
+            head = head.next;
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean hasCycle(ListNode head) {
+        visited = set();
+        while (head) {
+            if (head in visited) {
+                return true;
+            }
+            visited.add(head);
+            head = head.next;
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4776,10 +8093,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def hasCycle(self, head):
         slow = head
         fast = head
@@ -4792,6 +8122,40 @@ class Solution:
                 return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        slow = head;
+        fast = head;
+        while (fast &amp;&amp; fast.next) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean hasCycle(ListNode head) {
+        slow = head;
+        fast = head;
+        while (fast &amp;&amp; fast.next) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4851,10 +8215,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findDuplicate(self, nums):
         seen = set()
 
@@ -4865,6 +8242,36 @@ class Solution:
             seen.add(num)
 
         return -1</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findDuplicate(vector&lt;int&gt;&amp; nums) {
+        unordered_set&lt;int&gt; seen;
+        for (auto num : nums) {
+            if (seen.count(num)) {
+                return num;
+            }
+            seen.insert(num);
+        }
+        return -1;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findDuplicate(int[] nums) {
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        for (int num : nums) {
+            if (seen.contains(num)) {
+                return num;
+            }
+            seen.add(num);
+        }
+        return -1;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4900,10 +8307,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def findDuplicate(self, nums):
         slow = nums[0]
         fast = nums[0]
@@ -4922,6 +8342,50 @@ class Solution:
             fast = nums[fast]
 
         return slow</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int findDuplicate(vector&lt;int&gt;&amp; nums) {
+        slow = nums[0];
+        fast = nums[0];
+        while (true) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast) {
+                break;
+            }
+        }
+        slow = nums[0];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int findDuplicate(int[] nums) {
+        slow = nums[0];
+        fast = nums[0];
+        while (true) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast) {
+                break;
+            }
+        }
+        slow = nums[0];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -4981,10 +8445,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class LRUCache:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class LRUCache:
 
     def __init__(self, capacity):
         self.capacity = capacity
@@ -5010,6 +8487,65 @@ class Solution:
         if len(self.cache) &gt; self.capacity:
             oldest = self.order.pop(0)
             del self.cache[oldest]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void get(int self, int key) {
+        if (key !in cache) {
+            return -1;
+        }
+        order.remove(key);
+        order.push_back(key);
+        return cache[key];
+        if (key in cache) {
+            order.remove(key);
+        }
+        cache[key] = value;
+        order.push_back(key);
+        if (cache.size() &gt; capacity) {
+            oldest = order.pop(0);
+            del cache[oldest];
+        }
+    }
+
+public:
+    int __init__(int capacity) {
+        class LRUCache:;
+        capacity = capacity;
+        cache = {}
+        order = [];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void get(int self, int key) {
+        if (key !in cache) {
+            return -1;
+        }
+        order.remove(key);
+        order.add(key);
+        return cache[key];
+        if (key in cache) {
+            order.remove(key);
+        }
+        cache[key] = value;
+        order.add(key);
+        if (cache.length &gt; capacity) {
+            oldest = order.pop(0);
+            del cache[oldest];
+        }
+    }
+
+    public int __init__(int capacity) {
+        class LRUCache:;
+        capacity = capacity;
+        cache = {}
+        order = [];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5045,10 +8581,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Node:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Node:
     def __init__(self, key=0, value=0):
         self.key = key
         self.value = value
@@ -5109,6 +8658,105 @@ class LRUCache:
 
             self.remove(lru)
             del self.cache[lru.key]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void remove(int self, int node) {
+        previous = node.prev;
+        next_node = node.next;
+        previous.next = next_node;
+        next_node.prev = previous;
+        previous = right.prev;
+        previous.next = node;
+        node.prev = previous;
+        node.next = right;
+        right.prev = node;
+        if (key !in cache) {
+            return -1;
+        }
+        node = cache[key];
+        remove(node, result);
+        insert(node);
+        return node.value;
+        if (key in cache) {
+            remove(cache[key], result);
+        }
+        node = Node(key, value);
+        cache[key] = node;
+        insert(node);
+        if (cache.size() &gt; capacity) {
+            lru = left.next;
+            remove(lru, result);
+            del cache[lru.key];
+        }
+    }
+
+public:
+    int __init__(int key=0, int value=0) {
+        class Node:;
+        key = key;
+        value = value;
+        prev = nullptr;
+        next = nullptr;
+        class LRUCache:;
+        capacity = capacity;
+        cache = {}
+        left = Node();
+        right = Node();
+        left.next = right;
+        right.prev = left;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void remove(int self, int node) {
+        previous = node.prev;
+        next_node = node.next;
+        previous.next = next_node;
+        next_node.prev = previous;
+        previous = right.prev;
+        previous.next = node;
+        node.prev = previous;
+        node.next = right;
+        right.prev = node;
+        if (key !in cache) {
+            return -1;
+        }
+        node = cache[key];
+        remove(node, result);
+        insert(node);
+        return node.value;
+        if (key in cache) {
+            remove(cache[key], result);
+        }
+        node = Node(key, value);
+        cache[key] = node;
+        insert(node);
+        if (cache.length &gt; capacity) {
+            lru = left.next;
+            remove(lru, result);
+            del cache[lru.key];
+        }
+    }
+
+    public int __init__(int key=0, int value=0) {
+        class Node:;
+        key = key;
+        value = value;
+        prev = null;
+        next = null;
+        class LRUCache:;
+        capacity = capacity;
+        cache = {}
+        left = Node();
+        right = Node();
+        left.next = right;
+        right.prev = left;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5168,10 +8816,23 @@ class LRUCache:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def mergeKLists(self, lists):
         values = []
 
@@ -5190,6 +8851,50 @@ class LRUCache:
             current = current.next
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool mergeKLists(int lists) {
+        values = [];
+        for (auto head : lists) {
+            while (head) {
+                values.push_back(head.val);
+                head = head.next;
+            }
+        }
+        values.sort();
+        dummy = ListNode();
+        current = dummy;
+        for (auto value : values) {
+            current.next = ListNode(value);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean mergeKLists(int lists) {
+        values = [];
+        for (int head : lists) {
+            while (head) {
+                values.add(head.val);
+                head = head.next;
+            }
+        }
+        values.sort();
+        dummy = ListNode();
+        current = dummy;
+        for (int value : values) {
+            current.next = ListNode(value);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5225,10 +8930,23 @@ class LRUCache:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>import heapq
+          <div class="code-content active" data-lang="python">
+            <pre><code>import heapq
 
 class Solution:
     def mergeKLists(self, lists):
@@ -5261,6 +8979,76 @@ class Solution:
                 )
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    bool mergeKLists(int lists) {
+        import heapq;
+        heap = [];
+        for i, node in enumerate(lists):
+            if (node) {
+                heapq.heappush(;
+                heap,;
+                (node.val, i, node);
+                );
+            }
+        }
+        dummy = ListNode();
+        current = dummy;
+        while (heap) {
+            value, i, node = heapq.heappop(heap);
+            current.next = node;
+            current = current.next;
+            if (node.next) {
+                heapq.heappush(;
+                heap,;
+                (;
+                node.next.val,;
+                i,;
+                node.next;
+                );
+                );
+            }
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public boolean mergeKLists(int lists) {
+        import heapq;
+        heap = [];
+        for i, node in enumerate(lists):
+            if (node) {
+                heapq.heappush(;
+                heap,;
+                (node.val, i, node);
+                );
+            }
+        }
+        dummy = ListNode();
+        current = dummy;
+        while (heap) {
+            value, i, node = heapq.heappop(heap);
+            current.next = node;
+            current = current.next;
+            if (node.next) {
+                heapq.heappush(;
+                heap,;
+                (;
+                node.next.val,;
+                i,;
+                node.next;
+                );
+                );
+            }
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5320,10 +9108,23 @@ class Solution:
         </div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reverseKGroup(self, head, k):
         nodes = []
 
@@ -5353,6 +9154,70 @@ class Solution:
             nodes[-1].next = None
 
         return nodes[0] if nodes else None</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+public:
+    int reverseKGroup(ListNode* head, int k) {
+        nodes = [];
+        current = head;
+        while (current) {
+            nodes.push_back(current);
+            current = current.next;
+        }
+        for start in range(0, nodes.size(), k):
+            end = min(;
+            start + k,;
+            nodes.size();
+            );
+            if (end - start &lt; k) {
+                break;
+            }
+            nodes[start:end] = reversed(;
+            nodes[start:end];
+            );
+        }
+        for (int i = 0; i &lt; nodes.size() - 1; ++i) {
+            nodes[i].next = nodes[i + 1];
+        }
+        if (nodes) {
+            nodes[-1].next = nullptr;
+        }
+        return nodes[0] if nodes else nullptr;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    public int reverseKGroup(ListNode head, int k) {
+        nodes = [];
+        current = head;
+        while (current) {
+            nodes.add(current);
+            current = current.next;
+        }
+        for start in range(0, nodes.length, k):
+            end = min(;
+            start + k,;
+            nodes.length;
+            );
+            if (end - start &lt; k) {
+                break;
+            }
+            nodes[start:end] = reversed(;
+            nodes[start:end];
+            );
+        }
+        for (int i = 0; i &lt; nodes.length - 1; ++i) {
+            nodes[i].next = nodes[i + 1];
+        }
+        if (nodes) {
+            nodes[-1].next = null;
+        }
+        return nodes[0] if nodes else null;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5388,10 +9253,23 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Solution (Python 3)</span>
-            <button class="copy-btn" onclick="copyCode(this)"><i class="ti ti-copy"></i> Copy</button>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def reverseKGroup(self, head, k):
 
         def get_kth(node, k):
@@ -5430,6 +9308,81 @@ class Solution:
             group_prev = old_start
 
         return dummy.next</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void get_kth(int node, int k) {
+        while (node &amp;&amp; k &gt; 0) {
+            node = node.next;
+            k -= 1;
+        }
+        return node;
+    }
+
+public:
+    int reverseKGroup(ListNode* head, int k) {
+        dummy = ListNode(0, head);
+        group_prev = dummy;
+        while (true) {
+            kth = get_kth(group_prev, k);
+            if (!kth) {
+                break;
+            }
+            group_next = kth.next;
+            // Reverse group
+            previous = group_next;
+            current = group_prev.next;
+            while (current != group_next) {
+                next_node = current.next;
+                current.next = previous;
+                previous = current;
+                current = next_node;
+            }
+            old_start = group_prev.next;
+            group_prev.next = kth;
+            group_prev = old_start;
+        }
+        return dummy.next;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void get_kth(int node, int k) {
+        while (node &amp;&amp; k &gt; 0) {
+            node = node.next;
+            k -= 1;
+        }
+        return node;
+    }
+
+    public int reverseKGroup(ListNode head, int k) {
+        dummy = ListNode(0, head);
+        group_prev = dummy;
+        while (true) {
+            kth = get_kth(group_prev, k);
+            if (!kth) {
+                break;
+            }
+            group_next = kth.next;
+            // Reverse group
+            previous = group_next;
+            current = group_prev.next;
+            while (current != group_next) {
+                next_node = current.next;
+                current.next = previous;
+                previous = current;
+                current = next_node;
+            }
+            old_start = group_prev.next;
+            group_prev.next = kth;
+            group_prev = old_start;
+        }
+        return dummy.next;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -5733,6 +9686,77 @@ O(1) Lookup      (Left ++ / Right --) (Expand/Shrink) Tortoise & Hare       Prev
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>

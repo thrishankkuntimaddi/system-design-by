@@ -793,6 +793,101 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* Multi-language Code Container Tabs (LeetCode Style) */
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-sans);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .lang-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-tab.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border-color: var(--border2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    .lang-tab.active i {
+      color: var(--accent);
+    }
+    .code-content {
+      display: none;
+    }
+    .code-content.active {
+      display: block;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 14px 16px;
+      margin: 0;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -910,12 +1005,23 @@
         <div class="naive-box"><p>Generate every subset by recursively deciding whether to take or not take each element.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def subsets(self, nums):
         result = []
 
@@ -934,6 +1040,53 @@
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int index, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        if (index == nums.size()) {
+            result.push_back(current);
+            return;
+        }
+        // Don't take nums[index]
+        backtrack(index + 1, current, result, nums);
+        // Take nums[index]
+        current.push_back(nums[index]);
+        backtrack(index + 1, current, result, nums);
+        current.pop_back();
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result, nums);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int index, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        if (index == nums.length) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        // Don't take nums[index]
+        backtrack(index + 1, current, result, nums);
+        // Take nums[index]
+        current.add(nums[index]);
+        backtrack(index + 1, current, result, nums);
+        current.remove(current.size() - 1);
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result, nums);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -962,15 +1115,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def subsets(self, nums):
         result = []
 
@@ -984,6 +1148,45 @@
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int start, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        result.push_back(current);
+        for (int i = start; i &lt; nums.size(); ++i) {
+            current.push_back(nums[i]);
+            backtrack(i + 1, current, result, nums);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result, nums);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int start, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        result.add(new ArrayList&lt;&gt;(current));
+        for (int i = start; i &lt; nums.length; ++i) {
+            current.add(nums[i]);
+            backtrack(i + 1, current, result, nums);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result, nums);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1038,12 +1241,23 @@
         <div class="naive-box"><p>Try every candidate at every step without pruning.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def combinationSum(self, candidates, target):
         result = []
 
@@ -1052,7 +1266,7 @@
                 result.append(current[:])
                 return
 
-            if total > target:
+            if total &gt; target:
                 return
 
             for num in candidates:
@@ -1062,6 +1276,57 @@
 
         backtrack([], 0)
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(vector&lt;int&gt;&amp; current, int total, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (total == target) {
+            result.push_back(current);
+            return;
+        }
+        if (total &gt; target) {
+            return;
+        }
+        for (auto num : candidates) {
+            current.push_back(num);
+            backtrack(current, total + num, result);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum(vector&lt;int&gt;&amp; candidates, int target) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(current, 0, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(List&lt;Integer&gt; current, int total, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (total == target) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        if (total &gt; target) {
+            return;
+        }
+        for (int num : candidates) {
+            current.add(num);
+            backtrack(current, total + num, result);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; combinationSum(int[] candidates, int target) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(new ArrayList&lt;&gt;(), 0, result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1090,15 +1355,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def combinationSum(self, candidates, target):
         result = []
         candidates.sort()
@@ -1111,7 +1387,7 @@
             for i in range(start, len(candidates)):
                 num = candidates[i]
 
-                if num > remaining:
+                if num &gt; remaining:
                     break
 
                 current.append(num)
@@ -1123,6 +1399,63 @@
 
         backtrack(0, target, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int start, int remaining, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (remaining == 0) {
+            result.push_back(current);
+            return;
+        }
+        for (int i = start; i &lt; candidates.size(); ++i) {
+            num = candidates[i];
+            if (num &gt; remaining) {
+                break;
+            }
+            current.push_back(num);
+            // i, not i + 1, because we can reuse the same number
+            backtrack(i, remaining - num, current, result);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum(vector&lt;int&gt;&amp; candidates, int target) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        candidates.sort();
+        backtrack(0, target, current, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int start, int remaining, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (remaining == 0) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int i = start; i &lt; candidates.length; ++i) {
+            num = candidates[i];
+            if (num &gt; remaining) {
+                break;
+            }
+            current.add(num);
+            // i, not i + 1, because we can reuse the same number
+            backtrack(i, remaining - num, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; combinationSum(int[] candidates, int target) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        candidates.sort();
+        backtrack(0, target, new ArrayList&lt;&gt;(), result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1177,12 +1510,23 @@
         <div class="naive-box"><p>At every level, scan the entire array and choose an unused element using <code>if num in current</code>, which costs O(n) per check.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def permute(self, nums):
         result = []
 
@@ -1201,6 +1545,57 @@
 
         backtrack([])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        if (current.size() == nums.size()) {
+            result.push_back(current);
+            return;
+        }
+        for (auto num : nums) {
+            if (num in current) {
+                continue;
+            }
+            current.push_back(num);
+            backtrack(current, result, nums);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; permute(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(current, result, nums);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        if (current.length == nums.length) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int num : nums) {
+            if (num in current) {
+                continue;
+            }
+            current.add(num);
+            backtrack(current, result, nums);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(new ArrayList&lt;&gt;(), result, nums);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1229,15 +1624,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def permute(self, nums):
         result = []
         used = [False] * len(nums)
@@ -1261,6 +1667,63 @@
 
         backtrack([])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        if (current.size() == nums.size()) {
+            result.push_back(current);
+            return;
+        }
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            if (used[i]) {
+                continue;
+            }
+            used[i] = true;
+            current.push_back(nums[i]);
+            backtrack(current, result, nums);
+            current.pop_back();
+            used[i] = false;
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; permute(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        used = [false] * nums.size();
+        backtrack(current, result, nums);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        if (current.length == nums.length) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int i = 0; i &lt; nums.length; ++i) {
+            if (used[i]) {
+                continue;
+            }
+            used[i] = true;
+            current.add(nums[i]);
+            backtrack(current, result, nums);
+            current.remove(current.size() - 1);
+            used[i] = false;
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        used = [false] * nums.length;
+        backtrack(new ArrayList&lt;&gt;(), result, nums);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1315,12 +1778,23 @@
         <div class="naive-box"><p>Generate all 2^n subsets and put them into a set to eliminate duplicate subsets.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def subsetsWithDup(self, nums):
         result = set()
 
@@ -1339,6 +1813,53 @@
 
         backtrack(0, [])
         return [list(x) for x in result]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int index, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        if (index == nums.size()) {
+            result.insert(tuple(current));
+            return;
+        }
+        // Don't take
+        backtrack(index + 1, current, result, nums);
+        // Take
+        current.push_back(nums[index]);
+        backtrack(index + 1, current, result, nums);
+        current.pop_back();
+    }
+
+public:
+    int subsetsWithDup(vector&lt;int&gt;&amp; nums) {
+        result = set();
+        backtrack(0, current, result, nums);
+        return [list(x) for x in result];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int index, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        if (index == nums.length) {
+            result.add(tuple(current));
+            return;
+        }
+        // Don't take
+        backtrack(index + 1, current, result, nums);
+        // Take
+        current.add(nums[index]);
+        backtrack(index + 1, current, result, nums);
+        current.remove(current.size() - 1);
+    }
+
+    public int subsetsWithDup(int[] nums) {
+        result = set();
+        backtrack(0, new ArrayList&lt;&gt;(), result, nums);
+        return [list(x) for x in result];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1366,15 +1887,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def subsetsWithDup(self, nums):
         nums.sort()
         result = []
@@ -1383,7 +1915,7 @@
             result.append(current[:])
 
             for i in range(start, len(nums)):
-                if i > start and nums[i] == nums[i - 1]:
+                if i &gt; start and nums[i] == nums[i - 1]:
                     continue
 
                 current.append(nums[i])
@@ -1392,6 +1924,53 @@
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int start, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result, vector&lt;int&gt;&amp; nums) {
+        result.push_back(current);
+        for (int i = start; i &lt; nums.size(); ++i) {
+            if (i &gt; start &amp;&amp; nums[i] == nums[i - 1]) {
+                continue;
+            }
+            current.push_back(nums[i]);
+            backtrack(i + 1, current, result, nums);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; subsetsWithDup(vector&lt;int&gt;&amp; nums) {
+        nums.sort();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result, nums);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int start, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result, int[] nums) {
+        result.add(new ArrayList&lt;&gt;(current));
+        for (int i = start; i &lt; nums.length; ++i) {
+            if (i &gt; start &amp;&amp; nums[i] == nums[i - 1]) {
+                continue;
+            }
+            current.add(nums[i]);
+            backtrack(i + 1, current, result, nums);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; subsetsWithDup(int[] nums) {
+        nums.sort();
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result, nums);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1446,12 +2025,23 @@
         <div class="naive-box"><p>Generate combinations recursively and use a set to remove duplicates.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def combinationSum2(self, candidates, target):
         result = set()
         candidates.sort()
@@ -1461,7 +2051,7 @@
                 result.add(tuple(current))
                 return
 
-            if index == len(candidates) or remaining < 0:
+            if index == len(candidates) or remaining &lt; 0:
                 return
 
             # Don't choose
@@ -1478,6 +2068,69 @@
 
         backtrack(0, target, [])
         return [list(x) for x in result]</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int index, int remaining, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (remaining == 0) {
+            result.insert(tuple(current));
+            return;
+        }
+        if (index == candidates.size() || remaining &lt; 0) {
+            return;
+        }
+        // Don't choose
+        backtrack(index + 1, remaining, current, result);
+        // Choose
+        current.push_back(candidates[index]);
+        backtrack(result);
+        index + 1,;
+        remaining - candidates[index],;
+        current;
+        );
+        current.pop_back();
+    }
+
+public:
+    int combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
+        result = set();
+        candidates.sort();
+        backtrack(0, target, current, result);
+        return [list(x) for x in result];
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int index, int remaining, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (remaining == 0) {
+            result.add(tuple(current));
+            return;
+        }
+        if (index == candidates.length || remaining &lt; 0) {
+            return;
+        }
+        // Don't choose
+        backtrack(index + 1, remaining, current, result);
+        // Choose
+        current.add(candidates[index]);
+        backtrack(result);
+        index + 1,;
+        remaining - candidates[index],;
+        current;
+        );
+        current.remove(current.size() - 1);
+    }
+
+    public int combinationSum2(int[] candidates, int target) {
+        result = set();
+        candidates.sort();
+        backtrack(0, target, new ArrayList&lt;&gt;(), result);
+        return [list(x) for x in result];
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1505,15 +2158,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def combinationSum2(self, candidates, target):
         candidates.sort()
         result = []
@@ -1525,11 +2189,11 @@
 
             for i in range(start, len(candidates)):
                 # Skip duplicate choices at the same level
-                if i > start and candidates[i] == candidates[i - 1]:
+                if i &gt; start and candidates[i] == candidates[i - 1]:
                     continue
 
                 # Since sorted, no later value can work
-                if candidates[i] > remaining:
+                if candidates[i] &gt; remaining:
                     break
 
                 current.append(candidates[i])
@@ -1545,6 +2209,79 @@
 
         backtrack(0, target, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int start, int remaining, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (remaining == 0) {
+            result.push_back(current);
+            return;
+        }
+        for (int i = start; i &lt; candidates.size(); ++i) {
+            // Skip duplicate choices at the same level
+            if (i &gt; start &amp;&amp; candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            // Since sorted, no later value can work
+            if (candidates[i] &gt; remaining) {
+                break;
+            }
+            current.push_back(candidates[i]);
+            // i + 1 because each element can be used once
+            backtrack(result);
+            i + 1,;
+            remaining - candidates[i],;
+            current;
+            );
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
+        candidates.sort();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, target, current, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int start, int remaining, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (remaining == 0) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int i = start; i &lt; candidates.length; ++i) {
+            // Skip duplicate choices at the same level
+            if (i &gt; start &amp;&amp; candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            // Since sorted, no later value can work
+            if (candidates[i] &gt; remaining) {
+                break;
+            }
+            current.add(candidates[i]);
+            // i + 1 because each element can be used once
+            backtrack(result);
+            i + 1,;
+            remaining - candidates[i],;
+            current;
+            );
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {
+        candidates.sort();
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, target, new ArrayList&lt;&gt;(), result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1599,12 +2336,23 @@
         <div class="naive-box"><p>Try every cell as the starting position and recursively explore all four directions.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def exist(self, board, word):
         rows = len(board)
         cols = len(board[0])
@@ -1613,7 +2361,7 @@
             if index == len(word):
                 return True
 
-            if r < 0 or r >= rows or c < 0 or c >= cols:
+            if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols:
                 return False
 
             if board[r][c] != word[index]:
@@ -1638,6 +2386,85 @@
                     return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c, int index) {
+        if (index == word.size()) {
+            return true;
+        }
+        if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols) {
+            return false;
+        }
+        if (board[r][c] != word[index]) {
+            return false;
+        }
+        original = board[r][c];
+        board[r][c] = '#';
+        found = (;
+        dfs(r + 1, c, index + 1) or, result);
+        dfs(r - 1, c, index + 1) or, result);
+        dfs(r, c + 1, index + 1) or, result);
+        dfs(r, c - 1, index + 1, result);
+        );
+        board[r][c] = original;
+        return found;
+    }
+
+public:
+    bool exist(vector&lt;vector&lt;char&gt;&gt;&amp; board, string word) {
+        rows = board.size();
+        cols = board[0].size();
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (dfs(r, c, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c, int index) {
+        if (index == word.length) {
+            return true;
+        }
+        if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols) {
+            return false;
+        }
+        if (board[r][c] != word[index]) {
+            return false;
+        }
+        original = board[r][c];
+        board[r][c] = '#';
+        found = (;
+        dfs(r + 1, c, index + 1) or, result);
+        dfs(r - 1, c, index + 1) or, result);
+        dfs(r, c + 1, index + 1) or, result);
+        dfs(r, c - 1, index + 1, result);
+        );
+        board[r][c] = original;
+        return found;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        rows = board.length;
+        cols = board[0].length;
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (dfs(r, c, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1664,15 +2491,26 @@
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>from collections import Counter
+          <div class="code-content active" data-lang="python">
+            <pre><code>from collections import Counter
 
 class Solution:
     def exist(self, board, word):
@@ -1688,11 +2526,11 @@ class Solution:
         word_count = Counter(word)
 
         for char, count in word_count.items():
-            if board_count[char] < count:
+            if board_count[char] &lt; count:
                 return False
 
         # Start from the rarer character
-        if board_count[word[0]] > board_count[word[-1]]:
+        if board_count[word[0]] &gt; board_count[word[-1]]:
             word = word[::-1]
 
         def dfs(r, c, index):
@@ -1700,8 +2538,8 @@ class Solution:
                 return True
 
             if (
-                r < 0 or r >= rows or
-                c < 0 or c >= cols or
+                r &lt; 0 or r &gt;= rows or
+                c &lt; 0 or c &gt;= cols or
                 board[r][c] != word[index]
             ):
                 return False
@@ -1726,6 +2564,127 @@ class Solution:
                         return True
 
         return False</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void dfs(int r, int c, int index) {
+        if (index == word.size()) {
+            return true;
+        }
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            board[r][c] != word[index];
+        }
+        ):;
+        return false;
+        temp = board[r][c];
+        board[r][c] = '#';
+        found = (;
+        dfs(r + 1, c, index + 1) or, result);
+        dfs(r - 1, c, index + 1) or, result);
+        dfs(r, c + 1, index + 1) or, result);
+        dfs(r, c - 1, index + 1, result);
+        );
+        board[r][c] = temp;
+        return found;
+    }
+
+public:
+    bool exist(vector&lt;vector&lt;char&gt;&gt;&amp; board, string word) {
+        from collections import Counter;
+        rows = board.size();
+        cols = board[0].size();
+        board_count = Counter(;
+        cell;
+        for row in board
+        }
+        for cell in row
+        }
+        );
+        word_count = Counter(word);
+        for char, count in word_count.items():
+            if (board_count[char] &lt; count) {
+                return false;
+            }
+        }
+        // Start from the rarer character
+        if (board_count[word[0]] &gt; board_count[word[-1]]) {
+            word = word[::-1];
+        }
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (board[r][c] == word[0]) {
+                    if (dfs(r, c, 0)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void dfs(int r, int c, int index) {
+        if (index == word.length) {
+            return true;
+        }
+        if (() {
+            r &lt; 0 || r &gt;= rows or;
+            c &lt; 0 || c &gt;= cols or;
+            board[r][c] != word[index];
+        }
+        ):;
+        return false;
+        temp = board[r][c];
+        board[r][c] = '#';
+        found = (;
+        dfs(r + 1, c, index + 1) or, result);
+        dfs(r - 1, c, index + 1) or, result);
+        dfs(r, c + 1, index + 1) or, result);
+        dfs(r, c - 1, index + 1, result);
+        );
+        board[r][c] = temp;
+        return found;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        from collections import Counter;
+        rows = board.length;
+        cols = board[0].length;
+        board_count = Counter(;
+        cell;
+        for row in board
+        }
+        for cell in row
+        }
+        );
+        word_count = Counter(word);
+        for char, count in word_count.items():
+            if (board_count[char] &lt; count) {
+                return false;
+            }
+        }
+        // Start from the rarer character
+        if (board_count[word[0]] &gt; board_count[word[-1]]) {
+            word = word[::-1];
+        }
+        for (int r = 0; r &lt; rows; ++r) {
+            for (int c = 0; c &lt; cols; ++c) {
+                if (board[r][c] == word[0]) {
+                    if (dfs(r, c, 0)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1780,12 +2739,23 @@ class Solution:
         <div class="naive-box"><p>At every position, try every possible substring and check whether it is a palindrome with <code>string == string[::-1]</code>.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def partition(self, s):
         result = []
 
@@ -1807,6 +2777,59 @@ class Solution:
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void is_palindrome(int string, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        return string == string[::-1];
+        if (start == s.size()) {
+            result.push_back(current);
+            return;
+        }
+        for (int end = start + 1; end &lt; s.size() + 1; ++end) {
+            substring = s[start:end];
+            if (is_palindrome(substring)) {
+                current.push_back(substring);
+                backtrack(end, current);
+                current.pop_back();
+            }
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; partition(string s) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, []);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void is_palindrome(int string, List&lt;List&lt;Integer&gt;&gt; result) {
+        return string == string[::-1];
+        if (start == s.length) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int end = start + 1; end &lt; s.length + 1; ++end) {
+            substring = s[start:end];
+            if (is_palindrome(substring)) {
+                current.add(substring);
+                backtrack(end, current);
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; partition(String s) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, []);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1835,15 +2858,26 @@ class Solution:
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def partition(self, s):
         n = len(s)
 
@@ -1875,6 +2909,85 @@ class Solution:
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int start, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (start == n) {
+            result.push_back(current);
+            return;
+        }
+        for (int end = start; end &lt; n; ++end) {
+            if (palindrome[start][end]) {
+                current.push_back(s[start:end + 1]);
+                backtrack(end + 1, current, result);
+                current.pop_back();
+            }
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; partition(string s) {
+        n = s.size();
+        palindrome = [[false] * n for _ in range(n)];
+        for (int i = 0; i &lt; n; ++i) {
+            palindrome[i][i] = true;
+        }
+        for (int length = 2; length &lt; n + 1; ++length) {
+            for (int left = 0; left &lt; n - length + 1; ++left) {
+                right = left + length - 1;
+                if (s[left] == s[right]) {
+                    if (length == 2 || palindrome[left + 1][right - 1]) {
+                        palindrome[left][right] = true;
+                    }
+                }
+            }
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int start, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (start == n) {
+            result.add(new ArrayList&lt;&gt;(current));
+            return;
+        }
+        for (int end = start; end &lt; n; ++end) {
+            if (palindrome[start][end]) {
+                current.add(s[start:end + 1]);
+                backtrack(end + 1, current, result);
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; partition(String s) {
+        n = s.length;
+        palindrome = [[false] * n for _ in range(n)];
+        for (int i = 0; i &lt; n; ++i) {
+            palindrome[i][i] = true;
+        }
+        for (int length = 2; length &lt; n + 1; ++length) {
+            for (int left = 0; left &lt; n - length + 1; ++left) {
+                right = left + length - 1;
+                if (s[left] == s[right]) {
+                    if (length == 2 || palindrome[left + 1][right - 1]) {
+                        palindrome[left][right] = true;
+                    }
+                }
+            }
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1930,12 +3043,23 @@ class Solution:
         <div class="naive-box"><p>Build all combinations using recursion with a dictionary lookup for key mapping.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def letterCombinations(self, digits):
         if not digits:
             return []
@@ -1965,6 +3089,77 @@ class Solution:
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int index, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (index == digits.size()) {
+            result.push_back("".join(current));
+            return;
+        }
+        for char in phone[digits[index]]:
+            current.push_back(char);
+            backtrack(index + 1, current, result);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; letterCombinations(int digits) {
+        if (!digits) {
+            return [];
+        }
+        phone = {
+        '2': 'abc',;
+        '3': 'def',;
+        '4': 'ghi',;
+        '5': 'jkl',;
+        '6': 'mno',;
+        '7': 'pqrs',;
+        '8': 'tuv',;
+        '9': 'wxyz';
+        }
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int index, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (index == digits.length) {
+            result.add("".join(current));
+            return;
+        }
+        for char in phone[digits[index]]:
+            current.add(char);
+            backtrack(index + 1, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; letterCombinations(int digits) {
+        if (!digits) {
+            return [];
+        }
+        phone = {
+        '2': 'abc',;
+        '3': 'def',;
+        '4': 'ghi',;
+        '5': 'jkl',;
+        '6': 'mno',;
+        '7': 'pqrs',;
+        '8': 'tuv',;
+        '9': 'wxyz';
+        }
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -1992,15 +3187,26 @@ class Solution:
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def letterCombinations(self, digits):
         if not digits:
             return []
@@ -2034,6 +3240,83 @@ class Solution:
 
         backtrack(0, [])
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int index, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (index == digits.size()) {
+            result.push_back("".join(current));
+            return;
+        }
+        letters = phone[ord(digits[index]) - ord('0')];
+        for (auto char : letters) {
+            current.push_back(char);
+            backtrack(index + 1, current, result);
+            current.pop_back();
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; letterCombinations(int digits) {
+        if (!digits) {
+            return [];
+        }
+        phone = [;
+        "",;
+        "",;
+        "abc",;
+        "def",;
+        "ghi",;
+        "jkl",;
+        "mno",;
+        "pqrs",;
+        "tuv",;
+        "wxyz";
+        ];
+        vector&lt;vector&lt;int&gt;&gt; result;
+        backtrack(0, current, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int index, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (index == digits.length) {
+            result.add("".join(current));
+            return;
+        }
+        letters = phone[ord(digits[index]) - ord('0')];
+        for (int char : letters) {
+            current.add(char);
+            backtrack(index + 1, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; letterCombinations(int digits) {
+        if (!digits) {
+            return [];
+        }
+        phone = [;
+        "",;
+        "",;
+        "abc",;
+        "def",;
+        "ghi",;
+        "jkl",;
+        "mno",;
+        "pqrs",;
+        "tuv",;
+        "wxyz";
+        ];
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        backtrack(0, new ArrayList&lt;&gt;(), result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2088,12 +3371,23 @@ class Solution:
         <div class="naive-box"><p>Try placing a queen in every column of every row, then check whether the board is valid with an <code>is_safe</code> helper function scanning the board in O(n) time.</p></div>
         <div class="code-container">
           <div class="code-header">
-            <span>Naive Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def solveNQueens(self, n):
         result = []
         board = [["."] * n for _ in range(n)]
@@ -2106,7 +3400,7 @@ class Solution:
 
             # Check upper-left diagonal
             r, c = row - 1, col - 1
-            while r >= 0 and c >= 0:
+            while r &gt;= 0 and c &gt;= 0:
                 if board[r][c] == "Q":
                     return False
                 r -= 1
@@ -2114,7 +3408,7 @@ class Solution:
 
             # Check upper-right diagonal
             r, c = row - 1, col + 1
-            while r >= 0 and c < n:
+            while r &gt;= 0 and c &lt; n:
                 if board[r][c] == "Q":
                     return False
                 r -= 1
@@ -2137,6 +3431,111 @@ class Solution:
 
         backtrack(0)
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void is_safe(int row, int col, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        // Check column
+        for (int r = 0; r &lt; row; ++r) {
+            if (board[r][col] == "Q") {
+                return false;
+            }
+        }
+        // Check upper-left diagonal
+        r, c = row - 1, col - 1;
+        while (r &gt;= 0 &amp;&amp; c &gt;= 0) {
+            if (board[r][c] == "Q") {
+                return false;
+            }
+            r -= 1;
+            c -= 1;
+        }
+        // Check upper-right diagonal
+        r, c = row - 1, col + 1;
+        while (r &gt;= 0 &amp;&amp; c &lt; n) {
+            if (board[r][c] == "Q") {
+                return false;
+            }
+            r -= 1;
+            c += 1;
+        }
+        return true;
+        if (row == n) {
+            result.append(;
+            ["".join(r) for r in board];
+            );
+            return;
+        }
+        for (int col = 0; col &lt; n; ++col) {
+            if (is_safe(row, col)) {
+                board[row][col] = "Q";
+                backtrack(row + 1);
+                board[row][col] = ".";
+            }
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; solveNQueens(int n) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        board = [["."] * n for _ in range(n)];
+        backtrack(0);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void is_safe(int row, int col, List&lt;List&lt;Integer&gt;&gt; result) {
+        // Check column
+        for (int r = 0; r &lt; row; ++r) {
+            if (board[r][col] == "Q") {
+                return false;
+            }
+        }
+        // Check upper-left diagonal
+        r, c = row - 1, col - 1;
+        while (r &gt;= 0 &amp;&amp; c &gt;= 0) {
+            if (board[r][c] == "Q") {
+                return false;
+            }
+            r -= 1;
+            c -= 1;
+        }
+        // Check upper-right diagonal
+        r, c = row - 1, col + 1;
+        while (r &gt;= 0 &amp;&amp; c &lt; n) {
+            if (board[r][c] == "Q") {
+                return false;
+            }
+            r -= 1;
+            c += 1;
+        }
+        return true;
+        if (row == n) {
+            result.append(;
+            ["".join(r) for r in board];
+            );
+            return;
+        }
+        for (int col = 0; col &lt; n; ++col) {
+            if (is_safe(row, col)) {
+                board[row][col] = "Q";
+                backtrack(row + 1);
+                board[row][col] = ".";
+            }
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; solveNQueens(int n) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        board = [["."] * n for _ in range(n)];
+        backtrack(0);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2165,15 +3564,26 @@ class Solution:
 
       <!-- 7. Code -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code (Optimized)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Optimized Python Solution</span>
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-lang="python" onclick="switchLang(this, 'python')">
+                <i class="ti ti-brand-python"></i> Python
+              </button>
+              <button class="lang-tab" data-lang="cpp" onclick="switchLang(this, 'cpp')">
+                <i class="ti ti-brand-cpp"></i> C++
+              </button>
+              <button class="lang-tab" data-lang="java" onclick="switchLang(this, 'java')">
+                <i class="ti ti-coffee"></i> Java
+              </button>
+            </div>
             <button class="copy-btn" onclick="copyCode(this)">
               <i class="ti ti-copy"></i> Copy
             </button>
           </div>
-          <pre><code>class Solution:
+          <div class="code-content active" data-lang="python">
+            <pre><code>class Solution:
     def solveNQueens(self, n):
         result = []
 
@@ -2217,6 +3627,97 @@ class Solution:
         backtrack(0)
 
         return result</code></pre>
+          </div>
+          <div class="code-content" data-lang="cpp">
+            <pre><code>class Solution {
+private:
+    void backtrack(int row, vector&lt;vector&lt;int&gt;&gt;&amp; result) {
+        if (row == n) {
+            result.append(;
+            ["".join(r) for r in board];
+            );
+            return;
+        }
+        for (int col = 0; col &lt; n; ++col) {
+            if (col in columns) {
+                continue;
+            }
+            if (row + col in positive_diagonals) {
+                continue;
+            }
+            if (row - col in negative_diagonals) {
+                continue;
+            }
+            // Place queen
+            board[row][col] = "Q";
+            columns.insert(col);
+            positive_diagonals.insert(row + col);
+            negative_diagonals.insert(row - col);
+            backtrack(row + 1, result);
+            // Backtrack
+            board[row][col] = ".";
+            columns.remove(col);
+            positive_diagonals.remove(row + col);
+            negative_diagonals.remove(row - col);
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; solveNQueens(int n) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        board = [["."] * n for _ in range(n)];
+        columns = set();
+        positive_diagonals = set()  # row + col;
+        negative_diagonals = set()  # row - col;
+        backtrack(0, result);
+        return result;
+    }
+};</code></pre>
+          </div>
+          <div class="code-content" data-lang="java">
+            <pre><code>class Solution {
+    private void backtrack(int row, List&lt;List&lt;Integer&gt;&gt; result) {
+        if (row == n) {
+            result.append(;
+            ["".join(r) for r in board];
+            );
+            return;
+        }
+        for (int col = 0; col &lt; n; ++col) {
+            if (col in columns) {
+                continue;
+            }
+            if (row + col in positive_diagonals) {
+                continue;
+            }
+            if (row - col in negative_diagonals) {
+                continue;
+            }
+            // Place queen
+            board[row][col] = "Q";
+            columns.add(col);
+            positive_diagonals.add(row + col);
+            negative_diagonals.add(row - col);
+            backtrack(row + 1, result);
+            // Backtrack
+            board[row][col] = ".";
+            columns.remove(col);
+            positive_diagonals.remove(row + col);
+            negative_diagonals.remove(row - col);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; solveNQueens(int n) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        board = [["."] * n for _ in range(n)];
+        columns = set();
+        positive_diagonals = set()  # row + col;
+        negative_diagonals = set()  # row - col;
+        backtrack(0, result);
+        return result;
+    }
+}</code></pre>
+          </div>
         </div>
       </div>
 
@@ -2386,6 +3887,77 @@ class Solution:
       }
       document.body.removeChild(textarea);
     }
+  
+    function switchLang(btn, lang) {
+      if (!btn) return;
+      const container = btn.closest('.code-container');
+      if (container) {
+        container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetContent = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (targetContent) targetContent.classList.add('active');
+      }
+      try {
+        localStorage.setItem('preferred_dsa_lang', lang);
+      } catch(e) {}
+      syncAllCodeContainers(lang);
+    }
+
+    function syncAllCodeContainers(lang) {
+      document.querySelectorAll('.code-container').forEach(container => {
+        const tab = container.querySelector(`.lang-tab[data-lang="${lang}"]`);
+        const content = container.querySelector(`.code-content[data-lang="${lang}"]`);
+        if (tab && content) {
+          container.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+          container.querySelectorAll('.code-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function initLanguagePreference() {
+      try {
+        const savedLang = localStorage.getItem('preferred_dsa_lang');
+        if (savedLang && ['python', 'cpp', 'java'].includes(savedLang)) {
+          syncAllCodeContainers(savedLang);
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguagePreference);
+
+    function copyCode(btn) {
+      try {
+        const container = btn.closest('.code-container');
+        const activeContent = container ? (container.querySelector('.code-content.active code') || container.querySelector('code')) : null;
+        if (!activeContent) return;
+
+        const textToCopy = activeContent.textContent || activeContent.innerText;
+
+        const showSuccess = () => {
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="ti ti-check" style="color: var(--green);"></i> <span style="color: var(--green);">Copied!</span>';
+          btn.style.borderColor = 'var(--green)';
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.borderColor = '';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(() => {
+            fallbackCopy(textToCopy, showSuccess);
+          });
+        } else {
+          fallbackCopy(textToCopy, showSuccess);
+        }
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+
   </script>
 </body>
 </html>
