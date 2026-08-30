@@ -15,1082 +15,936 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0d14;
-      --bg2: #111520;
-      --bg3: #161d2e;
-      --bg4: #1d263b;
-      --border: #1f2d48;
-      --border2: #2d3f64;
-      --text: #edf0f7;
-      --text2: #8a96b0;
-      --text3: #5a6480;
-      --accent: #ef4444;
-      --green: #34d399;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --cyan: #22d3ee;
+      --bg: #0a0d14; --bg2: #111520; --bg3: #161d2e; --bg4: #1d263b;
+      --border: #1f2d48; --text: #edf0f7; --text2: #8a96b0; --text3: #5a6480;
+      --accent: #818cf8;
+      --green: #34d399; --cyan: #22d3ee; --amber: #f59e0b; --red: #ef4444;
       --radius: 12px;
       --mono: 'JetBrains Mono', monospace;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     html { scroll-behavior: smooth; }
-    ::selection { background: var(--accent); color: #000; }
-    body {
-      font-family: var(--font-sans);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      font-size: 15px;
-    }
-    .layout { display: flex; min-height: 100vh; }
-    
+    ::selection { background: var(--accent); color: #fff; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; overflow-x: hidden; }
+    .layout { display: flex; min-height: 100vh; width: 100%; overflow-x: hidden; }
+
     /* Sidebar */
-    .sidebar {
-      width: 310px;
-      flex-shrink: 0;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar-header {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text3);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin-bottom: 12px;
-      transition: color .15s;
-    }
+    .sidebar { width: 310px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; }
+    .sidebar-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text3); text-decoration: none; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; transition: color .15s; }
     .back-link:hover { color: var(--accent); }
-    .module-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      padding: 3px 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
-    }
-    .module-title-side {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .sidebar-search {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .sidebar-search input {
-      width: 100%;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px 8px 34px;
-      font-size: 12.5px;
-      color: var(--text);
-      outline: none;
-    }
+    .module-badge { display: inline-block; font-size: 10px; font-family: var(--mono); font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; }
+    .module-title-side { font-size: 16px; font-weight: 800; color: var(--text); }
+    .sidebar-search { padding: 12px 16px; border-bottom: 1px solid var(--border); position: relative; }
+    .sidebar-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 8px 34px; font-size: 12.5px; color: var(--text); outline: none; }
     .sidebar-search input:focus { border-color: var(--accent); }
-    .sidebar-search i {
-      position: absolute;
-      left: 26px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text3);
-      font-size: 14px;
-    }
-    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      color: var(--text2);
-      text-decoration: none;
-      margin-bottom: 2px;
-      transition: all .15s;
-    }
+    .sidebar-search i { position: absolute; left: 26px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
+    .nav-list { padding: 12px 8px 40px; flex-grow: 1; }
+    .nav-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; font-size: 12.5px; color: var(--text2); text-decoration: none; margin-bottom: 2px; transition: all .15s; }
     .nav-item:hover { background: var(--bg3); color: var(--text); }
-    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
-    .diff-badge {
-      font-size: 9.5px;
-      font-family: var(--mono);
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
-    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
-    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+    .diff-badge { font-size: 9.5px; font-family: var(--mono); font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .diff-easy   { background: rgba(129,140,248,0.12); color: var(--accent); }
+    .diff-medium { background: rgba(245,158,11,0.12);  color: var(--amber); }
+    .diff-hard   { background: rgba(239,68,68,0.12);   color: var(--red); }
 
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 40px 48px 120px;
-    }
-
-    .topic-header {
-      margin-bottom: 40px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .topic-eyebrow {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .topic-header h1 {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 10px;
-    }
-    .topic-header p {
-      font-size: 15px;
-      color: var(--text2);
-    }
+    /* Main */
+    .main-content { flex: 1; min-width: 0; max-width: 960px; margin: 0 auto; padding: 40px 48px 120px; width: calc(100% - 310px); }
+    .topic-header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .topic-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+    .topic-header h1 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+    .topic-header p { font-size: 15px; color: var(--text2); }
 
     /* Problem Card */
-    .problem-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 48px;
-      scroll-margin-top: 20px;
-    }
-    .problem-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-    }
+    .problem-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden; }
+    .problem-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
     .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
-    .problem-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .problem-header h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -.01em;
-    }
+    .problem-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); }
+    .problem-header h2 { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
     .problem-meta { display: flex; align-items: center; gap: 10px; }
-    .lc-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, transparent);
-      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-      padding: 4px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background .15s;
-    }
+    .lc-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--mono); font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); padding: 4px 10px; border-radius: 6px; text-decoration: none; transition: background .15s; }
     .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 
-    .sec-block { margin-bottom: 24px; }
-    .sec-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+    .sec-block { margin-bottom: 24px; width: 100%; clear: both; }
+    .sec-title { font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
     .sec-title i { color: var(--accent); font-size: 16px; }
+    .desc-box     { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .intuition-box{ background: rgba(129,140,248,0.04); border: 1px solid rgba(129,140,248,0.2); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .naive-box    { background: rgba(239,68,68,0.04);   border: 1px solid rgba(239,68,68,0.2);  border-left: 3px solid var(--red);    border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .approach-box { background: rgba(34,211,238,0.04);  border: 1px solid rgba(34,211,238,0.2); border-left: 3px solid var(--cyan);   border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
 
-    .desc-box, .naive-box, .intuition-box, .approach-box {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.65;
-    }
-    .intuition-box {
-      background: rgba(56, 189, 248, 0.04);
-      border-color: rgba(56, 189, 248, 0.2);
-      border-left: 3px solid var(--accent);
-    }
-    .naive-box {
-      background: rgba(245, 158, 11, 0.04);
-      border-color: rgba(245, 158, 11, 0.2);
-      border-left: 3px solid var(--amber);
-    }
-    .approach-box {
-      background: rgba(52, 211, 153, 0.04);
-      border-color: rgba(52, 211, 153, 0.2);
-      border-left: 3px solid var(--green);
-    }
+    ol.step-list { padding-left: 20px; margin-top: 8px; }
+    ol.step-list li { margin-bottom: 6px; color: var(--text2); }
 
-    ol.step-list, ul.bullet-list {
-      padding-left: 20px;
-      margin-top: 8px;
-    }
-    ol.step-list li, ul.bullet-list li {
-      margin-bottom: 6px;
-      color: var(--text2);
-    }
-    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+    .complexity-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .c-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 6px; }
+    .c-time  { background: rgba(129,140,248,0.1); color: var(--accent); border: 1px solid rgba(129,140,248,0.25); }
+    .c-space { background: rgba(34,211,238,0.1);  color: var(--cyan);   border: 1px solid rgba(34,211,238,0.25); }
+    .c-naive { background: rgba(239,68,68,0.1);   color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
 
-    .complexity-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .c-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-    .c-time {
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
-    .c-space {
-      background: rgba(34, 211, 238, 0.1);
-      color: var(--cyan);
-      border: 1px solid rgba(34, 211, 238, 0.25);
-    }
-    .c-naive {
-      background: rgba(245, 158, 11, 0.1);
-      color: var(--amber);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-    }
-
-    .code-container {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      background: #06080e;
-    }
-    .code-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg3);
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text3);
-      text-transform: uppercase;
-    }
-    .copy-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text2);
-      font-size: 11px;
-      font-family: var(--mono);
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all .15s;
-    }
+    .code-container { margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #06080e; width: 100%; display: block; clear: both; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; background: var(--bg3); padding: 8px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase; }
+    .copy-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); font-size: 11px; font-family: var(--mono); padding: 3px 8px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .15s; }
     .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
-    .code-container pre {
-      padding: 16px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: #bbf7e6;
-      line-height: 1.65;
-    }
+    .code-container pre { padding: 16px; margin: 0; overflow-x: auto; font-family: var(--mono); font-size: 13px; color: #c7d2fe; line-height: 1.65; white-space: pre; }
+    .code-container pre code { display: block; white-space: pre; }
+
+    /* Summary */
+    .summary-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden; }
+    .summary-header { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .summary-header h2 { font-size: 22px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .summary-header h2 i { color: var(--accent); }
+    .pattern-table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg3); }
+    .pattern-table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
+    .pattern-table th { background: var(--bg4); padding: 12px 16px; font-weight: 700; color: var(--text); font-family: var(--mono); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .pattern-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .pattern-table tr:last-child td { border-bottom: none; }
+    .pattern-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; margin-top: 16px; }
+    .pattern-item-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .pattern-item-card h4 { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .pattern-item-card p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+    .cheat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .cheat-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+    .cheat-item code { display: block; font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 6px; font-weight: 700; }
+    .cheat-item p { font-size: 12.5px; color: var(--text2); }
 
     @media (max-width: 800px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
+      .main-content { width: 100%; padding: 24px 16px 60px; }
       .problem-card { padding: 20px; }
+      .cheat-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
-        <span class="module-badge">MODULE 12</span>
-        <div class="module-title-side">Bit Manipulation</div>
-      </div>
-      <div class="sidebar-search">
-        <i class="ti ti-search"></i>
-        <input type="text" id="filterInput" placeholder="Filter problems...">
-      </div>
-      <div class="nav-list" id="navList">
-        
-        <a href="#lc-136" class="nav-item">
-          <span>LC 136. Single Number</span>
-          <span class="diff-badge diff-easy">Easy</span>
-        </a>
-        
-        <a href="#lc-191" class="nav-item">
-          <span>LC 191. Number of 1 Bits</span>
-          <span class="diff-badge diff-easy">Easy</span>
-        </a>
-        
-        <a href="#lc-338" class="nav-item">
-          <span>LC 338. Counting Bits</span>
-          <span class="diff-badge diff-easy">Easy</span>
-        </a>
-        
-        <a href="#lc-190" class="nav-item">
-          <span>LC 190. Reverse Bits</span>
-          <span class="diff-badge diff-easy">Easy</span>
-        </a>
-        
-        <a href="#lc-268" class="nav-item">
-          <span>LC 268. Missing Number</span>
-          <span class="diff-badge diff-easy">Easy</span>
-        </a>
-        
-        <a href="#lc-371" class="nav-item">
-          <span>LC 371. Sum of Two Integers</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-7" class="nav-item">
-          <span>LC 7. Reverse Integer</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-      </div>
-    </aside>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+      <span class="module-badge">MODULE 12</span>
+      <div class="module-title-side">Bit Manipulation</div>
+    </div>
+    <div class="sidebar-search">
+      <i class="ti ti-search"></i>
+      <input type="text" id="filterInput" placeholder="Filter problems...">
+    </div>
+    <div class="nav-list" id="navList">
+      <a href="#lc-136" class="nav-item"><span>LC 136. Single Number</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-191" class="nav-item"><span>LC 191. Number of 1 Bits</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-338" class="nav-item"><span>LC 338. Counting Bits</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-190" class="nav-item"><span>LC 190. Reverse Bits</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-268" class="nav-item"><span>LC 268. Missing Number</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-371" class="nav-item"><span>LC 371. Sum of Two Integers</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-7" class="nav-item"><span>LC 7. Reverse Integer</span><span class="diff-badge diff-medium">Medium</span></a>
+      <div style="margin:16px 0 8px 12px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;">SUMMARY &amp; MAPS</div>
+      <a href="#pattern-map"   class="nav-item"><span>🧠 Pattern Map</span></a>
+      <a href="#six-tricks"    class="nav-item"><span>🔥 6 Bit Tricks</span></a>
+      <a href="#cheatsheet"    class="nav-item"><span>🎯 Cheat Sheet</span></a>
+    </div>
+  </aside>
 
-    <main class="main-content">
-      <div class="topic-header">
-        <div class="topic-eyebrow">MODULE 12 • 7 PROBLEMS</div>
-        <h1>Bit Manipulation</h1>
-        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
-      </div>
+  <main class="main-content">
+    <div class="topic-header">
+      <div class="topic-eyebrow">MODULE 12 &bull; SHEET 150</div>
+      <h1>Bit Manipulation</h1>
+      <p>7 problems — XOR cancellation, lowest-set-bit removal, bit-shift DP, binary reversal, carry arithmetic, and digit extraction.</p>
+    </div>
 
-      
+
     <div class="problem-card" id="lc-136">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 136 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 136 &bull; 12. Bit Manipulation</span>
           <h2>Single Number</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-easy">Easy</span>
-          <a href="https://leetcode.com/problems/single-number/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/single-number/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Given non-empty array of integers <code>nums</code> where every element appears twice except for one, find that single element.</p>
+        <div class="desc-box"><p>Every number in the array appears exactly twice except one. Find that single number. You must solve it in O(n) time and O(1) space.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>XOR has two golden properties: <code>x ^ x = 0</code> (pairs cancel) and <code>x ^ 0 = x</code> (identity). XOR-ing all elements causes every duplicate pair to vanish, leaving only the unique number.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Use a hash set: add unseen numbers, remove them when seen a second time. Whatever remains is the answer.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def singleNumber(self, nums):
+        seen = set()
+
+        for num in nums:
+            if num in seen:
+                seen.remove(num)
+            else:
+                seen.add(num)
+
+        return seen.pop()</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>XOR property: <code>a ^ a = 0</code> and <code>a ^ 0 = a</code>. XORing all numbers cancels out pairs, leaving single number!</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Frequency HashSet / HashMap.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(n)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Extra memory for hash set.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>XOR bitwise accumulation in O(1) space.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>XOR all elements together. Paired numbers cancel to 0. The single unpaired number XOR'd with 0 returns itself.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>res = 0</code>.</li><li>For <code>n</code> in <code>nums</code>: <code>res ^= n</code>. Return <code>res</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>answer = 0</code>.</li><li>For each <code>num</code> in <code>nums</code>: <code>answer ^= num</code>.</li><li>Return <code>answer</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def singleNumber(nums: list[int]) -&gt; int:
-    res = 0
-    for n in nums:
-        res ^= n
-    return res</code></pre>
+          <pre><code>class Solution:
+    def singleNumber(self, nums):
+        answer = 0
+
+        for num in nums:
+            answer ^= num
+
+        return answer</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">XOR trick cancels duplicate pairs.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Pairs + one unique → XOR all elements (x ^ x = 0, x ^ 0 = x)</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-191">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 191 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 191 &bull; 12. Bit Manipulation</span>
           <h2>Number of 1 Bits</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-easy">Easy</span>
-          <a href="https://leetcode.com/problems/number-of-1-bits/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/number-of-1-bits/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Write function taking positive integer <code>n</code> and returning number of set bits (Hamming weight).</p>
+        <div class="desc-box"><p>Given an unsigned integer, return the number of set bits (1s) in its binary representation (Hamming weight).</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p><code>n &amp; (n-1)</code> clears the lowest set bit. Repeating this until <code>n == 0</code> tells us exactly how many 1-bits exist — one iteration per set bit, not per total bit.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Check all 32 bits one by one using <code>n &amp; 1</code> and right-shift.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def hammingWeight(self, n):
+        count = 0
+
+        for _ in range(32):
+            if n &amp; 1:
+                count += 1
+
+            n &gt;&gt;= 1
+
+        return count</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Trick: <code>n & (n - 1)</code> flips the lowest set bit to 0 in a single operation!</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Shift all 32 bits one by one and check <code>n & 1</code>.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(32)</span>
+          <span class="c-badge c-naive">Time: O(32) = O(1)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">32 bit shifts.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Brian Kernighan's Algorithm (<code>n &= n - 1</code>) loops ONLY as many times as set bits!</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p><code>n - 1</code> flips the lowest set bit and all bits below it. So <code>n &amp; (n-1)</code> removes exactly the lowest 1-bit. Each iteration costs one set bit — loop runs exactly <code>k</code> times where <code>k</code> is the Hamming weight.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>res = 0</code>.</li><li>While <code>n</code>: <code>n &= (n - 1)</code>; <code>res += 1</code>. Return <code>res</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>count = 0</code>.</li><li>While <code>n != 0</code>: <code>n &amp;= n - 1</code>; <code>count += 1</code>.</li><li>Return <code>count</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def hammingWeight(n: int) -&gt; int:
-    res = 0
-    while n:
-        n &amp;= (n - 1)
-        res += 1
-    return res</code></pre>
+          <pre><code>class Solution:
+    def hammingWeight(self, n):
+        count = 0
+
+        while n:
+            n &amp;= n - 1
+            count += 1
+
+        return count</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(Set Bits)</span>
+          <span class="c-badge c-time">Time: O(k) — k = number of set bits</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Brian Kernighan's bit clearing algorithm.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; n &amp; (n-1) removes the lowest set bit — loop runs once per 1-bit</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-338">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 338 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 338 &bull; 12. Bit Manipulation</span>
           <h2>Counting Bits</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-easy">Easy</span>
-          <a href="https://leetcode.com/problems/counting-bits/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/counting-bits/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Given integer <code>n</code>, return array <code>ans</code> of length <code>n + 1</code> where <code>ans[i]</code> is number of 1's in binary representation of <code>i</code>.</p>
+        <div class="desc-box"><p>Given <code>n</code>, return an array of length <code>n+1</code> where <code>result[i]</code> is the number of 1-bits in <code>i</code>.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Right-shifting a number by 1 removes its last bit: <code>num &gt;&gt; 1</code> has the same 1-bits as <code>num</code> minus the contribution of its last bit. So <code>bits[num] = bits[num &gt;&gt; 1] + (num &amp; 1)</code> — build on already-computed results.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>For each number 0..n, count its 1-bits independently using <code>n &amp; (n-1)</code>.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def countBits(self, n):
+        result = []
+
+        for num in range(n + 1):
+            count = 0
+            x = num
+
+            while x:
+                x &amp;= x - 1
+                count += 1
+
+            result.append(count)
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p><code>dp[i] = 1 + dp[i - offset]</code> where <code>offset</code> is highest power of 2 <= <code>i</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Count 1 bits for each number independently from 0 to N.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N log N)</span>
-          <span class="c-badge c-space">Space: O(1)</span>
+          <span class="c-badge c-naive">Time: O(n log n)</span>
+          <span class="c-badge c-space">Space: O(n) output</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">O(N log N) bit counts.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>1D DP tabulating set bit count reusing previous power-of-two offset results.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>DP recurrence: <code>bits[num] = bits[num &gt;&gt; 1] + (num &amp; 1)</code>. Removing the last bit gives a smaller number whose bit count is already known.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>dp = [0] * (n + 1)</code>; <code>offset = 1</code>.</li><li>For <code>i</code> from <code>1..n</code>: if <code>offset * 2 == i</code> <code>offset = i</code>; <code>dp[i] = 1 + dp[i - offset]</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>result = [0] * (n + 1)</code>.</li><li>For <code>num</code> in range(1, n+1):</li><li><code>result[num] = result[num &gt;&gt; 1] + (num &amp; 1)</code>.</li><li>Return <code>result</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def countBits(n: int) -&gt; list[int]:
-    dp = [0] * (n + 1)
-    offset = 1
+          <pre><code>class Solution:
+    def countBits(self, n):
+        result = [0] * (n + 1)
 
-    for i in range(1, n + 1):
-        if offset * 2 == i:
-            offset = i
-        dp[i] = 1 + dp[i - offset]
+        for num in range(1, n + 1):
+            result[num] = (
+                result[num &gt;&gt; 1]
+                + (num &amp; 1)
+            )
 
-    return dp</code></pre>
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
-          <span class="c-badge c-space">Space: O(1)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(n) output</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">1D DP offset technique.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; DP + bit shift: bits[num] = bits[num >> 1] + (num &amp; 1)</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-190">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 190 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 190 &bull; 12. Bit Manipulation</span>
           <h2>Reverse Bits</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-easy">Easy</span>
-          <a href="https://leetcode.com/problems/reverse-bits/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/reverse-bits/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Reverse bits of a given 32-bit unsigned integer.</p>
+        <div class="desc-box"><p>Reverse the bits of a given 32-bit unsigned integer and return the result.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Extract the rightmost bit of <code>n</code> using <code>n &amp; 1</code>, shift it into the leftmost available position of <code>result</code> using <code>result &lt;&lt;= 1</code> then <code>result |= n &amp; 1</code>, then right-shift <code>n</code>. Repeat 32 times.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Build a binary string of <code>n</code>, reverse it, then reconstruct the integer.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def reverseBits(self, n):
+        binary = &quot;&quot;
+
+        for _ in range(32):
+            binary += str(n &amp; 1)
+            n &gt;&gt;= 1
+
+        result = 0
+
+        for bit in binary:
+            result = (result &lt;&lt; 1) | int(bit)
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Extract bit at pos <code>i</code> using <code>(n >> i) & 1</code>, and shift left to <code>(31 - i)</code> position in result.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Convert to binary string, reverse string, convert back to int.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(32)</span>
-          <span class="c-badge c-space">Space: O(32)</span>
+          <span class="c-badge c-naive">Time: O(32) = O(1)</span>
+          <span class="c-badge c-space">Space: O(32) = O(1)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">String conversion.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Bitwise operations shift extracted bit directly to reverse position.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Per-iteration: shift <code>result</code> left to make room, OR in the lowest bit of <code>n</code>, then right-shift <code>n</code>. After 32 iterations the bits are fully reversed.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>res = 0</code>.</li><li>For <code>i</code> from <code>0..31</code>: <code>bit = (n >> i) & 1</code>; <code>res = res | (bit << (31 - i))</code>. Return <code>res</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>result = 0</code>.</li><li>Repeat 32 times: <code>result &lt;&lt;= 1</code>, <code>result |= n &amp; 1</code>, <code>n &gt;&gt;= 1</code>.</li><li>Return <code>result</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def reverseBits(n: int) -&gt; int:
-    res = 0
-    for i in range(32):
-        bit = (n &gt;&gt; i) &amp; 1
-        res = res | (bit &lt;&lt; (31 - i))
-    return res</code></pre>
+          <pre><code>class Solution:
+    def reverseBits(self, n):
+        result = 0
+
+        for _ in range(32):
+            result &lt;&lt;= 1
+            result |= n &amp; 1
+            n &gt;&gt;= 1
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(1)</span>
+          <span class="c-badge c-time">Time: O(32) = O(1)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">32 bitwise shifts.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Shift + extract each bit: result &lt;&lt;= 1 → result |= (n &amp; 1) → n &gt;&gt;= 1</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-268">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 268 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 268 &bull; 12. Bit Manipulation</span>
           <h2>Missing Number</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-easy">Easy</span>
-          <a href="https://leetcode.com/problems/missing-number/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/missing-number/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Given array <code>nums</code> containing <code>n</code> distinct numbers in range <code>[0, n]</code>, return missing number.</p>
+        <div class="desc-box"><p>Given an array containing <code>n</code> distinct numbers from <code>[0, n]</code>, return the one missing number.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>XOR the complete range <code>0..n</code> with every element of the array. Present numbers cancel in pairs; only the missing number has no partner to cancel with.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Put all numbers in a set; scan 0..n for the missing one.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def missingNumber(self, nums):
+        n = len(nums)
+        values = set(nums)
+
+        for num in range(n + 1):
+            if num not in values:
+                return num
+
+        return -1</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Sum formula: <code>expected = n * (n + 1) // 2</code>. Missing number = <code>expected - sum(nums)</code>. OR XOR <code>0..n</code> with array elements.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Sort array and check <code>nums[i] != i</code>.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N log N)</span>
-          <span class="c-badge c-space">Space: O(1)</span>
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(n)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Sorting overhead.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>XOR <code>0..n</code> with array elements in O(1) space without integer overflow.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Start with <code>answer = n</code>. For each index <code>i</code>, XOR in both <code>i</code> and <code>nums[i]</code>. Every index 0..n-1 is covered, and each present number cancels. The missing number survives.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>res = len(nums)</code>.</li><li>For <code>i, n</code> in enumerate(nums): <code>res += (i - n)</code>. Return <code>res</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>answer = n</code>.</li><li>For <code>i, num</code> in <code>enumerate(nums)</code>: <code>answer ^= i</code>, <code>answer ^= num</code>.</li><li>Return <code>answer</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def missingNumber(nums: list[int]) -&gt; int:
-    res = len(nums)
-    for i, n in enumerate(nums):
-        res += (i - n)
-    return res</code></pre>
+          <pre><code>class Solution:
+    def missingNumber(self, nums):
+        n = len(nums)
+        answer = n
+
+        for i, num in enumerate(nums):
+            answer ^= i
+            answer ^= num
+
+        return answer</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass arithmetic sum.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Missing value in known range → XOR complete range with array (also solvable as sum(0..n) - sum(nums))</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-371">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 371 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 371 &bull; 12. Bit Manipulation</span>
           <h2>Sum of Two Integers</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/sum-of-two-integers/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/sum-of-two-integers/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Calculate sum of two integers <code>a</code> and <code>b</code> without using <code>+</code> or <code>-</code> operators.</p>
+        <div class="desc-box"><p>Calculate <code>a + b</code> without using the operators <code>+</code> or <code>-</code>.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p><code>a ^ b</code> computes the sum bit-by-bit ignoring carries. <code>(a &amp; b) &lt;&lt; 1</code> produces the carry bits shifted into position. Repeat, treating the carry as the new addend, until there is no carry left.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>In Python, just return <code>a + b</code> — but this violates the constraint.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def getSum(self, a, b):
+        return a + b  # violates constraint</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>XOR <code>a ^ b</code> calculates sum without carry. AND <code>(a & b) << 1</code> calculates carry!</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Iterative incrementing.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N)</span>
+          <span class="c-badge c-naive">Time: O(1)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Linear increment.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Adder logic using XOR for sum and AND-left-shift for carry with 32-bit mask handling in Python.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Binary addition: XOR gives the digit sum without carry; AND gives where carries occur, shifted left one position. Mask to 32 bits to simulate fixed-width arithmetic. Handle sign extension at the end for negative results.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Mask <code>0xFFFFFFFF</code>.</li><li>While <code>b != 0</code>: <code>carry = (a & b) << 1</code>; <code>a = (a ^ b) & mask</code>; <code>b = carry & mask</code>.</li><li>Return <code>a if a <= 0x7FFFFFFF else ~(a ^ mask)</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Set <code>MASK = 0xFFFFFFFF</code> (32 bits), <code>MAX_INT = 0x7FFFFFFF</code>.</li><li>While <code>b != 0</code>: compute <code>carry = (a &amp; b) &lt;&lt; 1</code>.</li><li><code>a = (a ^ b) &amp; MASK</code>, <code>b = carry &amp; MASK</code>.</li><li>If <code>a &lt;= MAX_INT</code> return <code>a</code>, else return <code>~(a ^ MASK)</code> (sign-extend negative).</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def getSum(a: int, b: int) -&gt; int:
-    mask = 0xFFFFFFFF
-    while b != 0:
-        tmp = (a &amp; b) &lt;&lt; 1
-        a = (a ^ b) &amp; mask
-        b = tmp &amp; mask
-    return a if a &lt;= 0x7FFFFFFF else ~(a ^ mask)</code></pre>
+          <pre><code>class Solution:
+    def getSum(self, a, b):
+        MASK = 0xFFFFFFFF
+        MAX_INT = 0x7FFFFFFF
+
+        while b != 0:
+            carry = (a &amp; b) &lt;&lt; 1
+            a = (a ^ b) &amp; MASK
+            b = carry &amp; MASK
+
+        if a &lt;= MAX_INT:
+            return a
+
+        return ~(a ^ MASK)</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(1)</span>
+          <span class="c-badge c-time">Time: O(1) — max 32 iterations</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Bitwise adder simulation.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; XOR = addition without carry; (a &amp; b) &lt;&lt; 1 = carry; repeat until carry is 0</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-7">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 7 • Bit Manipulation</span>
+          <span class="problem-tag">#LC 7 &bull; 12. Bit Manipulation</span>
           <h2>Reverse Integer</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/reverse-integer/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/reverse-integer/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Given signed 32-bit integer <code>x</code>, return <code>x</code> with its digits reversed. Return 0 if overflow <code>[-2^31, 2^31 - 1]</code>.</p>
+        <div class="desc-box"><p>Given a signed 32-bit integer <code>x</code>, return <code>x</code> with its digits reversed. If the reversed value overflows the 32-bit signed range <code>[-2³¹, 2³¹-1]</code>, return 0.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Extract digits right-to-left using <code>x % 10</code> and rebuild the reversed number using <code>result * 10 + digit</code>. Handle sign separately. Check overflow against 32-bit bounds before returning.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Convert to string, reverse, convert back to int, then check overflow.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def reverse(self, x):
+        sign = -1 if x &lt; 0 else 1
+        x = abs(x)
+
+        reversed_num = int(str(x)[::-1])
+        reversed_num *= sign
+
+        if (
+            reversed_num &lt; -(2 ** 31)
+            or reversed_num &gt; 2 ** 31 - 1
+        ):
+            return 0
+
+        return reversed_num</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Pop digits from back: <code>pop = x % 10</code>. Push to reversed integer: <code>res = res * 10 + pop</code>. Check 32-bit bounds before pushing.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Convert to string, reverse string, convert back to int.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(log X)</span>
-          <span class="c-badge c-space">Space: O(log X)</span>
+          <span class="c-badge c-naive">Time: O(log |x|)</span>
+          <span class="c-badge c-space">Space: O(log |x|)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">String conversion.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Modulo 10 digit extraction and overflow bound checks.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Digit extraction: <code>x % 10</code> gives the last digit; <code>x //= 10</code> removes it. Accumulate into <code>result = result * 10 + digit</code>. Multiply sign back in at the end and validate the 32-bit range.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Bound constants <code>MIN = -2147483648, MAX = 2147483647</code>.</li><li><code>res = 0</code>. While <code>x</code>: <code>digit = math.fmod(x, 10)</code>; <code>x = int(x / 10)</code>.</li><li>Check overflow before multiplying <code>res * 10</code>. Return <code>res</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Store <code>sign = -1 if x &lt; 0 else 1</code>, then <code>x = abs(x)</code>.</li><li>Initialize <code>result = 0</code>.</li><li>While <code>x &gt; 0</code>: <code>digit = x % 10</code>, <code>result = result * 10 + digit</code>, <code>x //= 10</code>.</li><li><code>result *= sign</code>.</li><li>If result is outside <code>[-2³¹, 2³¹-1]</code>: return 0; else return <code>result</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>import math
+          <pre><code>class Solution:
+    def reverse(self, x):
+        sign = -1 if x &lt; 0 else 1
+        x = abs(x)
 
-def reverse(x: int) -&gt; int:
-    MIN, MAX = -2147483648, 2147483647
-    res = 0
-    while x:
-        digit = int(math.fmod(x, 10))
-        x = int(x / 10)
-        if res &gt; MAX // 10 or (res == MAX // 10 and digit &gt;= MAX % 10):
+        result = 0
+
+        while x:
+            digit = x % 10
+            result = result * 10 + digit
+            x //= 10
+
+        result *= sign
+
+        if result &lt; -(2 ** 31) or result &gt; 2 ** 31 - 1:
             return 0
-        if res &lt; MIN // 10 or (res == MIN // 10 and digit &lt;= MIN % 10):
-            return 0
-        res = (res * 10) + digit
-    return res</code></pre>
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(log X)</span>
+          <span class="c-badge c-time">Time: O(log |x|)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Digit extraction with overflow checking.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Digit extraction right-to-left: digit = x % 10, remove with x //= 10, rebuild with result * 10 + digit</p></div>
       </div>
     </div>
-    
-    </main>
-  </div>
 
-  <script>
-    const filterInput = document.getElementById('filterInput');
-    const navItems = document.querySelectorAll('.nav-item');
-    const cards = document.querySelectorAll('.problem-card');
+    <!-- Pattern Map -->
+    <div class="summary-card" id="pattern-map">
+      <div class="summary-header">
+        <h2><i class="ti ti-map"></i> 🧠 Complete Bit Manipulation Pattern Map</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">All 7 problems, their core technique, and complexity.</p>
+      <div class="pattern-table-wrapper">
+        <table class="pattern-table">
+          <thead>
+            <tr><th>Problem</th><th>LC #</th><th>Core Technique</th><th>Time</th><th>Space</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Single Number</td><td>LC 136</td><td>XOR cancellation (x ^ x = 0)</td><td>O(n)</td><td>O(1)</td></tr>
+            <tr><td>Number of 1 Bits</td><td>LC 191</td><td>n &amp; (n-1) removes lowest set bit</td><td>O(k)</td><td>O(1)</td></tr>
+            <tr><td>Counting Bits</td><td>LC 338</td><td>DP: bits[n] = bits[n &gt;&gt; 1] + (n &amp; 1)</td><td>O(n)</td><td>O(n)</td></tr>
+            <tr><td>Reverse Bits</td><td>LC 190</td><td>Shift + extract per bit, 32 iterations</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td>Missing Number</td><td>LC 268</td><td>XOR full range with array</td><td>O(n)</td><td>O(1)</td></tr>
+            <tr><td>Sum of Two Integers</td><td>LC 371</td><td>XOR = sum; AND &lt;&lt; 1 = carry; repeat</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td>Reverse Integer</td><td>LC 7</td><td>Digit extraction: x % 10, x //= 10</td><td>O(log n)</td><td>O(1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-    filterInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(q) ? 'flex' : 'none';
-      });
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(q) ? 'block' : 'none';
-      });
+    <!-- 6 Bit Tricks -->
+    <div class="summary-card" id="six-tricks">
+      <div class="summary-header">
+        <h2><i class="ti ti-flame"></i> 🔥 6 Bit Tricks to Memorize</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">These operations underlie every problem in this module. Learn the primitives, not the solutions.</p>
+      <div class="pattern-grid">
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-1"></i> Check last bit (parity)</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">n &amp; 1</code><br>Returns 1 if odd, 0 if even. Used in LC 338 (Counting Bits) and LC 190 (Reverse Bits).</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-2"></i> Remove lowest set bit</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">n &amp;= n - 1</code><br>Clears the rightmost 1. Loop runs exactly k times where k = Hamming weight. Core of LC 191.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-3"></i> Power of 2 check</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">n > 0 and (n &amp; (n-1)) == 0</code><br>Powers of 2 have exactly one 1-bit, so n-1 flips all lower bits and AND gives 0.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-4"></i> XOR cancellation</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">x ^ x = 0 &nbsp;&nbsp; x ^ 0 = x</code><br>Pairs cancel to 0; the lone value survives. Used directly in LC 136 and LC 268.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-5"></i> Bit shift arithmetic</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">n &gt;&gt; 1</code> → divide by 2 / strip last bit<br><code style="font-family:var(--mono);color:var(--accent)">n &lt;&lt; 1</code> → multiply by 2 / shift left<br>Core of LC 338 DP and LC 190 reversal.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-6"></i> Binary addition with bits</h4>
+          <p><code style="font-family:var(--mono);color:var(--accent)">a ^ b</code> = sum without carry<br><code style="font-family:var(--mono);color:var(--accent)">(a &amp; b) &lt;&lt; 1</code> = carry bits<br>Repeat until carry = 0. That's all of LC 371.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cheat Sheet -->
+    <div class="summary-card" id="cheatsheet">
+      <div class="summary-header">
+        <h2><i class="ti ti-target"></i> 🎯 Bit Manipulation Cheat Sheet</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">All essential expressions in one place. Memorize these and you won't need to memorize seven different solutions.</p>
+      <div class="cheat-grid">
+        <div class="cheat-item"><code>x ^ x = 0</code><p>Identical values cancel — foundation of XOR tricks</p></div>
+        <div class="cheat-item"><code>x ^ 0 = x</code><p>XOR with 0 is identity — start accumulator at 0</p></div>
+        <div class="cheat-item"><code>n &amp; 1</code><p>Get last bit (check odd/even)</p></div>
+        <div class="cheat-item"><code>n &amp; (n - 1)</code><p>Remove lowest set bit (count 1-bits)</p></div>
+        <div class="cheat-item"><code>n >> 1</code><p>Right shift — divide by 2 / strip last bit</p></div>
+        <div class="cheat-item"><code>n << 1</code><p>Left shift — multiply by 2</p></div>
+        <div class="cheat-item"><code>a ^ b</code><p>Addition without carry</p></div>
+        <div class="cheat-item"><code>(a &amp; b) &lt;&lt; 1</code><p>Carry bits (shift into next position)</p></div>
+        <div class="cheat-item"><code>n > 0 and n &amp; (n-1) == 0</code><p>Check if power of 2</p></div>
+        <div class="cheat-item"><code>x % 10 / x //= 10</code><p>Digit extraction right-to-left</p></div>
+      </div>
+
+      <div style="margin-top:24px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <p style="color:var(--text);font-size:14px;font-weight:700;margin-bottom:10px;">⭐ Interview Priority</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;color:var(--text2);">
+          <div>
+            <p style="color:var(--text);font-weight:700;margin-bottom:4px;">Must-Know First</p>
+            <p>LC 136 — XOR fundamentals<br>LC 191 — n &amp; (n-1) trick<br>LC 268 — XOR cancellation<br>LC 338 — DP + bit shifts</p>
+          </div>
+          <div>
+            <p style="color:var(--text);font-weight:700;margin-bottom:4px;">Next Priority</p>
+            <p>LC 371 — XOR + carry<br>LC 190 — Reverse bits<br>LC 7 — Digit extraction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const filterInput = document.getElementById('filterInput');
+  const navItems = document.querySelectorAll('.nav-item');
+  const cards = document.querySelectorAll('.problem-card, .summary-card');
+
+  filterInput.addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    navItems.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
     });
-  </script>
+    cards.forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    });
+  });
+</script>
 </body>
 </html>

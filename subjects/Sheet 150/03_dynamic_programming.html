@@ -41,8 +41,14 @@
       color: var(--text);
       line-height: 1.6;
       font-size: 15px;
+      overflow-x: hidden;
     }
-    .layout { display: flex; min-height: 100vh; }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
     
     /* Sidebar */
     .sidebar {
@@ -56,6 +62,7 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      z-index: 10;
     }
     .sidebar-header {
       padding: 20px 20px 16px;
@@ -145,9 +152,11 @@
     /* Main Content */
     .main-content {
       flex: 1;
+      min-width: 0;
       max-width: 960px;
       margin: 0 auto;
       padding: 40px 48px 120px;
+      width: calc(100% - 310px);
     }
 
     .topic-header {
@@ -311,6 +320,9 @@
       border-radius: 8px;
       overflow: hidden;
       background: #06080e;
+      width: 100%;
+      display: block;
+      clear: both;
     }
     .code-header {
       display: flex;
@@ -343,17 +355,120 @@
       padding: 16px;
       margin: 0;
       overflow-x: auto;
+      max-width: 100%;
       font-family: var(--mono);
       font-size: 13px;
       color: #bbf7e6;
       line-height: 1.65;
+      white-space: pre;
+    }
+    .code-container pre code {
+      display: block;
+      white-space: pre;
     }
 
     @media (max-width: 800px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
+      .main-content { width: 100%; padding: 24px 16px 60px; }
       .problem-card { padding: 20px; }
+    }
+
+    /* Summary & Pattern Cards */
+    .summary-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .summary-header {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-header h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .summary-header p {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+    .pattern-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    .pattern-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+    .pattern-table th {
+      background: var(--bg3);
+      padding: 12px 16px;
+      color: var(--text);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .pattern-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2);
+    }
+    .pattern-table tr:last-child td { border-bottom: none; }
+    .pattern-table tr:hover td { background: color-mix(in srgb, var(--accent) 8%, transparent); color: var(--text); }
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .pattern-item-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .pattern-item-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pattern-item-card p {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .diagram-box {
+      background: #06080e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--cyan);
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.55;
     }
   </style>
 </head>
@@ -484,6 +599,19 @@
         <a href="#lc-10" class="nav-item">
           <span>LC 10. Regular Expression Matching</span>
           <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#pattern-map" class="nav-item" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span>🧠 Pattern Map</span>
+          <span class="diff-badge diff-medium">Summary</span>
+        </a>
+        <a href="#master-patterns" class="nav-item">
+          <span>🔥 9 Master Patterns</span>
+          <span class="diff-badge diff-hard">Guide</span>
+        </a>
+        <a href="#dp-template" class="nav-item">
+          <span>🚀 Progression & Template</span>
+          <span class="diff-badge diff-easy">Strategy</span>
         </a>
         
       </div>
@@ -3623,15 +3751,45 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
         <div class="desc-box">
-          <p>Standard Levenshtein distance 2D DP. 3 operations: Insert (<code>dp[i][j+1]</code>), Delete (<code>dp[i+1][j]</code>), Replace (<code>dp[i+1][j+1]</code>).</p>
+          <p>Standard Levenshtein distance 2D DP. 3 operations at each position: Insert, Delete, or Replace.</p>
         </div>
       </div>
 
       <!-- 3. Naive Solution -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
         <div class="naive-box">
-          <p>Recursive evaluation trying all 3 operations.</p>
+          <p>Recursive evaluation trying all 3 operations (insert, delete, replace) at each step.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def minDistance(self, word1, word2):
+
+        def dfs(i, j):
+            if i == len(word1):
+                return len(word2) - j
+
+            if j == len(word2):
+                return len(word1) - i
+
+            if word1[i] == word2[j]:
+                return dfs(i + 1, j + 1)
+
+            insert = dfs(i, j + 1)
+            delete = dfs(i + 1, j)
+            replace = dfs(i + 1, j + 1)
+
+            return 1 + min(
+                insert,
+                delete,
+                replace
+            )
+
+        return dfs(0, 0)</code></pre>
         </div>
       </div>
 
@@ -3639,17 +3797,16 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(3^(M+N))</span>
-          <span class="c-badge c-space">Space: O(M+N)</span>
+          <span class="c-badge c-naive">Time: O(3^(m+n))</span>
+          <span class="c-badge c-space">Aux Space: O(m+n)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Branching factor 3 without memoization.</p>
       </div>
 
       <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — 2D DP / Space Optimization</div>
         <div class="intuition-box">
-          <p>2D bottom-up grid DP of size <code>(M+1) x (N+1)</code> initialized with base cases on borders.</p>
+          <p>2D bottom-up grid <code>dp[i][j]</code> where <code>dp[i][j]</code> is min operations for <code>word1[:i]</code> and <code>word2[:j]</code>. Can be space-optimized to 1D row array of size <code>min(m, n)</code>.</p>
         </div>
       </div>
 
@@ -3657,7 +3814,12 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
         <div class="approach-box">
-          <ol class='step-list'><li>Grid <code>dp = [[inf]*(N+1) for _ in range(M+1)]</code>. Base cases: bottom row and rightmost col filled with remaining lengths.</li><li>Loop <code>i</code> from <code>M-1</code> down to 0; <code>j</code> from <code>N-1</code> down to 0.</li><li>If <code>word1[i] == word2[j]</code>: <code>dp[i][j] = dp[i+1][j+1]</code>. Else <code>dp[i][j] = 1 + min(dp[i+1][j], dp[i][j+1], dp[i+1][j+1])</code>.</li></ol>
+          <ol class="step-list">
+            <li>Initialize 2D array <code>dp</code> of size <code>(m+1) x (n+1)</code> with base cases <code>dp[i][0] = i</code> and <code>dp[0][j] = j</code>.</li>
+            <li>For <code>i</code> from 1 to <code>m</code> and <code>j</code> from 1 to <code>n</code>: if <code>word1[i-1] == word2[j-1]</code>, <code>dp[i][j] = dp[i-1][j-1]</code>.</li>
+            <li>Else <code>dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])</code> (delete, insert, replace).</li>
+            <li>Return <code>dp[m][n]</code>.</li>
+          </ol>
         </div>
       </div>
 
@@ -3666,26 +3828,76 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized 2D DP (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def minDistance(word1: str, word2: str) -&gt; int:
-    dp = [[float(&quot;inf&quot;)] * (len(word2) + 1) for _ in range(len(word1) + 1)]
+          <pre><code>class Solution:
+    def minDistance(self, word1, word2):
 
-    for j in range(len(word2) + 1):
-        dp[len(word1)][j] = len(word2) - j
-    for i in range(len(word1) + 1):
-        dp[i][len(word2)] = len(word1) - i
+        m = len(word1)
+        n = len(word2)
 
-    for i in range(len(word1) - 1, -1, -1):
-        for j in range(len(word2) - 1, -1, -1):
-            if word1[i] == word2[j]:
-                dp[i][j] = dp[i + 1][j + 1]
-            else:
-                dp[i][j] = 1 + min(dp[i + 1][j],      # Insert
-                                   dp[i][j + 1],      # Delete
-                                   dp[i + 1][j + 1])  # Replace
-    return dp[0][0]</code></pre>
+        dp = [
+            [0] * (n + 1)
+            for _ in range(m + 1)
+        ]
+
+        for i in range(m + 1):
+            dp[i][0] = i
+
+        for j in range(n + 1):
+            dp[0][j] = j
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                else:
+                    dp[i][j] = 1 + min(
+                        dp[i - 1][j],       # delete
+                        dp[i][j - 1],       # insert
+                        dp[i - 1][j - 1]    # replace
+                    )
+
+        return dp[m][n]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(min(m, n)) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def minDistance(self, word1, word2):
+
+        if len(word2) &gt; len(word1):
+            word1, word2 = word2, word1
+
+        previous = list(range(len(word2) + 1))
+
+        for i in range(1, len(word1) + 1):
+            current = [i]
+
+            for j in range(1, len(word2) + 1):
+
+                if word1[i - 1] == word2[j - 1]:
+                    current.append(
+                        previous[j - 1]
+                    )
+
+                else:
+                    current.append(
+                        1 + min(
+                            previous[j],
+                            current[j - 1],
+                            previous[j - 1]
+                        )
+                    )
+
+            previous = current
+
+        return previous[-1]</code></pre>
         </div>
       </div>
 
@@ -3693,10 +3905,17 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(M * N)</span>
-          <span class="c-badge c-space">Space: O(M * N)</span>
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(min(m,n)) (Space Optimized) / O(mn) (2D Matrix)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Classic Levenshtein Edit Distance grid DP.</p>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Insert / Delete / Replace Two-String DP</strong> — Standard edit distance pattern comparing character prefixes.</p>
+        </div>
       </div>
     </div>
     
@@ -3726,15 +3945,50 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
         <div class="desc-box">
-          <p>Reverse thinking: instead of picking which balloon to burst FIRST, pick which balloon <code>k</code> to burst LAST in range <code>(l, r)</code>!</p>
+          <p>Instead of choosing the first balloon to burst, choose the LAST balloon to burst in an interval <code>(left, right)</code>!</p>
         </div>
       </div>
 
       <!-- 3. Naive Solution -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
         <div class="naive-box">
-          <p>Try popping every balloon first, producing permutations of arrays.</p>
+          <p>Try every balloon as the first balloon to burst recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxCoins(self, nums):
+
+        def dfs(nums):
+            if not nums:
+                return 0
+
+            answer = 0
+
+            for i in range(len(nums)):
+                left = nums[i - 1] if i &gt; 0 else 1
+                right = nums[i + 1] if i + 1 &lt; len(nums) else 1
+
+                coins = (
+                    left *
+                    nums[i] *
+                    right
+                )
+
+                remaining = nums[:i] + nums[i + 1:]
+
+                answer = max(
+                    answer,
+                    coins + dfs(remaining)
+                )
+
+            return answer
+
+        return dfs(nums)</code></pre>
         </div>
       </div>
 
@@ -3742,17 +3996,16 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N!)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: Approximately O(n!)</span>
+          <span class="c-badge c-space">Aux Space: O(n²)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">N! balloon popping orders.</p>
       </div>
 
       <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Interval DP</div>
         <div class="intuition-box">
-          <p>Range DP over interval <code>(l, r)</code> with memoization.</p>
+          <p>Pad array with 1 at both ends: <code>nums = [1] + nums + [1]</code>. Evaluate interval lengths from 2 to <code>n</code>. Choose balloon <code>k</code> burst last in <code>(left, right)</code>.</p>
         </div>
       </div>
 
@@ -3760,7 +4013,13 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
         <div class="approach-box">
-          <ol class='step-list'><li>Pad array with 1 at start and end: <code>nums = [1] + nums + [1]</code>.</li><li>Memo <code>dp = {}</code>.</li><li>In <code>dfs(l, r)</code>: if <code>l > r</code> return 0.</li><li>For <code>i</code> from <code>l</code> to <code>r</code>: coins gained when bursting <code>i</code> LAST is <code>nums[l-1] * nums[i] * nums[r+1] + dfs(l, i-1) + dfs(i+1, r)</code>.</li></ol>
+          <ol class="step-list">
+            <li>Pad array with boundary 1s: <code>nums = [1] + nums + [1]</code>.</li>
+            <li>Create 2D DP matrix <code>dp</code> of size <code>n x n</code>.</li>
+            <li>Outer loop <code>length</code> from 2 to <code>n-1</code>; inner loop <code>left</code> from 0 to <code>n - length</code>; <code>right = left + length</code>.</li>
+            <li>Loop <code>k</code> from <code>left + 1</code> to <code>right - 1</code>: <code>coins = nums[left] * nums[k] * nums[right]</code>. Update <code>dp[left][right] = max(dp[left][right], dp[left][k] + coins + dp[k][right])</code>.</li>
+            <li>Return <code>dp[0][n - 1]</code>.</li>
+          </ol>
         </div>
       </div>
 
@@ -3769,28 +4028,46 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Interval DP (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def maxCoins(nums: list[int]) -&gt; int:
-    nums = [1] + nums + [1]
-    dp = {}
+          <pre><code>class Solution:
+    def maxCoins(self, nums):
 
-    def dfs(l, r):
-        if l &gt; r:
-            return 0
-        if (l, r) in dp:
-            return dp[(l, r)]
+        nums = [1] + nums + [1]
+        n = len(nums)
 
-        dp[(l, r)] = 0
-        for i in range(l, r + 1):
-            coins = nums[l - 1] * nums[i] * nums[r + 1]
-            coins += dfs(l, i - 1) + dfs(i + 1, r)
-            dp[(l, r)] = max(dp[(l, r)], coins)
-            
-        return dp[(l, r)]
+        dp = [
+            [0] * n
+            for _ in range(n)
+        ]
 
-    return dfs(1, len(nums) - 2)</code></pre>
+        for length in range(2, n):
+
+            for left in range(
+                0,
+                n - length
+            ):
+                right = left + length
+
+                for k in range(
+                    left + 1,
+                    right
+                ):
+                    coins = (
+                        nums[left]
+                        * nums[k]
+                        * nums[right]
+                    )
+
+                    dp[left][right] = max(
+                        dp[left][right],
+                        dp[left][k]
+                        + coins
+                        + dp[k][right]
+                    )
+
+        return dp[0][n - 1]</code></pre>
         </div>
       </div>
 
@@ -3798,10 +4075,17 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N^3)</span>
-          <span class="c-badge c-space">Space: O(N^2)</span>
+          <span class="c-badge c-time">Time: O(n³)</span>
+          <span class="c-badge c-space">Space: O(n²)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Interval DP evaluates N^2 sub-ranges, each taking O(N) loop.</p>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Interval DP → choose the last operation inside an interval.</strong> This is one of the most important advanced DP patterns.</p>
+        </div>
       </div>
     </div>
     
@@ -3823,7 +4107,7 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
         <div class="desc-box">
-          <p>Given input string <code>s</code> and pattern <code>p</code>, implement regex matching with <code>'.'</code> and <code>'*'</code>.</p>
+          <p>Given input string <code>s</code> and pattern <code>p</code>, implement regex matching with <code>'.'</code> (matches any single char) and <code>'*'</code> (matches zero or more of preceding element).</p>
         </div>
       </div>
 
@@ -3831,15 +4115,56 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
         <div class="desc-box">
-          <p><code>'.'</code> matches any single char. <code>'*'</code> matches zero or more of preceding element. State <code>(i, j)</code> indexes <code>s</code> and <code>p</code>.</p>
+          <p>Recursive branching occurs whenever <code>*</code> appears in pattern. State is represented by pair of indices <code>(i, j)</code> for <code>s</code> and <code>p</code>.</p>
         </div>
       </div>
 
       <!-- 3. Naive Solution -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
         <div class="naive-box">
-          <p>Recursive branch testing zero or multiple star repetitions.</p>
+          <p>Recursive branching when <code>*</code> appears in pattern.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def isMatch(self, s, p):
+
+        def dfs(i, j):
+
+            if j == len(p):
+                return i == len(s)
+
+            first_match = (
+                i &lt; len(s)
+                and (
+                    p[j] == s[i]
+                    or p[j] == &quot;.&quot;
+                )
+            )
+
+            if (
+                j + 1 &lt; len(p)
+                and p[j + 1] == &quot;*&quot;
+            ):
+                return (
+                    dfs(i, j + 2)
+                    or
+                    (
+                        first_match
+                        and dfs(i + 1, j)
+                    )
+                )
+
+            return (
+                first_match
+                and dfs(i + 1, j + 1)
+            )
+
+        return dfs(0, 0)</code></pre>
         </div>
       </div>
 
@@ -3847,17 +4172,16 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(2^(M+N))</span>
-          <span class="c-badge c-space">Space: O(M+N)</span>
+          <span class="c-badge c-naive">Time: Exponential</span>
+          <span class="c-badge c-space">Aux Space: O(m+n)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Re-evaluates pattern branches.</p>
       </div>
 
       <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Memoization DP</div>
         <div class="intuition-box">
-          <p>Memoized DFS over state <code>(i, j)</code>.</p>
+          <p>Cache recursive subproblems with hash table <code>memo[(i, j)]</code> storing boolean results for matching <code>s[i:]</code> and <code>p[j:]</code>.</p>
         </div>
       </div>
 
@@ -3865,7 +4189,14 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
         <div class="approach-box">
-          <ol class='step-list'><li>Memo <code>cache = {}</code>.</li><li>DFS <code>dfs(i, j)</code>: if <code>i &gt;= len(s) and j &gt;= len(p)</code> return True. If <code>j &gt;= len(p)</code> return False.</li><li>Check char match <code>match = i &lt; len(s) and (s[i] == p[j] or p[j] == '.')</code>.</li><li>If <code>j + 1 &lt; len(p) and p[j+1] == '*'</code>: choice 1 (skip star <code>dfs(i, j+2)</code>) or choice 2 (use star if match <code>match and dfs(i+1, j)</code>).</li><li>Else: return <code>match and dfs(i+1, j+1)</code>.</li></ol>
+          <ol class="step-list">
+            <li>Initialize <code>memo = {}</code>.</li>
+            <li>In <code>dfs(i, j)</code>: check if <code>(i, j)</code> in <code>memo</code>. If <code>j == len(p)</code> return <code>i == len(s)</code>.</li>
+            <li>Check <code>first_match = i &lt; len(s) and (p[j] == s[i] or p[j] == '.')</code>.</li>
+            <li>If <code>j + 1 &lt; len(p) and p[j+1] == '*'</code>: set <code>answer = dfs(i, j+2) or (first_match and dfs(i+1, j))</code>.</li>
+            <li>Else: set <code>answer = first_match and dfs(i+1, j+1)</code>.</li>
+            <li>Store <code>memo[(i, j)] = answer</code> and return.</li>
+          </ol>
         </div>
       </div>
 
@@ -3874,36 +4205,53 @@ class Solution:
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Memoization DP (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def isMatch(s: str, p: str) -&gt; bool:
-    cache = {}
+          <pre><code>class Solution:
+    def isMatch(self, s, p):
 
-    def dfs(i, j):
-        if (i, j) in cache:
-            return cache[(i, j)]
-        if i &gt;= len(s) and j &gt;= len(p):
-            return True
-        if j &gt;= len(p):
-            return False
+        memo = {}
 
-        match = i &lt; len(s) and (s[i] == p[j] or p[j] == &quot;.&quot;)
-        
-        if (j + 1) &lt; len(p) and p[j + 1] == &quot;*&quot;:
-            # Don&#x27;t use &#x27;*&#x27; OR use &#x27;*&#x27; if match
-            cache[(i, j)] = (dfs(i, j + 2) or 
-                            (match and dfs(i + 1, j)))
-            return cache[(i, j)]
-            
-        if match:
-            cache[(i, j)] = dfs(i + 1, j + 1)
-            return cache[(i, j)]
+        def dfs(i, j):
 
-        cache[(i, j)] = False
-        return False
+            if (i, j) in memo:
+                return memo[(i, j)]
 
-    return dfs(0, 0)</code></pre>
+            if j == len(p):
+                return i == len(s)
+
+            first_match = (
+                i &lt; len(s)
+                and (
+                    p[j] == s[i]
+                    or p[j] == &quot;.&quot;
+                )
+            )
+
+            if (
+                j + 1 &lt; len(p)
+                and p[j + 1] == &quot;*&quot;
+            ):
+                answer = (
+                    dfs(i, j + 2)
+                    or
+                    (
+                        first_match
+                        and dfs(i + 1, j)
+                    )
+                )
+
+            else:
+                answer = (
+                    first_match
+                    and dfs(i + 1, j + 1)
+                )
+
+            memo[(i, j)] = answer
+            return answer
+
+        return dfs(0, 0)</code></pre>
         </div>
       </div>
 
@@ -3911,12 +4259,217 @@ class Solution:
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(M * N)</span>
-          <span class="c-badge c-space">Space: O(M * N)</span>
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(mn)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Memoized DP handles star and dot wildcard matching.</p>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>2D State DP / DFS + Memoization</strong> — Handles wildcard matching by memoizing <code>(i, j)</code> states across recursive branches.</p>
+        </div>
       </div>
     </div>
+
+      <!-- Summary Card 1: Pattern Map -->
+      <div class="summary-card" id="pattern-map">
+        <div class="summary-header">
+          <h2><i class="ti ti-map-2" style="color: var(--accent);"></i> 🧠 The 23 DP Problems — Pattern Map</h2>
+          <p>Quick reference mapping all 23 sheet problems to their core Dynamic Programming pattern.</p>
+        </div>
+        <div class="pattern-table-wrapper">
+          <table class="pattern-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">#</th>
+                <th>Problem</th>
+                <th>Core DP Pattern</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Climbing Stairs</td><td>Previous 2 states</td></tr>
+              <tr><td>2</td><td>Min Cost Climbing Stairs</td><td>Minimum previous states</td></tr>
+              <tr><td>3</td><td>House Robber</td><td>Take / Skip</td></tr>
+              <tr><td>4</td><td>House Robber II</td><td>Circular &rarr; two linear</td></tr>
+              <tr><td>5</td><td>Longest Palindromic Substring</td><td>Expand Around Center</td></tr>
+              <tr><td>6</td><td>Palindromic Substrings</td><td>Expand Around Center</td></tr>
+              <tr><td>7</td><td>Decode Ways</td><td>1 or 2 character transitions</td></tr>
+              <tr><td>8</td><td>Coin Change</td><td>Unbounded Knapsack</td></tr>
+              <tr><td>9</td><td>Maximum Product Subarray</td><td>Track max + min</td></tr>
+              <tr><td>10</td><td>Word Break</td><td>Prefix DP</td></tr>
+              <tr><td>11</td><td>LIS</td><td>Sequence DP</td></tr>
+              <tr><td>12</td><td>Partition Equal Subset Sum</td><td>0/1 Knapsack</td></tr>
+              <tr><td>13</td><td>Unique Paths</td><td>Grid DP</td></tr>
+              <tr><td>14</td><td>LCS</td><td>Two-string DP</td></tr>
+              <tr><td>15</td><td>Stock + Cooldown</td><td>State Machine</td></tr>
+              <tr><td>16</td><td>Coin Change II</td><td>Unbounded Knapsack / Counting</td></tr>
+              <tr><td>17</td><td>Target Sum</td><td>Subset Sum</td></tr>
+              <tr><td>18</td><td>Interleaving String</td><td>Two-string/grid DP</td></tr>
+              <tr><td>19</td><td>Longest Increasing Path</td><td>DFS + Memoization</td></tr>
+              <tr><td>20</td><td>Distinct Subsequences</td><td>Two-string counting DP</td></tr>
+              <tr><td>21</td><td>Edit Distance</td><td>Insert/Delete/Replace</td></tr>
+              <tr><td>22</td><td>Burst Balloons</td><td>Interval DP</td></tr>
+              <tr><td>23</td><td>Regex Matching</td><td>2D state DP</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Summary Card 2: 9 Master Patterns -->
+      <div class="summary-card" id="master-patterns">
+        <div class="summary-header">
+          <h2><i class="ti ti-flame" style="color: var(--amber);"></i> 🔥 DP Patterns You Should Master</h2>
+          <p>Instead of memorizing 23 solutions, master these 9 core structural patterns:</p>
+        </div>
+        <div class="pattern-grid">
+          
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-select"></i> 1. Take / Skip</h3>
+            <p><strong>Problems:</strong> House Robber</p>
+            <div class="code-container" style="margin-top: 10px;">
+              <pre><code>dp[i] = max(
+    dp[i - 1],
+    nums[i] + dp[i - 2]
+)</code></pre>
+            </div>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-history"></i> 2. Previous States</h3>
+            <p><strong>Problems:</strong> Climbing Stairs, Min Cost Climbing Stairs</p>
+            <p style="margin-top: 8px; font-family: var(--mono); font-size: 13px; color: var(--cyan);">current = function(previous states)</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-box"></i> 3. Knapsack</h3>
+            <p><strong>Problems:</strong> Coin Change, Coin Change II, Partition Equal Subset Sum, Target Sum</p>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><strong>0/1 Knapsack:</strong> Use item once &rarr; Loop backwards (<code>range(target, num - 1, -1)</code>)</li>
+              <li><strong>Unbounded Knapsack:</strong> Reuse item &rarr; Loop forwards</li>
+            </ul>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-columns"></i> 4. Two-String DP</h3>
+            <p><strong>Problems:</strong> LCS, Edit Distance, Distinct Subsequences, Interleaving String, Regex Matching</p>
+            <p style="margin-top: 8px; font-size: 13px;"><code>dp[i][j]</code> = Answer for first <code>i</code> chars of String A and first <code>j</code> chars of String B.</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-grid-dots"></i> 5. Grid DP</h3>
+            <p><strong>Problems:</strong> Unique Paths, Longest Increasing Path</p>
+            <p style="margin-top: 8px; font-size: 13px;">Transitions across 2D grid cells: <code>dp[row][column]</code>.</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-cpu"></i> 6. State Machine DP</h3>
+            <p><strong>Problems:</strong> Best Time to Buy and Sell Stock with Cooldown</p>
+            <p style="margin-top: 8px; font-size: 13px;">Model explicit transitions: <code>BUY</code> &rarr; <code>SELL</code> &rarr; <code>COOLDOWN</code>.</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-chart-line"></i> 7. Sequence DP</h3>
+            <p><strong>Problems:</strong> Longest Increasing Subsequence (LIS)</p>
+            <p style="margin-top: 8px; font-size: 13px;">What is the best optimal answer ending at index <code>i</code>?</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-arrows-maximize"></i> 8. Interval DP</h3>
+            <p><strong>Problems:</strong> Burst Balloons</p>
+            <p style="margin-top: 8px; font-size: 13px;"><code>dp[left][right]</code> — Evaluate choice of <code>k</code> as the <em>last</em> operation inside an interval.</p>
+          </div>
+
+          <div class="pattern-item-card">
+            <h3><i class="ti ti-git-fork"></i> 9. DFS + Memoization</h3>
+            <p><strong>Problems:</strong> Longest Increasing Path, Regex Matching</p>
+            <p style="margin-top: 8px; font-size: 13px;">State &rarr; expensive recursion &rarr; repeated states? &rarr; <code>memo[state]</code>. The bridge from recursion to DP.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Summary Card 3: Progression & Template -->
+      <div class="summary-card" id="dp-template">
+        <div class="summary-header">
+          <h2><i class="ti ti-rocket" style="color: var(--green);"></i> 🚀 DP Progression & ⭐ 5-Step Template</h2>
+          <p>Systematic workflow for tackling any dynamic programming problem from scratch.</p>
+        </div>
+
+        <div class="sec-block">
+          <div class="sec-title"><i class="ti ti-help-circle"></i> ⭐ One DP Template — 5 Questions to Ask</div>
+          <div class="approach-box">
+            <ol class="step-list">
+              <li><strong>What is the STATE?</strong> (Identify what changes between subproblems)</li>
+              <li><strong>What does <code>dp[state]</code> mean?</strong> (Define value returned/stored)</li>
+              <li><strong>What are my CHOICES?</strong> (Take, skip, insert, delete, replace, etc.)</li>
+              <li><strong>How do choices transition to another state?</strong> (Write recurrence relation)</li>
+              <li><strong>What is the BASE CASE?</strong> (Smallest trivially solved inputs)</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="sec-block">
+          <div class="sec-title"><i class="ti ti-sitemap"></i> Problem-Solving Progression Flowchart</div>
+          <div class="diagram-box">
+                    Problem
+                       │
+                       ↓
+                  Brute Force
+                       │
+                 repeated states?
+                    /       \
+                  NO         YES
+                  │           │
+             recursion     DP
+                              │
+                       ┌──────┴──────┐
+                       ↓             ↓
+                  Memoization    Bottom-Up
+                    (Top-Down)      DP
+                                      │
+                                      ↓
+                               Space Optimization
+          </div>
+        </div>
+
+        <div class="sec-block">
+          <div class="sec-title"><i class="ti ti-route"></i> Topic Progression Roadmap</div>
+          <div class="diagram-box" style="color: #bbf7e6;">
+1-D DP
+│
+├── Climbing Stairs
+├── Min Cost Climbing Stairs
+├── House Robber
+├── House Robber II
+├── Decode Ways
+├── Coin Change
+├── Maximum Product
+├── Word Break
+├── LIS
+└── Partition Equal Subset Sum
+        │
+        ↓
+    2-D DP
+        │
+        ├── Unique Paths
+        ├── LCS
+        ├── Interleaving String
+        ├── Distinct Subsequences
+        └── Edit Distance
+                │
+                ↓
+         Advanced DP
+                │
+                ├── Stock State Machine
+                ├── Target Sum
+                ├── Longest Increasing Path
+                ├── Burst Balloons
+                └── Regex Matching
+          </div>
+        </div>
+      </div>
     
     </main>
   </div>
@@ -3924,7 +4477,7 @@ class Solution:
   <script>
     const filterInput = document.getElementById('filterInput');
     const navItems = document.querySelectorAll('.nav-item');
-    const cards = document.querySelectorAll('.problem-card');
+    const cards = document.querySelectorAll('.problem-card, .summary-card');
 
     filterInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();

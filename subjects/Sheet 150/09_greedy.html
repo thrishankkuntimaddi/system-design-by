@@ -20,15 +20,14 @@
       --bg3: #161d2e;
       --bg4: #1d263b;
       --border: #1f2d48;
-      --border2: #2d3f64;
       --text: #edf0f7;
       --text2: #8a96b0;
       --text3: #5a6480;
-      --accent: #10b981;
+      --accent: #f59e0b;
       --green: #34d399;
-      --amber: #f59e0b;
       --red: #ef4444;
       --cyan: #22d3ee;
+      --purple: #a855f7;
       --radius: 12px;
       --mono: 'JetBrains Mono', monospace;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -41,1199 +40,1192 @@
       color: var(--text);
       line-height: 1.6;
       font-size: 15px;
+      overflow-x: hidden;
     }
-    .layout { display: flex; min-height: 100vh; }
-    
-    /* Sidebar */
+    .layout { display: flex; min-height: 100vh; width: 100%; overflow-x: hidden; }
+
+    /* ── Sidebar ── */
     .sidebar {
-      width: 310px;
-      flex-shrink: 0;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
+      width: 310px; flex-shrink: 0; background: var(--bg2);
+      border-right: 1px solid var(--border); position: sticky; top: 0;
+      height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 10;
     }
-    .sidebar-header {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .sidebar-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
     .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text3);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin-bottom: 12px;
-      transition: color .15s;
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+      color: var(--text3); text-decoration: none; text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 12px; transition: color .15s;
     }
     .back-link:hover { color: var(--accent); }
     .module-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      padding: 3px 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
+      display: inline-block; font-size: 10px; font-family: var(--mono); font-weight: 700;
+      color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 6px;
     }
-    .module-title-side {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .sidebar-search {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
+    .module-title-side { font-size: 16px; font-weight: 800; color: var(--text); }
+    .sidebar-search { padding: 12px 16px; border-bottom: 1px solid var(--border); position: relative; }
     .sidebar-search input {
-      width: 100%;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px 8px 34px;
-      font-size: 12.5px;
-      color: var(--text);
-      outline: none;
+      width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 12px 8px 34px; font-size: 12.5px; color: var(--text); outline: none;
     }
     .sidebar-search input:focus { border-color: var(--accent); }
-    .sidebar-search i {
-      position: absolute;
-      left: 26px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text3);
-      font-size: 14px;
-    }
+    .sidebar-search i { position: absolute; left: 26px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
     .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      color: var(--text2);
-      text-decoration: none;
-      margin-bottom: 2px;
-      transition: all .15s;
+      display: flex; align-items: center; justify-content: space-between; padding: 8px 12px;
+      border-radius: 8px; font-size: 12.5px; color: var(--text2); text-decoration: none;
+      margin-bottom: 2px; transition: all .15s;
     }
     .nav-item:hover { background: var(--bg3); color: var(--text); }
-    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
-    .diff-badge {
-      font-size: 9.5px;
-      font-family: var(--mono);
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
-    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
-    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+    .diff-badge { font-size: 9.5px; font-family: var(--mono); font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .diff-easy   { background: rgba(52,211,153,0.12); color: var(--green); }
+    .diff-medium { background: rgba(245,158,11,0.12);  color: var(--accent); }
+    .diff-hard   { background: rgba(239,68,68,0.12);   color: var(--red); }
 
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 40px 48px 120px;
-    }
+    /* ── Main ── */
+    .main-content { flex: 1; min-width: 0; max-width: 960px; margin: 0 auto; padding: 40px 48px 120px; width: calc(100% - 310px); }
+    .topic-header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .topic-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+    .topic-header h1 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+    .topic-header p { font-size: 15px; color: var(--text2); }
 
-    .topic-header {
-      margin-bottom: 40px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .topic-eyebrow {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .topic-header h1 {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 10px;
-    }
-    .topic-header p {
-      font-size: 15px;
-      color: var(--text2);
-    }
-
-    /* Problem Card */
+    /* ── Problem Card ── */
     .problem-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 48px;
-      scroll-margin-top: 20px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden;
     }
     .problem-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
     }
     .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
-    .problem-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .problem-header h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -.01em;
-    }
+    .problem-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); }
+    .problem-header h2 { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
     .problem-meta { display: flex; align-items: center; gap: 10px; }
     .lc-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--mono);
+      font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
       border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-      padding: 4px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background .15s;
+      padding: 4px 10px; border-radius: 6px; text-decoration: none; transition: background .15s;
     }
     .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 
-    .sec-block { margin-bottom: 24px; }
+    .sec-block { margin-bottom: 24px; width: 100%; clear: both; }
     .sec-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
+      font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--text); display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
     }
     .sec-title i { color: var(--accent); font-size: 16px; }
+    .desc-box     { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .intuition-box{ background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.2); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .naive-box    { background: rgba(239,68,68,0.04);   border: 1px solid rgba(239,68,68,0.2);  border-left: 3px solid var(--red);    border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .approach-box { background: rgba(52,211,153,0.04);  border: 1px solid rgba(52,211,153,0.2); border-left: 3px solid var(--green);  border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
 
-    .desc-box, .naive-box, .intuition-box, .approach-box {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.65;
-    }
-    .intuition-box {
-      background: rgba(56, 189, 248, 0.04);
-      border-color: rgba(56, 189, 248, 0.2);
-      border-left: 3px solid var(--accent);
-    }
-    .naive-box {
-      background: rgba(245, 158, 11, 0.04);
-      border-color: rgba(245, 158, 11, 0.2);
-      border-left: 3px solid var(--amber);
-    }
-    .approach-box {
-      background: rgba(52, 211, 153, 0.04);
-      border-color: rgba(52, 211, 153, 0.2);
-      border-left: 3px solid var(--green);
-    }
+    ol.step-list { padding-left: 20px; margin-top: 8px; }
+    ol.step-list li { margin-bottom: 6px; color: var(--text2); }
+    ol.step-list li strong { color: var(--text); }
 
-    ol.step-list, ul.bullet-list {
-      padding-left: 20px;
-      margin-top: 8px;
-    }
-    ol.step-list li, ul.bullet-list li {
-      margin-bottom: 6px;
-      color: var(--text2);
-    }
-    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+    .complexity-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .c-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 6px; }
+    .c-time  { background: rgba(245,158,11,0.1); color: var(--accent); border: 1px solid rgba(245,158,11,0.25); }
+    .c-space { background: rgba(34,211,238,0.1);  color: var(--cyan);   border: 1px solid rgba(34,211,238,0.25); }
+    .c-naive { background: rgba(239,68,68,0.1);   color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
 
-    .complexity-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .c-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-    .c-time {
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
-    .c-space {
-      background: rgba(34, 211, 238, 0.1);
-      color: var(--cyan);
-      border: 1px solid rgba(34, 211, 238, 0.25);
-    }
-    .c-naive {
-      background: rgba(245, 158, 11, 0.1);
-      color: var(--amber);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-    }
-
-    .code-container {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      background: #06080e;
-    }
+    .code-container { margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #06080e; width: 100%; display: block; clear: both; }
     .code-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg3);
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text3);
-      text-transform: uppercase;
+      display: flex; align-items: center; justify-content: space-between; background: var(--bg3);
+      padding: 8px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase;
     }
     .copy-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text2);
-      font-size: 11px;
-      font-family: var(--mono);
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all .15s;
+      background: transparent; border: 1px solid var(--border); color: var(--text2); font-size: 11px;
+      font-family: var(--mono); padding: 3px 8px; border-radius: 4px; cursor: pointer;
+      display: flex; align-items: center; gap: 4px; transition: all .15s;
     }
     .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
-    .code-container pre {
-      padding: 16px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: #bbf7e6;
-      line-height: 1.65;
-    }
+    .code-container pre { padding: 16px; margin: 0; overflow-x: auto; font-family: var(--mono); font-size: 13px; color: #fde68a; line-height: 1.65; white-space: pre; }
+    .code-container pre code { display: block; white-space: pre; }
+
+    /* ── Summary Cards ── */
+    .summary-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden; }
+    .summary-header { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .summary-header h2 { font-size: 22px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .summary-header h2 i { color: var(--accent); }
+    .pattern-table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg3); }
+    .pattern-table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
+    .pattern-table th { background: var(--bg4); padding: 12px 16px; font-weight: 700; color: var(--text); font-family: var(--mono); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .pattern-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .pattern-table tr:last-child td { border-bottom: none; }
+    .pattern-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; margin-top: 16px; }
+    .pattern-item-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .pattern-item-card h4 { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .pattern-item-card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .diagram-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--mono); font-size: 12.5px; color: var(--accent); line-height: 1.6; white-space: pre; overflow-x: auto; }
 
     @media (max-width: 800px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
+      .main-content { width: 100%; padding: 24px 16px 60px; }
       .problem-card { padding: 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
-        <span class="module-badge">MODULE 09</span>
-        <div class="module-title-side">Greedy</div>
-      </div>
-      <div class="sidebar-search">
-        <i class="ti ti-search"></i>
-        <input type="text" id="filterInput" placeholder="Filter problems...">
-      </div>
-      <div class="nav-list" id="navList">
-        
-        <a href="#lc-53" class="nav-item">
-          <span>LC 53. Maximum Subarray</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-55" class="nav-item">
-          <span>LC 55. Jump Game</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-45" class="nav-item">
-          <span>LC 45. Jump Game II</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-134" class="nav-item">
-          <span>LC 134. Gas Station</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-846" class="nav-item">
-          <span>LC 846. Hand of Straights</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-1899" class="nav-item">
-          <span>LC 1899. Merge Triplets to Form Target Triplet</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-763" class="nav-item">
-          <span>LC 763. Partition Labels</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-        <a href="#lc-678" class="nav-item">
-          <span>LC 678. Valid Parenthesis String</span>
-          <span class="diff-badge diff-medium">Medium</span>
-        </a>
-        
-      </div>
-    </aside>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+      <span class="module-badge">MODULE 09</span>
+      <div class="module-title-side">Greedy</div>
+    </div>
+    <div class="sidebar-search">
+      <i class="ti ti-search"></i>
+      <input type="text" id="filterInput" placeholder="Filter problems...">
+    </div>
+    <div class="nav-list" id="navList">
+      <a href="#lc-53" class="nav-item"><span>LC 53. Maximum Subarray</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-55" class="nav-item"><span>LC 55. Jump Game</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-45" class="nav-item"><span>LC 45. Jump Game II</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-134" class="nav-item"><span>LC 134. Gas Station</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-846" class="nav-item"><span>LC 846. Hand of Straights</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-1899" class="nav-item"><span>LC 1899. Merge Triplets to Form Target Triplet</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-763" class="nav-item"><span>LC 763. Partition Labels</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-678" class="nav-item"><span>LC 678. Valid Parenthesis String</span><span class="diff-badge diff-medium">Medium</span></a>
+      <div style="margin:16px 0 8px 12px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;">SUMMARY &amp; MAPS</div>
+      <a href="#pattern-map"   class="nav-item"><span>🧠 Greedy Pattern Map</span></a>
+      <a href="#five-patterns" class="nav-item"><span>🔥 5 Reusable Patterns</span></a>
+      <a href="#priority-list" class="nav-item"><span>⭐ Interview Priority</span></a>
+    </div>
+  </aside>
 
-    <main class="main-content">
-      <div class="topic-header">
-        <div class="topic-eyebrow">MODULE 09 • 8 PROBLEMS</div>
-        <h1>Greedy</h1>
-        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
-      </div>
+  <main class="main-content">
+    <div class="topic-header">
+      <div class="topic-eyebrow">MODULE 09 &bull; SHEET 150</div>
+      <h1>Greedy</h1>
+      <p>8 problems covering Kadane's algorithm, jump-range expansion, candidate elimination, last-occurrence partitioning, and balance-range tracking.</p>
+    </div>
 
-      
+
     <div class="problem-card" id="lc-53">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 53 • Greedy</span>
+          <span class="problem-tag">#LC 53 &bull; 9. Greedy</span>
           <h2>Maximum Subarray</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Find contiguous subarray with largest sum in integer array <code>nums</code>.</p>
+        <div class="desc-box"><p>Given an integer array <code>nums</code>, find the contiguous subarray with the largest sum and return its sum.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>The key question at each position: is it better to extend the current running sum, or start fresh? Discarding negative prefixes is the locally-optimal choice that gives the globally optimal answer.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Try every possible subarray. For each starting index, scan right and track the running sum.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxSubArray(self, nums):
+        answer = float(&quot;-inf&quot;)
+
+        for i in range(len(nums)):
+            total = 0
+
+            for j in range(i, len(nums)):
+                total += nums[j]
+                answer = max(answer, total)
+
+        return answer</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Kadane's Algorithm: if running current sum becomes negative, reset it to 0.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Compute sum of all N^2 subarrays.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-naive">Time: O(n²)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Nested loop sum.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Negative prefix sums can never contribute to a maximum subarray sum.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>At each index, either extend the previous subarray or start a new one. If <code>current + nums[i] &lt; nums[i]</code> the prefix actively hurts us — discard it. This is Kadane's Algorithm (also a 1-D DP recurrence).</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>maxSub = nums[0]</code>, <code>curSum = 0</code>.</li><li>For <code>n</code> in <code>nums</code>: if <code>curSum < 0</code> reset <code>curSum = 0</code>. <code>curSum += n</code>. <code>maxSub = max(maxSub, curSum)</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>current = answer = nums[0]</code>.</li><li>Iterate <code>i</code> from index 1 to end.</li><li>At each step: <code>current = max(nums[i], current + nums[i])</code>.</li><li>Update <code>answer = max(answer, current)</code>.</li><li>Return <code>answer</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def maxSubArray(nums: list[int]) -&gt; int:
-    maxSub = nums[0]
-    curSum = 0
+          <pre><code>class Solution:
+    def maxSubArray(self, nums):
+        current = nums[0]
+        answer = nums[0]
 
-    for n in nums:
-        if curSum &lt; 0:
-            curSum = 0
-        curSum += n
-        maxSub = max(maxSub, curSum)
-    return maxSub</code></pre>
+        for i in range(1, len(nums)):
+            current = max(
+                nums[i],
+                current + nums[i]
+            )
+
+            answer = max(answer, current)
+
+        return answer</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Kadane's Algorithm.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Kadane's Algorithm — Start fresh when the prefix becomes a liability</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-55">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 55 • Greedy</span>
+          <span class="problem-tag">#LC 55 &bull; 9. Greedy</span>
           <h2>Jump Game</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Return true if you can reach last index starting at index 0.</p>
+        <div class="desc-box"><p>Given array <code>nums</code> where <code>nums[i]</code> is the maximum jump length from index <code>i</code>, return <code>True</code> if you can reach the last index.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>All we need is whether the end is reachable — not how. At each index track the furthest position currently reachable. If we reach an index that exceeds our current reach, it's impossible.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>DFS from index 0: try every valid jump length recursively.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def canJump(self, nums):
+        n = len(nums)
+
+        def dfs(index):
+            if index &gt;= n - 1:
+                return True
+
+            max_jump = nums[index]
+
+            for jump in range(1, max_jump + 1):
+                if dfs(index + jump):
+                    return True
+
+            return False
+
+        return dfs(0)</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Work backwards! Target index goal starts at <code>len(nums) - 1</code>. If <code>i + nums[i] >= goal</code>, move goal to <code>i</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Recursive DFS exploring all jump distances.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(2^N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(2ⁿ) worst case</span>
+          <span class="c-badge c-space">Space: O(n) recursion</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Exponential branching.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Greedy backward shifting of target goal post in single pass.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Scan left-to-right maintaining <code>farthest</code> — the furthest index reachable so far. If <code>i &gt; farthest</code> at any point, we are stranded.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Goal <code>goal = len(nums) - 1</code>.</li><li>Loop <code>i</code> from <code>len(nums) - 2</code> down to 0: if <code>i + nums[i] >= goal</code> update <code>goal = i</code>.</li><li>Return <code>goal == 0</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>farthest = 0</code>.</li><li>Iterate <code>i</code> from 0 to end.</li><li>If <code>i &gt; farthest</code>: return <code>False</code> (gap in reachability).</li><li>Update <code>farthest = max(farthest, i + nums[i])</code>.</li><li>After the loop, return <code>True</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def canJump(nums: list[int]) -&gt; bool:
-    goal = len(nums) - 1
+          <pre><code>class Solution:
+    def canJump(self, nums):
+        farthest = 0
 
-    for i in range(len(nums) - 2, -1, -1):
-        if i + nums[i] &gt;= goal:
-            goal = i
+        for i in range(len(nums)):
+            if i &gt; farthest:
+                return False
 
-    return goal == 0</code></pre>
+            farthest = max(
+                farthest,
+                i + nums[i]
+            )
+
+        return True</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Greedy backward shift.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Furthest Reachable — greedily extend the reachable frontier</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-45">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 45 • Greedy</span>
+          <span class="problem-tag">#LC 45 &bull; 9. Greedy</span>
           <h2>Jump Game II</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/jump-game-ii/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/jump-game-ii/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Return minimum number of jumps to reach last index.</p>
+        <div class="desc-box"><p>Given <code>nums</code>, return the minimum number of jumps to reach the last index. It is guaranteed you can always reach the end.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Think of each jump as a BFS 'level'. Within the current jump's reach, find the position that extends the frontier farthest. When we exhaust the current level, increment jumps and start the next level.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>DFS trying all jump lengths from each position, tracking minimum jumps.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def jump(self, nums):
+        n = len(nums)
+        answer = float(&quot;inf&quot;)
+
+        def dfs(index, jumps):
+            nonlocal answer
+
+            if index &gt;= n - 1:
+                answer = min(answer, jumps)
+                return
+
+            if jumps &gt;= answer:
+                return
+
+            for jump in range(1, nums[index] + 1):
+                dfs(index + jump, jumps + 1)
+
+        dfs(0, 0)
+
+        return answer</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>BFS level-by-level greedy search: current level window is <code>[l, r]</code>. Next level right boundary is <code>max(i + nums[i])</code> for <code>i in [l, r]</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>1-D DP array <code>dp[i] = 1 + min(dp[i + j])</code>.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N^2)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(2ⁿ) worst case</span>
+          <span class="c-badge c-space">Space: O(n)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">1D DP array.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Implicit BFS sliding window ranges compute min jumps in linear O(N) time and O(1) space.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Greedy BFS: treat each jump as expanding to the next 'level'. Within the current range <code>[prev_end+1 … current_end]</code>, find the furthest reach. When <code>i == current_end</code> you must jump — increment and extend.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>res = 0, l = 0, r = 0</code>.</li><li>While <code>r < len(nums) - 1</code>: furthest index <code>farthest = max(i + nums[i] for i in range(l, r+1))</code>. Update <code>l = r + 1, r = farthest, res += 1</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>jumps = 0</code>, <code>current_end = 0</code>, <code>farthest = 0</code>.</li><li>Iterate <code>i</code> from 0 to <code>n-2</code> (last index never needs a jump from it).</li><li>Update <code>farthest = max(farthest, i + nums[i])</code>.</li><li>When <code>i == current_end</code>: increment <code>jumps</code>, set <code>current_end = farthest</code>.</li><li>Return <code>jumps</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def jump(nums: list[int]) -&gt; int:
-    res = 0
-    l = r = 0
-
-    while r &lt; len(nums) - 1:
+          <pre><code>class Solution:
+    def jump(self, nums):
+        jumps = 0
+        current_end = 0
         farthest = 0
-        for i in range(l, r + 1):
-            farthest = max(farthest, i + nums[i])
-        l = r + 1
-        r = farthest
-        res += 1
 
-    return res</code></pre>
+        for i in range(len(nums) - 1):
+            farthest = max(
+                farthest,
+                i + nums[i]
+            )
+
+            if i == current_end:
+                jumps += 1
+                current_end = farthest
+
+        return jumps</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Implicit BFS sliding window.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Greedy BFS Range — current range → next range (BFS compressed, no queue)</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-134">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 134 • Greedy</span>
+          <span class="problem-tag">#LC 134 &bull; 9. Greedy</span>
           <h2>Gas Station</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/gas-station/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/gas-station/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Return starting gas station index to complete circular circuit once clockwise. If impossible return -1.</p>
+        <div class="desc-box"><p>Given <code>gas[i]</code> and <code>cost[i]</code> for a circular route, find the starting station index from which you can complete the full circuit (or return -1).</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>If starting at <code>s</code> causes a fuel deficit at station <code>i</code>, then no station between <code>s</code> and <code>i</code> can work either — they inherit the same or worse prefix. Jump directly to <code>i+1</code>.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Try every station as a start, simulate the full circuit for each.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def canCompleteCircuit(self, gas, cost):
+        n = len(gas)
+
+        for start in range(n):
+            fuel = 0
+            possible = True
+
+            for i in range(n):
+                index = (start + i) % n
+                fuel += gas[index]
+                fuel -= cost[index]
+
+                if fuel &lt; 0:
+                    possible = False
+                    break
+
+            if possible:
+                return start
+
+        return -1</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>If <code>sum(gas) < sum(cost)</code>, impossible return -1. Otherwise, if current tank becomes negative starting from <code>start</code>, reset <code>start = i + 1</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Simulate circular route from every starting station.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-naive">Time: O(n²)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Nested circuit simulation.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Single pass greedy resetting start index when tank < 0.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Two insights: (1) A solution exists if and only if <code>sum(gas) >= sum(cost)</code>. (2) Whenever running fuel goes negative, every station from <code>start</code> to <code>i</code> is invalid — skip them all and try <code>i+1</code>.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>If <code>sum(gas) < sum(cost)</code> return -1.</li><li><code>total = 0, start = 0</code>.</li><li>For <code>i</code> in range(len(gas)): <code>total += gas[i] - cost[i]</code>. If <code>total < 0</code>: <code>total = 0; start = i + 1</code>.</li><li>Return <code>start</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If <code>sum(gas) &lt; sum(cost)</code>: return -1 immediately.</li><li>Initialize <code>start = 0</code>, <code>fuel = 0</code>.</li><li>Iterate each station <code>i</code>: add <code>gas[i] - cost[i]</code> to <code>fuel</code>.</li><li>If <code>fuel &lt; 0</code>: set <code>start = i + 1</code>, reset <code>fuel = 0</code>.</li><li>Return <code>start</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def canCompleteCircuit(gas: list[int], cost: list[int]) -&gt; int:
-    if sum(gas) &lt; sum(cost):
-        return -1
+          <pre><code>class Solution:
+    def canCompleteCircuit(self, gas, cost):
+        if sum(gas) &lt; sum(cost):
+            return -1
 
-    total = 0
-    res = 0
-    for i in range(len(gas)):
-        total += (gas[i] - cost[i])
-        if total &lt; 0:
-            total = 0
-            res = i + 1
-    return res</code></pre>
+        start = 0
+        fuel = 0
+
+        for i in range(len(gas)):
+            fuel += gas[i] - cost[i]
+
+            if fuel &lt; 0:
+                start = i + 1
+                fuel = 0
+
+        return start</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass greedy solution.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Greedy Candidate Elimination — failed range means every start in it is invalid</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-846">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 846 • Greedy</span>
+          <span class="problem-tag">#LC 846 &bull; 9. Greedy</span>
           <h2>Hand of Straights</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/hand-of-straights/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/hand-of-straights/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Rearrange cards into groups of <code>groupSize</code> consecutive cards. Return true if possible.</p>
+        <div class="desc-box"><p>Given an array of card values <code>hand</code> and an integer <code>groupSize</code>, return <code>True</code> if you can rearrange all cards into consecutive groups of size <code>groupSize</code>.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>The smallest available card must start a group — there is nothing smaller to put before it. Greedily consume groups starting from the minimum each time.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Sort, then repeatedly remove groups starting from the smallest element using <code>list.remove()</code>.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def isNStraightHand(self, hand, groupSize):
+        if len(hand) % groupSize != 0:
+            return False
+
+        hand.sort()
+
+        while hand:
+            first = hand[0]
+
+            for value in range(first, first + groupSize):
+                if value not in hand:
+                    return False
+
+                hand.remove(value)
+
+        return True</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Always start group from SMALLEST card available in frequency map.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Sort array and search for consecutive groups removing elements from list.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N^2)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(n²) — list.remove() is O(n)</span>
+          <span class="c-badge c-space">Space: O(1) auxiliary</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">List removal.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Min-Heap + Frequency Hash Map guarantees smallest start card is processed first.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Use a frequency map. Iterate sorted unique keys. For the smallest key with count > 0, try to consume <code>frequency</code> copies of each of the next <code>groupSize</code> cards. If any is short, return False.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>If <code>len(hand) % groupSize != 0</code> return False.</li><li>Count frequencies. Min-heap <code>minH = list(count.keys())</code>; heapify.</li><li>While <code>minH</code>: <code>first = minH[0]</code>. For <code>i</code> from <code>first</code> to <code>first + groupSize - 1</code>: if <code>i not in count</code> return False; decrement frequency. Pop from heap when frequency reaches 0.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Return False if <code>len(hand) % groupSize != 0</code>.</li><li>Build <code>count = Counter(hand)</code>.</li><li>Iterate <code>first</code> in <code>sorted(count)</code>.</li><li>Skip if <code>count[first] == 0</code>.</li><li>Set <code>frequency = count[first]</code>.</li><li>For each value in <code>[first, first+groupSize)</code>: if <code>count[value] &lt; frequency</code> return False; subtract <code>frequency</code>.</li><li>Return True.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>import heapq
-from collections import Counter
+          <pre><code>from collections import Counter
 
-def isNStraightHand(hand: list[int], groupSize: int) -&gt; bool:
-    if len(hand) % groupSize != 0:
-        return False
-        
-    count = Counter(hand)
-    minH = list(count.keys())
-    heapq.heapify(minH)
-    
-    while minH:
-        first = minH[0]
-        for i in range(first, first + groupSize):
-            if i not in count:
-                return False
-            count[i] -= 1
-            if count[i] == 0:
-                if i != minH[0]:
+class Solution:
+    def isNStraightHand(self, hand, groupSize):
+        if len(hand) % groupSize != 0:
+            return False
+
+        count = Counter(hand)
+
+        for first in sorted(count):
+            if count[first] == 0:
+                continue
+
+            frequency = count[first]
+
+            for value in range(first, first + groupSize):
+                if count[value] &lt; frequency:
                     return False
-                heapq.heappop(minH)
-    return True</code></pre>
+
+                count[value] -= frequency
+
+        return True</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N log N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-time">Time: O(n log n) — dominated by sort of unique keys</span>
+          <span class="c-badge c-space">Space: O(n)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Min-heap + Frequency counter.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Frequency Map + Sorted Keys — always start from the smallest available card</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-1899">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 1899 • Greedy</span>
+          <span class="problem-tag">#LC 1899 &bull; 9. Greedy</span>
           <h2>Merge Triplets to Form Target Triplet</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/merge-triplets-to-form-target-triplet/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/merge-triplets-to-form-target-triplet/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Return true if you can form target triplet by taking elementwise max of selected triplets.</p>
+        <div class="desc-box"><p>Given a list of triplets and a target triplet, you can merge any two triplets by taking the element-wise max. Return <code>True</code> if you can form the target.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Merging uses <code>max()</code>, so any triplet where one coordinate exceeds the target can <em>never</em> be used — it would permanently overshoot that coordinate. Filter those out and check if the remaining triplets collectively cover every coordinate of the target.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>DFS trying all subsets: include or exclude each triplet, merge, and check against target.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def mergeTriplets(self, triplets, target):
+        n = len(triplets)
+
+        def dfs(index, current):
+            if current == target:
+                return True
+
+            if index == n:
+                return False
+
+            if dfs(index + 1, current):
+                return True
+
+            triplet = triplets[index]
+
+            if all(
+                triplet[i] &lt;= target[i]
+                for i in range(3)
+            ):
+                merged = [
+                    max(current[i], triplet[i])
+                    for i in range(3)
+                ]
+
+                if dfs(index + 1, merged):
+                    return True
+
+            return False
+
+        return dfs(0, [0, 0, 0])</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Filter out any triplet where ANY element exceeds target (<code>t[0] > target[0] or t[1] > target[1] or t[2] > target[2]</code>).</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Check all subset combinations of triplets.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(2^N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(2ⁿ)</span>
+          <span class="c-badge c-space">Space: O(n) recursion</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Subsets.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Track set of target indices matched by valid non-exceeding triplets.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Discard every triplet where any coordinate exceeds the target (merging would lock us above target). Among the remaining valid triplets, check whether we can find the exact target values at each coordinate position.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Set <code>good = set()</code>.</li><li>For <code>t</code> in triplets: if <code>t[0] > target[0] or t[1] > target[1] or t[2] > target[2]</code> continue.</li><li>For <code>i, val</code> in enumerate(t): if <code>val == target[i]</code>: <code>good.add(i)</code>.</li><li>Return <code>len(good) == 3</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>found = [False, False, False]</code>.</li><li>For each triplet: if any <code>triplet[i] &gt; target[i]</code>, skip it entirely.</li><li>Otherwise, for each position <code>i</code>: if <code>triplet[i] == target[i]</code>, set <code>found[i] = True</code>.</li><li>Return <code>all(found)</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def mergeTriplets(triplets: list[list[int]], target: list[int]) -&gt; bool:
-    good = set()
+          <pre><code>class Solution:
+    def mergeTriplets(self, triplets, target):
+        found = [False, False, False]
 
-    for t in triplets:
-        if t[0] &gt; target[0] or t[1] &gt; target[1] or t[2] &gt; target[2]:
-            continue
-        for i, v in enumerate(t):
-            if v == target[i]:
-                good.add(i)
+        for triplet in triplets:
+            if any(
+                triplet[i] &gt; target[i]
+                for i in range(3)
+            ):
+                continue
 
-    return len(good) == 3</code></pre>
+            for i in range(3):
+                if triplet[i] == target[i]:
+                    found[i] = True
+
+        return all(found)</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass filtering.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Greedy Filtering — eliminate impossible candidates (those that overshoot), then verify coverage</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-763">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 763 • Greedy</span>
+          <span class="problem-tag">#LC 763 &bull; 9. Greedy</span>
           <h2>Partition Labels</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/partition-labels/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/partition-labels/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Partition string into maximum number of parts so each letter appears in at most one part.</p>
+        <div class="desc-box"><p>Given string <code>s</code>, partition it into as many parts as possible so that each letter appears in at most one part. Return the lengths of each partition.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Once a character appears in a partition, every later occurrence of that character must be in the same partition. Knowing each character's last occurrence lets us greedily expand a partition's boundary until it becomes self-contained.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Scan partitions naively: expand each window until no character inside it has a last occurrence outside the window.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def partitionLabels(self, s):
+        result = []
+        start = 0
+
+        while start &lt; len(s):
+            chars = set()
+            end = start
+
+            while end &lt; len(s):
+                chars.add(s[end])
+
+                last = max(
+                    i
+                    for i, c in enumerate(s)
+                    if c in chars
+                )
+
+                if last == end:
+                    break
+
+                end += 1
+
+            result.append(end - start + 1)
+            start = end + 1
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Map each character to its LAST seen index in string. Expand current partition right boundary to <code>max(last_index)</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Build character occurrence ranges and run interval merging.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N log N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(n²)</span>
+          <span class="c-badge c-space">Space: O(k) — k = alphabet size</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Interval sorting.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>HashMap storing last index of each character enables linear O(N) greedy partition.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Pre-compute <code>last[char]</code> = last index of each character. Scan left-to-right. As we see each character, extend <code>end</code> to at least <code>last[char]</code>. When <code>i == end</code>, a self-contained partition is complete.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Dict <code>lastIndex = {c: i for i, c in enumerate(s)}</code>.</li><li><code>size = 0, end = 0, res = []</code>.</li><li>For <code>i, c</code> in enumerate(s): <code>size += 1; end = max(end, lastIndex[c])</code>. If <code>i == end</code>: append <code>size</code> to <code>res</code>; reset <code>size = 0</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Build <code>last = {char: index}</code> for last occurrence of each character.</li><li>Initialize <code>start = 0</code>, <code>end = 0</code>.</li><li>Iterate <code>i, char</code> in <code>s</code>.</li><li>Update <code>end = max(end, last[char])</code>.</li><li>When <code>i == end</code>: append <code>end - start + 1</code> to result, set <code>start = i + 1</code>.</li><li>Return result.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def partitionLabels(s: str) -&gt; list[int]:
-    lastIndex = {c: i for i, c in enumerate(s)}
-    res = []
-    size, end = 0, 0
+          <pre><code>class Solution:
+    def partitionLabels(self, s):
+        last = {}
 
-    for i, c in enumerate(s):
-        size += 1
-        end = max(end, lastIndex[c])
-        if i == end:
-            res.append(size)
-            size = 0
-            
-    return res</code></pre>
+        for i, char in enumerate(s):
+            last[char] = i
+
+        result = []
+        start = 0
+        end = 0
+
+        for i, char in enumerate(s):
+            end = max(end, last[char])
+
+            if i == end:
+                result.append(end - start + 1)
+                start = i + 1
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
-          <span class="c-badge c-space">Space: O(26)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(k) — k = alphabet size</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass greedy partition.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Last Occurrence + Greedy Boundary Expansion — extend window until it is self-contained</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-678">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 678 • Greedy</span>
+          <span class="problem-tag">#LC 678 &bull; 9. Greedy</span>
           <h2>Valid Parenthesis String</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/valid-parenthesis-string/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/valid-parenthesis-string/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>String contains <code>'(', ')', '*'</code> where <code>'*'</code> can be <code>'(', ')'</code> or empty. Return true if valid.</p>
+        <div class="desc-box"><p>Given string <code>s</code> containing <code>'('</code>, <code>')'</code>, and <code>'*'</code> (where <code>'*'</code> can be <code>'('</code>, <code>')'</code>, or empty), return <code>True</code> if it is valid.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Instead of branching on every <code>'*'</code>, track the <em>range</em> of possible open-parenthesis balances: <code>[low, high]</code>. <code>high &lt; 0</code> means even the most optimistic interpretation is invalid. <code>low == 0</code> at the end means there's at least one valid interpretation.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Backtracking: try all three interpretations of each <code>'*'</code> recursively.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def checkValidString(self, s):
+
+        def dfs(index, balance):
+            if balance &lt; 0:
+                return False
+
+            if index == len(s):
+                return balance == 0
+
+            char = s[index]
+
+            if char == &quot;(&quot;:
+                return dfs(index + 1, balance + 1)
+
+            if char == &quot;)&quot;:
+                return dfs(index + 1, balance - 1)
+
+            # Try &#x27;*&#x27; as &#x27;(&#x27;, &#x27;)&#x27;, or &#x27;&#x27;
+            return (
+                dfs(index + 1, balance + 1)
+                or dfs(index + 1, balance - 1)
+                or dfs(index + 1, balance)
+            )
+
+        return dfs(0, 0)</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Track range of possible open parenthesis count <code>[leftMin, leftMax]</code>.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Branching DFS testing all 3 choices for every '*' wildcard.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(3^N)</span>
-          <span class="c-badge c-space">Space: O(N)</span>
+          <span class="c-badge c-naive">Time: O(3ⁿ)</span>
+          <span class="c-badge c-space">Space: O(n) recursion</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Branching DFS.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Greedy tracking of min and max open parenthesis counts in single pass.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Track a range <code>[low, high]</code> of possible open balances. <code>'('</code> increments both. <code>')'</code> decrements both. <code>'*'</code> shrinks <code>low</code> and grows <code>high</code>. If <code>high &lt; 0</code>, definitely invalid. Clamp <code>low</code> at 0 (balance can't go below 0 in any valid string).</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li><code>leftMin = 0, leftMax = 0</code>.</li><li>For <code>c</code> in <code>s</code>: if <code>c == '('</code> <code>leftMin += 1; leftMax += 1</code>; elif <code>c == ')'</code> <code>leftMin -= 1; leftMax -= 1</code>; else ('*') <code>leftMin -= 1; leftMax += 1</code>.</li><li>If <code>leftMax < 0</code> return False. Clamp <code>leftMin = max(leftMin, 0)</code>.</li><li>Return <code>leftMin == 0</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>low = 0</code>, <code>high = 0</code>.</li><li>For each char in <code>s</code>:</li><li><code>'('</code>: <code>low += 1; high += 1</code>.</li><li><code>')'</code>: <code>low -= 1; high -= 1</code>.</li><li><code>'*'</code>: <code>low -= 1; high += 1</code>.</li><li>If <code>high &lt; 0</code>: return <code>False</code>.</li><li>Clamp: <code>low = max(low, 0)</code>.</li><li>Return <code>low == 0</code>.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
-          <pre><code>def checkValidString(s: str) -&gt; bool:
-    leftMin, leftMax = 0, 0
+          <pre><code>class Solution:
+    def checkValidString(self, s):
+        low = 0
+        high = 0
 
-    for c in s:
-        if c == &quot;(&quot;:
-            leftMin, leftMax = leftMin + 1, leftMax + 1
-        elif c == &quot;)&quot;:
-            leftMin, leftMax = leftMin - 1, leftMax - 1
-        else:
-            leftMin, leftMax = leftMin - 1, leftMax + 1
-        if leftMax &lt; 0:
-            return False
-        if leftMin &lt; 0:
-            leftMin = 0
-            
-    return leftMin == 0</code></pre>
+        for char in s:
+            if char == &quot;(&quot;:
+                low += 1
+                high += 1
+
+            elif char == &quot;)&quot;:
+                low -= 1
+                high -= 1
+
+            else:  # &#x27;*&#x27;
+                low -= 1
+                high += 1
+
+            if high &lt; 0:
+                return False
+
+            low = max(low, 0)
+
+        return low == 0</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-time">Time: O(n)</span>
           <span class="c-badge c-space">Space: O(1)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Greedy range tracking in O(1) space.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Balance Range [low, high] — track the window of possible states instead of every individual state</p></div>
       </div>
     </div>
-    
-    </main>
-  </div>
 
-  <script>
-    const filterInput = document.getElementById('filterInput');
-    const navItems = document.querySelectorAll('.nav-item');
-    const cards = document.querySelectorAll('.problem-card');
+    <!-- Pattern Map -->
+    <div class="summary-card" id="pattern-map">
+      <div class="summary-header">
+        <h2><i class="ti ti-map"></i> 🧠 Complete Greedy Pattern Map</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">All 8 Greedy problems, their core idea, naive complexity, and optimized complexity.</p>
+      <div class="pattern-table-wrapper">
+        <table class="pattern-table">
+          <thead>
+            <tr><th>Problem</th><th>LC #</th><th>Core Greedy Idea</th><th>Naive</th><th>Optimized</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Maximum Subarray</td><td>LC 53</td><td>Extend or restart — keep best ending here</td><td>O(n²)</td><td>O(n)</td></tr>
+            <tr><td>Jump Game</td><td>LC 55</td><td>Track furthest reachable index</td><td>O(2ⁿ)</td><td>O(n)</td></tr>
+            <tr><td>Jump Game II</td><td>LC 45</td><td>Expand current jump range greedily</td><td>O(2ⁿ)</td><td>O(n)</td></tr>
+            <tr><td>Gas Station</td><td>LC 134</td><td>Failed range → skip all starts within it</td><td>O(n²)</td><td>O(n)</td></tr>
+            <tr><td>Hand of Straights</td><td>LC 846</td><td>Always start group from smallest card</td><td>O(n²)</td><td>O(n log n)</td></tr>
+            <tr><td>Merge Triplets</td><td>LC 1899</td><td>Discard overshooting triplets, verify coverage</td><td>O(2ⁿ)</td><td>O(n)</td></tr>
+            <tr><td>Partition Labels</td><td>LC 763</td><td>Last occurrence drives boundary expansion</td><td>O(n²)</td><td>O(n)</td></tr>
+            <tr><td>Valid Parenthesis String</td><td>LC 678</td><td>Track [low, high] balance range</td><td>O(3ⁿ)</td><td>O(n)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-    filterInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(q) ? 'flex' : 'none';
-      });
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(q) ? 'block' : 'none';
-      });
+    <!-- 5 Reusable Patterns -->
+    <div class="summary-card" id="five-patterns">
+      <div class="summary-header">
+        <h2><i class="ti ti-flame"></i> 🔥 5 Reusable Greedy Patterns</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">These patterns repeat across all Greedy problems in interviews. Recognise the shape, not just the problem.</p>
+      <div class="pattern-grid">
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-1"></i> Furthest Reachable</h4>
+          <p><strong>LC 55.</strong> Scan left-to-right. Maintain the furthest index reachable so far. If current index exceeds it — gap detected, return False.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-2"></i> Current Range → Next Range</h4>
+          <p><strong>LC 45.</strong> Within the current reachable range find the position that extends farthest. When the range is exhausted, move to the next. BFS without a queue.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-3"></i> Last Occurrence Boundary</h4>
+          <p><strong>LC 763.</strong> Pre-compute each character's last index. As you scan, expand the window boundary to cover every last occurrence seen. Commit a partition when <code>i == end</code>.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-4"></i> Candidate Elimination</h4>
+          <p><strong>LC 134 / LC 1899.</strong> Prove that a failed candidate eliminates an entire range of alternatives. Skip them all in O(1) and jump forward.</p>
+        </div>
+        <div class="pattern-item-card">
+          <h4><i class="ti ti-circle-number-5"></i> Track a Range of States</h4>
+          <p><strong>LC 678.</strong> Instead of branching into every possible state (exponential), track <code>[min_possible, max_possible]</code>. Collapses O(3ⁿ) to O(n) time and O(1) space.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority List -->
+    <div class="summary-card" id="priority-list">
+      <div class="summary-header">
+        <h2><i class="ti ti-star"></i> ⭐ Interview Priority &amp; Central Question</h2>
+      </div>
+      <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">If time is limited, master these in order. The conceptual trio at the top is the highest-value investment.</p>
+      <div class="pattern-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="pattern-item-card">
+          <h4>Priority 1 — Core Trio</h4>
+          <p>
+            <strong>LC 55</strong> — Furthest reachable<br>
+            <strong>LC 45</strong> — Furthest reachable range<br>
+            <strong>LC 134</strong> — Eliminate impossible candidates<br><br>
+            Once these click, you understand the central greedy mechanism.
+          </p>
+        </div>
+        <div class="pattern-item-card">
+          <h4>Priority 2 — Next Three</h4>
+          <p>
+            <strong>LC 53</strong> — Kadane (extend or restart)<br>
+            <strong>LC 763</strong> — Last occurrence + expansion<br>
+            <strong>LC 678</strong> — Range of possible states<br>
+          </p>
+        </div>
+        <div class="pattern-item-card" style="grid-column:1/-1;">
+          <h4>🎯 The Central Greedy Question</h4>
+          <p style="font-size:14px;line-height:1.7;">
+            <em>"What information can I keep from the past that lets me safely discard all the choices I no longer need?"</em><br><br>
+            Greedy doesn't mean reckless — it means proving that the locally optimal choice can never be improved by reconsidering earlier decisions. The moment you can articulate that proof for a problem, you've found the greedy solution.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const filterInput = document.getElementById('filterInput');
+  const navItems = document.querySelectorAll('.nav-item');
+  const cards = document.querySelectorAll('.problem-card, .summary-card');
+
+  filterInput.addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    navItems.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
     });
-  </script>
+    cards.forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    });
+  });
+</script>
 </body>
 </html>

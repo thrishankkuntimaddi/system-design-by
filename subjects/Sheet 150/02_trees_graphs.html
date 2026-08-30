@@ -41,8 +41,14 @@
       color: var(--text);
       line-height: 1.6;
       font-size: 15px;
+      overflow-x: hidden;
     }
-    .layout { display: flex; min-height: 100vh; }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
     
     /* Sidebar */
     .sidebar {
@@ -56,6 +62,7 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      z-index: 10;
     }
     .sidebar-header {
       padding: 20px 20px 16px;
@@ -145,9 +152,11 @@
     /* Main Content */
     .main-content {
       flex: 1;
+      min-width: 0;
       max-width: 960px;
       margin: 0 auto;
       padding: 40px 48px 120px;
+      width: calc(100% - 310px);
     }
 
     .topic-header {
@@ -311,6 +320,9 @@
       border-radius: 8px;
       overflow: hidden;
       background: #06080e;
+      width: 100%;
+      display: block;
+      clear: both;
     }
     .code-header {
       display: flex;
@@ -343,16 +355,22 @@
       padding: 16px;
       margin: 0;
       overflow-x: auto;
+      max-width: 100%;
       font-family: var(--mono);
       font-size: 13px;
       color: #bbf7e6;
       line-height: 1.65;
+      white-space: pre;
+    }
+    .code-container pre code {
+      display: block;
+      white-space: pre;
     }
 
     @media (max-width: 800px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
+      .main-content { width: 100%; padding: 24px 16px 60px; }
       .problem-card { padding: 20px; }
     }
   </style>

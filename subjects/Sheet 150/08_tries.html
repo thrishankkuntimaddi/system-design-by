@@ -20,11 +20,10 @@
       --bg3: #161d2e;
       --bg4: #1d263b;
       --border: #1f2d48;
-      --border2: #2d3f64;
       --text: #edf0f7;
       --text2: #8a96b0;
       --text3: #5a6480;
-      --accent: #8b5cf6;
+      --accent: #a855f7;
       --green: #34d399;
       --amber: #f59e0b;
       --red: #ef4444;
@@ -34,325 +33,138 @@
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     html { scroll-behavior: smooth; }
-    ::selection { background: var(--accent); color: #000; }
+    ::selection { background: var(--accent); color: #fff; }
     body {
       font-family: var(--font-sans);
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       font-size: 15px;
+      overflow-x: hidden;
     }
-    .layout { display: flex; min-height: 100vh; }
-    
+    .layout { display: flex; min-height: 100vh; width: 100%; overflow-x: hidden; }
+
     /* Sidebar */
     .sidebar {
-      width: 310px;
-      flex-shrink: 0;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
+      width: 310px; flex-shrink: 0; background: var(--bg2);
+      border-right: 1px solid var(--border); position: sticky; top: 0;
+      height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 10;
     }
-    .sidebar-header {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .sidebar-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
     .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text3);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin-bottom: 12px;
-      transition: color .15s;
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+      color: var(--text3); text-decoration: none; text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 12px; transition: color .15s;
     }
     .back-link:hover { color: var(--accent); }
     .module-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      padding: 3px 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
+      display: inline-block; font-size: 10px; font-family: var(--mono); font-weight: 700;
+      color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 6px;
     }
-    .module-title-side {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .sidebar-search {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
+    .module-title-side { font-size: 16px; font-weight: 800; color: var(--text); }
+    .sidebar-search { padding: 12px 16px; border-bottom: 1px solid var(--border); position: relative; }
     .sidebar-search input {
-      width: 100%;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px 8px 34px;
-      font-size: 12.5px;
-      color: var(--text);
-      outline: none;
+      width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 12px 8px 34px; font-size: 12.5px; color: var(--text); outline: none;
     }
     .sidebar-search input:focus { border-color: var(--accent); }
-    .sidebar-search i {
-      position: absolute;
-      left: 26px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text3);
-      font-size: 14px;
-    }
+    .sidebar-search i { position: absolute; left: 26px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
     .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      color: var(--text2);
-      text-decoration: none;
-      margin-bottom: 2px;
-      transition: all .15s;
+      display: flex; align-items: center; justify-content: space-between; padding: 8px 12px;
+      border-radius: 8px; font-size: 12.5px; color: var(--text2); text-decoration: none;
+      margin-bottom: 2px; transition: all .15s;
     }
     .nav-item:hover { background: var(--bg3); color: var(--text); }
-    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
-    .diff-badge {
-      font-size: 9.5px;
-      font-family: var(--mono);
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
-    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
-    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+    .diff-badge { font-size: 9.5px; font-family: var(--mono); font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .diff-medium { background: rgba(245,158,11,0.12); color: var(--amber); }
+    .diff-hard   { background: rgba(239,68,68,0.12);  color: var(--red); }
 
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 40px 48px 120px;
-    }
-
-    .topic-header {
-      margin-bottom: 40px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .topic-eyebrow {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .topic-header h1 {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 10px;
-    }
-    .topic-header p {
-      font-size: 15px;
-      color: var(--text2);
-    }
+    /* Main */
+    .main-content { flex: 1; min-width: 0; max-width: 960px; margin: 0 auto; padding: 40px 48px 120px; width: calc(100% - 310px); }
+    .topic-header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .topic-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+    .topic-header h1 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+    .topic-header p { font-size: 15px; color: var(--text2); }
 
     /* Problem Card */
     .problem-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 48px;
-      scroll-margin-top: 20px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden;
     }
     .problem-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
     }
     .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
-    .problem-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .problem-header h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -.01em;
-    }
+    .problem-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); }
+    .problem-header h2 { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
     .problem-meta { display: flex; align-items: center; gap: 10px; }
     .lc-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--mono);
+      font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
       border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-      padding: 4px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background .15s;
+      padding: 4px 10px; border-radius: 6px; text-decoration: none; transition: background .15s;
     }
     .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 
-    .sec-block { margin-bottom: 24px; }
+    .sec-block { margin-bottom: 24px; width: 100%; clear: both; }
     .sec-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
+      font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--text); display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
     }
     .sec-title i { color: var(--accent); font-size: 16px; }
+    .desc-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .intuition-box { background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.2); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .naive-box    { background: rgba(239,68,68,0.04);   border: 1px solid rgba(239,68,68,0.2);  border-left: 3px solid var(--red);   border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
+    .approach-box { background: rgba(52,211,153,0.04);  border: 1px solid rgba(52,211,153,0.2); border-left: 3px solid var(--green); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--text2); line-height: 1.65; }
 
-    .desc-box, .naive-box, .intuition-box, .approach-box {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.65;
-    }
-    .intuition-box {
-      background: rgba(56, 189, 248, 0.04);
-      border-color: rgba(56, 189, 248, 0.2);
-      border-left: 3px solid var(--accent);
-    }
-    .naive-box {
-      background: rgba(245, 158, 11, 0.04);
-      border-color: rgba(245, 158, 11, 0.2);
-      border-left: 3px solid var(--amber);
-    }
-    .approach-box {
-      background: rgba(52, 211, 153, 0.04);
-      border-color: rgba(52, 211, 153, 0.2);
-      border-left: 3px solid var(--green);
-    }
+    ol.step-list { padding-left: 20px; margin-top: 8px; }
+    ol.step-list li { margin-bottom: 6px; color: var(--text2); }
+    ol.step-list li strong { color: var(--text); }
 
-    ol.step-list, ul.bullet-list {
-      padding-left: 20px;
-      margin-top: 8px;
-    }
-    ol.step-list li, ul.bullet-list li {
-      margin-bottom: 6px;
-      color: var(--text2);
-    }
-    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+    .complexity-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .c-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 6px; }
+    .c-time  { background: rgba(168,85,247,0.1); color: var(--accent); border: 1px solid rgba(168,85,247,0.25); }
+    .c-space { background: rgba(34,211,238,0.1);  color: var(--cyan);   border: 1px solid rgba(34,211,238,0.25); }
+    .c-naive { background: rgba(239,68,68,0.1);   color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
 
-    .complexity-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .c-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-    .c-time {
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
-    .c-space {
-      background: rgba(34, 211, 238, 0.1);
-      color: var(--cyan);
-      border: 1px solid rgba(34, 211, 238, 0.25);
-    }
-    .c-naive {
-      background: rgba(245, 158, 11, 0.1);
-      color: var(--amber);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-    }
-
-    .code-container {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      background: #06080e;
-    }
+    .code-container { margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #06080e; width: 100%; display: block; clear: both; }
     .code-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg3);
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text3);
-      text-transform: uppercase;
+      display: flex; align-items: center; justify-content: space-between; background: var(--bg3);
+      padding: 8px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase;
     }
     .copy-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text2);
-      font-size: 11px;
-      font-family: var(--mono);
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all .15s;
+      background: transparent; border: 1px solid var(--border); color: var(--text2); font-size: 11px;
+      font-family: var(--mono); padding: 3px 8px; border-radius: 4px; cursor: pointer;
+      display: flex; align-items: center; gap: 4px; transition: all .15s;
     }
     .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
-    .code-container pre {
-      padding: 16px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: #bbf7e6;
-      line-height: 1.65;
-    }
+    .code-container pre { padding: 16px; margin: 0; overflow-x: auto; font-family: var(--mono); font-size: 13px; color: #e9d5ff; line-height: 1.65; white-space: pre; }
+    .code-container pre code { display: block; white-space: pre; }
+
+    /* Summary Cards */
+    .summary-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 48px; scroll-margin-top: 20px; width: 100%; overflow-x: hidden; }
+    .summary-header { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .summary-header h2 { font-size: 22px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .summary-header h2 i { color: var(--accent); }
+    .pattern-table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg3); }
+    .pattern-table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
+    .pattern-table th { background: var(--bg4); padding: 12px 16px; font-weight: 700; color: var(--text); font-family: var(--mono); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .pattern-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .pattern-table tr:last-child td { border-bottom: none; }
+    .pattern-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; margin-top: 16px; }
+    .pattern-item-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .pattern-item-card h4 { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .pattern-item-card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .diagram-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--mono); font-size: 12.5px; color: var(--accent); line-height: 1.6; white-space: pre; overflow-x: auto; }
 
     @media (max-width: 800px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
+      .main-content { width: 100%; padding: 24px 16px 60px; }
       .problem-card { padding: 20px; }
     }
   </style>
@@ -370,417 +182,634 @@
         <input type="text" id="filterInput" placeholder="Filter problems...">
       </div>
       <div class="nav-list" id="navList">
-        
         <a href="#lc-208" class="nav-item">
           <span>LC 208. Implement Trie (Prefix Tree)</span>
           <span class="diff-badge diff-medium">Medium</span>
         </a>
-        
         <a href="#lc-211" class="nav-item">
           <span>LC 211. Design Add and Search Words Data Structure</span>
           <span class="diff-badge diff-medium">Medium</span>
         </a>
-        
         <a href="#lc-212" class="nav-item">
           <span>LC 212. Word Search II</span>
           <span class="diff-badge diff-hard">Hard</span>
         </a>
-        
+        <div style="margin:16px 0 8px 12px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;">SUMMARY & MAPS</div>
+        <a href="#pattern-map" class="nav-item"><span>🧠 Pattern Map</span></a>
+        <a href="#progression" class="nav-item"><span>🔥 LC 208 → 211 → 212</span></a>
+        <a href="#mental-model" class="nav-item"><span>🎯 Mental Model</span></a>
       </div>
     </aside>
 
     <main class="main-content">
       <div class="topic-header">
-        <div class="topic-eyebrow">MODULE 08 • 3 PROBLEMS</div>
+        <div class="topic-eyebrow">MODULE 08 &bull; SHEET 150</div>
         <h1>Tries</h1>
-        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+        <p>3 essential problems covering prefix tree construction, wildcard DFS, and multi-word board search with prefix pruning.</p>
       </div>
 
-      
+
     <div class="problem-card" id="lc-208">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 208 • Tries</span>
+          <span class="problem-tag">#LC 208 &bull; 8. Tries</span>
           <h2>Implement Trie (Prefix Tree)</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Implement Trie data structure with <code>insert</code>, <code>search</code>, and <code>startsWith</code> operations.</p>
+        <div class="desc-box"><p>Implement a trie data structure supporting <code>insert(word)</code>, <code>search(word)</code>, and <code>startsWith(prefix)</code>.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>A Trie stores strings character-by-character as a tree. Each node tracks its children and whether a complete word ends there.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Store all words in a list and perform string operations on every query.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Trie:
+
+    def __init__(self):
+        self.words = []
+
+    def insert(self, word):
+        if word not in self.words:
+            self.words.append(word)
+
+    def search(self, word):
+        return word in self.words
+
+    def startsWith(self, prefix):
+        for word in self.words:
+            if word.startswith(prefix):
+                return True
+
+        return False</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Each TrieNode contains <code>children = {}</code> map and <code>endOfWord = False</code> boolean flag.</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Store words in a list/set and scan prefixes using string <code>startswith</code>.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N * L)</span>
-          <span class="c-badge c-space">Space: O(N * L)</span>
+          <span class="c-badge c-naive">insert/search/startsWith: O(N × L)</span>
+          <span class="c-badge c-space">Space: O(N × L)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">List scanning.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Trie tree nodes store character transitions providing O(L) lookup independent of total word count.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Store characters in a tree where each edge is a character. Traverse character-by-character for O(L) insert, search, and prefix checks.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>TrieNode class: <code>self.children = {}; self.endOfWord = False</code>.</li><li><code>insert(word)</code>: iterate chars, create nodes if missing, set <code>curr.endOfWord = True</code> at end.</li><li><code>search(word)</code>: return True iff path exists and <code>curr.endOfWord</code> is True.</li><li><code>startsWith(prefix)</code>: return True iff path exists.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Define <code>TrieNode</code> with <code>children = {}</code> and <code>is_word = False</code>.</li><li><code>insert(word)</code>: Walk node-by-node from root, creating missing children. Set <code>node.is_word = True</code> at last character.</li><li><code>search(word)</code>: Walk node-by-node. Return <code>False</code> if any character is missing. Return <code>node.is_word</code> at end.</li><li><code>startsWith(prefix)</code>: Same traversal as <code>search</code> but return <code>True</code> regardless of <code>is_word</code> at end.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
+
     def __init__(self):
         self.children = {}
-        self.endOfWord = False
+        self.is_word = False
+
 
 class Trie:
+
     def __init__(self):
         self.root = TrieNode()
 
-    def insert(self, word: str) -&gt; None:
-        curr = self.root
-        for c in word:
-            if c not in curr.children:
-                curr.children[c] = TrieNode()
-            curr = curr.children[c]
-        curr.endOfWord = True
+    def insert(self, word):
 
-    def search(self, word: str) -&gt; bool:
-        curr = self.root
-        for c in word:
-            if c not in curr.children:
-                return False
-            curr = curr.children[c]
-        return curr.endOfWord
+        node = self.root
 
-    def startsWith(self, prefix: str) -&gt; bool:
-        curr = self.root
-        for c in prefix:
-            if c not in curr.children:
+        for char in word:
+
+            if char not in node.children:
+                node.children[char] = TrieNode()
+
+            node = node.children[char]
+
+        node.is_word = True
+
+    def search(self, word):
+
+        node = self.root
+
+        for char in word:
+
+            if char not in node.children:
                 return False
-            curr = curr.children[c]
+
+            node = node.children[char]
+
+        return node.is_word
+
+    def startsWith(self, prefix):
+
+        node = self.root
+
+        for char in prefix:
+
+            if char not in node.children:
+                return False
+
+            node = node.children[char]
+
         return True</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(L)</span>
-          <span class="c-badge c-space">Space: O(N * L)</span>
+          <span class="c-badge c-time">insert/search/startsWith: O(L)</span>
+          <span class="c-badge c-space">Space: O(total characters inserted)</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">L is string length, N is word count.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Efficient prefix lookup → Trie (Hash Map per node)</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-211">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 211 • Tries</span>
+          <span class="problem-tag">#LC 211 &bull; 8. Tries</span>
           <h2>Design Add and Search Words Data Structure</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-medium">Medium</span>
-          <a href="https://leetcode.com/problems/design-add-and-search-words-data-structure/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/design-add-and-search-words-data-structure/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Design data structure supporting <code>addWord(word)</code> and wildcard <code>search(word)</code> where <code>'.'</code> matches any letter.</p>
+        <div class="desc-box"><p>Design a data structure supporting <code>addWord(word)</code> and <code>search(word)</code> where <code>'.'</code> in search patterns matches any single character.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>A wildcard <code>'.'</code> means branching into every child of the current Trie node simultaneously — a DFS over all children.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>Store words in a list and compare each candidate against the search pattern character-by-character.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class WordDictionary:
+
+    def __init__(self):
+        self.words = []
+
+    def addWord(self, word):
+        self.words.append(word)
+
+    def search(self, word):
+
+        for candidate in self.words:
+
+            if len(candidate) != len(word):
+                continue
+
+            match = True
+
+            for i in range(len(word)):
+
+                if (
+                    word[i] != &quot;.&quot;
+                    and word[i] != candidate[i]
+                ):
+                    match = False
+                    break
+
+            if match:
+                return True
+
+        return False</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>When encountering <code>'.'</code> during search, launch recursive DFS across ALL existing child nodes of current node!</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Regex matching over full word list.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(N * L)</span>
-          <span class="c-badge c-space">Space: O(N * L)</span>
+          <span class="c-badge c-naive">addWord: O(1), search: O(N × L)</span>
+          <span class="c-badge c-space">Space: O(N × L)</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Regex engine evaluation.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Trie + DFS backtracking on wildcard dots.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Build a Trie for fast prefix traversal. When encountering <code>'.'</code>, branch into all children via DFS and return <code>True</code> if any branch succeeds.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>TrieNode class. <code>addWord</code> inserts chars normally.</li><li><code>dfs(j, root)</code>: if <code>c == '.'</code>: loop all <code>child in root.children.values()</code>: if <code>dfs(j+1, child)</code> return True. Else if <code>c not in root.children</code> return False; else recurse <code>dfs(j+1, root.children[c])</code>.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Build Trie with <code>TrieNode(children, is_word)</code> exactly as LC 208.</li><li><code>addWord</code> inserts into the Trie identically.</li><li><code>search(word)</code> calls <code>dfs(index, node)</code>.</li><li>Base case: <code>index == len(word)</code> → return <code>node.is_word</code>.</li><li>If <code>word[index] != '.'</code>: advance into <code>node.children[char]</code> if exists.</li><li>If <code>word[index] == '.'</code>: iterate all <code>node.children.values()</code> and return <code>True</code> if any recursive call returns True.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
+
     def __init__(self):
         self.children = {}
-        self.isWord = False
+        self.is_word = False
+
 
 class WordDictionary:
+
     def __init__(self):
         self.root = TrieNode()
 
-    def addWord(self, word: str) -&gt; None:
-        curr = self.root
-        for c in word:
-            if c not in curr.children:
-                curr.children[c] = TrieNode()
-            curr = curr.children[c]
-        curr.isWord = True
+    def addWord(self, word):
 
-    def search(self, word: str) -&gt; bool:
-        def dfs(j, root):
-            curr = root
-            for i in range(j, len(word)):
-                c = word[i]
-                if c == &quot;.&quot;:
-                    for child in curr.children.values():
-                        if dfs(i + 1, child):
-                            return True
+        node = self.root
+
+        for char in word:
+
+            if char not in node.children:
+                node.children[char] = TrieNode()
+
+            node = node.children[char]
+
+        node.is_word = True
+
+    def search(self, word):
+
+        def dfs(index, node):
+
+            if index == len(word):
+                return node.is_word
+
+            char = word[index]
+
+            if char != &quot;.&quot;:
+
+                if char not in node.children:
                     return False
-                else:
-                    if c not in curr.children:
-                        return False
-                    curr = curr.children[c]
-            return curr.isWord
+
+                return dfs(
+                    index + 1,
+                    node.children[char]
+                )
+
+            # Wildcard: try all children
+            for child in node.children.values():
+
+                if dfs(index + 1, child):
+                    return True
+
+            return False
 
         return dfs(0, self.root)</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(26^L)</span>
-          <span class="c-badge c-space">Space: O(N * L)</span>
+          <span class="c-badge c-time">addWord: O(L), search: O(L) normal / O(26^L) worst with wildcards</span>
+          <span class="c-badge c-space">Space: O(total chars) + O(L) DFS stack</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Wildcard dot DFS tree branch traversal.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Trie + DFS Backtracking for wildcard branching</p></div>
       </div>
     </div>
-    
+
     <div class="problem-card" id="lc-212">
       <div class="problem-header">
         <div class="problem-title-area">
-          <span class="problem-tag">#LC 212 • Tries</span>
+          <span class="problem-tag">#LC 212 &bull; 8. Tries</span>
           <h2>Word Search II</h2>
         </div>
         <div class="problem-meta">
           <span class="diff-badge diff-hard">Hard</span>
-          <a href="https://leetcode.com/problems/word-search-ii/" target="_blank" rel="noopener" class="lc-link">
-            LeetCode <i class="ti ti-external-link"></i>
-          </a>
+          <a href="https://leetcode.com/problems/word-search-ii/" target="_blank" rel="noopener" class="lc-link">LeetCode <i class="ti ti-external-link"></i></a>
         </div>
       </div>
 
-      <!-- 1. Problem Statement -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
-        <div class="desc-box">
-          <p>Given <code>m x n</code> board of characters and list of <code>words</code>, return all words on board.</p>
+        <div class="desc-box"><p>Given an <code>m x n</code> board of characters and a list of strings <code>words</code>, return all words from the list that can be found in the board (adjacent horizontal/vertical cells, no cell reused).</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Running separate board-DFS for each word is wasteful when words share prefixes. A Trie over all words enables prefix pruning — a non-matching prefix stops all further exploration.</p></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Brute Force</div>
+        <div class="naive-box"><p>For every word, start a full board DFS from every matching cell.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+
+    def findWords(self, board, words):
+
+        rows = len(board)
+        cols = len(board[0])
+        result = []
+
+        def exists(word):
+
+            def dfs(r, c, index):
+                if index == len(word):
+                    return True
+
+                if (
+                    r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols
+                    or board[r][c] != word[index]
+                ):
+                    return False
+
+                temp = board[r][c]
+                board[r][c] = &quot;#&quot;
+
+                found = (
+                    dfs(r + 1, c, index + 1)
+                    or dfs(r - 1, c, index + 1)
+                    or dfs(r, c + 1, index + 1)
+                    or dfs(r, c - 1, index + 1)
+                )
+
+                board[r][c] = temp
+                return found
+
+            for r in range(rows):
+                for c in range(cols):
+                    if board[r][c] == word[0]:
+                        if dfs(r, c, 0):
+                            return True
+
+            return False
+
+        for word in words:
+            if exists(word):
+                result.append(word)
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 2. Understanding -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
-        <div class="desc-box">
-          <p>Insert all target words into a Trie. Run 2D Grid DFS backtracking simultaneously navigating the Trie!</p>
-        </div>
-      </div>
-
-      <!-- 3. Naive Solution -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
-        <div class="naive-box">
-          <p>Run LC 79 Word Search DFS for every single word independently.</p>
-        </div>
-      </div>
-
-      <!-- 4. Naive Complexity -->
-      <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
         <div class="complexity-row">
-          <span class="c-badge c-naive">Time: O(W * M * N * 3^L)</span>
-          <span class="c-badge c-space">Space: O(L)</span>
+          <span class="c-badge c-naive">Time: O(W × R × C × 4^L)</span>
+          <span class="c-badge c-space">Space: O(L) recursion</span>
         </div>
-        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Repeats grid DFS per word.</p>
       </div>
 
-      <!-- 5. Intuition for Optimization -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
-        <div class="intuition-box">
-          <p>Single grid DFS using Trie prefix tree prunes invalid word branches immediately.</p>
-        </div>
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition &mdash; For Optimization</div>
+        <div class="intuition-box"><p>Build a single Trie from all words. Run one DFS from every board cell navigating the Trie simultaneously. When the current character is not in the Trie node's children, prune immediately — this avoids exploring invalid prefixes shared across many words.</p></div>
       </div>
 
-      <!-- 6. Approach Algorithm -->
       <div class="sec-block">
-        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
-        <div class="approach-box">
-          <ol class='step-list'><li>Build Trie of all input <code>words</code>.</li><li>Define <code>dfs(r, c, node, word)</code>: if <code>node.isWord</code> add word to <code>res</code> and set <code>node.isWord = False</code>.</li><li>Mark grid cell <code>'#'</code>. Recurse 4 directions. Restore cell.</li></ol>
-        </div>
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach &mdash; Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Build Trie from all words, storing <code>node.word = word</code> (not <code>is_word</code>) at terminal nodes.</li><li>Outer loops: iterate every board cell <code>(r, c)</code> and call <code>dfs(r, c, root)</code>.</li><li>DFS checks: out-of-bounds, visited marker <code>'#'</code>, or char not in <code>node.children</code> → return immediately.</li><li>If <code>next_node.word is not None</code>: append to result and set <code>next_node.word = None</code> to prevent duplicates.</li><li>Mark cell <code>board[r][c] = '#'</code>, recurse in 4 directions with <code>next_node</code>, then restore cell.</li></ol></div>
       </div>
 
-      <!-- 7. Optimized Code -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
         <div class="code-container">
           <div class="code-header">
-            <span>Python 3 Implementation</span>
+            <span>Optimized Solution (Python 3)</span>
             <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
           </div>
           <pre><code>class TrieNode:
+
     def __init__(self):
         self.children = {}
-        self.isWord = False
+        self.word = None
 
-    def addWord(self, word):
-        curr = self
-        for c in word:
-            if c not in curr.children:
-                curr.children[c] = TrieNode()
-            curr = curr.children[c]
-        curr.isWord = True
 
-def findWords(board: list[list[str]], words: list[str]) -&gt; list[str]:
-    root = TrieNode()
-    for w in words:
-        root.addWord(w)
+class Solution:
 
-    ROWS, COLS = len(board), len(board[0])
-    res, visit = set(), set()
+    def findWords(self, board, words):
 
-    def dfs(r, c, node, word):
-        if (r &lt; 0 or c &lt; 0 or r &gt;= ROWS or c &gt;= COLS or
-            (r, c) in visit or board[r][c] not in node.children):
-            return
+        root = TrieNode()
 
-        visit.add((r, c))
-        node = node.children[board[r][c]]
-        word += board[r][c]
-        if node.isWord:
-            res.add(word)
+        # Build Trie from all words
+        for word in words:
 
-        dfs(r + 1, c, node, word)
-        dfs(r - 1, c, node, word)
-        dfs(r, c + 1, node, word)
-        dfs(r, c - 1, node, word)
-        visit.remove((r, c))
+            node = root
 
-    for r in range(ROWS):
-        for c in range(COLS):
-            dfs(r, c, root, &quot;&quot;)
+            for char in word:
 
-    return list(res)</code></pre>
+                if char not in node.children:
+                    node.children[char] = TrieNode()
+
+                node = node.children[char]
+
+            node.word = word
+
+        rows = len(board)
+        cols = len(board[0])
+        result = []
+
+        def dfs(r, c, node):
+
+            if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols:
+                return
+
+            char = board[r][c]
+
+            if char == &quot;#&quot;:
+                return
+
+            if char not in node.children:
+                return
+
+            next_node = node.children[char]
+
+            # Complete word found
+            if next_node.word is not None:
+                result.append(next_node.word)
+                next_node.word = None  # prevent duplicates
+
+            board[r][c] = &quot;#&quot;  # mark visited
+
+            dfs(r + 1, c, next_node)
+            dfs(r - 1, c, next_node)
+            dfs(r, c + 1, next_node)
+            dfs(r, c - 1, next_node)
+
+            board[r][c] = char  # restore
+
+        for r in range(rows):
+            for c in range(cols):
+                dfs(r, c, root)
+
+        return result</code></pre>
         </div>
       </div>
 
-      <!-- 8. Optimized Complexity -->
       <div class="sec-block">
         <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
         <div class="complexity-row">
-          <span class="c-badge c-time">Time: O(M * N * 3^L)</span>
-          <span class="c-badge c-space">Space: O(W * L)</span>
+          <span class="c-badge c-time">Time: O(R × C × 4^L) with prefix pruning</span>
+          <span class="c-badge c-space">Space: O(total chars in words) + O(L) stack</span>
         </div>
-        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Trie prefix matching avoids redundant grid searches.</p>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern</strong> &mdash; Multi-word board search → Trie + DFS + Backtracking + Prefix Pruning</p></div>
       </div>
     </div>
-    
+
+      <!-- Pattern Map -->
+      <div class="summary-card" id="pattern-map">
+        <div class="summary-header">
+          <h2><i class="ti ti-map"></i> 🧠 Complete Trie Pattern Map</h2>
+        </div>
+        <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">All 3 Trie problems, their core patterns, and complexity summary.</p>
+        <div class="pattern-table-wrapper">
+          <table class="pattern-table">
+            <thead>
+              <tr><th>Problem</th><th>LC #</th><th>Core Pattern</th><th>Naive Time</th><th>Optimized Time</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Implement Trie</td><td>LC 208</td><td>Prefix tree (char-by-char hash map)</td><td>O(NL)</td><td>O(L) all ops</td></tr>
+              <tr><td>Add &amp; Search Words</td><td>LC 211</td><td>Trie + DFS for wildcard <code>'.'</code></td><td>O(NL)</td><td>O(L) / O(26^L) with dots</td></tr>
+              <tr><td>Word Search II</td><td>LC 212</td><td>Trie + Board DFS + Prefix Pruning</td><td>O(W×R×C×4^L)</td><td>O(R×C×4^L) pruned</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Progression Card -->
+      <div class="summary-card" id="progression">
+        <div class="summary-header">
+          <h2><i class="ti ti-flame"></i> 🔥 The LC 208 → 211 → 212 Progression</h2>
+        </div>
+        <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">These three problems aren't separate — they're one idea built up step by step.</p>
+        <div class="pattern-grid">
+          <div class="pattern-item-card">
+            <h4><i class="ti ti-circle-number-1"></i> LC 208 — The Foundation</h4>
+            <p>Learn <code>node.children</code> (hash map) and <code>node.is_word</code>. Master the insert/search/prefix template. Everything else builds on this.</p>
+          </div>
+          <div class="pattern-item-card">
+            <h4><i class="ti ti-circle-number-2"></i> LC 211 — Trie + DFS</h4>
+            <p>Add wildcard <code>'.'</code>: branch into <em>all</em> children when <code>char == '.'</code>. Same Trie traversal, but now with recursive backtracking.</p>
+          </div>
+          <div class="pattern-item-card">
+            <h4><i class="ti ti-circle-number-3"></i> LC 212 — Trie + Board DFS + Pruning</h4>
+            <p>Build Trie from all words. Navigate Trie and board simultaneously. The line <code>if char not in node.children: return</code> is the prefix pruning that makes this efficient.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mental Model -->
+      <div class="summary-card" id="mental-model">
+        <div class="summary-header">
+          <h2><i class="ti ti-target"></i> 🎯 Trie Mental Model &amp; 3 Core Operations</h2>
+        </div>
+        <p style="color:var(--text2);margin-bottom:20px;font-size:14px;">The big interview insight: Tries don't just store strings — they make <strong>prefix information reusable</strong>.</p>
+        <div class="diagram-box">
+ ┌─────────────────────────────────────────────────────────────────────┐
+ │                   LC 212 BOARD + TRIE DFS DECISION TREE             │
+ └──────────────────────────────┬──────────────────────────────────────┘
+                                │
+                    Start DFS from board cell (r, c)
+                                │
+                  Is board[r][c] in node.children?
+                        /              \
+                      NO               YES
+                       ↓                ↓
+                   PRUNE            Move into child node
+                   STOP                 ↓
+                               Is next_node.word set?
+                                   /          \
+                                 YES           NO
+                                  ↓             ↓
+                             Record word    Continue DFS
+                             Set word=None  4 directions
+        </div>
+        <div style="margin-top:20px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:20px;">
+          <h4 style="color:var(--accent);font-size:15px;margin-bottom:10px;"><i class="ti ti-code"></i> 3 Core Trie Operation Templates</h4>
+          <div class="code-container" style="margin-top:8px;">
+            <div class="code-header"><span>Trie Templates (Python 3)</span></div>
+            <pre><code># INSERT
+node = root
+for char in word:
+    if char not in node.children:
+        node.children[char] = TrieNode()
+    node = node.children[char]
+node.is_word = True
+
+# SEARCH (exact match)
+node = root
+for char in word:
+    if char not in node.children:
+        return False
+    node = node.children[char]
+return node.is_word
+
+# PREFIX CHECK (startsWith)
+node = root
+for char in prefix:
+    if char not in node.children:
+        return False
+    node = node.children[char]
+return True          # don't check is_word</code></pre>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
   <script>
     const filterInput = document.getElementById('filterInput');
     const navItems = document.querySelectorAll('.nav-item');
-    const cards = document.querySelectorAll('.problem-card');
+    const cards = document.querySelectorAll('.problem-card, .summary-card');
 
     filterInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
       navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(q) ? 'flex' : 'none';
+        item.style.display = item.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
       });
       cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(q) ? 'block' : 'none';
+        card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
       });
     });
   </script>
