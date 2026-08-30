@@ -165,6 +165,7 @@
       box-sizing: border-box;
       scrollbar-width: thin;
       scrollbar-color: var(--border2) transparent;
+      transform: none;
     }
     .sidebar::-webkit-scrollbar { width: 5px; }
     .sidebar::-webkit-scrollbar-track { background: transparent; }
@@ -330,7 +331,7 @@
       border-radius: var(--radius);
       padding: 28px;
       margin-bottom: 40px;
-      scroll-margin-top: 76px;
+      scroll-margin-top: 32px;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
@@ -543,6 +544,7 @@
       border-radius: var(--radius);
       padding: 28px;
       margin-bottom: 40px;
+      scroll-margin-top: 32px;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
@@ -728,7 +730,7 @@
         box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
       }
       .sidebar.open {
-        transform: translateX(0);
+        transform: translateX(0) !important;
       }
       .sidebar-close-btn {
         display: block;
@@ -743,6 +745,7 @@
       .problem-card, .summary-card {
         padding: 20px 16px;
         margin-bottom: 28px;
+        scroll-margin-top: 76px;
       }
     }
 
@@ -803,7 +806,7 @@
   <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
   <div class="layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
         <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
@@ -1976,13 +1979,13 @@
     </main>
   </div>
 
-      <script>
+        <script>
     const filterInput = document.getElementById('filterInput');
     const navItems = document.querySelectorAll('.nav-item');
     const cards = document.querySelectorAll('.problem-card');
 
     function openSidebar() {
-      const sidebar = document.getElementById('sidebar');
+      const sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
       const overlay = document.getElementById('sidebarOverlay');
       const icon = document.getElementById('hamburgerIcon');
       if (sidebar) sidebar.classList.add('open');
@@ -1994,7 +1997,7 @@
     }
 
     function closeSidebar() {
-      const sidebar = document.getElementById('sidebar');
+      const sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
       const overlay = document.getElementById('sidebarOverlay');
       const icon = document.getElementById('hamburgerIcon');
       if (sidebar) sidebar.classList.remove('open');
@@ -2006,7 +2009,7 @@
     }
 
     function toggleNav() {
-      const sidebar = document.getElementById('sidebar');
+      const sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
       if (sidebar && sidebar.classList.contains('open')) {
         closeSidebar();
       } else {
@@ -2029,9 +2032,14 @@
     }
 
     navItems.forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        const titleEl = item.querySelector('span:first-child');
+        const mobileNavTitle = document.getElementById('mobileNavTitle');
+        if (mobileNavTitle && titleEl) {
+          mobileNavTitle.textContent = titleEl.textContent.trim();
+        }
         if (window.innerWidth <= 900) {
-          closeSidebar();
+          setTimeout(closeSidebar, 50);
         }
       });
     });
@@ -2050,6 +2058,11 @@
                 const href = item.getAttribute('href');
                 if (href === `#${id}`) {
                   item.classList.add('active');
+                  const titleEl = item.querySelector('span:first-child');
+                  const mobileNavTitle = document.getElementById('mobileNavTitle');
+                  if (mobileNavTitle && titleEl && window.innerWidth <= 900) {
+                    mobileNavTitle.textContent = titleEl.textContent.trim();
+                  }
                 } else {
                   item.classList.remove('active');
                 }
@@ -2057,7 +2070,7 @@
             }
           }
         });
-      }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+      }, { rootMargin: '-70px 0px -60% 0px', threshold: 0 });
 
       cards.forEach(card => observer.observe(card));
     }
