@@ -47,7 +47,11 @@
       --radius:    18px;
     }
 
-    html { scroll-behavior: smooth }
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
 
     body {
       font-family: var(--font-sans);
@@ -56,6 +60,8 @@
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
       background-image: 
         radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
         radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
@@ -158,6 +164,10 @@
       max-width: 1140px;
       margin: 0 auto;
       padding: 32px 24px 72px;
+      width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     /* ── Hero Banner ─────────────────────────────────────────── */
@@ -308,11 +318,14 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
+      min-width: 0;
     }
 
     .search-box {
       position: relative;
       width: 100%;
+      min-width: 0;
     }
     .search-icon {
       position: absolute;
@@ -382,7 +395,9 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      flex-wrap: wrap;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
     }
 
     .category-filter-bar {
@@ -390,8 +405,14 @@
       align-items: center;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 2px;
+      overflow-y: hidden;
+      padding-bottom: 6px;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      flex: 1 1 auto;
     }
     .category-filter-bar::-webkit-scrollbar { display: none; }
 
@@ -412,6 +433,7 @@
       transition: all .2s ease;
       outline: none;
       backdrop-filter: blur(8px);
+      flex-shrink: 0;
     }
     .cat-pill:hover {
       background: var(--bg3);
@@ -714,16 +736,16 @@
 
     /* ── Responsive Layout ──────────────────────────────────── */
     @media (max-width: 960px) {
-      .subject-grid { grid-template-columns: repeat(2, 1fr); }
+      .subject-grid { grid-template-columns: repeat(2, 1fr); width: 100%; min-width: 0; }
       .hero-container { padding: 32px; }
       .hero-title { font-size: 30px; }
     }
 
     /* Tablet portrait */
     @media (max-width: 768px) {
-      .subject-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .topbar { padding: 12px 20px; }
-      .page { padding: 20px 16px 64px; }
+      .subject-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; min-width: 0; }
+      .topbar { padding: 12px 20px; width: 100%; max-width: 100vw; }
+      .page { padding: 20px 16px 64px; width: 100%; max-width: 100vw; overflow-x: hidden; }
       .hero-container { padding: 28px 24px; }
       .hero-title { font-size: 26px; }
       .hero-subtitle { font-size: 14px; }
@@ -733,42 +755,45 @@
 
     /* Mobile — 640px and below */
     @media (max-width: 640px) {
-      .subject-grid { grid-template-columns: 1fr; gap: 10px; }
-      .subject-card { min-height: 200px; padding: 20px; }
-      .continue-row { grid-template-columns: 1fr; }
-      .page { padding: 16px 14px 72px; }
-      .topbar { padding: 11px 16px; }
+      .subject-grid { grid-template-columns: 1fr; gap: 10px; width: 100%; min-width: 0; }
+      .subject-card { min-height: 200px; padding: 20px; width: 100%; min-width: 0; }
+      .continue-row { grid-template-columns: 1fr; width: 100%; min-width: 0; }
+      .continue-card { width: 100%; min-width: 0; }
+      .page { padding: 16px 14px 72px; width: 100%; max-width: 100vw; overflow-x: hidden; }
+      .topbar { padding: 11px 16px; width: 100%; max-width: 100vw; }
       .hero-container { display: none; }
-      .filter-rearrange-bar { flex-direction: column; align-items: stretch; gap: 10px; }
-      .category-filter-bar { gap: 6px; }
-      .cat-pill { font-size: 12px; padding: 7px 13px; }
+      .filter-rearrange-bar { flex-direction: column; align-items: stretch; gap: 10px; width: 100%; min-width: 0; }
+      .category-filter-bar { gap: 6px; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; padding-bottom: 6px; }
+      .cat-pill { font-size: 12px; padding: 7px 13px; flex-shrink: 0; }
+      .rearrange-actions { display: flex; width: 100%; justify-content: flex-start; gap: 8px; flex-wrap: wrap; }
       .kbd-hint { display: none; }
-      .search-box input { padding: 13px 44px 13px 44px; font-size: 14px; }
+      .search-box { width: 100%; min-width: 0; }
+      .search-box input { padding: 13px 44px 13px 44px; font-size: 14px; width: 100%; }
       .rearrange-toggle-btn, .rearrange-reset-btn { font-size: 12px; padding: 7px 13px; }
       .section-label { font-size: 11px; }
     }
 
     /* Small mobile — 480px and below */
     @media (max-width: 480px) {
-      .topbar { padding: 10px 12px; gap: 8px; }
+      .topbar { padding: 10px 12px; gap: 8px; width: 100%; max-width: 100vw; }
       .logo-icon { width: 32px; height: 32px; border-radius: 9px; }
       .logo-text { font-size: 15px; }
       .logo-sub { display: none; }
-      .status-badge-top { font-size: 11px; padding: 5px 10px; }
-      .page { padding: 14px 12px 72px; }
+      .status-badge-top { font-size: 11px; padding: 5px 10px; flex-shrink: 0; }
+      .page { padding: 14px 12px 72px; width: 100%; max-width: 100vw; overflow-x: hidden; }
       .card-title { font-size: 16px; }
       .card-desc { font-size: 12.5px; }
-      .continue-card { padding: 13px 15px; gap: 10px; }
+      .continue-card { padding: 13px 15px; gap: 10px; width: 100%; min-width: 0; }
       .continue-topic { font-size: 13px; }
       .search-box input { padding: 12px 40px 12px 42px; font-size: 13.5px; border-radius: 12px; }
     }
 
     /* Very small mobile — 380px and below */
     @media (max-width: 380px) {
-      .topbar { padding: 9px 10px; }
+      .topbar { padding: 9px 10px; width: 100%; max-width: 100vw; }
       .logo-text { font-size: 14px; }
       .status-badge-top span:not(.pulse-dot) { display: none; }
-      .subject-card { padding: 16px; min-height: 180px; }
+      .subject-card { padding: 16px; min-height: 180px; width: 100%; min-width: 0; }
       .card-icon { width: 40px; height: 40px; font-size: 18px; }
     }
   </style>
