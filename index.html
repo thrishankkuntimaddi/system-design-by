@@ -272,6 +272,127 @@
       .page          { padding: 24px 16px 48px }
       .topbar        { padding: 14px 16px }
     }
+
+    /* ── Grid Rearrange System ── */
+    .grid-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .grid-header-row .section-label {
+      margin-bottom: 0;
+      flex: 1;
+    }
+    .rearrange-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rearrange-toggle-btn, .rearrange-reset-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      outline: none;
+    }
+    .rearrange-toggle-btn:hover, .rearrange-reset-btn:hover {
+      background: var(--bg3);
+      border-color: var(--border2);
+      color: var(--text);
+    }
+    .rearrange-mode-active .rearrange-toggle-btn {
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.4);
+      color: var(--green);
+    }
+    .rearrange-reset-btn {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+    .rearrange-reset-btn:hover {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+    }
+
+    .rearrange-mode .subject-card {
+      cursor: grab;
+      user-select: none;
+      border-style: dashed !important;
+      border-color: var(--accent) !important;
+      background: var(--bg3) !important;
+    }
+    .rearrange-mode .subject-card:active {
+      cursor: grabbing;
+    }
+    .rearrange-mode .subject-card.dragging {
+      opacity: 0.35;
+      transform: scale(0.97);
+      border-color: var(--green) !important;
+    }
+    .drag-badge {
+      display: none;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 6px;
+      align-items: center;
+      gap: 4px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .rearrange-mode .drag-badge {
+      display: flex;
+    }
+    .rearrange-controls {
+      display: none;
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 20;
+      gap: 4px;
+    }
+    .rearrange-mode .rearrange-controls {
+      display: flex;
+    }
+    .rearrange-btn-move {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all .15s ease;
+    }
+    .rearrange-btn-move:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
   </style>
 </head>
 
@@ -299,11 +420,26 @@
       <div class="continue-row" id="continueRow"></div>
     </div>
 
-    <!-- Subject Grid -->
-    <div class="section-label"><i class="ti ti-layout-grid"></i> All Subjects</div>
-    <div class="subject-grid">
+    <!-- Subject Grid Header with Custom Rearrange Options -->
+    <div class="grid-header-row">
+      <div class="section-label"><i class="ti ti-layout-grid"></i> All Subjects</div>
+      <div class="rearrange-actions">
+        <button id="toggleRearrangeBtn" class="rearrange-toggle-btn" onclick="toggleRearrangeMode()">
+          <i class="ti ti-arrows-sort"></i> <span id="rearrangeBtnText">Rearrange Grid</span>
+        </button>
+        <button id="resetOrderBtn" class="rearrange-reset-btn" onclick="resetGridOrder()" style="display: none;">
+          <i class="ti ti-rotate-clockwise"></i> Reset Order
+        </button>
+      </div>
+    </div>
+    <div class="subject-grid" id="subjectGrid">
 
-      <a href="./subjects/system_design/index.html" class="subject-card card-sd">
+      <a href="./subjects/system_design/index.html" class="subject-card card-sd" data-id="sd" data-default-index="0">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-topology-ring"></i></div>
         <div class="card-title">System Design</div>
@@ -318,7 +454,12 @@
         </div>
       </a>
 
-      <a href="./subjects/oops/index.html" class="subject-card card-oop">
+      <a href="./subjects/oops/index.html" class="subject-card card-oop" data-id="oops" data-default-index="1">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-box"></i></div>
         <div class="card-title">OOPs</div>
@@ -333,7 +474,12 @@
         </div>
       </a>
 
-      <a href="./subjects/api_design/index.html" class="subject-card card-api">
+      <a href="./subjects/api_design/index.html" class="subject-card card-api" data-id="api" data-default-index="2">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-api"></i></div>
         <div class="card-title">API Design</div>
@@ -348,7 +494,12 @@
         </div>
       </a>
 
-      <a href="./subjects/computer_networks/index.html" class="subject-card card-cn">
+      <a href="./subjects/computer_networks/index.html" class="subject-card card-cn" data-id="cn" data-default-index="3">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-network"></i></div>
         <div class="card-title">Computer Networks</div>
@@ -363,7 +514,12 @@
         </div>
       </a>
 
-      <a href="./subjects/git_github/index.html" class="subject-card card-git">
+      <a href="./subjects/git_github/index.html" class="subject-card card-git" data-id="git" data-default-index="4">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-brand-git"></i></div>
         <div class="card-title">Git & GitHub</div>
@@ -378,7 +534,12 @@
         </div>
       </a>
 
-      <a href="./subjects/operating_systems/index.html" class="subject-card card-os">
+      <a href="./subjects/operating_systems/index.html" class="subject-card card-os" data-id="os" data-default-index="5">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-cpu"></i></div>
         <div class="card-title">Operating Systems</div>
@@ -393,7 +554,12 @@
         </div>
       </a>
 
-      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml">
+      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml" data-id="ml" data-default-index="6">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-brain"></i></div>
         <div class="card-title">Machine Learning & AI</div>
@@ -408,7 +574,12 @@
         </div>
       </a>
 
-      <a href="./subjects/genai_fluency/index.html" class="subject-card card-genai">
+      <a href="./subjects/genai_fluency/index.html" class="subject-card card-genai" data-id="genai" data-default-index="7">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-sparkles"></i></div>
         <div class="card-title">GenAI Fluency</div>
@@ -423,7 +594,12 @@
         </div>
       </a>
 
-      <a href="./subjects/dsa_basics/index.html" class="subject-card card-dsab">
+      <a href="./subjects/dsa_basics/index.html" class="subject-card card-dsab" data-id="dsab" data-default-index="8">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-binary-tree"></i></div>
         <div class="card-title">DSA — Basics</div>
@@ -438,7 +614,12 @@
         </div>
       </a>
 
-      <a href="./subjects/dsa_advanced/index.html" class="subject-card card-dsaa">
+      <a href="./subjects/dsa_advanced/index.html" class="subject-card card-dsaa" data-id="dsaa" data-default-index="9">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-topology-star-ring"></i></div>
         <div class="card-title">DSA — Advanced</div>
@@ -453,7 +634,12 @@
         </div>
       </a>
 
-      <a href="./subjects/dbms/index.html" class="subject-card card-dbms">
+      <a href="./subjects/dbms/index.html" class="subject-card card-dbms" data-id="dbms" data-default-index="10">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-database"></i></div>
         <div class="card-title">DBMS</div>
@@ -468,7 +654,12 @@
         </div>
       </a>
 
-      <a href="./subjects/cryptography/index.html" class="subject-card card-crypto">
+      <a href="./subjects/cryptography/index.html" class="subject-card card-crypto" data-id="crypto" data-default-index="11">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-lock"></i></div>
         <div class="card-title">Cryptography</div>
@@ -483,7 +674,12 @@
         </div>
       </a>
 
-      <a href="./subjects/Sheet 150/index.html" class="subject-card card-s150">
+      <a href="./subjects/Sheet 150/index.html" class="subject-card card-s150" data-id="s150" data-default-index="12">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+        </div>
         <span class="card-status status-live">LIVE</span>
         <div class="card-icon"><i class="ti ti-list-numbers"></i></div>
         <div class="card-title">Sheet 150</div>
@@ -841,7 +1037,162 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', buildContinue);
+    // ── Grid Rearrange System ──
+    let isRearrangeMode = false;
+
+    function initGridOrder() {
+      const grid = document.getElementById('subjectGrid');
+      if (!grid) return;
+      try {
+        const savedOrderStr = localStorage.getItem('cnote_grid_order');
+        if (savedOrderStr) {
+          const savedOrder = JSON.parse(savedOrderStr);
+          const cardsMap = new Map();
+          grid.querySelectorAll('.subject-card').forEach(card => {
+            cardsMap.set(card.getAttribute('data-id'), card);
+          });
+          savedOrder.forEach(id => {
+            if (cardsMap.has(id)) {
+              grid.appendChild(cardsMap.get(id));
+            }
+          });
+        }
+      } catch (e) {
+        console.error('Failed to restore grid order', e);
+      }
+    }
+
+    function saveGridOrder() {
+      const grid = document.getElementById('subjectGrid');
+      if (!grid) return;
+      const ids = Array.from(grid.querySelectorAll('.subject-card')).map(card => card.getAttribute('data-id'));
+      localStorage.setItem('cnote_grid_order', JSON.stringify(ids));
+    }
+
+    function toggleRearrangeMode() {
+      isRearrangeMode = !isRearrangeMode;
+      const grid = document.getElementById('subjectGrid');
+      const btn = document.getElementById('toggleRearrangeBtn');
+      const btnText = document.getElementById('rearrangeBtnText');
+      const resetBtn = document.getElementById('resetOrderBtn');
+      const body = document.body;
+
+      if (isRearrangeMode) {
+        grid.classList.add('rearrange-mode');
+        body.classList.add('rearrange-mode-active');
+        btnText.textContent = 'Done Rearranging';
+        btn.querySelector('i').className = 'ti ti-check';
+        resetBtn.style.display = 'inline-flex';
+        makeCardsDraggable(true);
+      } else {
+        grid.classList.remove('rearrange-mode');
+        body.classList.remove('rearrange-mode-active');
+        btnText.textContent = 'Rearrange Grid';
+        btn.querySelector('i').className = 'ti ti-arrows-sort';
+        resetBtn.style.display = 'none';
+        makeCardsDraggable(false);
+        saveGridOrder();
+      }
+    }
+
+    function resetGridOrder() {
+      localStorage.removeItem('cnote_grid_order');
+      const grid = document.getElementById('subjectGrid');
+      if (!grid) return;
+      const cards = Array.from(grid.querySelectorAll('.subject-card'));
+      cards.sort((a, b) => parseInt(a.getAttribute('data-default-index')) - parseInt(b.getAttribute('data-default-index')));
+      cards.forEach(card => grid.appendChild(card));
+      if (isRearrangeMode) {
+        toggleRearrangeMode();
+      }
+    }
+
+    function moveCard(btn, direction) {
+      const card = btn.closest('.subject-card');
+      const grid = card.parentElement;
+      if (direction === -1 && card.previousElementSibling) {
+        grid.insertBefore(card, card.previousElementSibling);
+      } else if (direction === 1 && card.nextElementSibling) {
+        grid.insertBefore(card.nextElementSibling, card);
+      }
+      saveGridOrder();
+    }
+
+    function makeCardsDraggable(enable) {
+      const cards = document.querySelectorAll('.subject-card');
+      cards.forEach(card => {
+        if (enable) {
+          card.setAttribute('draggable', 'true');
+        } else {
+          card.removeAttribute('draggable');
+        }
+      });
+    }
+
+    function setupDragAndDrop() {
+      const grid = document.getElementById('subjectGrid');
+      if (!grid) return;
+
+      grid.addEventListener('click', (e) => {
+        if (isRearrangeMode) {
+          if (!e.target.closest('.rearrange-controls')) {
+            e.preventDefault();
+          }
+        }
+      });
+
+      grid.addEventListener('dragstart', (e) => {
+        if (!isRearrangeMode) return;
+        const card = e.target.closest('.subject-card');
+        if (!card) return;
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', card.getAttribute('data-id'));
+      });
+
+      grid.addEventListener('dragend', (e) => {
+        const card = e.target.closest('.subject-card');
+        if (card) card.classList.remove('dragging');
+        saveGridOrder();
+      });
+
+      grid.addEventListener('dragover', (e) => {
+        if (!isRearrangeMode) return;
+        e.preventDefault();
+        const draggingCard = grid.querySelector('.dragging');
+        if (!draggingCard) return;
+
+        const afterElement = getDragAfterElement(grid, e.clientX, e.clientY);
+        if (afterElement == null) {
+          grid.appendChild(draggingCard);
+        } else {
+          grid.insertBefore(draggingCard, afterElement);
+        }
+      });
+    }
+
+    function getDragAfterElement(container, x, y) {
+      const draggableElements = [...container.querySelectorAll('.subject-card:not(.dragging)')];
+
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offsetX = x - box.left - box.width / 2;
+        const offsetY = y - box.top - box.height / 2;
+        const distance = Math.hypot(offsetX, offsetY);
+
+        if (distance < closest.distance) {
+          return { distance: distance, element: child };
+        } else {
+          return closest;
+        }
+      }, { distance: Number.POSITIVE_INFINITY }).element;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initGridOrder();
+      buildContinue();
+      setupDragAndDrop();
+    });
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
