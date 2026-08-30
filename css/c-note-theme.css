@@ -1436,40 +1436,113 @@ main,
 
 /* Sidebar Headers & Subtitles */
 .sidebar-header {
-  padding: 10px 8px 12px !important;
+  padding: 12px 14px 14px !important;
   border-bottom: 1px solid var(--border) !important;
-  margin-bottom: 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-bottom: 0 !important;
 }
 
-.sidebar-title,
-.module-title-side,
-.sidebar-header h1 {
-  font-size: 13px !important;
-  font-weight: 650 !important;
-  color: var(--heading) !important;
-  line-height: 1.3 !important;
-  letter-spacing: -0.01em !important;
+.sidebar-header-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.sidebar-header .theme-toggle-btn {
+  display: none !important;
+}
+
+.sidebar-close-btn {
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  background: var(--bg2) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 6px !important;
+  color: var(--text2) !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  transition: all 150ms ease !important;
+  margin: 0 !important;
+}
+
+.sidebar-close-btn:hover {
+  background: var(--bg3) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent-border) !important;
+}
+
+@media (max-width: 900px) {
+  .sidebar-close-btn {
+    display: inline-flex !important;
+  }
+}
+
+.sidebar-module-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  margin-top: 2px !important;
+}
+
+.sidebar-badge-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
 }
 
 .module-badge,
 .sidebar-badge {
   font-size: 10px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.04em !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono, monospace) !important;
+  letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: var(--accent-text) !important;
-  background: var(--accent-bg) !important;
-  border: 1px solid var(--accent-border) !important;
-  padding: 2px 6px !important;
-  border-radius: var(--radius-badge) !important;
-  display: inline-block !important;
-  margin-bottom: 6px !important;
+  color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 14%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent) !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-bottom: 0 !important;
+}
+
+.problem-count-pill {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: var(--text3) !important;
+  background: var(--bg2) !important;
+  border: 1px solid var(--border) !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.module-title-side,
+.sidebar-title,
+.sidebar-header h1 {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--heading, var(--text)) !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+  margin: 2px 0 0 0 !important;
+  word-break: break-word !important;
 }
 
 .back-link,
 .home-back-btn {
   font-size: 11px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: var(--text3) !important;
   text-decoration: none !important;
   text-transform: uppercase !important;
@@ -1482,25 +1555,54 @@ main,
   color: var(--accent) !important;
 }
 
-/* Sidebar Search Box */
+/* Sidebar Search Box (Clearance and Icon Alignment) */
 .sidebar-search,
 .search-wrap,
 .filter-box {
-  padding: 4px 2px 8px !important;
+  position: relative !important;
+  padding: 10px 12px !important;
+  border-bottom: 1px solid var(--border) !important;
   margin-bottom: 6px !important;
+  flex-shrink: 0 !important;
 }
 
 .sidebar-search input,
 .search-wrap input,
 #filterInput,
 #searchInput {
-  height: 32px !important;
-  font-size: 12px !important;
+  width: 100% !important;
+  height: 36px !important;
+  font-size: 12.5px !important;
   background: var(--bg2) !important;
   border: 1px solid var(--border-strong) !important;
-  border-radius: var(--radius-input) !important;
+  border-radius: var(--radius-input, 8px) !important;
   color: var(--text) !important;
-  padding: 0 10px 0 28px !important;
+  padding: 0 12px 0 38px !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+
+.sidebar-search input:focus,
+.search-wrap input:focus,
+#filterInput:focus,
+#searchInput:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent) !important;
+}
+
+.sidebar-search i,
+.search-wrap i,
+.sidebar-search .ti-search,
+.search-wrap .ti-search {
+  position: absolute !important;
+  left: 23px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: var(--text3) !important;
+  font-size: 15px !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
 }
 
 /* Sidebar Items / TOC Links / Problem List Items (NO OVERLAPPING TEXT) */

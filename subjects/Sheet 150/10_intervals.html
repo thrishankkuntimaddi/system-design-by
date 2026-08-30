@@ -923,15 +923,17 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-bottom:4px;">
+        <div class="sidebar-header-top">
           <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
-          <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-            <i class="ti ti-sun" id="themeToggleIcon"></i>
-          </button>
+          <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
         </div>
-        <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
-        <span class="module-badge">MODULE 10</span>
-        <div class="module-title-side">10. Intervals — 6</div>
+        <div class="sidebar-module-info">
+          <div class="sidebar-badge-row">
+            <span class="module-badge">MODULE 10</span>
+            <span class="problem-count-pill">6 Problems</span>
+          </div>
+          <div class="module-title-side">10. Intervals</div>
+        </div>
       </div>
     <div class="sidebar-search">
       <i class="ti ti-search"></i>
