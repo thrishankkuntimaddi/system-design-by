@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Bit Manipulation — C-Note</title>
+  <title>Bit Manipulation — Sheet 150</title>
   <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/png" href="../../app-icon.png">
   <link rel="apple-touch-icon" href="../../app-icon.png">
@@ -248,6 +248,18 @@
       font-size: 14px;
     }
     .nav-list { padding: 10px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: var(--accent);
+      padding: 12px 10px 6px;
+      margin-top: 10px;
+      border-bottom: 1px dashed var(--border);
+      margin-bottom: 6px;
+      letter-spacing: .02em;
+    }
+    .nav-section-title:first-child { margin-top: 0; }
     .nav-item {
       display: flex;
       align-items: flex-start;
@@ -789,7 +801,7 @@
     <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Toggle navigation menu">
       <i class="ti ti-menu-2" id="hamburgerIcon"></i>
     </button>
-    <span class="mobile-nav-logo">C-Note</span>
+    <span class="mobile-nav-logo">Sheet 150</span>
     <span class="mobile-nav-title" id="mobileNavTitle">Bit Manipulation</span>
   </nav>
   <!-- Sidebar Overlay -->
@@ -800,7 +812,7 @@
     <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Toggle navigation menu">
       <i class="ti ti-menu-2" id="hamburgerIcon"></i>
     </button>
-    <span class="mobile-nav-logo">C-Note</span>
+    <span class="mobile-nav-logo">Sheet 150</span>
     <span class="mobile-nav-title" id="mobileNavTitle">Bit Manipulation</span>
   </nav>
   <!-- Sidebar Overlay -->
@@ -809,22 +821,23 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
-      <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> C-Note Hub</a>
+      <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
       <span class="module-badge">MODULE 12</span>
-      <div class="module-title-side">Bit Manipulation</div>
+      <div class="module-title-side">12. Bit Manipulation — 7</div>
     </div>
     <div class="sidebar-search">
       <i class="ti ti-search"></i>
       <input type="text" id="filterInput" placeholder="Filter problems...">
     </div>
     <div class="nav-list" id="navList">
-      <a href="#lc-136" class="nav-item"><span>LC 136. Single Number</span><span class="diff-badge diff-easy">Easy</span></a>
-      <a href="#lc-191" class="nav-item"><span>LC 191. Number of 1 Bits</span><span class="diff-badge diff-easy">Easy</span></a>
-      <a href="#lc-338" class="nav-item"><span>LC 338. Counting Bits</span><span class="diff-badge diff-easy">Easy</span></a>
-      <a href="#lc-190" class="nav-item"><span>LC 190. Reverse Bits</span><span class="diff-badge diff-easy">Easy</span></a>
-      <a href="#lc-268" class="nav-item"><span>LC 268. Missing Number</span><span class="diff-badge diff-easy">Easy</span></a>
-      <a href="#lc-371" class="nav-item"><span>LC 371. Sum of Two Integers</span><span class="diff-badge diff-medium">Medium</span></a>
-      <a href="#lc-7" class="nav-item"><span>LC 7. Reverse Integer</span><span class="diff-badge diff-medium">Medium</span></a>
+      <div class="nav-section-title">12. Bit Manipulation — 7</div>
+      <a href="#lc-136" class="nav-item"><span>1. Single Number — LC 136</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-191" class="nav-item"><span>2. Number of 1 Bits — LC 191</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-338" class="nav-item"><span>3. Counting Bits — LC 338</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-190" class="nav-item"><span>4. Reverse Bits — LC 190</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-268" class="nav-item"><span>5. Missing Number — LC 268</span><span class="diff-badge diff-easy">Easy</span></a>
+      <a href="#lc-371" class="nav-item"><span>6. Sum of Two Integers — LC 371</span><span class="diff-badge diff-medium">Medium</span></a>
+      <a href="#lc-7" class="nav-item"><span>7. Reverse Integer — LC 7</span><span class="diff-badge diff-medium">Medium</span></a>
       <div style="margin:16px 0 8px 12px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;">SUMMARY &amp; MAPS</div>
       <a href="#pattern-map"   class="nav-item"><span>🧠 Pattern Map</span></a>
       <a href="#six-tricks"    class="nav-item"><span>🔥 6 Bit Tricks</span></a>
