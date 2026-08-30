@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Intervals — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #eab308;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 10</span>
+        <div class="module-title-side">Intervals</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-57" class="nav-item">
+          <span>LC 57. Insert Interval</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-56" class="nav-item">
+          <span>LC 56. Merge Intervals</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-435" class="nav-item">
+          <span>LC 435. Non-Overlapping Intervals</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-252" class="nav-item">
+          <span>LC 252. Meeting Rooms</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-253" class="nav-item">
+          <span>LC 253. Meeting Rooms II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-1851" class="nav-item">
+          <span>LC 1851. Minimum Interval to Include Each Query</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 10 • 6 PROBLEMS</div>
+        <h1>Intervals</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-57">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 57 • Intervals</span>
+          <h2>Insert Interval</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/insert-interval/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Insert <code>newInterval</code> into sorted non-overlapping <code>intervals</code> and merge if necessary.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Three phases: 1) add intervals before newInterval; 2) merge overlapping intervals; 3) add intervals after newInterval.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Append newInterval, sort full list, and run Merge Intervals.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Sorting overhead.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Single pass iteration taking advantage of already sorted input intervals.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li><code>res = []</code>.</li><li>For <code>i, interval</code>: if <code>newInterval[1] < interval[0]</code> append <code>newInterval</code> and return <code>res + intervals[i:]</code>.</li><li>Elif <code>newInterval[0] > interval[1]</code> append <code>interval</code>.</li><li>Else overlap: merge <code>newInterval = [min(newInterval[0], interval[0]), max(newInterval[1], interval[1])]</code>.</li><li>Append <code>newInterval</code> and return.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def insert(intervals: list[list[int]], newInterval: list[int]) -&gt; list[list[int]]:
+    res = []
+    for i in range(len(intervals)):
+        if newInterval[1] &lt; intervals[i][0]:
+            res.append(newInterval)
+            return res + intervals[i:]
+        elif newInterval[0] &gt; intervals[i][1]:
+            res.append(intervals[i])
+        else:
+            newInterval = [
+                min(newInterval[0], intervals[i][0]),
+                max(newInterval[1], intervals[i][1])
+            ]
+    res.append(newInterval)
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass merging.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-56">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 56 • Intervals</span>
+          <h2>Merge Intervals</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/merge-intervals/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Merge all overlapping intervals in array <code>intervals</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Sort intervals by start time. Two intervals overlap if <code>current_start <= last_end</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Graph connected components approach.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Graph construction.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Sorting by start time allows linear merge pass.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Sort <code>intervals</code> by start time. <code>res = [intervals[0]]</code>.</li><li>For <code>start, end</code> in <code>intervals[1:]</code>: <code>lastEnd = res[-1][1]</code>.</li><li>If <code>start <= lastEnd</code>: <code>res[-1][1] = max(lastEnd, end)</code>. Else append <code>[start, end]</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def merge(intervals: list[list[int]]) -&gt; list[list[int]]:
+    intervals.sort(key=lambda i: i[0])
+    output = [intervals[0]]
+
+    for start, end in intervals[1:]:
+        lastEnd = output[-1][1]
+        if start &lt;= lastEnd:
+            output[-1][1] = max(lastEnd, end)
+        else:
+            output.append([start, end])
+    return output</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Sorting takes O(N log N).</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-435">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 435 • Intervals</span>
+          <h2>Non-Overlapping Intervals</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Return minimum number of intervals to remove to make remaining intervals non-overlapping.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Greedy choice: when two intervals overlap, REMOVE the interval with the LARGER end time to leave maximum room for future intervals!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Recursion checking subset combinations.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Subsets.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Sort by start time and greedily keep interval with smaller end time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Sort <code>intervals</code> by start time. <code>res = 0, prevEnd = intervals[0][1]</code>.</li><li>For <code>start, end</code> in <code>intervals[1:]</code>: if <code>start >= prevEnd</code> <code>prevEnd = end</code>. Else <code>res += 1; prevEnd = min(end, prevEnd)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def eraseOverlapIntervals(intervals: list[list[int]]) -&gt; int:
+    intervals.sort(key=lambda i: i[0])
+    res = 0
+    prevEnd = intervals[0][1]
+
+    for start, end in intervals[1:]:
+        if start &gt;= prevEnd:
+            prevEnd = end
+        else:
+            res += 1
+            prevEnd = min(end, prevEnd)
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Greedy interval removal.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-252">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 252 • Intervals</span>
+          <h2>Meeting Rooms</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/meeting-rooms/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Determine if a person could attend all meetings (no overlapping meetings).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Sort meetings by start time. Check if <code>i.end > (i+1).start</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Compare all pairs of meetings.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Pairwise comparison.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Sorting brings potential overlaps adjacent to each other.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Sort <code>intervals</code> by start time.</li><li>Loop <code>i</code> from <code>0..len-2</code>: if <code>intervals[i][1] > intervals[i+1][0]</code> return False. Return True.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def canAttendMeetings(intervals: list[list[int]]) -&gt; bool:
+    intervals.sort(key=lambda i: i[0])
+    for i in range(len(intervals) - 1):
+        if intervals[i][1] &gt; intervals[i + 1][0]:
+            return False
+    return True</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Sorting takes O(N log N).</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-253">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 253 • Intervals</span>
+          <h2>Meeting Rooms II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/meeting-rooms-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Return minimum number of conference rooms required for all meetings.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Separate start times and end times into 2 sorted arrays. Track max concurrent ongoing meetings using 2 pointers.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Min-heap storing end times.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Min-heap storing end times.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Two pointers on sorted start and end arrays avoid heap overhead.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li><code>start = sorted([i[0] for i in intervals])</code>, <code>end = sorted([i[1] for i in intervals])</code>.</li><li>Pointers <code>s = 0, e = 0</code>, <code>count = 0, res = 0</code>.</li><li>While <code>s < len(intervals)</code>: if <code>start[s] < end[e]</code> <code>s += 1; count += 1</code> else <code>e += 1; count -= 1</code>. <code>res = max(res, count)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def minMeetingRooms(intervals: list[list[int]]) -&gt; int:
+    start = sorted([i[0] for i in intervals])
+    end = sorted([i[1] for i in intervals])
+
+    res, count = 0, 0
+    s, e = 0, 0
+
+    while s &lt; len(intervals):
+        if start[s] &lt; end[e]:
+            s += 1
+            count += 1
+        else:
+            e += 1
+            count -= 1
+        res = max(res, count)
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Two-pointer sweep line.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-1851">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 1851 • Intervals</span>
+          <h2>Minimum Interval to Include Each Query</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/minimum-interval-to-include-each-query/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>For each query point, return size of smallest interval containing query. If none return -1.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Sort intervals and queries. Min-heap stores <code>(interval_size, interval_end)</code> for all intervals covering current query.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Scan all intervals for each query.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N * Q)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Nested loop.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Offline queries processing + Min-Heap yields O((N + Q) log N) time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Sort <code>intervals</code> by start. Sort queries with original index <code>q = sorted([(q, i) for i, q in enumerate(queries)])</code>.</li><li>Min-heap <code>minHeap = []</code> (size, end). Pointer <code>i = 0</code>.</li><li>For query <code>q, q_idx</code>: add all intervals with <code>start <= q</code> to heap. Pop expired intervals with <code>end < q</code>. Store <code>res[q_idx] = minHeap[0][0]</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+
+def minInterval(intervals: list[list[int]], queries: list[int]) -&gt; list[int]:
+    intervals.sort()
+    minHeap = []
+    res = {}
+    i = 0
+    
+    for q in sorted(queries):
+        while i &lt; len(intervals) and intervals[i][0] &lt;= q:
+            l, r = intervals[i]
+            heapq.heappush(minHeap, (r - l + 1, r))
+            i += 1
+            
+        while minHeap and minHeap[0][1] &lt; q:
+            heapq.heappop(minHeap)
+            
+        res[q] = minHeap[0][0] if minHeap else -1
+        
+    return [res[q] for q in queries]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O((N + Q) log N)</span>
+          <span class="c-badge c-space">Space: O(N + Q)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Offline queries processing with Min-Heap.</p>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

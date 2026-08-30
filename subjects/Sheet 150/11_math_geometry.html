@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Math & Geometry — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #6366f1;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 11</span>
+        <div class="module-title-side">Math & Geometry</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-48" class="nav-item">
+          <span>LC 48. Rotate Image</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-54" class="nav-item">
+          <span>LC 54. Spiral Matrix</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-73" class="nav-item">
+          <span>LC 73. Set Matrix Zeroes</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-202" class="nav-item">
+          <span>LC 202. Happy Number</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-66" class="nav-item">
+          <span>LC 66. Plus One</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-50" class="nav-item">
+          <span>LC 50. Pow(x, n)</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-43" class="nav-item">
+          <span>LC 43. Multiply Strings</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-2013" class="nav-item">
+          <span>LC 2013. Detect Squares</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 11 • 8 PROBLEMS</div>
+        <h1>Math & Geometry</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-48">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 48 • Math & Geometry</span>
+          <h2>Rotate Image</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/rotate-image/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Rotate <code>n x n</code> 2D matrix by 90 degrees clockwise in-place.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Two steps: 1) Transpose matrix (swap <code>matrix[i][j]</code> with <code>matrix[j][i]</code>); 2) Reverse each row!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Allocate new N x N matrix and set <code>new_mat[j][n-1-i] = mat[i][j]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(N^2)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Allocates extra matrix.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Transpose + Row Reversal achieves 90 degree clockwise rotation in O(1) extra space.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Transpose matrix: loop <code>i</code> from <code>0..N-1</code>, <code>j</code> from <code>i+1..N-1</code>: swap <code>matrix[i][j], matrix[j][i]</code>.</li><li>Reverse each row: <code>row.reverse()</code> for row in matrix.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def rotate(matrix: list[list[int]]) -&gt; None:
+    N = len(matrix)
+    # Transpose
+    for i in range(N):
+        for j in range(i + 1, N):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+    # Reverse rows
+    for i in range(N):
+        matrix[i].reverse()</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">In-place matrix rotation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-54">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 54 • Math & Geometry</span>
+          <h2>Spiral Matrix</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/spiral-matrix/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given an <code>m x n</code> matrix, return all elements of matrix in spiral order.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Maintain 4 boundary pointers: <code>left, right, top, bottom</code>. Traverse perimeter clockwise, then shrink boundaries.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Simulation with visited boolean array tracking direction vectors.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(M * N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Visited matrix.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Four boundary pointers shrink grid inward clockwise.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Pointers <code>left = 0, right = COLS-1, top = 0, bottom = ROWS-1</code>.</li><li>While <code>left <= right and top <= bottom</code>: traverse top row -> <code>top += 1</code>; traverse right col -> <code>right -= 1</code>; traverse bottom row -> <code>bottom -= 1</code>; traverse left col -> <code>left += 1</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def spiralOrder(matrix: list[list[int]]) -&gt; list[int]:
+    res = []
+    left, right = 0, len(matrix[0])
+    top, bottom = 0, len(matrix)
+
+    while left &lt; right and top &lt; bottom:
+        # Top row
+        for i in range(left, right):
+            res.append(matrix[top][i])
+        top += 1
+
+        # Right col
+        for i in range(top, bottom):
+            res.append(matrix[i][right - 1])
+        right -= 1
+
+        if not (left &lt; right and top &lt; bottom):
+            break
+
+        # Bottom row
+        for i in range(right - 1, left - 1, -1):
+            res.append(matrix[bottom - 1][i])
+        bottom -= 1
+
+        # Left col
+        for i in range(bottom - 1, top - 1, -1):
+            res.append(matrix[i][left])
+        left += 1
+
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">4 boundary pointer shrink.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-73">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 73 • Math & Geometry</span>
+          <h2>Set Matrix Zeroes</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/set-matrix-zeroes/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>If an element is 0, set its entire row and column to 0 in-place.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Use first row and first column of the matrix itself as marker indicators to achieve O(1) space!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Use separate boolean arrays <code>row[M]</code> and <code>col[N]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(M + N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Extra row/col arrays.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>First row and first col store 0-flags. Extra variable <code>rowZero</code> tracks if row 0 itself needs zeroing.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Flag <code>rowZero = False</code>.</li><li>Pass 1: if <code>matrix[r][c] == 0</code> set <code>matrix[0][c] = 0</code> and if <code>r > 0</code> set <code>matrix[r][0] = 0</code> else <code>rowZero = True</code>.</li><li>Pass 2: fill zeroes based on markers for <code>r > 0, c > 0</code>. Zero col 0 if <code>matrix[0][0] == 0</code>. Zero row 0 if <code>rowZero == True</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def setZeroes(matrix: list[list[int]]) -&gt; None:
+    ROWS, COLS = len(matrix), len(matrix[0])
+    rowZero = False
+
+    for r in range(ROWS):
+        for c in range(COLS):
+            if matrix[r][c] == 0:
+                matrix[0][c] = 0
+                if r &gt; 0:
+                    matrix[r][0] = 0
+                else:
+                    rowZero = True
+
+    for r in range(1, ROWS):
+        for c in range(1, COLS):
+            if matrix[0][c] == 0 or matrix[r][0] == 0:
+                matrix[r][c] = 0
+
+    if matrix[0][0] == 0:
+        for r in range(ROWS):
+            matrix[r][0] = 0
+
+    if rowZero:
+        for c in range(COLS):
+            matrix[0][c] = 0</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">In-place row/col marker storage.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-202">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 202 • Math & Geometry</span>
+          <h2>Happy Number</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/happy-number/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Replace number by sum of squares of its digits repeatedly until it equals 1 (Happy) or loops infinitely in a cycle.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Detect cycle using HashSet or Floyd's Fast/Slow Pointers!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>HashSet of visited digit sums.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(log N)</span>
+          <span class="c-badge c-space">Space: O(log N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">HashSet storage.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Sum of squares of digits function <code>sumSquare(n)</code>. Fast/slow pointers find cycles in O(1) space.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Helper <code>sumSquare(n)</code>: return sum of <code>int(digit)**2</code>.</li><li>Set <code>visit = set()</code>. While <code>n not in visit</code>: <code>visit.add(n)</code>; <code>n = sumSquare(n)</code>; if <code>n == 1</code> return True.</li><li>Return False.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def isHappy(n: int) -&gt; bool:
+    visit = set()
+
+    def sumSquare(n):
+        output = 0
+        while n:
+            digit = n % 10
+            output += digit ** 2
+            n = n // 10
+        return output
+
+    while n not in visit:
+        visit.add(n)
+        n = sumSquare(n)
+        if n == 1:
+            return True
+    return False</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(log N)</span>
+          <span class="c-badge c-space">Space: O(log N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Sum of squares digit calculation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-66">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 66 • Math & Geometry</span>
+          <h2>Plus One</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/plus-one/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given large integer as digits array, increment integer by one and return resulting digits.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Iterate backwards: if <code>digits[i] < 9</code>, increment and return. Else set <code>digits[i] = 0</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Convert digits to string -> int -> increment -> digits array.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">String conversion.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>In-place digit modification with carry handling.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Loop <code>i</code> from <code>len(digits)-1</code> down to 0: if <code>digits[i] < 9</code> <code>digits[i] += 1</code> and return <code>digits</code>. Else <code>digits[i] = 0</code>.</li><li>If all 9s, return <code>[1] + digits</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def plusOne(digits: list[int]) -&gt; list[int]:
+    for i in range(len(digits) - 1, -1, -1):
+        if digits[i] &lt; 9:
+            digits[i] += 1
+            return digits
+        digits[i] = 0
+    return [1] + digits</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">In-place digit increment.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-50">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 50 • Math & Geometry</span>
+          <h2>Pow(x, n)</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/powx-n/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Calculate <code>x</code> raised to power <code>n</code> (i.e., <code>x^n</code>).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Binary Exponentiation (Divide and Conquer): <code>x^n = (x^2)^(n/2)</code> if even; <code>x * x^(n-1)</code> if odd.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Multiply x by itself N times.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Linear loop.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Binary Exponentiation reduces power computation from O(N) to O(log N).</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Define <code>helper(x, n)</code>: if <code>x == 0</code> return 0; if <code>n == 0</code> return 1.</li><li><code>res = helper(x * x, n // 2)</code>. Return <code>x * res if n % 2 else res</code>.</li><li>Main function: <code>res = helper(x, abs(n))</code>. Return <code>res if n >= 0 else 1 / res</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def myPow(x: float, n: int) -&gt; float:
+    def helper(x, n):
+        if x == 0: return 0
+        if n == 0: return 1
+
+        res = helper(x * x, n // 2)
+        return x * res if n % 2 else res
+
+    res = helper(x, abs(n))
+    return res if n &gt;= 0 else 1 / res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(log N)</span>
+          <span class="c-badge c-space">Space: O(log N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Binary Exponentiation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-43">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 43 • Math & Geometry</span>
+          <h2>Multiply Strings</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/multiply-strings/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given two non-negative integers <code>num1</code> and <code>num2</code> represented as strings, return product as string without built-in BigInt.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Column-by-column multiplication. Result length is at most <code>len(num1) + len(num2)</code>. Digit <code>i</code> times digit <code>j</code> affects position <code>i + j</code> and <code>i + j + 1</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Convert string characters to integers manually using ord().</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N * M)</span>
+          <span class="c-badge c-space">Space: O(N + M)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Column multiplication.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Reverse strings and accumulate products into result array <code>res[i + j]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>If either string is <code>&quot;0&quot;</code> return <code>&quot;0&quot;</code>.</li><li>Array <code>res = [0] * (len(num1) + len(num2))</code>. Reverse both strings.</li><li>Loop <code>i, j</code>: <code>digit = int(num1[i]) * int(num2[j])</code>; <code>res[i + j] += digit</code>; <code>res[i + j + 1] += res[i + j] // 10</code>; <code>res[i + j] %= 10</code>.</li><li>Reverse <code>res</code> and trim leading zeroes.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def multiply(num1: str, num2: str) -&gt; str:
+    if &quot;0&quot; in [num1, num2]:
+        return &quot;0&quot;
+
+    res = [0] * (len(num1) + len(num2))
+    num1, num2 = num1[::-1], num2[::-1]
+
+    for i1 in range(len(num1)):
+        for i2 in range(len(num2)):
+            digit = int(num1[i1]) * int(num2[i2])
+            res[i1 + i2] += digit
+            res[i1 + i2 + 1] += res[i1 + i2] // 10
+            res[i1 + i2] %= 10
+
+    res, beg = res[::-1], 0
+    while beg &lt; len(res) and res[beg] == 0:
+        beg += 1
+
+    return &quot;&quot;.join(map(str, res[beg:]))</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N * M)</span>
+          <span class="c-badge c-space">Space: O(N + M)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Standard long multiplication simulation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-2013">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 2013 • Math & Geometry</span>
+          <h2>Detect Squares</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/detect-squares/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Design data structure supporting <code>add(point)</code> and <code>count(point)</code> (number of ways to choose 3 points forming axis-aligned square).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>For query point <code>(px, py)</code>, find points <code>(x, y)</code> on diagonal (where <code>abs(px - x) == abs(py - y) > 0</code>). Third & fourth points are <code>(px, y)</code> and <code>(x, py)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Check all 3-point combinations.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^3)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Combinatorial 3-point search.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Frequency Map + Diagonal point search calculates total square configurations in O(Points) time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Dict <code>ptsCount = defaultdict(int)</code>, list <code>pts = []</code>.</li><li><code>add(point)</code>: increment frequency and append point.</li><li><code>count(point)</code>: for <code>x, y</code> in <code>pts</code>: if <code>abs(py - y) != abs(px - x) or x == px or y == py</code> continue. Multiply <code>ptsCount[(x, py)] * ptsCount[(px, y)]</code> and sum.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>from collections import defaultdict
+
+class DetectSquares:
+    def __init__(self):
+        self.ptsCount = defaultdict(int)
+        self.pts = []
+
+    def add(self, point: list[int]) -&gt; None:
+        self.ptsCount[tuple(point)] += 1
+        self.pts.append(point)
+
+    def count(self, point: list[int]) -&gt; int:
+        res = 0
+        px, py = point
+        for x, y in self.pts:
+            if (abs(py - y) != abs(px - x)) or x == px or y == py:
+                continue
+            res += self.ptsCount[(x, py)] * self.ptsCount[(px, y)]
+        return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Diagonal point scanning.</p>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

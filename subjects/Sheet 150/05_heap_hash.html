@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Heap & Hash — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #f59e0b;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 05</span>
+        <div class="module-title-side">Heap & Hash</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-703" class="nav-item">
+          <span>LC 703. Kth Largest Element in a Stream</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-1046" class="nav-item">
+          <span>LC 1046. Last Stone Weight</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-973" class="nav-item">
+          <span>LC 973. K Closest Points to Origin</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-215" class="nav-item">
+          <span>LC 215. Kth Largest Element in an Array</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-621" class="nav-item">
+          <span>LC 621. Task Scheduler</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-355" class="nav-item">
+          <span>LC 355. Design Twitter</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-295" class="nav-item">
+          <span>LC 295. Find Median From Data Stream</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 05 • 7 PROBLEMS</div>
+        <h1>Heap & Hash</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-703">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 703 • Heap & Hash</span>
+          <h2>Kth Largest Element in a Stream</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/kth-largest-element-in-a-stream/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Design a class to find <code>k-th</code> largest element in a stream.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Maintain a min-heap of size <code>k</code>. The root of the min-heap (<code>minHeap[0]</code>) is always the <code>k-th</code> largest element overall.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Sort full array on every new element stream insertion.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Sorting takes N log N per add.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Min-heap of fixed size K gives O(log K) insertion time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Min-heap <code>minHeap</code> initialized with <code>nums</code>.</li><li>Heapify <code>minHeap</code>. While <code>len(minHeap) > k</code>: <code>heappop(minHeap)</code>.</li><li><code>add(val)</code>: <code>heappush(minHeap, val)</code>. If <code>len(minHeap) > k</code>: <code>heappop(minHeap)</code>. Return <code>minHeap[0]</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+
+class KthLargest:
+    def __init__(self, k: int, nums: list[int]):
+        self.minHeap, self.k = nums, k
+        heapq.heapify(self.minHeap)
+        while len(self.minHeap) &gt; k:
+            heapq.heappop(self.minHeap)
+
+    def add(self, val: int) -&gt; int:
+        heapq.heappush(self.minHeap, val)
+        if len(self.minHeap) &gt; self.k:
+            heapq.heappop(self.minHeap)
+        return self.minHeap[0]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(log K)</span>
+          <span class="c-badge c-space">Space: O(K)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Min-heap size capped at K.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-1046">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 1046 • Heap & Hash</span>
+          <h2>Last Stone Weight</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/last-stone-weight/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Smash heaviest 2 stones together until 1 or 0 stones remain. Return weight of last stone or 0.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Max-Heap repeatedly yields 2 largest stones: <code>y</code> and <code>x</code>. If <code>x != y</code>, push <code>y - x</code> back.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Sort array repeatedly after every collision.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2 log N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Repeated sorting.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Max-Heap (negated values in Python min-heap) supports O(log N) pops.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Negate all weights: <code>stones = [-s for s in stones]</code>. Heapify.</li><li>While <code>len(stones) > 1</code>: <code>first = -heappop(); second = -heappop()</code>. If <code>first != second</code>: <code>heappush(stones, -(first - second))</code>.</li><li>Return <code>-stones[0] if stones else 0</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+
+def lastStoneWeight(stones: list[int]) -&gt; int:
+    stones = [-s for s in stones]
+    heapq.heapify(stones)
+
+    while len(stones) &gt; 1:
+        first = heapq.heappop(stones)
+        second = heapq.heappop(stones)
+        if second &gt; first:
+            heapq.heappush(stones, first - second)
+
+    stones.append(0)
+    return abs(stones[0])</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Max-heap simulation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-973">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 973 • Heap & Hash</span>
+          <h2>K Closest Points to Origin</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/k-closest-points-to-origin/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given array of <code>points</code>, return <code>k</code> closest points to origin <code>(0,0)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Distance metric: <code>x^2 + y^2</code> (no need for sqrt).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Sort all points by Euclidean distance.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Full array sorting.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Max-Heap of size K or QuickSelect algorithm achieves linear time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Min-heap: store tuples <code>(x^2 + y^2, x, y)</code>.</li><li>Heapify in O(N). Pop top K elements.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+
+def kClosest(points: list[list[int]], k: int) -&gt; list[list[int]]:
+    minHeap = []
+    for x, y in points:
+        dist = (x ** 2) + (y ** 2)
+        minHeap.append([dist, x, y])
+        
+    heapq.heapify(minHeap)
+    res = []
+    for _ in range(k):
+        dist, x, y = heapq.heappop(minHeap)
+        res.append([x, y])
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(K log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Heapify takes O(N), K pops take O(K log N).</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-215">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 215 • Heap & Hash</span>
+          <h2>Kth Largest Element in an Array</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Return <code>k-th</code> largest element in unsorted array without full sorting.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>QuickSelect algorithm (partitioning around pivot) gives O(N) average time.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Sort array and return <code>nums[len(nums)-k]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Full sorting overhead.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Min-heap of size K keeps K largest elements at O(N log K) time, or QuickSelect in O(N) average.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Target index <code>k = len(nums) - k</code>.</li><li>QuickSelect partition function: place pivot in correct sorted position.</li><li>If pivot index == target return <code>nums[p]</code>. Else recurse left or right.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def findKthLargest(nums: list[int], k: int) -&gt; int:
+    k = len(nums) - k
+
+    def quickSelect(l, r):
+        pivot, p = nums[r], l
+        for i in range(l, r):
+            if nums[i] &lt;= pivot:
+                nums[p], nums[i] = nums[i], nums[p]
+                p += 1
+        nums[p], nums[r] = nums[r], nums[p]
+
+        if p &gt; k: return quickSelect(l, p - 1)
+        elif p &lt; k: return quickSelect(p + 1, r)
+        else: return nums[p]
+
+    return quickSelect(0, len(nums) - 1)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N) Avg</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">QuickSelect algorithm average runtime.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-621">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 621 • Heap & Hash</span>
+          <h2>Task Scheduler</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/task-scheduler/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given CPU tasks and cooldown interval <code>n</code>, return minimum units of time to complete all tasks.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Greedy choice: process highest frequency tasks first. Max-Heap + Queue tracks cooling tasks.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Simulate CPU cycles step by step checking full task map.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(Time)</span>
+          <span class="c-badge c-space">Space: O(26)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Simulates idle cycles.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Formula OR Max-Heap + Deque storing <code>(cnt, idleTime)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Count task frequencies. Max-Heap <code>maxHeap = [-cnt for cnt in count.values()]</code>.</li><li>Queue <code>q = deque()</code> storing <code>(cnt, availableTime)</code>.</li><li>Loop <code>time += 1</code>: pop from heap, decrement cnt. If cnt > 0, push <code>(cnt, time + n)</code> to <code>q</code>. If <code>q[0] == time</code>, push back to heap.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+from collections import Counter, deque
+
+def leastInterval(tasks: list[str], n: int) -&gt; int:
+    count = Counter(tasks)
+    maxHeap = [-cnt for cnt in count.values()]
+    heapq.heapify(maxHeap)
+
+    time = 0
+    q = deque()  # pairs of [-cnt, idleTime]
+
+    while maxHeap or q:
+        time += 1
+        if maxHeap:
+            cnt = 1 + heapq.heappop(maxHeap)
+            if cnt != 0:
+                q.append([cnt, time + n])
+        if q and q[0][1] == time:
+            heapq.heappush(maxHeap, q.popleft()[0])
+
+    return time</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(26)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">N is number of tasks. Max-heap operations bounded by 26 letters.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-355">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 355 • Heap & Hash</span>
+          <h2>Design Twitter</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/design-twitter/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Design simplified Twitter with postTweet, getNewsFeed (10 most recent), follow, unfollow.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Each user follows a set of users. Feed merges sorted lists of tweets from followees using Max-Heap.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Collect all tweets into array, sort by timestamp.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Sorting all user tweets.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Min/Max-heap merges K most recent tweets from followees like Merge K Lists.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>HashMaps: <code>tweetMap = defaultdict(list)</code> (userId -> [(count, tweetId)]), <code>followMap = defaultdict(set)</code>.</li><li><code>getNewsFeed(userId)</code>: add self to follow set. Min-heap pops 10 most recent tweets.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+from collections import defaultdict
+
+class Twitter:
+    def __init__(self):
+        self.count = 0
+        self.tweetMap = defaultdict(list)  # userId -&gt; list of [count, tweetIds]
+        self.followMap = defaultdict(set)  # userId -&gt; set of followeeId
+
+    def postTweet(self, userId: int, tweetId: int) -&gt; None:
+        self.tweetMap[userId].append([self.count, tweetId])
+        self.count -= 1
+
+    def getNewsFeed(self, userId: int) -&gt; list[int]:
+        res = []
+        minHeap = []
+        self.followMap[userId].add(userId)
+
+        for followeeId in self.followMap[userId]:
+            if followeeId in self.tweetMap:
+                index = len(self.tweetMap[followeeId]) - 1
+                count, tweetId = self.tweetMap[followeeId][index]
+                minHeap.append([count, tweetId, followeeId, index - 1])
+
+        heapq.heapify(minHeap)
+        while minHeap and len(res) &lt; 10:
+            count, tweetId, followeeId, index = heapq.heappop(minHeap)
+            res.append(tweetId)
+            if index &gt;= 0:
+                count, tweetId = self.tweetMap[followeeId][index]
+                heapq.heappush(minHeap, [count, tweetId, followeeId, index - 1])
+        return res
+
+    def follow(self, followerId: int, followeeId: int) -&gt; None:
+        self.followMap[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -&gt; None:
+        if followeeId in self.followMap[followerId]:
+            self.followMap[followerId].remove(followeeId)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(10 log K)</span>
+          <span class="c-badge c-space">Space: O(Users + Tweets)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">K is followees count.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-295">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 295 • Heap & Hash</span>
+          <h2>Find Median From Data Stream</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/find-median-from-data-stream/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Design data structure supporting <code>addNum(num)</code> and <code>findMedian()</code> in streaming data.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Two heaps: Max-Heap <code>small</code> for lower half, Min-Heap <code>large</code> for upper half.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Maintain sorted array using binary search insertion.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Array shifting takes O(N) per add.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Two Heaps maintain equal size balance (diff <= 1). Median is heap tops!</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li><code>addNum(num)</code>: push to <code>small</code> (max-heap). If <code>small[0] > large[0]</code>, pop and push to <code>large</code>. Rebalance sizes so <code>abs(len(small) - len(large)) <= 1</code>.</li><li><code>findMedian()</code>: if odd size return top of larger heap; else average of both tops.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # Max-heap (lower half)
+        self.large = []  # Min-heap (upper half)
+
+    def addNum(self, num: int) -&gt; None:
+        heapq.heappush(self.small, -num)
+
+        # Make sure every element in small &lt;= every element in large
+        if self.small and self.large and (-self.small[0]) &gt; self.large[0]:
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+
+        # Handle size imbalance
+        if len(self.small) &gt; len(self.large) + 1:
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+        if len(self.large) &gt; len(self.small) + 1:
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small, -val)
+
+    def findMedian(self) -&gt; float:
+        if len(self.small) &gt; len(self.large):
+            return -self.small[0]
+        if len(self.large) &gt; len(self.small):
+            return self.large[0]
+        return (-self.small[0] + self.large[0]) / 2.0</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Two-heap streaming median algorithm.</p>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

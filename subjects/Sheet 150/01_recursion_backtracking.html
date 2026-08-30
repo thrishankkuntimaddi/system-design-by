@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Recursion & Backtracking — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #f472b6;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 01</span>
+        <div class="module-title-side">Recursion & Backtracking</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        <a href="#lc-78" class="nav-item">
+          <span>LC 78. Subsets</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-39" class="nav-item">
+          <span>LC 39. Combination Sum</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-46" class="nav-item">
+          <span>LC 46. Permutations</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-90" class="nav-item">
+          <span>LC 90. Subsets II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-40" class="nav-item">
+          <span>LC 40. Combination Sum II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-79" class="nav-item">
+          <span>LC 79. Word Search</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-131" class="nav-item">
+          <span>LC 131. Palindrome Partitioning</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-17" class="nav-item">
+          <span>LC 17. Letter Combinations of a Phone Number</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        <a href="#lc-51" class="nav-item">
+          <span>LC 51. N-Queens</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 01 &bull; 9 PROBLEMS</div>
+        <h1>Recursion &amp; Backtracking</h1>
+        <p>Detailed problem statements, understanding, naive reasoning, optimization intuition, algorithms, Python implementations, complexities, and interview patterns.</p>
+      </div>
+
+
+    <div class="problem-card" id="lc-78">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 78 &bull; Recursion &amp; Backtracking</span>
+          <h2>Subsets</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/subsets/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given an integer array <code>nums</code> containing unique elements, return all possible subsets (the power set). The solution must not contain duplicate subsets. The subsets can be returned in any order.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>For every element, we have two decisions: take or don't take. For n elements, there are 2^n possible subsets. Both naive binary decision-tree traversal and loop-based incremental backtracking generate all 2^n subsets.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Generate every subset by recursively deciding whether to take or not take each element.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def subsets(self, nums):
+        result = []
+
+        def backtrack(index, current):
+            if index == len(nums):
+                result.append(current[:])
+                return
+
+            # Don't take nums[index]
+            backtrack(index + 1, current)
+
+            # Take nums[index]
+            current.append(nums[index])
+            backtrack(index + 1, current)
+            current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n &times; 2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n) recursion + current path</span>
+          <span class="c-badge c-space">Output Space: O(n &times; 2^n)</span>
+        </div>
+        <p style="font-size:13px;color:var(--text3);margin-top:8px;">There are 2^n subsets, and copying each subset can take O(n).</p>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>The standard optimized backtracking version builds subsets incrementally. At each level of recursion, append the current path to result, then try adding each remaining candidate starting from <code>start</code> index.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Define <code>backtrack(start, current)</code>.</li><li>Every <code>current</code> state is a valid subset, so append a copy to <code>result</code>.</li><li>Loop <code>i</code> from <code>start</code> to <code>len(nums) - 1</code>.</li><li>Append <code>nums[i]</code> to <code>current</code>.</li><li>Recurse with <code>backtrack(i + 1, current)</code>.</li><li>Pop <code>nums[i]</code> to backtrack.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def subsets(self, nums):
+        result = []
+
+        def backtrack(start, current):
+            result.append(current[:])
+
+            for i in range(start, len(nums)):
+                current.append(nums[i])
+                backtrack(i + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n &times; 2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(n &times; 2^n)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Both have the same asymptotic complexity. The optimized version has a cleaner subset-generation pattern.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-39">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 39 &bull; Recursion &amp; Backtracking</span>
+          <h2>Combination Sum</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/combination-sum/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given candidates and target, find combinations whose sum equals target. Elements can be reused.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>Let T = target and k = len(candidates). The recursion depth can be approximately T when the smallest candidate is 1. We must avoid generating permutations of the same combination.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Try every candidate at every step without pruning.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def combinationSum(self, candidates, target):
+        result = []
+
+        def backtrack(current, total):
+            if total == target:
+                result.append(current[:])
+                return
+
+            if total > target:
+                return
+
+            for num in candidates:
+                current.append(num)
+                backtrack(current, total + num)
+                current.pop()
+
+        backtrack([], 0)
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(k^T) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(T)</span>
+          <span class="c-badge c-space">Output Space: depends on number of valid combinations</span>
+        </div>
+        <p style="font-size:13px;color:var(--text3);margin-top:8px;">Recursion depth can be approximately T when the smallest candidate is 1.</p>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Use <code>start</code> index to avoid generating the same combination in different orders, and sort candidates to break the loop early when a candidate exceeds the remaining target.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Sort candidates array.</li><li>Define <code>backtrack(start, remaining, current)</code>.</li><li>If <code>remaining == 0</code>, append <code>current[:]</code> to <code>result</code> and return.</li><li>Iterate <code>i</code> from <code>start</code> to <code>len(candidates) - 1</code>.</li><li>If <code>candidates[i] > remaining</code>, break early (pruning).</li><li>Append candidate, call <code>backtrack(i, remaining - num, current)</code> (pass <code>i</code> to allow reuse), and pop.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def combinationSum(self, candidates, target):
+        result = []
+        candidates.sort()
+
+        def backtrack(start, remaining, current):
+            if remaining == 0:
+                result.append(current[:])
+                return
+
+            for i in range(start, len(candidates)):
+                num = candidates[i]
+
+                if num > remaining:
+                    break
+
+                current.append(num)
+
+                # i, not i + 1, because we can reuse the same number
+                backtrack(i, remaining - num, current)
+
+                current.pop()
+
+        backtrack(0, target, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(k^T) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(T)</span>
+          <span class="c-badge c-space">Output Space: O(number of combinations &times; T)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>The important optimization is avoiding permutations of the same combination and pruning candidates larger than the remaining target.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-46">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 46 &bull; Recursion &amp; Backtracking</span>
+          <h2>Permutations</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/permutations/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Generate all permutations of distinct numbers.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>Drawing tokens in different orders creates distinct permutations (n! arrangements). At each level, choose an unused element.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>At every level, scan the entire array and choose an unused element using <code>if num in current</code>, which costs O(n) per check.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def permute(self, nums):
+        result = []
+
+        def backtrack(current):
+            if len(current) == len(nums):
+                result.append(current[:])
+                return
+
+            for num in nums:
+                if num in current:
+                    continue
+
+                current.append(num)
+                backtrack(current)
+                current.pop()
+
+        backtrack([])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n &times; n!)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(n &times; n!)</span>
+        </div>
+        <p style="font-size:13px;color:var(--text3);margin-top:8px;">There are n! permutations, and checking membership with <code>if num in current</code> costs O(n).</p>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Use a boolean <code>used[]</code> array to keep track of used elements in O(1) time instead of checking membership in current path.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>used = [False] * len(nums)</code>.</li><li>Define <code>backtrack(current)</code>.</li><li>If <code>len(current) == len(nums)</code>, append copy to <code>result</code>.</li><li>Loop <code>i</code> from <code>0</code> to <code>len(nums) - 1</code>. If <code>used[i]</code>, skip.</li><li>Set <code>used[i] = True</code>, append <code>nums[i]</code>, recurse, pop, and set <code>used[i] = False</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def permute(self, nums):
+        result = []
+        used = [False] * len(nums)
+
+        def backtrack(current):
+            if len(current) == len(nums):
+                result.append(current[:])
+                return
+
+            for i in range(len(nums)):
+                if used[i]:
+                    continue
+
+                used[i] = True
+                current.append(nums[i])
+
+                backtrack(current)
+
+                current.pop()
+                used[i] = False
+
+        backtrack([])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n &times; n!)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(n &times; n!)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Although the asymptotic time remains O(n &times; n!), the optimized solution removes the repeated O(n) membership search.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-90">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 90 &bull; Recursion &amp; Backtracking</span>
+          <h2>Subsets II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/subsets-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Array may contain duplicates. We need unique subsets.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>When input elements contain duplicates, standard subset branching generates identical subsets multiple times.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Generate all 2^n subsets and put them into a set to eliminate duplicate subsets.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def subsetsWithDup(self, nums):
+        result = set()
+
+        def backtrack(index, current):
+            if index == len(nums):
+                result.add(tuple(current))
+                return
+
+            # Don't take
+            backtrack(index + 1, current)
+
+            # Take
+            current.append(nums[index])
+            backtrack(index + 1, current)
+            current.pop()
+
+        backtrack(0, [])
+        return [list(x) for x in result]</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n &times; 2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output/Set Space: O(n &times; 2^n) worst case</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Sort the array and skip duplicate choices at the same recursion level.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Sort <code>nums</code>.</li><li>Define <code>backtrack(start, current)</code> and append <code>current[:]</code>.</li><li>Loop <code>i</code> from <code>start</code> to <code>len(nums) - 1</code>.</li><li>If <code>i > start and nums[i] == nums[i - 1]</code>, <code>continue</code>.</li><li>Append <code>nums[i]</code>, call <code>backtrack(i + 1, current)</code>, and pop.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def subsetsWithDup(self, nums):
+        nums.sort()
+        result = []
+
+        def backtrack(start, current):
+            result.append(current[:])
+
+            for i in range(start, len(nums)):
+                if i > start and nums[i] == nums[i - 1]:
+                    continue
+
+                current.append(nums[i])
+                backtrack(i + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n &times; 2^n) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(n &times; 2^n) worst case</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Critical Pattern:</strong> <code>if i > start and nums[i] == nums[i - 1]: continue</code><br>Skip duplicates at the same recursion level, but allow duplicates at different levels.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-40">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 40 &bull; Recursion &amp; Backtracking</span>
+          <h2>Combination Sum II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/combination-sum-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Each candidate can be used only once, and candidates may contain duplicates. Find unique combinations summing to target.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>Combines single-use constraint with duplicate candidate values. We cannot reuse an element (use <code>i + 1</code>) and must prune duplicate sibling choices.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Generate combinations recursively and use a set to remove duplicates.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def combinationSum2(self, candidates, target):
+        result = set()
+        candidates.sort()
+
+        def backtrack(index, remaining, current):
+            if remaining == 0:
+                result.add(tuple(current))
+                return
+
+            if index == len(candidates) or remaining < 0:
+                return
+
+            # Don't choose
+            backtrack(index + 1, remaining, current)
+
+            # Choose
+            current.append(candidates[index])
+            backtrack(
+                index + 1,
+                remaining - candidates[index],
+                current
+            )
+            current.pop()
+
+        backtrack(0, target, [])
+        return [list(x) for x in result]</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n &times; n) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output/Set Space: O(2^n &times; n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Sort array, skip duplicate choices at the same level (<code>i > start and candidates[i] == candidates[i - 1]</code>), and prune when <code>candidates[i] > remaining</code>.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Sort <code>candidates</code>.</li><li>Define <code>backtrack(start, remaining, current)</code>.</li><li>If <code>remaining == 0</code>, append copy to <code>result</code>.</li><li>Loop <code>i</code> from <code>start</code> to <code>len(candidates) - 1</code>.</li><li>Skip duplicates at same level: <code>if i > start and candidates[i] == candidates[i - 1]: continue</code>.</li><li>Break if <code>candidates[i] > remaining</code>.</li><li>Recurse with <code>i + 1</code> because each element can be used once.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def combinationSum2(self, candidates, target):
+        candidates.sort()
+        result = []
+
+        def backtrack(start, remaining, current):
+            if remaining == 0:
+                result.append(current[:])
+                return
+
+            for i in range(start, len(candidates)):
+                # Skip duplicate choices at the same level
+                if i > start and candidates[i] == candidates[i - 1]:
+                    continue
+
+                # Since sorted, no later value can work
+                if candidates[i] > remaining:
+                    break
+
+                current.append(candidates[i])
+
+                # i + 1 because each element can be used once
+                backtrack(
+                    i + 1,
+                    remaining - candidates[i],
+                    current
+                )
+
+                current.pop()
+
+        backtrack(0, target, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(2^n &times; n) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(number of valid combinations &times; n)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Important Difference:</strong><br>Combination Sum uses <code>backtrack(i, ...)</code> (can reuse the same element).<br>Combination Sum II uses <code>backtrack(i + 1, ...)</code> (cannot reuse it).</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-79">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 79 &bull; Recursion &amp; Backtracking</span>
+          <h2>Word Search</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/word-search/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Find whether a word exists in a grid by moving up/down/left/right.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>Let R = rows, C = columns, L = word length. The first character can start from R &times; C cells. After that, there are up to 4 choices initially and at most 3 choices afterward because we don't immediately revisit the previous cell.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Try every cell as the starting position and recursively explore all four directions.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def exist(self, board, word):
+        rows = len(board)
+        cols = len(board[0])
+
+        def dfs(r, c, index):
+            if index == len(word):
+                return True
+
+            if r < 0 or r >= rows or c < 0 or c >= cols:
+                return False
+
+            if board[r][c] != word[index]:
+                return False
+
+            original = board[r][c]
+            board[r][c] = '#'
+
+            found = (
+                dfs(r + 1, c, index + 1) or
+                dfs(r - 1, c, index + 1) or
+                dfs(r, c + 1, index + 1) or
+                dfs(r, c - 1, index + 1)
+            )
+
+            board[r][c] = original
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if dfs(r, c, 0):
+                    return True
+
+        return False</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(R &times; C &times; 4 &times; 3^(L-1))</span>
+          <span class="c-badge c-space">Aux Space: O(L)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Prune impossible searches before DFS: check whether the word's character frequency exists in the board, search from the rarer end of the word (reverse if <code>board_count[word[0]] > board_count[word[-1]]</code>), and use in-place marking.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Count character frequencies in <code>board</code> and <code>word</code> using <code>Counter</code>.</li><li>If board lacks any character required by word, return <code>False</code>.</li><li>If <code>board_count[word[0]] > board_count[word[-1]]</code>, reverse word to start search from the rarer end.</li><li>Run DFS from matching start cells using in-place <code>'#'</code> cell marking and backtracking.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import Counter
+
+class Solution:
+    def exist(self, board, word):
+        rows = len(board)
+        cols = len(board[0])
+
+        board_count = Counter(
+            cell
+            for row in board
+            for cell in row
+        )
+
+        word_count = Counter(word)
+
+        for char, count in word_count.items():
+            if board_count[char] < count:
+                return False
+
+        # Start from the rarer character
+        if board_count[word[0]] > board_count[word[-1]]:
+            word = word[::-1]
+
+        def dfs(r, c, index):
+            if index == len(word):
+                return True
+
+            if (
+                r < 0 or r >= rows or
+                c < 0 or c >= cols or
+                board[r][c] != word[index]
+            ):
+                return False
+
+            temp = board[r][c]
+            board[r][c] = '#'
+
+            found = (
+                dfs(r + 1, c, index + 1) or
+                dfs(r - 1, c, index + 1) or
+                dfs(r, c + 1, index + 1) or
+                dfs(r, c - 1, index + 1)
+            )
+
+            board[r][c] = temp
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0]:
+                    if dfs(r, c, 0):
+                        return True
+
+        return False</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C &times; 4 &times; 3^(L-1))</span>
+          <span class="c-badge c-space">Aux Space: O(L)</span>
+          <span class="c-badge c-space">Extra preprocessing: O(R &times; C + L)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>The optimization mainly improves practical pruning (character counting &amp; rarer-end search), rather than changing the worst-case exponential bound.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-131">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 131 &bull; Recursion &amp; Backtracking</span>
+          <h2>Palindrome Partitioning</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/palindrome-partitioning/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Partition a string such that every substring is a palindrome. Example for <code>"aab"</code>: <code>["a", "a", "b"]</code>, <code>["aa", "b"]</code>.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>There can be exponentially many partitions. Checking substring palindromes on the fly adds repeated O(n) work.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>At every position, try every possible substring and check whether it is a palindrome with <code>string == string[::-1]</code>.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def partition(self, s):
+        result = []
+
+        def is_palindrome(string):
+            return string == string[::-1]
+
+        def backtrack(start, current):
+            if start == len(s):
+                result.append(current[:])
+                return
+
+            for end in range(start + 1, len(s) + 1):
+                substring = s[start:end]
+
+                if is_palindrome(substring):
+                    current.append(substring)
+                    backtrack(end, current)
+                    current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n &times; 2^n) approximately</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(n &times; 2^n)</span>
+        </div>
+        <p style="font-size:13px;color:var(--text3);margin-top:8px;">The palindrome check itself can cost O(n) per substring check.</p>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Precompute whether every substring is a palindrome using 2D Dynamic Programming in O(n^2) time before backtracking.</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Build 2D boolean array <code>palindrome[n][n]</code>.</li><li>Set single characters <code>palindrome[i][i] = True</code>.</li><li>Fill DP table for lengths 2 to n: <code>palindrome[left][right] = True</code> if characters match and inner substring is palindrome.</li><li>Backtrack from <code>start = 0</code>, using <code>palindrome[start][end]</code> for O(1) checks.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def partition(self, s):
+        n = len(s)
+
+        palindrome = [[False] * n for _ in range(n)]
+
+        for i in range(n):
+            palindrome[i][i] = True
+
+        for length in range(2, n + 1):
+            for left in range(n - length + 1):
+                right = left + length - 1
+
+                if s[left] == s[right]:
+                    if length == 2 or palindrome[left + 1][right - 1]:
+                        palindrome[left][right] = True
+
+        result = []
+
+        def backtrack(start, current):
+            if start == n:
+                result.append(current[:])
+                return
+
+            for end in range(start, n):
+                if palindrome[start][end]:
+                    current.append(s[start:end + 1])
+                    backtrack(end + 1, current)
+                    current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Palindrome DP: O(n^2)</span>
+          <span class="c-badge c-time">Time: O(n^2 + n &times; 2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n^2) DP + O(n) recursion</span>
+          <span class="c-badge c-space">Output Space: O(n &times; 2^n)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Precompute expensive repeated checks &rarr; Backtracking becomes cleaner and faster.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-17">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 17 &bull; Recursion &amp; Backtracking</span>
+          <h2>Letter Combinations of a Phone Number</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given digits 2&ndash;9, generate all possible letter combinations. Example for <code>"23"</code>: <code>ad, ae, af, bd, be, bf, cd, ce, cf</code>.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>Each digit gives at most 4 choices. For n digits, total combinations is O(4^n).</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Build all combinations using recursion with a dictionary lookup for key mapping.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def letterCombinations(self, digits):
+        if not digits:
+            return []
+
+        phone = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz'
+        }
+
+        result = []
+
+        def backtrack(index, current):
+            if index == len(digits):
+                result.append("".join(current))
+                return
+
+            for char in phone[digits[index]]:
+                current.append(char)
+                backtrack(index + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(4^n &times; n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(4^n &times; n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Use a list of mappings and construct the string directly with index offsets (<code>ord(digits[index]) - ord('0')</code>).</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Return <code>[]</code> if <code>digits</code> is empty.</li><li>Initialize array <code>phone</code> indexed from 0 to 9.</li><li>Define <code>backtrack(index, current)</code>.</li><li>If <code>index == len(digits)</code>, append <code>"".join(current)</code> to <code>result</code>.</li><li>Get mapped string using <code>phone[ord(digits[index]) - ord('0')]</code>.</li><li>Loop through characters, append, recurse <code>index + 1</code>, and pop.</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def letterCombinations(self, digits):
+        if not digits:
+            return []
+
+        phone = [
+            "",
+            "",
+            "abc",
+            "def",
+            "ghi",
+            "jkl",
+            "mno",
+            "pqrs",
+            "tuv",
+            "wxyz"
+        ]
+
+        result = []
+
+        def backtrack(index, current):
+            if index == len(digits):
+                result.append("".join(current))
+                return
+
+            letters = phone[ord(digits[index]) - ord('0')]
+
+            for char in letters:
+                current.append(char)
+                backtrack(index + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(4^n &times; n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+          <span class="c-badge c-space">Output Space: O(4^n &times; n)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Again, the asymptotic complexity doesn't change much; the optimization is primarily cleaner/faster implementation.</p></div>
+      </div>
+
+    </div>
+
+
+    <div class="problem-card" id="lc-51">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 51 &bull; Recursion &amp; Backtracking</span>
+          <h2>N-Queens</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/n-queens/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Place n queens on an n &times; n board so that no two queens attack each other.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding</div>
+        <div class="desc-box"><p>At each row, we have up to n choices. Placements must be checked for column, positive diagonal (row + col), and negative diagonal (row - col) collisions.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Try placing a queen in every column of every row, then check whether the board is valid with an <code>is_safe</code> helper function scanning the board in O(n) time.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def solveNQueens(self, n):
+        result = []
+        board = [["."] * n for _ in range(n)]
+
+        def is_safe(row, col):
+            # Check column
+            for r in range(row):
+                if board[r][col] == "Q":
+                    return False
+
+            # Check upper-left diagonal
+            r, c = row - 1, col - 1
+            while r >= 0 and c >= 0:
+                if board[r][c] == "Q":
+                    return False
+                r -= 1
+                c -= 1
+
+            # Check upper-right diagonal
+            r, c = row - 1, col + 1
+            while r >= 0 and c < n:
+                if board[r][c] == "Q":
+                    return False
+                r -= 1
+                c += 1
+
+            return True
+
+        def backtrack(row):
+            if row == n:
+                result.append(
+                    ["".join(r) for r in board]
+                )
+                return
+
+            for col in range(n):
+                if is_safe(row, col):
+                    board[row][col] = "Q"
+                    backtrack(row + 1)
+                    board[row][col] = "."
+
+        backtrack(0)
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Naive Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2 &times; n!) approx</span>
+          <span class="c-badge c-space">Aux Space: O(n^2) board + O(n) recursion</span>
+          <span class="c-badge c-space">Output Space: O(number of solutions &times; n^2)</span>
+        </div>
+        <p style="font-size:13px;color:var(--text3);margin-top:8px;">At each row, we have up to n choices. The validity check costs O(n).</p>
+      </div>
+
+      <!-- 5. Intuition -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Instead of scanning the board every time, maintain three sets: <code>columns</code>, positive diagonals (<code>row + col</code>), and negative diagonals (<code>row - col</code>). Then checking whether a position is safe becomes O(1).</p></div>
+      </div>
+
+      <!-- 6. Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Algorithm / Approach</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize board and three hash sets: <code>columns</code>, <code>positive_diagonals</code>, <code>negative_diagonals</code>.</li><li>Define <code>backtrack(row)</code>. If <code>row == n</code>, add formatted board to <code>result</code>.</li><li>Loop <code>col</code> from <code>0</code> to <code>n - 1</code>.</li><li>If <code>col in columns</code>, <code>row + col in positive_diagonals</code>, or <code>row - col in negative_diagonals</code>, skip.</li><li>Place <code>"Q"</code>, add to all 3 sets, recurse <code>row + 1</code>, and then backtrack (remove <code>"Q"</code> and remove from sets).</li></ol></div>
+      </div>
+
+      <!-- 7. Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Code &mdash; Python 3 (Optimized)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def solveNQueens(self, n):
+        result = []
+
+        board = [["."] * n for _ in range(n)]
+
+        columns = set()
+        positive_diagonals = set()  # row + col
+        negative_diagonals = set()  # row - col
+
+        def backtrack(row):
+            if row == n:
+                result.append(
+                    ["".join(r) for r in board]
+                )
+                return
+
+            for col in range(n):
+                if col in columns:
+                    continue
+
+                if row + col in positive_diagonals:
+                    continue
+
+                if row - col in negative_diagonals:
+                    continue
+
+                # Place queen
+                board[row][col] = "Q"
+                columns.add(col)
+                positive_diagonals.add(row + col)
+                negative_diagonals.add(row - col)
+
+                backtrack(row + 1)
+
+                # Backtrack
+                board[row][col] = "."
+                columns.remove(col)
+                positive_diagonals.remove(row + col)
+                negative_diagonals.remove(row - col)
+
+        backtrack(0)
+
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Optimized Complexity</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Safety Check: O(1)</span>
+          <span class="c-badge c-time">Time: O(n &times; n!) approx</span>
+          <span class="c-badge c-space">Aux Space: O(n^2) board + O(n) sets/recursion</span>
+          <span class="c-badge c-space">Output Space: O(number of solutions &times; n^2)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Safety check is reduced to O(1) using sets for columns and diagonals. The search itself remains exponential (O(n &times; n!) approx).</p></div>
+      </div>
+
+    </div>
+
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

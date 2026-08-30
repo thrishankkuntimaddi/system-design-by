@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Stack & Queue — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #ec4899;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 06</span>
+        <div class="module-title-side">Stack & Queue</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-20" class="nav-item">
+          <span>LC 20. Valid Parentheses</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-155" class="nav-item">
+          <span>LC 155. Min Stack</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-150" class="nav-item">
+          <span>LC 150. Evaluate Reverse Polish Notation</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-22" class="nav-item">
+          <span>LC 22. Generate Parentheses</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-739" class="nav-item">
+          <span>LC 739. Daily Temperatures</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-853" class="nav-item">
+          <span>LC 853. Car Fleet</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-84" class="nav-item">
+          <span>LC 84. Largest Rectangle in Histogram</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 06 • 7 PROBLEMS</div>
+        <h1>Stack & Queue</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-20">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 20 • Stack & Queue</span>
+          <h2>Valid Parentheses</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/valid-parentheses/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given string containing <code>'(', ')', '{', '}', '[', ']'</code>, determine if input string is valid.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Open brackets must be closed by same type in correct LIFO order.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Repeatedly replace <code>()</code>, <code>{}</code>, <code>[]</code> with empty string until unchanged.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">String replacement.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Stack LIFO popping matching closing bracket in O(N) time.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Map <code>closeToOpen = {')':'(', '}':'{', ']':'['}</code>.</li><li>For <code>c</code> in <code>s</code>: if <code>c in closeToOpen</code>: if <code>stack and stack[-1] == closeToOpen[c]</code> pop; else return False. Else push <code>c</code> to stack.</li><li>Return <code>len(stack) == 0</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def isValid(s: str) -&gt; bool:
+    stack = []
+    closeToOpen = {&quot;)&quot;: &quot;(&quot;, &quot;}&quot;: &quot;{&quot;, &quot;]&quot;: &quot;[&quot;}
+
+    for c in s:
+        if c in closeToOpen:
+            if stack and stack[-1] == closeToOpen[c]:
+                stack.pop()
+            else:
+                return False
+        else:
+            stack.append(c)
+    return len(stack) == 0</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">LIFO stack matching.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-155">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 155 • Stack & Queue</span>
+          <h2>Min Stack</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/min-stack/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Design a stack that supports push, pop, top, and retrieving minimum element in O(1) time.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Maintain parallel <code>minStack</code> storing minimum value present at each depth level.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Scan entire stack to find minimum on <code>getMin()</code> call.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Linear scan on getMin.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Parallel min stack stores current min value for each state.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Two stacks: <code>stack</code> and <code>minStack</code>.</li><li><code>push(val)</code>: <code>stack.append(val)</code>; <code>val = min(val, minStack[-1] if minStack else val)</code>; <code>minStack.append(val)</code>.</li><li><code>pop()</code>: pop from both stacks.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
+
+    def push(self, val: int) -&gt; None:
+        self.stack.append(val)
+        val = min(val, self.minStack[-1] if self.minStack else val)
+        self.minStack.append(val)
+
+    def pop(self) -&gt; None:
+        self.stack.pop()
+        self.minStack.pop()
+
+    def top(self) -&gt; int:
+        return self.stack[-1]
+
+    def getMin(self) -&gt; int:
+        return self.minStack[-1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(1)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">O(1) operations for all methods.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-150">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 150 • Stack & Queue</span>
+          <h2>Evaluate Reverse Polish Notation</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Evaluate arithmetic expression in Reverse Polish Notation (Postfix).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Operands pushed to stack. Operator pops top 2 operands <code>b, a</code>, evaluates <code>a op b</code>, pushes result.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>String parsing replacing postfix tokens in-place.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Array shifting.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Stack LIFO evaluation handles postfix order naturally.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Stack <code>st = []</code>.</li><li>For token in <code>tokens</code>: if operator pop <code>b, a</code>, compute <code>a + b, a - b, a * b, int(a / b)</code>, push result. Else push <code>int(token)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def evalRPN(tokens: list[str]) -&gt; int:
+    stack = []
+    for c in tokens:
+        if c == &quot;+&quot;:
+            stack.append(stack.pop() + stack.pop())
+        elif c == &quot;-&quot;:
+            a, b = stack.pop(), stack.pop()
+            stack.append(b - a)
+        elif c == &quot;*&quot;:
+            stack.append(stack.pop() * stack.pop())
+        elif c == &quot;/&quot;:
+            a, b = stack.pop(), stack.pop()
+            stack.append(int(b / a))
+        else:
+            stack.append(int(c))
+    return stack[0]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Single pass evaluation.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-22">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 22 • Stack & Queue</span>
+          <h2>Generate Parentheses</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/generate-parentheses/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given <code>n</code> pairs of parentheses, generate all combinations of well-formed parentheses.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Valid condition: open count <code>openN < n</code>; close count <code>closedN < openN</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Generate all 2^(2N) strings of '(' and ')' and validate each.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^(2N) * N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Explores invalid parenthesizations.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Backtracking only adds valid open/close brackets.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>In <code>backtrack(openN, closedN)</code>: if <code>openN == closedN == n</code> append <code>.join(stack)</code>.</li><li>If <code>openN < n</code>: append '(', recurse, pop.</li><li>If <code>closedN < openN</code>: append ')', recurse, pop.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def generateParenthesis(n: int) -&gt; list[str]:
+    stack = []
+    res = []
+
+    def backtrack(openN, closedN):
+        if openN == closedN == n:
+            res.append(&quot;&quot;.join(stack))
+            return
+
+        if openN &lt; n:
+            stack.append(&quot;(&quot;)
+            backtrack(openN + 1, closedN)
+            stack.pop()
+
+        if closedN &lt; openN:
+            stack.append(&quot;)&quot;)
+            backtrack(openN, closedN + 1)
+            stack.pop()
+
+    backtrack(0, 0)
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(4^N / sqrt(N))</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Catalan number valid parenthesization count.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-739">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 739 • Stack & Queue</span>
+          <h2>Daily Temperatures</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/daily-temperatures/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given array of temperatures, return array <code>answer</code> such that <code>answer[i]</code> is number of days until warmer temperature.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Monotonic Decreasing Stack storing <code>(temp, index)</code> pairs.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>For each day, scan future days using nested loop.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Nested loop forward scan.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Monotonic stack pops indices as soon as a warmer temperature is encountered.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li><code>res = [0] * len(temperatures)</code>, <code>stack = []</code> (index).</li><li>For <code>i, t</code> in enumerate(temperatures): while <code>stack and t > temperatures[stack[-1]]</code>: <code>prev_i = stack.pop(); res[prev_i] = i - prev_i</code>.</li><li>Push <code>i</code> to stack.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def dailyTemperatures(temperatures: list[int]) -&gt; list[int]:
+    res = [0] * len(temperatures)
+    stack = []  # index
+
+    for i, t in enumerate(temperatures):
+        while stack and t &gt; temperatures[stack[-1]]:
+            prev_i = stack.pop()
+            res[prev_i] = i - prev_i
+        stack.append(i)
+    return res</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Monotonic stack single pass.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-853">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 853 • Stack & Queue</span>
+          <h2>Car Fleet</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/car-fleet/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p><code>n</code> cars driven to <code>target</code> destination. Return number of car fleets that arrive at target.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Time to target = <code>(target - position) / speed</code>. Sort cars by position descending. If car behind takes LESS time than car ahead, it joins the fleet of car ahead!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Simulate car position movement frame by frame.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(Target * N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Frame-by-frame simulation.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Sort by position descending. Monotonic stack tracks fleet times.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Pair positions and speeds: <code>pair = [[p, s] for p, s in zip(position, speed)]</code>. Sort descending by position.</li><li>For <code>p, s</code> in sorted pair: time <code>(target - p) / s</code> pushed to stack. If <code>len(stack) >= 2 and stack[-1] <= stack[-2]</code>: <code>stack.pop()</code>.</li><li>Return <code>len(stack)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def carFleet(target: int, position: list[int], speed: list[int]) -&gt; int:
+    pair = [[p, s] for p, s in zip(position, speed)]
+    stack = []
+
+    for p, s in sorted(pair)[::-1]:
+        stack.append((target - p) / s)
+        if len(stack) &gt;= 2 and stack[-1] &lt;= stack[-2]:
+            stack.pop()
+            
+    return len(stack)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N log N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Sorting takes O(N log N).</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-84">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 84 • Stack & Queue</span>
+          <h2>Largest Rectangle in Histogram</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/largest-rectangle-in-histogram/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given array of heights representing histogram, return area of largest rectangle in histogram.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>A height <code>h</code> can extend left to index <code>start</code>. Monotonic Increasing Stack stores <code>(start_index, height)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Check all N^2 pairs of left and right boundaries.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Evaluates all pairs.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Monotonic stack pops taller bars when a shorter bar is encountered, calculating area with popped height and extended width.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Stack <code>st = []</code> storing <code>(index, height)</code>. <code>maxArea = 0</code>.</li><li>For <code>i, h</code> in enumerate(heights): <code>start = i</code>; while <code>st and st[-1][1] > h</code>: <code>index, height = st.pop(); maxArea = max(maxArea, height * (i - index)); start = index</code>. Push <code>(start, h)</code> to stack.</li><li>Pop remaining items in stack calculating area to <code>len(heights)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def largestRectangleArea(heights: list[int]) -&gt; int:
+    maxArea = 0
+    stack = []  # pair: (index, height)
+
+    for i, h in enumerate(heights):
+        start = i
+        while stack and stack[-1][1] &gt; h:
+            index, height = stack.pop()
+            maxArea = max(maxArea, height * (i - index))
+            start = index
+        stack.append((start, h))
+
+    for i, h in stack:
+        maxArea = max(maxArea, h * (len(heights) - i))
+    return maxArea</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Monotonic stack single pass algorithm.</p>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,3942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dynamic Programming — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #a855f7;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 03</span>
+        <div class="module-title-side">Dynamic Programming</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-70" class="nav-item">
+          <span>LC 70. Climbing Stairs</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-746" class="nav-item">
+          <span>LC 746. Min Cost Climbing Stairs</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-198" class="nav-item">
+          <span>LC 198. House Robber</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-213" class="nav-item">
+          <span>LC 213. House Robber II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-5" class="nav-item">
+          <span>LC 5. Longest Palindromic Substring</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-647" class="nav-item">
+          <span>LC 647. Palindromic Substrings</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-91" class="nav-item">
+          <span>LC 91. Decode Ways</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-322" class="nav-item">
+          <span>LC 322. Coin Change</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-152" class="nav-item">
+          <span>LC 152. Maximum Product Subarray</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-139" class="nav-item">
+          <span>LC 139. Word Break</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-300" class="nav-item">
+          <span>LC 300. Longest Increasing Subsequence</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-416" class="nav-item">
+          <span>LC 416. Partition Equal Subset Sum</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-62" class="nav-item">
+          <span>LC 62. Unique Paths</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-1143" class="nav-item">
+          <span>LC 1143. Longest Common Subsequence</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-309" class="nav-item">
+          <span>LC 309. Best Time to Buy & Sell Stock with Cooldown</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-518" class="nav-item">
+          <span>LC 518. Coin Change II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-494" class="nav-item">
+          <span>LC 494. Target Sum</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-97" class="nav-item">
+          <span>LC 97. Interleaving String</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-329" class="nav-item">
+          <span>LC 329. Longest Increasing Path in a Matrix</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-115" class="nav-item">
+          <span>LC 115. Distinct Subsequences</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-72" class="nav-item">
+          <span>LC 72. Edit Distance</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-312" class="nav-item">
+          <span>LC 312. Burst Balloons</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-10" class="nav-item">
+          <span>LC 10. Regular Expression Matching</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 03 • 23 PROBLEMS</div>
+        <h1>Dynamic Programming</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-70">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 70 • 3A. 1-D Dynamic Programming</span>
+          <h2>Climbing Stairs</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/climbing-stairs/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>You are climbing a staircase with <code>n</code> steps. Each time you can climb <code>1</code> or <code>2</code> steps. How many distinct ways can you climb to the top?</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>At every step, you can climb either 1 or 2 stairs. To reach step <code>n</code>, you come from <code>n-1</code> or <code>n-2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Generate every climb step combination by recursively deciding whether to take 1 or 2 steps.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def climbStairs(self, n):
+        def dfs(step):
+            if step == n:
+                return 1
+
+            if step &gt; n:
+                return 0
+
+            return dfs(step + 1) + dfs(step + 2)
+
+        return dfs(0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Bottom-Up DP</div>
+        <div class="intuition-box">
+          <p>Subproblem overlap means <code>dp[i] = dp[i-1] + dp[i-2]</code>. We can build bottom-up or optimize space to only 2 variables.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Check base cases: if <code>n &lt;= 2</code>, return <code>n</code>.</li>
+            <li>Maintain <code>prev2 = 1</code> and <code>prev1 = 2</code>.</li>
+            <li>Loop from 3 to <code>n</code> updating <code>current = prev1 + prev2</code>, shifting <code>prev2 = prev1</code> and <code>prev1 = current</code>.</li>
+            <li>Return <code>prev1</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Bottom-Up DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def climbStairs(self, n):
+        if n &lt;= 2:
+            return n
+
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(1) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def climbStairs(self, n):
+        if n &lt;= 2:
+            return n
+
+        prev2 = 1
+        prev1 = 2
+
+        for _ in range(3, n + 1):
+            current = prev1 + prev2
+            prev2 = prev1
+            prev1 = current
+
+        return prev1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1) (Space Optimized) / O(n) (DP Array)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Previous 2 states DP</strong> — Each state only depends on the immediate two previous states.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-746">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 746 • 3A. 1-D Dynamic Programming</span>
+          <h2>Min Cost Climbing Stairs</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/min-cost-climbing-stairs/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given an integer array <code>cost</code> where <code>cost[i]</code> is the cost of <code>i</code>-th step on a staircase. Once you pay the cost, you can climb 1 or 2 steps. Return the minimum cost to reach the top of the floor.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>You can start from step 0 or step 1. At step <code>i</code>, cost incurred to jump is <code>cost[i] + min(cost_of_next_1, cost_of_next_2)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Recursively try starting from 0 and 1, taking min cost of jumping 1 or 2 steps at each index.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def minCostClimbingStairs(self, cost):
+
+        def dfs(i):
+            if i &gt;= len(cost):
+                return 0
+
+            return cost[i] + min(
+                dfs(i + 1),
+                dfs(i + 2)
+            )
+
+        return min(dfs(0), dfs(1))</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Building bottom-up: <code>dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])</code>. Can be space-optimized to two variables.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>prev2 = 0</code> and <code>prev1 = 0</code>.</li>
+            <li>Loop <code>i</code> from 2 to <code>len(cost)</code>.</li>
+            <li><code>current = min(prev1 + cost[i-1], prev2 + cost[i-2])</code>.</li>
+            <li>Shift <code>prev2 = prev1</code>, <code>prev1 = current</code>. Return <code>prev1</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def minCostClimbingStairs(self, cost):
+        n = len(cost)
+
+        dp = [0] * (n + 1)
+
+        for i in range(2, n + 1):
+            dp[i] = min(
+                dp[i - 1] + cost[i - 1],
+                dp[i - 2] + cost[i - 2]
+            )
+
+        return dp[n]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(1) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def minCostClimbingStairs(self, cost):
+        prev2 = 0
+        prev1 = 0
+
+        for i in range(2, len(cost) + 1):
+            current = min(
+                prev1 + cost[i - 1],
+                prev2 + cost[i - 2]
+            )
+
+            prev2 = prev1
+            prev1 = current
+
+        return prev1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1) (Space Optimized) / O(n) (DP Array)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Minimum previous states DP</strong> — Transition depends on minimum of previous subproblem choices.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-198">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 198 • 3A. 1-D Dynamic Programming</span>
+          <h2>House Robber</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/house-robber/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. Adjacent houses have security systems connected, so you cannot rob two adjacent houses. Return maximum money you can rob.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>At every house: Rob it (gain <code>nums[i]</code> + profit from house <code>i-2</code>) OR skip it (keep profit from house <code>i-1</code>).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Explore all choices at each house recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def rob(self, nums):
+
+        def dfs(i):
+            if i &gt;= len(nums):
+                return 0
+
+            rob = nums[i] + dfs(i + 2)
+            skip = dfs(i + 1)
+
+            return max(rob, skip)
+
+        return dfs(0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>State equation: <code>dp[i] = max(dp[i-1], nums[i] + dp[i-2])</code>. We can optimize space by keeping only <code>prev1</code> and <code>prev2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>prev2 = 0</code> and <code>prev1 = 0</code>.</li>
+            <li>Iterate through <code>money</code> in <code>nums</code>.</li>
+            <li>Compute <code>current = max(prev1, money + prev2)</code>.</li>
+            <li>Update <code>prev2 = prev1</code> and <code>prev1 = current</code>. Return <code>prev1</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def rob(self, nums):
+        n = len(nums)
+
+        if n == 0:
+            return 0
+
+        if n == 1:
+            return nums[0]
+
+        dp = [0] * n
+
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            dp[i] = max(
+                dp[i - 1],
+                nums[i] + dp[i - 2]
+            )
+
+        return dp[-1]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(1) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def rob(self, nums):
+        prev2 = 0
+        prev1 = 0
+
+        for money in nums:
+            current = max(
+                prev1,
+                money + prev2
+            )
+
+            prev2 = prev1
+            prev1 = current
+
+        return prev1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1) (Space Optimized) / O(n) (DP Array)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Take / Skip DP</strong> — Classic binary choice pattern at each element.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-213">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 213 • 3A. 1-D Dynamic Programming</span>
+          <h2>House Robber II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/house-robber-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Houses form a circle, so the first and last houses are neighbors and cannot both be robbed. Return maximum money you can rob.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Circular constraint means we split into two linear subproblems: Case 1 (houses <code>0 ... n-2</code>) and Case 2 (houses <code>1 ... n-1</code>). Return max of both.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try all subsets while tracking whether the first house was robbed and previous house was robbed.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def rob(self, nums):
+
+        def dfs(i, first_robbed, previous_robbed):
+            if i == len(nums):
+                return 0
+
+            skip = dfs(
+                i + 1,
+                first_robbed,
+                False
+            )
+
+            take = 0
+
+            if not previous_robbed:
+                if i != len(nums) - 1 or not first_robbed:
+                    take = nums[i] + dfs(
+                        i + 1,
+                        first_robbed or i == 0,
+                        True
+                    )
+
+            return max(skip, take)
+
+        return dfs(0, False, False)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Circular DP reduces to running House Robber I helper on two slices: <code>nums[:-1]</code> and <code>nums[1:]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>If <code>len(nums) == 1</code>, return <code>nums[0]</code>.</li>
+            <li>Define linear rob helper function <code>rob_linear(arr)</code> using space-optimized House Robber I logic.</li>
+            <li>Return <code>max(rob_linear(nums[:-1]), rob_linear(nums[1:]))</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def rob(self, nums):
+
+        if len(nums) == 1:
+            return nums[0]
+
+        def rob_linear(arr):
+            prev2 = 0
+            prev1 = 0
+
+            for money in arr:
+                current = max(
+                    prev1,
+                    money + prev2
+                )
+
+                prev2 = prev1
+                prev1 = current
+
+            return prev1
+
+        return max(
+            rob_linear(nums[:-1]),
+            rob_linear(nums[1:])
+        )</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Circular DP → split into two linear DP problems.</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-5">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 5 • 3A. 1-D Dynamic Programming</span>
+          <h2>Longest Palindromic Substring</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given a string <code>s</code>, return the longest palindromic substring in <code>s</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>A palindrome expands outward from its center. There are odd-length centers (single char) and even-length centers (between two chars).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Brute Force</div>
+        <div class="naive-box">
+          <p>Check every substring <code>s[i:j+1]</code> to see if it is a palindrome.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestPalindrome(self, s):
+
+        def is_palindrome(left, right):
+            while left &lt; right:
+                if s[left] != s[right]:
+                    return False
+
+                left += 1
+                right -= 1
+
+            return True
+
+        longest = &quot;&quot;
+
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if is_palindrome(i, j):
+                    if j - i + 1 &gt; len(longest):
+                        longest = s[i:j + 1]
+
+        return longest</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n³)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Expand Around Center</div>
+        <div class="intuition-box">
+          <p>Expand outwards from each center index <code>i</code> (odd) and pair <code>(i, i+1)</code> (even) as long as characters match.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Helper <code>expand(left, right)</code> expands outward while <code>s[left] == s[right]</code>.</li>
+            <li>For each index <code>i</code>, compute odd palindrome bounds <code>expand(i, i)</code> and even palindrome bounds <code>expand(i, i+1)</code>.</li>
+            <li>Keep track of maximum length slice bounds <code>start, end</code> and return <code>s[start:end+1]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Expand Around Center (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestPalindrome(self, s):
+
+        start = 0
+        end = 0
+
+        def expand(left, right):
+            while (
+                left &gt;= 0
+                and right &lt; len(s)
+                and s[left] == s[right]
+            ):
+                left -= 1
+                right += 1
+
+            return left + 1, right - 1
+
+        for i in range(len(s)):
+            left1, right1 = expand(i, i)
+            left2, right2 = expand(i, i + 1)
+
+            if right1 - left1 &gt; end - start:
+                start, end = left1, right1
+
+            if right2 - left2 &gt; end - start:
+                start, end = left2, right2
+
+        return s[start:end + 1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n²)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Expand Around Center</strong> — Palindrome expansion technique beats standard O(n²) 2D DP in auxiliary space.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-647">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 647 • 3A. 1-D Dynamic Programming</span>
+          <h2>Palindromic Substrings</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/palindromic-substrings/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given a string <code>s</code>, return the number of palindromic substrings in it.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Every palindrome expands outward around a center. Single characters and pairs of characters serve as centers.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Brute Force</div>
+        <div class="naive-box">
+          <p>Check every substring to see if it is a palindrome.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def countSubstrings(self, s):
+
+        def is_palindrome(left, right):
+            while left &lt; right:
+                if s[left] != s[right]:
+                    return False
+
+                left += 1
+                right -= 1
+
+            return True
+
+        count = 0
+
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if is_palindrome(i, j):
+                    count += 1
+
+        return count</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n³)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Expand Around Center</div>
+        <div class="intuition-box">
+          <p>Expand outward from each index <code>i</code> (odd) and pair <code>(i, i+1)</code> (even), incrementing count for each matching expansion.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Helper <code>expand(left, right)</code> increments <code>count</code> while <code>s[left] == s[right]</code>.</li>
+            <li>For each index <code>i</code>, call <code>expand(i, i)</code> and <code>expand(i, i+1)</code>.</li>
+            <li>Return total <code>count</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def countSubstrings(self, s):
+
+        count = 0
+
+        def expand(left, right):
+            nonlocal count
+
+            while (
+                left &gt;= 0
+                and right &lt; len(s)
+                and s[left] == s[right]
+            ):
+                count += 1
+                left -= 1
+                right += 1
+
+        for i in range(len(s)):
+            expand(i, i)
+            expand(i, i + 1)
+
+        return count</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n²)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-91">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 91 • 3A. 1-D Dynamic Programming</span>
+          <h2>Decode Ways</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/decode-ways/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>A message containing letters A-Z is encoded using 1-26. Return total number of ways to decode string <code>s</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Try decoding one digit (if non-zero) or two digits (if between 10 and 26). 1 or 2 character state transitions.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Recursively try single digit and double digit decodings from index <code>i</code>.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def numDecodings(self, s):
+
+        def dfs(i):
+            if i == len(s):
+                return 1
+
+            if s[i] == &quot;0&quot;:
+                return 0
+
+            result = dfs(i + 1)
+
+            if (
+                i + 1 &lt; len(s)
+                and 10 &lt;= int(s[i:i + 2]) &lt;= 26
+            ):
+                result += dfs(i + 2)
+
+            return result
+
+        return dfs(0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p><code>dp[i]</code> stores number of ways to decode string of length <code>i</code>. Optimize space to <code>prev1</code> and <code>prev2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>If empty string or starts with <code>'0'</code>, return 0.</li>
+            <li>Maintain <code>prev2 = 1</code> and <code>prev1 = 1</code>.</li>
+            <li>For index <code>i</code> from 1 to <code>len(s)-1</code>: if <code>s[i] != '0'</code>, <code>current += prev1</code>. If <code>10 &lt;= int(s[i-1:i+1]) &lt;= 26</code>, <code>current += prev2</code>.</li>
+            <li>Shift <code>prev2 = prev1</code>, <code>prev1 = current</code>. Return <code>prev1</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def numDecodings(self, s):
+        n = len(s)
+
+        if not s or s[0] == &quot;0&quot;:
+            return 0
+
+        dp = [0] * (n + 1)
+        dp[0] = 1
+        dp[1] = 1
+
+        for i in range(2, n + 1):
+
+            if s[i - 1] != &quot;0&quot;:
+                dp[i] += dp[i - 1]
+
+            two_digit = int(s[i - 2:i])
+
+            if 10 &lt;= two_digit &lt;= 26:
+                dp[i] += dp[i - 2]
+
+        return dp[n]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(1) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def numDecodings(self, s):
+        if not s or s[0] == &quot;0&quot;:
+            return 0
+
+        prev2 = 1
+        prev1 = 1
+
+        for i in range(1, len(s)):
+            current = 0
+
+            if s[i] != &quot;0&quot;:
+                current += prev1
+
+            two = int(s[i - 1:i + 1])
+
+            if 10 &lt;= two &lt;= 26:
+                current += prev2
+
+            prev2 = prev1
+            prev1 = current
+
+        return prev1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1) (Space Optimized) / O(n) (DP Array)</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-322">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 322 • 3A. 1-D Dynamic Programming</span>
+          <h2>Coin Change</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/coin-change/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given coin denominations and <code>amount</code>, return fewest coins needed to make up amount. If impossible return -1.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Unbounded choice + minimum coins → 1-D DP array where <code>dp[i] = min(dp[i], 1 + dp[i - coin])</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try every coin denomination recursively at each remaining target amount.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def coinChange(self, coins, amount):
+
+        def dfs(remaining):
+            if remaining == 0:
+                return 0
+
+            if remaining &lt; 0:
+                return float(&quot;inf&quot;)
+
+            answer = float(&quot;inf&quot;)
+
+            for coin in coins:
+                answer = min(
+                    answer,
+                    1 + dfs(remaining - coin)
+                )
+
+            return answer
+
+        result = dfs(amount)
+
+        return -1 if result == float(&quot;inf&quot;) else result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^amount)</span>
+          <span class="c-badge c-space">Aux Space: O(amount)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Bottom-Up 1D DP</div>
+        <div class="intuition-box">
+          <p>Initialize <code>dp</code> array of size <code>amount + 1</code> with infinity (or <code>amount + 1</code>) and <code>dp[0] = 0</code>. Fill from 1 to <code>amount</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Create <code>dp = [amount + 1] * (amount + 1)</code>, set <code>dp[0] = 0</code>.</li>
+            <li>For <code>current</code> from 1 to <code>amount</code>: for each <code>coin</code> in <code>coins</code>: if <code>coin &lt;= current</code>, update <code>dp[current] = min(dp[current], dp[current - coin] + 1)</code>.</li>
+            <li>Return <code>dp[amount]</code> if <code>dp[amount] &lt;= amount</code> else -1.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Bottom-Up DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def coinChange(self, coins, amount):
+
+        dp = [amount + 1] * (amount + 1)
+        dp[0] = 0
+
+        for current in range(1, amount + 1):
+            for coin in coins:
+
+                if coin &lt;= current:
+                    dp[current] = min(
+                        dp[current],
+                        dp[current - coin] + 1
+                    )
+
+        return -1 if dp[amount] &gt; amount else dp[amount]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(amount × n)</span>
+          <span class="c-badge c-space">Space: O(amount)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Unbounded choice + minimum → 1-D DP.</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-152">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 152 • 3A. 1-D Dynamic Programming</span>
+          <h2>Maximum Product Subarray</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/maximum-product-subarray/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given an integer array <code>nums</code>, find contiguous non-empty subarray that has largest product.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Multiplying a negative number by the smallest negative product can turn it into the largest positive product. Thus, track BOTH max and min products.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Brute Force</div>
+        <div class="naive-box">
+          <p>Calculate product of every subarray using nested loops.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxProduct(self, nums):
+
+        answer = nums[0]
+
+        for i in range(len(nums)):
+            product = 1
+
+            for j in range(i, len(nums)):
+                product *= nums[j]
+                answer = max(answer, product)
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n²)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Track Max & Min</div>
+        <div class="intuition-box">
+          <p>Track <code>current_max</code> and <code>current_min</code>. When <code>num &lt; 0</code>, swap <code>current_max</code> and <code>current_min</code> before updating.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>current_max = nums[0]</code>, <code>current_min = nums[0]</code>, <code>answer = nums[0]</code>.</li>
+            <li>For <code>num</code> in <code>nums[1:]</code>: if <code>num &lt; 0</code>, swap <code>current_max, current_min</code>.</li>
+            <li>Update <code>current_max = max(num, current_max * num)</code> and <code>current_min = min(num, current_min * num)</code>.</li>
+            <li>Update <code>answer = max(answer, current_max)</code>. Return <code>answer</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxProduct(self, nums):
+
+        current_max = nums[0]
+        current_min = nums[0]
+        answer = nums[0]
+
+        for num in nums[1:]:
+
+            if num &lt; 0:
+                current_max, current_min = (
+                    current_min,
+                    current_max
+                )
+
+            current_max = max(
+                num,
+                current_max * num
+            )
+
+            current_min = min(
+                num,
+                current_min * num
+            )
+
+            answer = max(answer, current_max)
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>When the operation can flip states, track both max and min.</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-139">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 139 • 3A. 1-D Dynamic Programming</span>
+          <h2>Word Break</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/word-break/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given string <code>s</code> and dictionary <code>wordDict</code>, return true if <code>s</code> can be segmented into words from dictionary.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Prefix DP: <code>dp[i]</code> is True if prefix <code>s[:i]</code> can be segmented into dictionary words.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try every possible prefix of <code>s</code> recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def wordBreak(self, s, wordDict):
+
+        words = set(wordDict)
+
+        def dfs(start):
+            if start == len(s):
+                return True
+
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in words:
+                    if dfs(end):
+                        return True
+
+            return False
+
+        return dfs(0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: Exponential (O(2^n))</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Prefix DP</div>
+        <div class="intuition-box">
+          <p>Use boolean array <code>dp</code> of size <code>n+1</code> with <code>dp[0] = True</code>. For each index <code>i</code>, check if <code>dp[j] == True</code> and <code>s[j:i]</code> is in <code>words</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Convert <code>wordDict</code> to a set <code>words</code>.</li>
+            <li>Initialize <code>dp = [False] * (n + 1)</code> and <code>dp[0] = True</code>.</li>
+            <li>Loop <code>i</code> from 1 to <code>n</code>, and <code>j</code> from 0 to <code>i-1</code>. If <code>dp[j] and s[j:i] in words</code>, set <code>dp[i] = True</code> and break.</li>
+            <li>Return <code>dp[n]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def wordBreak(self, s, wordDict):
+
+        words = set(wordDict)
+        n = len(s)
+
+        dp = [False] * (n + 1)
+        dp[0] = True
+
+        for i in range(1, n + 1):
+            for j in range(i):
+
+                if dp[j] and s[j:i] in words:
+                    dp[i] = True
+                    break
+
+        return dp[n]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n² × L)</span>
+          <span class="c-badge c-space">Space: O(n)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">L is the cost of substring and hash table lookup.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-300">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 300 • 3A. 1-D Dynamic Programming</span>
+          <h2>Longest Increasing Subsequence</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given an integer array <code>nums</code>, return length of longest strictly increasing subsequence.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>At each element, we can take it (if larger than previous taken element) or skip it. Standard DP is O(n²), patience sort / binary search optimizes to O(n log n).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try taking or skipping every element recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def lengthOfLIS(self, nums):
+
+        def dfs(index, previous):
+            if index == len(nums):
+                return 0
+
+            skip = dfs(index + 1, previous)
+
+            take = 0
+
+            if previous == -1 or nums[index] &gt; nums[previous]:
+                take = 1 + dfs(index + 1, index)
+
+            return max(take, skip)
+
+        return dfs(0, -1)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — DP / Patience Sorting</div>
+        <div class="intuition-box">
+          <p>O(n²) DP: <code>dp[i]</code> represents length of LIS ending at index <code>i</code>. Binary Search: <code>tails</code> array tracks smallest tail of all increasing subsequences.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize empty list <code>tails</code>.</li>
+            <li>For each <code>num</code> in <code>nums</code>: binary search target index in <code>tails</code> using <code>bisect_left</code>.</li>
+            <li>If index equals <code>len(tails)</code>, append <code>num</code>. Else overwrite <code>tails[index] = num</code>.</li>
+            <li>Return <code>len(tails)</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>O(n²) DP Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def lengthOfLIS(self, nums):
+
+        n = len(nums)
+        dp = [1] * n
+
+        answer = 1
+
+        for i in range(n):
+            for j in range(i):
+
+                if nums[j] &lt; nums[i]:
+                    dp[i] = max(
+                        dp[i],
+                        dp[j] + 1
+                    )
+
+            answer = max(answer, dp[i])
+
+        return answer</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Further Optimized — Binary Search (O(n log n))</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>from bisect import bisect_left
+
+class Solution:
+    def lengthOfLIS(self, nums):
+
+        tails = []
+
+        for num in nums:
+            index = bisect_left(tails, num)
+
+            if index == len(tails):
+                tails.append(num)
+            else:
+                tails[index] = num
+
+        return len(tails)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n log n) (Binary Search) / O(n²) (Standard DP)</span>
+          <span class="c-badge c-space">Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>LIS → DP first, then recognize the patience-sorting/binary-search optimization.</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-416">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 416 • 3A. 1-D Dynamic Programming</span>
+          <h2>Partition Equal Subset Sum</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given integer array <code>nums</code>, return true if array can be partitioned into two subsets with equal sum.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>If <code>sum(nums)</code> is odd, partition is impossible. Target sum is <code>total // 2</code>. This is a classic 0/1 Knapsack problem.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try putting every number into either subset recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def canPartition(self, nums):
+
+        total = sum(nums)
+
+        if total % 2:
+            return False
+
+        target = total // 2
+
+        def dfs(index, remaining):
+            if remaining == 0:
+                return True
+
+            if index == len(nums) or remaining &lt; 0:
+                return False
+
+            return (
+                dfs(index + 1, remaining - nums[index])
+                or
+                dfs(index + 1, remaining)
+            )
+
+        return dfs(0, target)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — 0/1 Knapsack DP</div>
+        <div class="intuition-box">
+          <p>Boolean array <code>dp[c]</code> stores whether target sum <code>c</code> is reachable. Loop backwards to use each number at most once!</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Compute <code>total = sum(nums)</code>. If <code>total % 2</code>, return False. <code>target = total // 2</code>.</li>
+            <li>Initialize <code>dp = [False] * (target + 1)</code> with <code>dp[0] = True</code>.</li>
+            <li>For <code>num</code> in <code>nums</code>: loop <code>current</code> backward from <code>target</code> down to <code>num</code>: <code>dp[current] = dp[current] or dp[current - num]</code>.</li>
+            <li>Return <code>dp[target]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized 0/1 Knapsack DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def canPartition(self, nums):
+
+        total = sum(nums)
+
+        if total % 2:
+            return False
+
+        target = total // 2
+
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+        for num in nums:
+            for current in range(target, num - 1, -1):
+                dp[current] = (
+                    dp[current]
+                    or
+                    dp[current - num]
+                )
+
+        return dp[target]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n × target)</span>
+          <span class="c-badge c-space">Space: O(target)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>0/1 Knapsack Backward Loop</strong> — Loop backward (<code>range(target, num - 1, -1)</code>) so each number is used only once.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-62">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 62 • 3B. 2-D Dynamic Programming</span>
+          <h2>Unique Paths</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/unique-paths/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Robot at <code>(0,0)</code> in <code>m x n</code> grid wants to move to <code>(m-1, n-1)</code>. Can only move down or right. Return total unique paths.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>To reach cell <code>(r, c)</code>, you can arrive from top <code>(r-1, c)</code> or left <code>(r, c-1)</code>. Thus <code>dp[r][c] = dp[r-1][c] + dp[r][c-1]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>At every cell, recursively branch right and down until reaching bottom-right corner.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def uniquePaths(self, m, n):
+
+        def dfs(r, c):
+            if r == m - 1 and c == n - 1:
+                return 1
+
+            if r &gt;= m or c &gt;= n:
+                return 0
+
+            return (
+                dfs(r + 1, c)
+                +
+                dfs(r, c + 1)
+            )
+
+        return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^(m+n))</span>
+          <span class="c-badge c-space">Aux Space: O(m+n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Grid DP</div>
+        <div class="intuition-box">
+          <p>Fill 2D grid bottom-up or optimize space to 1D row array of size <code>n</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>dp = [1] * n</code>.</li>
+            <li>Loop <code>m-1</code> times: for <code>c</code> from 1 to <code>n-1</code>, <code>dp[c] += dp[c-1]</code>.</li>
+            <li>Return <code>dp[-1]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized 2D Grid DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def uniquePaths(self, m, n):
+
+        dp = [[0] * n for _ in range(m)]
+
+        for r in range(m):
+            dp[r][0] = 1
+
+        for c in range(n):
+            dp[0][c] = 1
+
+        for r in range(1, m):
+            for c in range(1, n):
+                dp[r][c] = (
+                    dp[r - 1][c]
+                    +
+                    dp[r][c - 1]
+                )
+
+        return dp[m - 1][n - 1]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(n) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def uniquePaths(self, m, n):
+
+        dp = [1] * n
+
+        for _ in range(1, m):
+            for c in range(1, n):
+                dp[c] += dp[c - 1]
+
+        return dp[-1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(n) (Space Optimized) / O(mn) (2D Grid)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Grid DP</strong> — Each cell transitions from top and left adjacent neighbors.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-1143">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 1143 • 3B. 2-D Dynamic Programming</span>
+          <h2>Longest Common Subsequence</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/longest-common-subsequence/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given two strings <code>text1</code> and <code>text2</code>, return length of their longest common subsequence.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>At each pair of characters: if equal → take both (<code>1 + dfs(i+1, j+1)</code>). Otherwise → skip one side (<code>max(dfs(i+1, j), dfs(i, j+1))</code>).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Recursively match characters or branch by skipping one side.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestCommonSubsequence(self, text1, text2):
+
+        def dfs(i, j):
+            if i == len(text1) or j == len(text2):
+                return 0
+
+            if text1[i] == text2[j]:
+                return 1 + dfs(i + 1, j + 1)
+
+            return max(
+                dfs(i + 1, j),
+                dfs(i, j + 1)
+            )
+
+        return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^(m+n))</span>
+          <span class="c-badge c-space">Aux Space: O(m+n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Two-String DP</div>
+        <div class="intuition-box">
+          <p>2D DP matrix <code>dp[i][j]</code> where <code>i</code> and <code>j</code> index <code>text1</code> and <code>text2</code>. Space can be optimized to 1D row array.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Create <code>dp</code> grid of size <code>(m+1) x (n+1)</code>.</li>
+            <li>Loop <code>i</code> from 1 to <code>m</code> and <code>j</code> from 1 to <code>n</code>.</li>
+            <li>If <code>text1[i-1] == text2[j-1]</code>: <code>dp[i][j] = dp[i-1][j-1] + 1</code>. Else <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code>.</li>
+            <li>Return <code>dp[m][n]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized 2D DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestCommonSubsequence(self, text1, text2):
+
+        m = len(text1)
+        n = len(text2)
+
+        dp = [
+            [0] * (n + 1)
+            for _ in range(m + 1)
+        ]
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                if text1[i - 1] == text2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+
+                else:
+                    dp[i][j] = max(
+                        dp[i - 1][j],
+                        dp[i][j - 1]
+                    )
+
+        return dp[m][n]</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Space Optimized (O(min(m, n)) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestCommonSubsequence(self, text1, text2):
+
+        if len(text2) &gt; len(text1):
+            text1, text2 = text2, text1
+
+        previous = [0] * (len(text2) + 1)
+
+        for i in range(1, len(text1) + 1):
+            current = [0] * (len(text2) + 1)
+
+            for j in range(1, len(text2) + 1):
+
+                if text1[i - 1] == text2[j - 1]:
+                    current[j] = previous[j - 1] + 1
+                else:
+                    current[j] = max(
+                        previous[j],
+                        current[j - 1]
+                    )
+
+            previous = current
+
+        return previous[-1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(min(m,n)) (Space Optimized) / O(mn) (2D DP Matrix)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Two-String DP</strong> — Compare prefix <code>i</code> of string A and prefix <code>j</code> of string B.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-309">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 309 • 3B. 2-D Dynamic Programming</span>
+          <h2>Best Time to Buy & Sell Stock with Cooldown</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Find max profit trading stock. After selling a stock, you cannot buy stock on the next day (cooldown 1 day).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>States: BUY (can buy or skip), SELL (can sell -> forces day i+2 cooldown), COOLDOWN.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Branch recursively between buy, sell, and cooldown choices.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxProfit(self, prices):
+
+        def dfs(i, buying):
+            if i &gt;= len(prices):
+                return 0
+
+            if buying:
+                buy = -prices[i] + dfs(i + 1, False)
+                skip = dfs(i + 1, True)
+
+                return max(buy, skip)
+
+            sell = prices[i] + dfs(i + 2, True)
+            hold = dfs(i + 1, False)
+
+            return max(sell, hold)
+
+        return dfs(0, True)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — State Machine DP</div>
+        <div class="intuition-box">
+          <p>Track 3 state variables across days: <code>hold</code>, <code>sold</code>, and <code>cooldown</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>hold = -prices[0]</code>, <code>sold = 0</code>, <code>cooldown = 0</code>.</li>
+            <li>For <code>price</code> in <code>prices[1:]</code>: update state variables according to transitions.</li>
+            <li>Return <code>max(sold, cooldown)</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Memoization Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxProfit(self, prices):
+
+        memo = {}
+
+        def dfs(i, buying):
+            if i &gt;= len(prices):
+                return 0
+
+            key = (i, buying)
+
+            if key in memo:
+                return memo[key]
+
+            if buying:
+                buy = -prices[i] + dfs(i + 1, False)
+                skip = dfs(i + 1, True)
+
+                memo[key] = max(buy, skip)
+
+            else:
+                sell = prices[i] + dfs(i + 2, True)
+                hold = dfs(i + 1, False)
+
+                memo[key] = max(sell, hold)
+
+            return memo[key]
+
+        return dfs(0, True)</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>State Machine Compression (O(1) Space)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def maxProfit(self, prices):
+
+        hold = -prices[0]
+        sold = 0
+        cooldown = 0
+
+        for price in prices[1:]:
+            previous_hold = hold
+            previous_sold = sold
+
+            hold = max(
+                hold,
+                cooldown - price
+            )
+
+            sold = previous_hold + price
+
+            cooldown = max(
+                cooldown,
+                previous_sold
+            )
+
+        return max(sold, cooldown)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Space: O(1) (State Machine) / O(n) (Memoization)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>State Machine DP</strong> — Model transitions between BUY, SELL, and COOLDOWN explicitly.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-518">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 518 • 3B. 2-D Dynamic Programming</span>
+          <h2>Coin Change II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/coin-change-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Count the number of combinations to make an amount using given coin denominations (unlimited supply).</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Unbounded Knapsack combinations! Outer loop must iterate coins first to avoid counting permutations twice (e.g. 1+2 vs 2+1).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try taking or skipping each coin recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def change(self, amount, coins):
+
+        def dfs(index, remaining):
+            if remaining == 0:
+                return 1
+
+            if index == len(coins) or remaining &lt; 0:
+                return 0
+
+            # Use current coin
+            use = dfs(
+                index,
+                remaining - coins[index]
+            )
+
+            # Skip current coin
+            skip = dfs(
+                index + 1,
+                remaining
+            )
+
+            return use + skip
+
+        return dfs(0, amount)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: Exponential</span>
+          <span class="c-badge c-space">Aux Space: O(amount + n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — 1D DP Combinations</div>
+        <div class="intuition-box">
+          <p><code>dp[c] += dp[c - coin]</code>. Outer loop iterating coins ensures ordering is fixed and combinations are counted.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>dp = [0] * (amount + 1)</code> and <code>dp[0] = 1</code>.</li>
+            <li>For <code>coin</code> in <code>coins</code>: for <code>current</code> from <code>coin</code> to <code>amount</code>: <code>dp[current] += dp[current - coin]</code>.</li>
+            <li>Return <code>dp[amount]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def change(self, amount, coins):
+
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+
+        for coin in coins:
+            for current in range(
+                coin,
+                amount + 1
+            ):
+                dp[current] += dp[current - coin]
+
+        return dp[amount]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(amount × n)</span>
+          <span class="c-badge c-space">Space: O(amount)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Unbounded Knapsack Combinations</strong> — Outer loop over <code>coins</code>, inner loop increasing order over <code>amount</code>.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-494">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 494 • 3B. 2-D Dynamic Programming</span>
+          <h2>Target Sum</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/target-sum/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Assign <code>+</code> or <code>-</code> to every number in <code>nums</code> to reach <code>target</code>. Return total ways.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Can be converted to a subset sum problem: <code>P - N = target</code> and <code>P + N = total</code> &rArr; <code>P = (total + target) // 2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Try adding and subtracting each number recursively.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def findTargetSumWays(self, nums, target):
+
+        def dfs(index, total):
+            if index == len(nums):
+                return total == target
+
+            return (
+                dfs(index + 1, total + nums[index])
+                +
+                dfs(index + 1, total - nums[index])
+            )
+
+        return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — Subset Sum Reduction</div>
+        <div class="intuition-box">
+          <p>Reduce problem to finding subset sum equal to <code>(total + target) // 2</code> using 0/1 Knapsack 1D DP.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Compute <code>total = sum(nums)</code>. If <code>abs(target) &gt; total</code> or <code>(total + target) % 2</code>, return 0.</li>
+            <li><code>subset = (total + target) // 2</code>.</li>
+            <li>Initialize <code>dp = [0] * (subset + 1)</code> with <code>dp[0] = 1</code>.</li>
+            <li>For <code>num</code> in <code>nums</code>: loop <code>current</code> backward from <code>subset</code> down to <code>num</code>: <code>dp[current] += dp[current - num]</code>. Return <code>dp[subset]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Memoization Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def findTargetSumWays(self, nums, target):
+
+        memo = {}
+
+        def dfs(index, total):
+            if index == len(nums):
+                return 1 if total == target else 0
+
+            key = (index, total)
+
+            if key in memo:
+                return memo[key]
+
+            memo[key] = (
+                dfs(index + 1, total + nums[index])
+                +
+                dfs(index + 1, total - nums[index])
+            )
+
+            return memo[key]
+
+        return dfs(0, 0)</code></pre>
+        </div>
+        <div class="code-container" style="margin-top: 12px;">
+          <div class="code-header">
+            <span>Further Optimized — Subset Sum (0/1 Knapsack)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def findTargetSumWays(self, nums, target):
+
+        total = sum(nums)
+
+        if abs(target) &gt; total:
+            return 0
+
+        if (total + target) % 2:
+            return 0
+
+        subset = (total + target) // 2
+
+        dp = [0] * (subset + 1)
+        dp[0] = 1
+
+        for num in nums:
+            for current in range(
+                subset,
+                num - 1,
+                -1
+            ):
+                dp[current] += dp[current - num]
+
+        return dp[subset]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n × subset)</span>
+          <span class="c-badge c-space">Space: O(subset)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Subset Sum Reduction</strong> — Transform +/- Target Sum into 0/1 Knapsack subset counting.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-97">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 97 • 3B. 2-D Dynamic Programming</span>
+          <h2>Interleaving String</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/interleaving-string/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Determine whether <code>s3</code> can be formed by interleaving <code>s1</code> and <code>s2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>If <code>len(s1) + len(s2) != len(s3)</code> return False. <code>dp[i][j]</code> tracks whether <code>s1[:i]</code> and <code>s2[:j]</code> interleave to form <code>s3[:i+j]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>Branch recursively whenever current char of <code>s1</code> or <code>s2</code> matches <code>s3</code>.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def isInterleave(self, s1, s2, s3):
+
+        if len(s1) + len(s2) != len(s3):
+            return False
+
+        def dfs(i, j):
+            k = i + j
+
+            if k == len(s3):
+                return True
+
+            if i &lt; len(s1) and s1[i] == s3[k]:
+                if dfs(i + 1, j):
+                    return True
+
+            if j &lt; len(s2) and s2[j] == s3[k]:
+                if dfs(i, j + 1):
+                    return True
+
+            return False
+
+        return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^(m+n))</span>
+          <span class="c-badge c-space">Aux Space: O(m+n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — 2D Grid DP</div>
+        <div class="intuition-box">
+          <p>2D boolean table <code>dp[i][j]</code> where <code>dp[i][j] = (dp[i-1][j] and s1[i-1] == s3[k]) or (dp[i][j-1] and s2[j-1] == s3[k])</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Check length validity: <code>if len(s1) + len(s2) != len(s3)</code> return False.</li>
+            <li>Create grid <code>dp</code> of size <code>(m+1) x (n+1)</code> with <code>dp[0][0] = True</code>.</li>
+            <li>Fill table row by row from 0 to <code>m</code> and column from 0 to <code>n</code>.</li>
+            <li>Return <code>dp[m][n]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized 2D DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def isInterleave(self, s1, s2, s3):
+
+        if len(s1) + len(s2) != len(s3):
+            return False
+
+        m = len(s1)
+        n = len(s2)
+
+        dp = [
+            [False] * (n + 1)
+            for _ in range(m + 1)
+        ]
+
+        dp[0][0] = True
+
+        for i in range(m + 1):
+            for j in range(n + 1):
+
+                if i == 0 and j == 0:
+                    continue
+
+                k = i + j - 1
+
+                if i &gt; 0 and dp[i - 1][j]:
+                    if s1[i - 1] == s3[k]:
+                        dp[i][j] = True
+
+                if j &gt; 0 and dp[i][j - 1]:
+                    if s2[j - 1] == s3[k]:
+                        dp[i][j] = True
+
+        return dp[m][n]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(mn)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Two-String Grid DP</strong> — Path matching in a 2D matrix representing positions in <code>s1</code> and <code>s2</code>.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-329">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 329 • 3B. 2-D Dynamic Programming</span>
+          <h2>Longest Increasing Path in a Matrix</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given an <code>m x n</code> integers matrix, return the length of the longest increasing path in matrix.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Since paths must be strictly increasing, there are no cycles (DAG). DFS + Memoization is natural DP on DAG.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>DFS from every cell without memoization.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestIncreasingPath(self, matrix):
+
+        rows = len(matrix)
+        cols = len(matrix[0])
+
+        def dfs(r, c):
+            best = 1
+
+            for dr, dc in [
+                (1, 0), (-1, 0),
+                (0, 1), (0, -1)
+            ]:
+                nr, nc = r + dr, c + dc
+
+                if (
+                    0 &lt;= nr &lt; rows
+                    and 0 &lt;= nc &lt; cols
+                    and matrix[nr][nc] &gt; matrix[r][c]
+                ):
+                    best = max(
+                        best,
+                        1 + dfs(nr, nc)
+                    )
+
+            return best
+
+        answer = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                answer = max(
+                    answer,
+                    dfs(r, c)
+                )
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: Exponential</span>
+          <span class="c-badge c-space">Aux Space: O(RC)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — DFS + Memoization</div>
+        <div class="intuition-box">
+          <p>Memoize <code>memo[r][c]</code> storing longest increasing path starting at cell <code>(r, c)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>memo</code> grid with 0s.</li>
+            <li>In <code>dfs(r, c)</code>: if <code>memo[r][c]</code> already computed, return it.</li>
+            <li>Explore 4 orthogonal directions where <code>matrix[nr][nc] &gt; matrix[r][c]</code>, update <code>best = max(best, 1 + dfs(nr, nc))</code>.</li>
+            <li>Store <code>memo[r][c] = best</code> and return. Max over all cells is the result.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>DFS + Memoization (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def longestIncreasingPath(self, matrix):
+
+        rows = len(matrix)
+        cols = len(matrix[0])
+
+        memo = [[0] * cols for _ in range(rows)]
+
+        def dfs(r, c):
+            if memo[r][c]:
+                return memo[r][c]
+
+            best = 1
+
+            for dr, dc in [
+                (1, 0), (-1, 0),
+                (0, 1), (0, -1)
+            ]:
+                nr, nc = r + dr, c + dc
+
+                if (
+                    0 &lt;= nr &lt; rows
+                    and 0 &lt;= nc &lt; cols
+                    and matrix[nr][nc] &gt; matrix[r][c]
+                ):
+                    best = max(
+                        best,
+                        1 + dfs(nr, nc)
+                    )
+
+            memo[r][c] = best
+            return best
+
+        answer = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                answer = max(
+                    answer,
+                    dfs(r, c)
+                )
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R × C)</span>
+          <span class="c-badge c-space">Space: O(R × C)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>DFS + memoization = DP on a graph/DAG.</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-115">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 115 • 3B. 2-D Dynamic Programming</span>
+          <h2>Distinct Subsequences</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/distinct-subsequences/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Count how many times <code>t</code> occurs as a subsequence of <code>s</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>At matching character <code>s[i-1] == t[j-1]</code>, we can use it (<code>dp[i-1][j-1]</code>) or skip it (<code>dp[i-1][j]</code>). Sum both choices!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Recursion</div>
+        <div class="naive-box">
+          <p>At every matching character, recursively try using it or skipping it.</p>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Solution (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def numDistinct(self, s, t):
+
+        def dfs(i, j):
+            if j == len(t):
+                return 1
+
+            if i == len(s):
+                return 0
+
+            if s[i] == t[j]:
+                return (
+                    dfs(i + 1, j + 1)
+                    +
+                    dfs(i + 1, j)
+                )
+
+            return dfs(i + 1, j)
+
+        return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — 2D Counting DP</div>
+        <div class="intuition-box">
+          <p>2D DP table <code>dp[i][j]</code> storing ways to form <code>t[:j]</code> using prefix <code>s[:i]</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class="step-list">
+            <li>Initialize <code>dp = [[0] * (n + 1) for _ in range(m + 1)]</code>.</li>
+            <li>Base case: <code>dp[i][0] = 1</code> for all <code>i</code> (empty string <code>t</code> is always 1 subsequence).</li>
+            <li>For <code>i</code> from 1 to <code>m</code> and <code>j</code> from 1 to <code>n</code>: <code>dp[i][j] = dp[i-1][j]</code>. If <code>s[i-1] == t[j-1]</code>, <code>dp[i][j] += dp[i-1][j-1]</code>.</li>
+            <li>Return <code>dp[m][n]</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized 2D DP (Python 3)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>class Solution:
+    def numDistinct(self, s, t):
+
+        m = len(s)
+        n = len(t)
+
+        dp = [
+            [0] * (n + 1)
+            for _ in range(m + 1)
+        ]
+
+        for i in range(m + 1):
+            dp[i][0] = 1
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                dp[i][j] = dp[i - 1][j]
+
+                if s[i - 1] == t[j - 1]:
+                    dp[i][j] += dp[i - 1][j - 1]
+
+        return dp[m][n]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(mn)</span>
+          <span class="c-badge c-space">Space: O(mn)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern / Key Takeaway -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bookmark"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box">
+          <p><strong>Two-String Counting DP</strong> — Sum choice paths when characters match.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-72">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 72 • 3B. 2-D Dynamic Programming</span>
+          <h2>Edit Distance</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/edit-distance/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given strings <code>word1</code> and <code>word2</code>, return minimum operations (insert, delete, replace) to convert <code>word1</code> to <code>word2</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Standard Levenshtein distance 2D DP. 3 operations: Insert (<code>dp[i][j+1]</code>), Delete (<code>dp[i+1][j]</code>), Replace (<code>dp[i+1][j+1]</code>).</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Recursive evaluation trying all 3 operations.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(3^(M+N))</span>
+          <span class="c-badge c-space">Space: O(M+N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Branching factor 3 without memoization.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>2D bottom-up grid DP of size <code>(M+1) x (N+1)</code> initialized with base cases on borders.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Grid <code>dp = [[inf]*(N+1) for _ in range(M+1)]</code>. Base cases: bottom row and rightmost col filled with remaining lengths.</li><li>Loop <code>i</code> from <code>M-1</code> down to 0; <code>j</code> from <code>N-1</code> down to 0.</li><li>If <code>word1[i] == word2[j]</code>: <code>dp[i][j] = dp[i+1][j+1]</code>. Else <code>dp[i][j] = 1 + min(dp[i+1][j], dp[i][j+1], dp[i+1][j+1])</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def minDistance(word1: str, word2: str) -&gt; int:
+    dp = [[float(&quot;inf&quot;)] * (len(word2) + 1) for _ in range(len(word1) + 1)]
+
+    for j in range(len(word2) + 1):
+        dp[len(word1)][j] = len(word2) - j
+    for i in range(len(word1) + 1):
+        dp[i][len(word2)] = len(word1) - i
+
+    for i in range(len(word1) - 1, -1, -1):
+        for j in range(len(word2) - 1, -1, -1):
+            if word1[i] == word2[j]:
+                dp[i][j] = dp[i + 1][j + 1]
+            else:
+                dp[i][j] = 1 + min(dp[i + 1][j],      # Insert
+                                   dp[i][j + 1],      # Delete
+                                   dp[i + 1][j + 1])  # Replace
+    return dp[0][0]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(M * N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Classic Levenshtein Edit Distance grid DP.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-312">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 312 • 3B. 2-D Dynamic Programming</span>
+          <h2>Burst Balloons</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/burst-balloons/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Burst balloon <code>i</code> to gain <code>nums[i-1] * nums[i] * nums[i+1]</code> coins. Return max total coins.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p>Reverse thinking: instead of picking which balloon to burst FIRST, pick which balloon <code>k</code> to burst LAST in range <code>(l, r)</code>!</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Try popping every balloon first, producing permutations of arrays.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N!)</span>
+          <span class="c-badge c-space">Space: O(N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">N! balloon popping orders.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Range DP over interval <code>(l, r)</code> with memoization.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Pad array with 1 at start and end: <code>nums = [1] + nums + [1]</code>.</li><li>Memo <code>dp = {}</code>.</li><li>In <code>dfs(l, r)</code>: if <code>l > r</code> return 0.</li><li>For <code>i</code> from <code>l</code> to <code>r</code>: coins gained when bursting <code>i</code> LAST is <code>nums[l-1] * nums[i] * nums[r+1] + dfs(l, i-1) + dfs(i+1, r)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def maxCoins(nums: list[int]) -&gt; int:
+    nums = [1] + nums + [1]
+    dp = {}
+
+    def dfs(l, r):
+        if l &gt; r:
+            return 0
+        if (l, r) in dp:
+            return dp[(l, r)]
+
+        dp[(l, r)] = 0
+        for i in range(l, r + 1):
+            coins = nums[l - 1] * nums[i] * nums[r + 1]
+            coins += dfs(l, i - 1) + dfs(i + 1, r)
+            dp[(l, r)] = max(dp[(l, r)], coins)
+            
+        return dp[(l, r)]
+
+    return dfs(1, len(nums) - 2)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N^3)</span>
+          <span class="c-badge c-space">Space: O(N^2)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Interval DP evaluates N^2 sub-ranges, each taking O(N) loop.</p>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-10">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 10 • 3B. 2-D Dynamic Programming</span>
+          <h2>Regular Expression Matching</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/regular-expression-matching/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box">
+          <p>Given input string <code>s</code> and pattern <code>p</code>, implement regex matching with <code>'.'</code> and <code>'*'</code>.</p>
+        </div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding & Key Observations</div>
+        <div class="desc-box">
+          <p><code>'.'</code> matches any single char. <code>'*'</code> matches zero or more of preceding element. State <code>(i, j)</code> indexes <code>s</code> and <code>p</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution — Basic Approach</div>
+        <div class="naive-box">
+          <p>Recursive branch testing zero or multiple star repetitions.</p>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time & Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(2^(M+N))</span>
+          <span class="c-badge c-space">Space: O(M+N)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">Re-evaluates pattern branches.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box">
+          <p>Memoized DFS over state <code>(i, j)</code>.</p>
+        </div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box">
+          <ol class='step-list'><li>Memo <code>cache = {}</code>.</li><li>DFS <code>dfs(i, j)</code>: if <code>i &gt;= len(s) and j &gt;= len(p)</code> return True. If <code>j &gt;= len(p)</code> return False.</li><li>Check char match <code>match = i &lt; len(s) and (s[i] == p[j] or p[j] == '.')</code>.</li><li>If <code>j + 1 &lt; len(p) and p[j+1] == '*'</code>: choice 1 (skip star <code>dfs(i, j+2)</code>) or choice 2 (use star if match <code>match and dfs(i+1, j)</code>).</li><li>Else: return <code>match and dfs(i+1, j+1)</code>.</li></ol>
+        </div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python 3 Implementation</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)"><i class="ti ti-copy"></i> Copy</button>
+          </div>
+          <pre><code>def isMatch(s: str, p: str) -&gt; bool:
+    cache = {}
+
+    def dfs(i, j):
+        if (i, j) in cache:
+            return cache[(i, j)]
+        if i &gt;= len(s) and j &gt;= len(p):
+            return True
+        if j &gt;= len(p):
+            return False
+
+        match = i &lt; len(s) and (s[i] == p[j] or p[j] == &quot;.&quot;)
+        
+        if (j + 1) &lt; len(p) and p[j + 1] == &quot;*&quot;:
+            # Don&#x27;t use &#x27;*&#x27; OR use &#x27;*&#x27; if match
+            cache[(i, j)] = (dfs(i, j + 2) or 
+                            (match and dfs(i + 1, j)))
+            return cache[(i, j)]
+            
+        if match:
+            cache[(i, j)] = dfs(i + 1, j + 1)
+            return cache[(i, j)]
+
+        cache[(i, j)] = False
+        return False
+
+    return dfs(0, 0)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(M * N)</span>
+          <span class="c-badge c-space">Space: O(M * N)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">Memoized DP handles star and dot wildcard matching.</p>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

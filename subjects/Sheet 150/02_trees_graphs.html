@@ -1,0 +1,4797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trees & Graphs — Sheet 150 Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #38bdf8;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --cyan: #22d3ee;
+      --radius: 12px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 310px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .module-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .module-title-side {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .sidebar-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .sidebar-search input:focus { border-color: var(--accent); }
+    .sidebar-search i {
+      position: absolute;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+    }
+    .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: all .15s;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .diff-badge {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+    .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+    .diff-hard { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 48px 120px;
+    }
+
+    .topic-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .topic-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .topic-header p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* Problem Card */
+    .problem-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      scroll-margin-top: 20px;
+    }
+    .problem-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-title-area { display: flex; flex-direction: column; gap: 4px; }
+    .problem-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .problem-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .problem-meta { display: flex; align-items: center; gap: 10px; }
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+    .sec-block { margin-bottom: 24px; }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .sec-title i { color: var(--accent); font-size: 16px; }
+
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+    .intuition-box {
+      background: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+    .naive-box {
+      background: rgba(245, 158, 11, 0.04);
+      border-color: rgba(245, 158, 11, 0.2);
+      border-left: 3px solid var(--amber);
+    }
+    .approach-box {
+      background: rgba(52, 211, 153, 0.04);
+      border-color: rgba(52, 211, 153, 0.2);
+      border-left: 3px solid var(--green);
+    }
+
+    ol.step-list, ul.bullet-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    ol.step-list li, ul.bullet-list li {
+      margin-bottom: 6px;
+      color: var(--text2);
+    }
+    ol.step-list li strong, ul.bullet-list li strong { color: var(--text); }
+
+    .complexity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .c-time {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .c-space {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+    }
+    .c-naive {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .code-container {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #06080e;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg3);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s;
+    }
+    .copy-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--text3); }
+    .code-container pre {
+      padding: 16px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #bbf7e6;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 800px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main-content { padding: 24px 16px 60px; }
+      .problem-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+        <span class="module-badge">MODULE 02</span>
+        <div class="module-title-side">Trees & Graphs</div>
+      </div>
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="filterInput" placeholder="Filter problems...">
+      </div>
+      <div class="nav-list" id="navList">
+        
+        <a href="#lc-226" class="nav-item">
+          <span>LC 226. Invert Binary Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-104" class="nav-item">
+          <span>LC 104. Maximum Depth of Binary Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-543" class="nav-item">
+          <span>LC 543. Diameter of Binary Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-110" class="nav-item">
+          <span>LC 110. Balanced Binary Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-100" class="nav-item">
+          <span>LC 100. Same Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-572" class="nav-item">
+          <span>LC 572. Subtree of Another Tree</span>
+          <span class="diff-badge diff-easy">Easy</span>
+        </a>
+        
+        <a href="#lc-235" class="nav-item">
+          <span>LC 235. Lowest Common Ancestor of a BST</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-102" class="nav-item">
+          <span>LC 102. Binary Tree Level Order Traversal</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-199" class="nav-item">
+          <span>LC 199. Binary Tree Right Side View</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-1448" class="nav-item">
+          <span>LC 1448. Count Good Nodes in Binary Tree</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-98" class="nav-item">
+          <span>LC 98. Validate Binary Search Tree</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-230" class="nav-item">
+          <span>LC 230. Kth Smallest Element in a BST</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-105" class="nav-item">
+          <span>LC 105. Construct Binary Tree from Preorder & Inorder</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-124" class="nav-item">
+          <span>LC 124. Binary Tree Maximum Path Sum</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-297" class="nav-item">
+          <span>LC 297. Serialize and Deserialize Binary Tree</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-200" class="nav-item">
+          <span>LC 200. Number of Islands</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-133" class="nav-item">
+          <span>LC 133. Clone Graph</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-695" class="nav-item">
+          <span>LC 695. Max Area of Island</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-417" class="nav-item">
+          <span>LC 417. Pacific Atlantic Water Flow</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-130" class="nav-item">
+          <span>LC 130. Surrounded Regions</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-994" class="nav-item">
+          <span>LC 994. Rotting Oranges</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-286" class="nav-item">
+          <span>LC 286. Walls and Gates</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-207" class="nav-item">
+          <span>LC 207. Course Schedule</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-210" class="nav-item">
+          <span>LC 210. Course Schedule II</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-261" class="nav-item">
+          <span>LC 261. Graph Valid Tree</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-323" class="nav-item">
+          <span>LC 323. Number of Connected Components</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-684" class="nav-item">
+          <span>LC 684. Redundant Connection</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-127" class="nav-item">
+          <span>LC 127. Word Ladder</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-332" class="nav-item">
+          <span>LC 332. Reconstruct Itinerary</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-1584" class="nav-item">
+          <span>LC 1584. Min Cost to Connect All Points</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-743" class="nav-item">
+          <span>LC 743. Network Delay Time</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+        <a href="#lc-778" class="nav-item">
+          <span>LC 778. Swim in Rising Water</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-269" class="nav-item">
+          <span>LC 269. Alien Dictionary</span>
+          <span class="diff-badge diff-hard">Hard</span>
+        </a>
+        
+        <a href="#lc-787" class="nav-item">
+          <span>LC 787. Cheapest Flights Within K Stops</span>
+          <span class="diff-badge diff-medium">Medium</span>
+        </a>
+        
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topic-header">
+        <div class="topic-eyebrow">MODULE 02 • 34 PROBLEMS</div>
+        <h1>Trees & Graphs</h1>
+        <p>Comprehensive step-by-step analysis, decision trees, naive approaches, optimal algorithms, and complexities.</p>
+      </div>
+
+      
+    <div class="problem-card" id="lc-226">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 226 &bull; 2A. Binary Trees</span>
+          <h2>Invert Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/invert-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given the root of a binary tree, invert the tree, and return its root (swap left and right subtrees recursively).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Inverting a tree means swapping every left child with its corresponding right child at every node in the tree.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; Recursive Swap</div>
+        <div class="naive-box"><p>Recursively swap the left and right children.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def invertTree(self, root):
+        if not root:
+            return None
+
+        left = self.invertTree(root.left)
+        right = self.invertTree(root.right)
+
+        root.left = right
+        root.right = left
+
+        return root</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+          <span class="c-badge c-space">Output Space: O(n) for tree</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">h = tree height call stack recursion.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Iterative BFS avoids recursion depth issues on deep skewed trees.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If root is None return None.</li><li>Push root into BFS queue.</li><li>While queue: pop node, swap <code>node.left, node.right = node.right, node.left</code>.</li><li>Push left and right children into queue if they exist.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def invertTree(self, root):
+        if not root:
+            return None
+
+        queue = deque([root])
+
+        while queue:
+            node = queue.popleft()
+
+            node.left, node.right = node.right, node.left
+
+            if node.left:
+                queue.append(node.left)
+
+            if node.right:
+                queue.append(node.right)
+
+        return root</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(w)</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text2); margin-top: 10px; line-height: 1.6;">w = maximum width of the tree queue.</p>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-104">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 104 &bull; 2A. Binary Trees</span>
+          <h2>Maximum Depth of Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given the root of a binary tree, return its maximum depth (number of nodes along longest path from root to furthest leaf).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Max depth at root = 1 + max(depth(root.left), depth(root.right)). Base case for empty node is depth 0.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution &mdash; DFS</div>
+        <div class="naive-box"><p>Recursive postorder traversal returning height at each node.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def maxDepth(self, root):
+        if not root:
+            return 0
+
+        return 1 + max(
+            self.maxDepth(root.left),
+            self.maxDepth(root.right)
+        )</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Level-order traversal (BFS) processes nodes level-by-level using a queue, incrementing depth counter after each level.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If not root return 0.</li><li>Initialize queue with root and depth = 0.</li><li>For each level (loop size of queue): pop node and push non-null children.</li><li>Increment depth after processing level.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def maxDepth(self, root):
+        if not root:
+            return 0
+
+        queue = deque([root])
+        depth = 0
+
+        while queue:
+            for _ in range(len(queue)):
+                node = queue.popleft()
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+
+            depth += 1
+
+        return depth</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(w)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p>Both are optimal in time. Choose DFS when recursion is comfortable; BFS naturally gives the number of levels.</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-543">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 543 &bull; 2A. Binary Trees</span>
+          <h2>Diameter of Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/diameter-of-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given the root of a binary tree, return the length of the diameter of the tree (longest path between any two nodes).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>The longest path passing through node u is <code>left_height + right_height</code>. The overall diameter is the max of this value across all nodes.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>For every node, separately calculate the height of its left and right subtree.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def diameterOfBinaryTree(self, root):
+
+        def height(node):
+            if not node:
+                return 0
+
+            return 1 + max(
+                height(node.left),
+                height(node.right)
+            )
+
+        if not root:
+            return 0
+
+        left_diameter = self.diameterOfBinaryTree(root.left)
+        right_diameter = self.diameterOfBinaryTree(root.right)
+
+        current = height(root.left) + height(root.right)
+
+        return max(current, left_diameter, right_diameter)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Calculate height and diameter in the same bottom-up DFS traversal.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>diameter = 0</code>.</li><li>Define <code>dfs(node)</code>: if node is None return 0.</li><li>Get <code>left = dfs(node.left)</code> and <code>right = dfs(node.right)</code>.</li><li>Update <code>diameter = max(diameter, left + right)</code>.</li><li>Return node height: <code>1 + max(left, right)</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def diameterOfBinaryTree(self, root):
+        diameter = 0
+
+        def dfs(node):
+            nonlocal diameter
+
+            if not node:
+                return 0
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            diameter = max(diameter, left + right)
+
+            return 1 + max(left, right)
+
+        dfs(root)
+        return diameter</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> Postorder DFS + return useful information upward. This pattern is extremely important.</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-110">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 110 &bull; 2A. Binary Trees</span>
+          <h2>Balanced Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/balanced-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given a binary tree, determine if it is height-balanced (left and right subtree heights differ by at most 1 for every node).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>A tree is balanced if <code>abs(height(left) - height(right)) &lt;= 1</code> for all nodes.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Repeatedly calculate subtree heights.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isBalanced(self, root):
+
+        def height(node):
+            if not node:
+                return 0
+
+            return 1 + max(
+                height(node.left),
+                height(node.right)
+            )
+
+        if not root:
+            return True
+
+        left = height(root.left)
+        right = height(root.right)
+
+        if abs(left - right) > 1:
+            return False
+
+        return (
+            self.isBalanced(root.left) and
+            self.isBalanced(root.right)
+        )</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Return -1 immediately when an unbalanced subtree is found.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Define <code>dfs(node)</code>: if node is None return 0.</li><li><code>left = dfs(node.left)</code>; if <code>left == -1</code> return -1.</li><li><code>right = dfs(node.right)</code>; if <code>right == -1</code> return -1.</li><li>If <code>abs(left - right) > 1</code> return -1.</li><li>Return <code>1 + max(left, right)</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isBalanced(self, root):
+
+        def dfs(node):
+            if not node:
+                return 0
+
+            left = dfs(node.left)
+            if left == -1:
+                return -1
+
+            right = dfs(node.right)
+            if right == -1:
+                return -1
+
+            if abs(left - right) > 1:
+                return -1
+
+            return 1 + max(left, right)
+
+        return dfs(root) != -1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-100">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 100 &bull; 2A. Binary Trees</span>
+          <h2>Same Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/same-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given roots of two binary trees <code>p</code> and <code>q</code>, check if they are structurally and value identical.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Both trees must have identical node values and subtree structures at every position.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Recursive comparison.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isSameTree(self, p, q):
+        if not p and not q:
+            return True
+
+        if not p or not q:
+            return False
+
+        if p.val != q.val:
+            return False
+
+        return (
+            self.isSameTree(p.left, q.left)
+            and
+            self.isSameTree(p.right, q.right)
+        )</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Iterative comparison using queue avoids call stack growth.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Push <code>(p, q)</code> into queue.</li><li>While queue: pop <code>a, b</code>.</li><li>If both None continue. If one None or values differ return False.</li><li>Push <code>(a.left, b.left)</code> and <code>(a.right, b.right)</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def isSameTree(self, p, q):
+        queue = deque([(p, q)])
+
+        while queue:
+            a, b = queue.popleft()
+
+            if not a and not b:
+                continue
+
+            if not a or not b:
+                return False
+
+            if a.val != b.val:
+                return False
+
+            queue.append((a.left, b.left))
+            queue.append((a.right, b.right))
+
+        return True</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(w)</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-572">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 572 &bull; 2A. Binary Trees</span>
+          <h2>Subtree of Another Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-easy">Easy</span>
+          <a href="https://leetcode.com/problems/subtree-of-another-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given roots of <code>root</code> and <code>subRoot</code>, return true if <code>subRoot</code> is a valid subtree of <code>root</code>.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>For every node in <code>root</code>, check whether <code>subRoot</code> is identical to that subtree.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>For every node in root, check whether subRoot is identical to the subtree.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isSubtree(self, root, subRoot):
+        
+        def same(a, b):
+            if not a and not b:
+                return True
+
+            if not a or not b:
+                return False
+
+            return (
+                a.val == b.val
+                and same(a.left, b.left)
+                and same(a.right, b.right)
+            )
+
+        if not root:
+            return False
+
+        if same(root, subRoot):
+            return True
+
+        return (
+            self.isSubtree(root.left, subRoot)
+            or
+            self.isSubtree(root.right, subRoot)
+        )</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n &times; m) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text3); margin-top: 8px;">n = root size, m = subRoot size.</p>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Serialize both trees with null markers and run string matching algorithm (KMP) in linear time.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Serialize <code>root</code> and <code>subRoot</code> using preorder traversal into strings with null markers.</li><li>Build KMP Partial Match Table (LPS) for pattern string.</li><li>Run KMP search to find <code>pattern</code> in <code>text</code> in O(n + m) time.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (KMP)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isSubtree(self, root, subRoot):
+
+        def serialize(node):
+            if not node:
+                return "#"
+
+            return (
+                "," + str(node.val) +
+                serialize(node.left) +
+                serialize(node.right)
+            )
+
+        text = serialize(root)
+        pattern = serialize(subRoot)
+
+        # KMP algorithm
+        lps = [0] * len(pattern)
+
+        j = 0
+        for i in range(1, len(pattern)):
+            while j > 0 and pattern[i] != pattern[j]:
+                j = lps[j - 1]
+
+            if pattern[i] == pattern[j]:
+                j += 1
+
+            lps[i] = j
+
+        j = 0
+
+        for i in range(len(text)):
+            while j > 0 and text[i] != pattern[j]:
+                j = lps[j - 1]
+
+            if text[i] == pattern[j]:
+                j += 1
+
+            if j == len(pattern):
+                return True
+
+        return False</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n + m)</span>
+          <span class="c-badge c-space">Aux Space: O(n + m)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-235">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 235 &bull; 2A. Binary Trees</span>
+          <h2>Lowest Common Ancestor of a BST</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given a BST and two nodes <code>p</code> and <code>q</code>, find their Lowest Common Ancestor (LCA).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>In a BST, if both <code>p</code> and <code>q</code> are smaller than <code>root.val</code>, LCA is in left subtree. If both are larger, LCA is in right subtree. Otherwise, <code>root</code> is the split point (LCA).</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Build paths from root to both nodes.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+
+        def path_to(node, target):
+            path = []
+
+            while node:
+                path.append(node)
+
+                if target.val < node.val:
+                    node = node.left
+                elif target.val > node.val:
+                    node = node.right
+                else:
+                    break
+
+            return path
+
+        p_path = path_to(root, p)
+        q_path = path_to(root, q)
+
+        answer = root
+
+        for a, b in zip(p_path, q_path):
+            if a != b:
+                break
+            answer = a
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(h)</span>
+          <span class="c-badge c-space">Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Use the BST property directly to traverse without storing path arrays.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>While <code>root</code> exists:</li><li>If both <code>p.val</code> and <code>q.val</code> &lt; <code>root.val</code>, go left.</li><li>If both <code>p.val</code> and <code>q.val</code> &gt; <code>root.val</code>, go right.</li><li>Else return <code>root</code> (split point).</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+
+        while root:
+            if p.val < root.val and q.val < root.val:
+                root = root.left
+
+            elif p.val > root.val and q.val > root.val:
+                root = root.right
+
+            else:
+                return root</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(h)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-102">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 102 &bull; 2A. Binary Trees</span>
+          <h2>Binary Tree Level Order Traversal</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given root of a binary tree, return level order traversal of its nodes' values (level by level, left to right).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Process nodes level by level using BFS or DFS with depth indexing.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS while storing the level index.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def levelOrder(self, root):
+        result = []
+
+        def dfs(node, level):
+            if not node:
+                return
+
+            if level == len(result):
+                result.append([])
+
+            result[level].append(node.val)
+
+            dfs(node.left, level + 1)
+            dfs(node.right, level + 1)
+
+        dfs(root, 0)
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Iterative BFS using a double-ended queue (deque) natural level-by-level processing.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If not root return <code>[]</code>.</li><li>Push root into deque.</li><li>While queue: iterate level size, popleft node, append to level list, push children.</li><li>Append level list to result.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def levelOrder(self, root):
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            level = []
+
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                level.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+
+            result.append(level)
+
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(w)</span>
+          <span class="c-badge c-space">Output Space: O(n)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-199">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 199 &bull; 2A. Binary Trees</span>
+          <h2>Binary Tree Right Side View</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given root of a binary tree, return values of nodes visible when looking at tree from right side.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>We want the rightmost node at each depth level of the binary tree.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS right-first and take the first node encountered at every level.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def rightSideView(self, root):
+        result = []
+
+        def dfs(node, depth):
+            if not node:
+                return
+
+            if depth == len(result):
+                result.append(node.val)
+
+            dfs(node.right, depth + 1)
+            dfs(node.left, depth + 1)
+
+        dfs(root, 0)
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>BFS level-order traversal taking the last element at index <code>size - 1</code> of each level.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If not root return <code>[]</code>.</li><li>Queue with root.</li><li>For each level: pop nodes, push children left then right.</li><li>If `i == size - 1`, append node.val to result.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def rightSideView(self, root):
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            size = len(queue)
+
+            for i in range(size):
+                node = queue.popleft()
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+
+                if i == size - 1:
+                    result.append(node.val)
+
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(w)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-1448">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 1448 &bull; 2A. Binary Trees</span>
+          <h2>Count Good Nodes in Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>A node is good if its value is greater than or equal to every value on the path from root.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Carry state from root &rarr; current node to know the maximum value seen so far on the current path.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Pass complete path array and check <code>node.val == max(path)</code>.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def goodNodes(self, root):
+
+        def dfs(node, path):
+            if not node:
+                return 0
+
+            path.append(node.val)
+
+            count = 0
+            if node.val == max(path):
+                count += 1
+
+            count += dfs(node.left, path)
+            count += dfs(node.right, path)
+
+            path.pop()
+            return count
+
+        return dfs(root, [])</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Carry only the single scalar <code>max_so_far</code> value down the branch during DFS.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Define <code>dfs(node, max_so_far)</code>.</li><li>If node is None return 0.</li><li>Check if <code>node.val >= max_so_far</code>.</li><li>Update <code>max_so_far = max(max_so_far, node.val)</code>.</li><li>Recurse left and right subtrees and return total count.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def goodNodes(self, root):
+
+        def dfs(node, max_so_far):
+            if not node:
+                return 0
+
+            good = node.val >= max_so_far
+
+            max_so_far = max(max_so_far, node.val)
+
+            return (
+                good
+                + dfs(node.left, max_so_far)
+                + dfs(node.right, max_so_far)
+            )
+
+        return dfs(root, root.val)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> Carry state from root &rarr; current node.</p></div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-98">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 98 &bull; 2A. Binary Trees</span>
+          <h2>Validate Binary Search Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/validate-binary-search-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given root of a binary tree, determine if it is a valid Binary Search Tree (BST).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>For every node, all left descendants must be strictly smaller, and all right descendants must be strictly larger.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>For every node, calculate max of left subtree and min of right subtree.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isValidBST(self, root):
+
+        def min_value(node):
+            if not node:
+                return float("inf")
+            return min(
+                node.val,
+                min_value(node.left),
+                min_value(node.right)
+            )
+
+        def max_value(node):
+            if not node:
+                return -float("inf")
+            return max(
+                node.val,
+                max_value(node.left),
+                max_value(node.right)
+            )
+
+        def check(node):
+            if not node:
+                return True
+
+            left_max = max_value(node.left)
+            right_min = min_value(node.right)
+
+            if node.val <= left_max or node.val >= right_min:
+                return False
+
+            return check(node.left) and check(node.right)
+
+        return check(root)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Pass valid lower and upper bounds <code>(low, high)</code> down during DFS traversal.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Define <code>dfs(node, low, high)</code>.</li><li>If node is None return True.</li><li>If not <code>(low &lt; node.val &lt; high)</code> return False.</li><li>Recurse <code>dfs(node.left, low, node.val)</code> and <code>dfs(node.right, node.val, high)</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def isValidBST(self, root):
+
+        def dfs(node, low, high):
+            if not node:
+                return True
+
+            if not (low < node.val < high):
+                return False
+
+            return (
+                dfs(node.left, low, node.val)
+                and
+                dfs(node.right, node.val, high)
+            )
+
+        return dfs(root, -float("inf"), float("inf"))</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-230">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 230 &bull; 2A. Binary Trees</span>
+          <h2>Kth Smallest Element in a BST</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given root of BST and integer <code>k</code>, return <code>k-th</code> smallest value (1-indexed) in tree.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>An in-order traversal of a BST visits nodes in strictly ascending sorted order.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Store the complete inorder traversal in a list and return <code>values[k-1]</code>.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def kthSmallest(self, root, k):
+        values = []
+
+        def inorder(node):
+            if not node:
+                return
+
+            inorder(node.left)
+            values.append(node.val)
+            inorder(node.right)
+
+        inorder(root)
+
+        return values[k - 1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Iterative stack inorder traversal stopping immediately when kth node is reached.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Use explicit stack for inorder traversal.</li><li>Push left children until node is None.</li><li>Pop node, decrement k. If k == 0 return node.val.</li><li>Set node = node.right and continue.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def kthSmallest(self, root, k):
+        stack = []
+        node = root
+
+        while True:
+            while node:
+                stack.append(node)
+                node = node.left
+
+            node = stack.pop()
+            k -= 1
+
+            if k == 0:
+                return node.val
+
+            node = node.right</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(h + k)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> BST + inorder = sorted order.</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-105">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 105 &bull; 2A. Binary Trees</span>
+          <h2>Construct Binary Tree from Preorder &amp; Inorder</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given two integer arrays <code>preorder</code> and <code>inorder</code>, construct and return the binary tree.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Preorder gives root values sequentially. Inorder splits into left subtree (left of root index) and right subtree (right of root index).</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Slicing arrays and using <code>.index()</code> search.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def buildTree(self, preorder, inorder):
+        if not preorder or not inorder:
+            return None
+
+        root_val = preorder[0]
+        root = TreeNode(root_val)
+
+        index = inorder.index(root_val)
+
+        root.left = self.buildTree(
+            preorder[1:index + 1],
+            inorder[:index]
+        )
+
+        root.right = self.buildTree(
+            preorder[index + 1:],
+            inorder[index + 1:]
+        )
+
+        return root</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Use hashmap for O(1) inorder index lookups and preorder index pointer instead of array slicing.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Store <code>positions = {val: i for i, val in enumerate(inorder)}</code>.</li><li>Maintain <code>preorder_index = 0</code>.</li><li>Define <code>build(left, right)</code>: if <code>left > right</code> return None.</li><li>Get <code>root_val = preorder[preorder_index]</code>, increment pointer, build left and right using <code>mid = positions[root_val]</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def buildTree(self, preorder, inorder):
+
+        positions = {
+            value: i
+            for i, value in enumerate(inorder)
+        }
+
+        preorder_index = 0
+
+        def build(left, right):
+            nonlocal preorder_index
+
+            if left > right:
+                return None
+
+            root_val = preorder[preorder_index]
+            preorder_index += 1
+
+            root = TreeNode(root_val)
+
+            mid = positions[root_val]
+
+            root.left = build(left, mid - 1)
+            root.right = build(mid + 1, right)
+
+            return root
+
+        return build(0, len(inorder) - 1)</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(n)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-124">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 124 &bull; 2A. Binary Trees</span>
+          <h2>Binary Tree Maximum Path Sum</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/binary-tree-maximum-path-sum/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return maximum path sum of any non-empty path in a binary tree.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>A path can split through current node (left + val + right), but extending to parent can only take ONE branch (val + max(left, right)). Clamp negative branch gains to 0.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>For every node, calculate maximum gain separately.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def maxPathSum(self, root):
+
+        def gain(node):
+            if not node:
+                return 0
+
+            return node.val + max(
+                0,
+                gain(node.left),
+                gain(node.right)
+            )
+
+        def path(node):
+            if not node:
+                return -float("inf")
+
+            left = gain(node.left)
+            right = gain(node.right)
+
+            current = node.val + max(0, left) + max(0, right)
+
+            return max(
+                current,
+                path(node.left),
+                path(node.right)
+            )
+
+        return path(root)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(n^2) worst case</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Single DFS computing gain to return upward and updating global max path sum.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize <code>answer = -inf</code>.</li><li>Define <code>dfs(node)</code>: get <code>left = max(0, dfs(node.left))</code>, <code>right = max(0, dfs(node.right))</code>.</li><li>Update <code>answer = max(answer, node.val + left + right)</code>.</li><li>Return single branch gain: <code>node.val + max(left, right)</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def maxPathSum(self, root):
+        answer = -float("inf")
+
+        def dfs(node):
+            nonlocal answer
+
+            if not node:
+                return 0
+
+            left = max(0, dfs(node.left))
+            right = max(0, dfs(node.right))
+
+            current = node.val + left + right
+
+            answer = max(answer, current)
+
+            return node.val + max(left, right)
+
+        dfs(root)
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Space: O(h)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Critical Pattern:</strong> Two values: Best path through current node &rarr; update answer; Best path going upward &rarr; return one branch only.</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-297">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 297 &bull; 2A. Binary Trees</span>
+          <h2>Serialize and Deserialize Binary Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Design an algorithm to serialize a binary tree to a string and deserialize string back to tree.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Preorder traversal with null marker (<code>#</code>) unambiguously encodes tree structure into flat comma-separated string.</p></div>
+      </div>
+
+      <!-- 3. Naive / Standard Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Standard Solution</div>
+        <div class="naive-box"><p>Preorder traversal with <code>#</code> null markers using string index pointer.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Python Solution (Codec)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Codec:
+
+    def serialize(self, root):
+        result = []
+
+        def dfs(node):
+            if not node:
+                result.append("#")
+                return
+
+            result.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
+        return ",".join(result)
+
+    def deserialize(self, data):
+        values = data.split(",")
+        index = 0
+
+        def dfs():
+            nonlocal index
+
+            if values[index] == "#":
+                index += 1
+                return None
+
+            node = TreeNode(int(values[index]))
+            index += 1
+
+            node.left = dfs()
+            node.right = dfs()
+
+            return node
+
+        return dfs()</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 4. Time and Space Complexity Analysis</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(n)</span>
+          <span class="c-badge c-space">Aux Spa    <div class="problem-card" id="lc-200">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 200 &bull; 2B. Graphs</span>
+          <h2>Number of Islands</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/number-of-islands/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given an <code>m x n</code> 2D binary grid <code>grid</code> where <code>'1'</code> represents land and <code>'0'</code> water, return number of islands.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS using explicit <code>visited</code> set.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def numIslands(self, grid):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        visited = set()
+
+        def dfs(r, c):
+            if (
+                r < 0 or r >= rows or
+                c < 0 or c >= cols or
+                grid[r][c] == "0" or
+                (r, c) in visited
+            ):
+                return
+
+            visited.add((r, c))
+
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        count = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visited:
+                    count += 1
+                    dfs(r, c)
+
+        return count</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Modify grid in-place (<code>grid[r][c] = "0"</code>) to eliminate extra visited set storage.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Traverse every cell (r, c) in grid.</li><li>If cell is "1", increment island count and start DFS.</li><li>In DFS: set cell to "0" (sink island) and recurse 4 directions.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def numIslands(self, grid):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def dfs(r, c):
+            if (
+                r < 0 or r >= rows or
+                c < 0 or c >= cols or
+                grid[r][c] == "0"
+            ):
+                return
+
+            grid[r][c] = "0"
+
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        count = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1":
+                    count += 1
+                    dfs(r, c)
+
+        return count</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C) recursion call stack</span>
+          <span class="c-badge c-space">Extra Visited Space: O(1)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-133">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 133 &bull; 2B. Graphs</span>
+          <h2>Clone Graph</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/clone-graph/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given reference of node in connected undirected graph, return deep copy (clone) of graph.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Map original nodes to new cloned node instances using a map/dictionary to handle cycles and shared neighbors.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS recursive cloning with map.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution (DFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def cloneGraph(self, node):
+        if not node:
+            return None
+
+        visited = {}
+
+        def dfs(original):
+            if original in visited:
+                return visited[original]
+
+            clone = Node(original.val)
+            visited[original] = clone
+
+            for neighbor in original.neighbors:
+                clone.neighbors.append(
+                    dfs(neighbor)
+                )
+
+            return clone
+
+        return dfs(node)</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>BFS iterative cloning with queue and map prevents stack overflow on deep graphs.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If node is None return None.</li><li>Create clones dictionary and queue with root node.</li><li>While queue: pop current, iterate neighbors, clone unvisited neighbors, push to queue, and link cloned neighbors.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def cloneGraph(self, node):
+        if not node:
+            return None
+
+        clones = {
+            node: Node(node.val)
+        }
+
+        queue = deque([node])
+
+        while queue:
+            current = queue.popleft()
+
+            for neighbor in current.neighbors:
+                if neighbor not in clones:
+                    clones[neighbor] = Node(neighbor.val)
+                    queue.append(neighbor)
+
+                clones[current].neighbors.append(
+                    clones[neighbor]
+                )
+
+        return clones[node]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-695">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 695 &bull; 2B. Graphs</span>
+          <h2>Max Area of Island</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/max-area-of-island/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return maximum area of an island (number of connected 1s) in a grid.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Island area is total land cells connected 4-directionally.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS with explicit <code>visited</code> set.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>In-place grid modification (<code>grid[r][c] = 0</code>) while summing connected land cells.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Iterate grid cells. When 1 is found, call DFS.</li><li>DFS sets current cell to 0 and returns <code>1 + dfs(up) + dfs(down) + dfs(left) + dfs(right)</code>.</li><li>Track maximum area returned across all islands.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def maxAreaOfIsland(self, grid):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def dfs(r, c):
+            if (
+                r < 0 or r >= rows or
+                c < 0 or c >= cols or
+                grid[r][c] == 0
+            ):
+                return 0
+
+            grid[r][c] = 0
+
+            return (
+                1
+                + dfs(r + 1, c)
+                + dfs(r - 1, c)
+                + dfs(r, c + 1)
+                + dfs(r, c - 1)
+            )
+
+        answer = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    answer = max(answer, dfs(r, c))
+
+        return answer</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+          <span class="c-badge c-space">Extra Visited Space: O(1)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-417">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 417 &bull; 2B. Graphs</span>
+          <h2>Pacific Atlantic Water Flow</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/pacific-atlantic-water-flow/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Find grid coordinates that can flow water to BOTH Pacific Ocean (top/left) and Atlantic Ocean (bottom/right).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Reverse problem: ask which cells can be reached by starting at ocean borders and flowing UPHILL.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>For every cell, perform DFS to check if it reaches both oceans.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def pacificAtlantic(self, heights):
+        rows = len(heights)
+        cols = len(heights[0])
+
+        result = []
+
+        def can_reach(r, c, target):
+            visited = set()
+
+            def dfs(x, y):
+                if (x, y) in visited:
+                    return False
+
+                if target == "P" and (x == 0 or y == 0):
+                    return True
+
+                if target == "A" and (
+                    x == rows - 1 or y == cols - 1
+                ):
+                    return True
+
+                visited.add((x, y))
+
+                for dx, dy in [
+                    (1, 0), (-1, 0),
+                    (0, 1), (0, -1)
+                ]:
+                    nx, ny = x + dx, y + dy
+
+                    if (
+                        0 <= nx < rows and
+                        0 <= ny < cols and
+                        heights[nx][ny] <= heights[x][y]
+                    ):
+                        if dfs(nx, ny):
+                            return True
+
+                return False
+
+            return dfs(r, c)
+
+        for r in range(rows):
+            for c in range(cols):
+                if (
+                    can_reach(r, c, "P")
+                    and can_reach(r, c, "A")
+                ):
+                    result.append([r, c])
+
+        return result</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O((R &times; C)^2)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Multi-source BFS starting from ocean borders moving uphill.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Start multi-source BFS from Pacific ocean borders into set P.</li><li>Start multi-source BFS from Atlantic ocean borders into set A.</li><li>Return intersection of sets <code>P & A</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Multi-Source BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def pacificAtlantic(self, heights):
+        rows = len(heights)
+        cols = len(heights[0])
+
+        def bfs(starts):
+            visited = set()
+            queue = deque(starts)
+
+            for cell in starts:
+                visited.add(cell)
+
+            while queue:
+                r, c = queue.popleft()
+
+                for dr, dc in [
+                    (1, 0), (-1, 0),
+                    (0, 1), (0, -1)
+                ]:
+                    nr, nc = r + dr, c + dc
+
+                    if (
+                        0 <= nr < rows and
+                        0 <= nc < cols
+                        and (nr, nc) not in visited
+                        and heights[nr][nc] >= heights[r][c]
+                    ):
+                        visited.add((nr, nc))
+                        queue.append((nr, nc))
+
+            return visited
+
+        pacific = []
+
+        for r in range(rows):
+            pacific.append((r, 0))
+
+        for c in range(cols):
+            pacific.append((0, c))
+
+        atlantic = []
+
+        for r in range(rows):
+            atlantic.append((r, cols - 1))
+
+        for c in range(cols):
+            atlantic.append((rows - 1, c))
+
+        p = bfs(pacific)
+        a = bfs(atlantic)
+
+        return [
+            [r, c]
+            for r, c in p & a
+        ]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> Reverse the problem (ask which cells can be reached from ocean flowing uphill).</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-130">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 130 &bull; 2B. Graphs</span>
+          <h2>Surrounded Regions</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/surrounded-regions/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Capture all regions surrounded by <code>'X'</code>. Modify <code>'O'</code> to <code>'X'</code> if completely surrounded.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Any <code>'O'</code> connected to border boundary CANNOT be captured. All other <code>'O'</code> cells will be flipped to <code>'X'</code>.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS from every <code>'O'</code> checking if boundary reachable.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O((R &times; C)^2)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Boundary-first DFS marking boundary-connected <code>'O'</code>s as <code>'#'</code>, then flipping remaining <code>'O'</code> &rarr; <code>'X'</code> and <code>'#'</code> &rarr; <code>'O'</code>.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Run DFS on all 4 borders to mark safe <code>'O'</code>s as <code>'#'</code>.</li><li>Traverse grid: convert any remaining <code>'O'</code> to <code>'X'</code>.</li><li>Restore <code>'#'</code> back to <code>'O'</code>.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def solve(self, board):
+        rows = len(board)
+        cols = len(board[0])
+
+        def dfs(r, c):
+            if (
+                r < 0 or r >= rows or
+                c < 0 or c >= cols or
+                board[r][c] != "O"
+            ):
+                return
+
+            board[r][c] = "#"
+
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        # Mark boundary-connected O's
+        for r in range(rows):
+            dfs(r, 0)
+            dfs(r, cols - 1)
+
+        for c in range(cols):
+            dfs(0, c)
+            dfs(rows - 1, c)
+
+        # Capture surrounded regions
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                elif board[r][c] == "#":
+                    board[r][c] = "O"</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> Boundary-first DFS/BFS.</p></div>
+      </div>
+    </div>
+
+    <div class="problem-card" id="lc-994">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 994 &bull; 2B. Graphs</span>
+          <h2>Rotting Oranges</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/rotting-oranges/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return minimum minutes that must elapse until no cell has a fresh orange. If impossible return -1.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Multi-source BFS where all rotten oranges start in queue at minute 0 and rot adjacent fresh oranges simultaneously.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Scan full grid minute-by-minute.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O((R &times; C)^2)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Multi-source BFS starting from all rotten oranges simultaneously.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Enqueue all rotten oranges (val=2), count total fresh oranges (val=1).</li><li>While queue and fresh > 0: increment minutes, rot fresh neighbors, push to queue, decrement fresh count.</li><li>Return minutes if fresh == 0 else -1.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Multi-Source BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def orangesRotting(self, grid):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        queue = deque()
+        fresh = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 2:
+                    queue.append((r, c))
+                elif grid[r][c] == 1:
+                    fresh += 1
+
+        minutes = 0
+
+        while queue and fresh:
+            for _ in range(len(queue)):
+                r, c = queue.popleft()
+
+                for dr, dc in [
+                    (1, 0), (-1, 0),
+                    (0, 1), (0, -1)
+                ]:
+                    nr, nc = r + dr, c + dc
+
+                    if (
+                        0 <= nr < rows and
+                        0 <= nc < cols
+                        and grid[nr][nc] == 1
+                    ):
+                        grid[nr][nc] = 2
+                        fresh -= 1
+                        queue.append((nr, nc))
+
+            minutes += 1
+
+        return minutes if fresh == 0 else -1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 9. Pattern -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-target"></i> 9. Pattern / Key Takeaway</div>
+        <div class="intuition-box"><p><strong>Pattern:</strong> Multi-source BFS = simultaneous expansion.</p></div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-286">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 286 &bull; 2B. Graphs</span>
+          <h2>Walls and Gates</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/walls-and-gates/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Fill each empty room with distance to its nearest gate. Empty room=INF (2147483647), Wall=-1, Gate=0.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Multi-source BFS starting from all gates simultaneously.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Run BFS from every empty room.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O((R &times; C)^2)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Multi-source BFS from all gates simultaneously.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Enqueue all gate positions (0).</li><li>While queue: pop (r, c), check 4 neighbors. If neighbor is INF, update distance to <code>rooms[r][c] + 1</code> and push.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def wallsAndGates(self, rooms):
+        rows = len(rooms)
+        cols = len(rooms[0])
+
+        queue = deque()
+
+        for r in range(rows):
+            for c in range(cols):
+                if rooms[r][c] == 0:
+                    queue.append((r, c))
+
+        while queue:
+            r, c = queue.popleft()
+
+            for dr, dc in [
+                (1, 0), (-1, 0),
+                (0, 1), (0, -1)
+            ]:
+                nr, nc = r + dr, c + dc
+
+                if (
+                    0 <= nr < rows
+                    and 0 <= nc < cols
+                    and rooms[nr][nc] == 2147483647
+                ):
+                    rooms[nr][nc] = rooms[r][c] + 1
+                    queue.append((nr, nc))</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(R &times; C)</span>
+          <span class="c-badge c-space">Aux Space: O(R &times; C)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-207">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 207 &bull; 2B. Graphs</span>
+          <h2>Course Schedule</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/course-schedule/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Determine if you can finish all courses given prerequisite dependencies.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Can finish all courses iff the prerequisite graph has no directed cycle.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS cycle detection with <code>visiting</code> and <code>visited</code> sets.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution (DFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        graph = [[] for _ in range(numCourses)]
+
+        for course, prerequisite in prerequisites:
+            graph[course].append(prerequisite)
+
+        visiting = set()
+        visited = set()
+
+        def dfs(course):
+            if course in visiting:
+                return False
+
+            if course in visited:
+                return True
+
+            visiting.add(course)
+
+            for prerequisite in graph[course]:
+                if not dfs(prerequisite):
+                    return False
+
+            visiting.remove(course)
+            visited.add(course)
+
+            return True
+
+        for course in range(numCourses):
+            if not dfs(course):
+                return False
+
+        return True</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Kahn's BFS Algorithm (Topological Sort using indegrees).</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Compute indegrees of all vertices.</li><li>Enqueue all vertices with 0 indegree.</li><li>While queue: pop node, increment completed count, decrement indegrees of neighbors. Push neighbors hitting 0.</li><li>Return completed == numCourses.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Kahn's BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        graph = [[] for _ in range(numCourses)]
+        indegree = [0] * numCourses
+
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].append(course)
+            indegree[course] += 1
+
+        queue = deque(
+            i for i in range(numCourses)
+            if indegree[i] == 0
+        )
+
+        completed = 0
+
+        while queue:
+            course = queue.popleft()
+            completed += 1
+
+            for next_course in graph[course]:
+                indegree[next_course] -= 1
+
+                if indegree[next_course] == 0:
+                    queue.append(next_course)
+
+        return completed == numCourses</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-210">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 210 &bull; 2B. Graphs</span>
+          <h2>Course Schedule II</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/course-schedule-ii/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return ordering of courses to finish all. Return empty array if impossible.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Find valid topological sort ordering of directed graph.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS topological sort.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Kahn's BFS Algorithm returning topological course order array.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Compute indegrees and build graph.</li><li>Enqueue 0 indegree nodes into queue.</li><li>Pop queue, append to result order, decrement neighbor indegrees. Push neighbors with 0 indegree.</li><li>Return result if length matches numCourses else [].</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Kahn's BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import deque
+
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        graph = [[] for _ in range(numCourses)]
+        indegree = [0] * numCourses
+
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].append(course)
+            indegree[course] += 1
+
+        queue = deque(
+            i for i in range(numCourses)
+            if indegree[i] == 0
+        )
+
+        result = []
+
+        while queue:
+            course = queue.popleft()
+            result.append(course)
+
+            for next_course in graph[course]:
+                indegree[next_course] -= 1
+
+                if indegree[next_course] == 0:
+                    queue.append(next_course)
+
+        return result if len(result) == numCourses else []</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-261">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 261 &bull; 2B. Graphs</span>
+          <h2>Graph Valid Tree</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/graph-valid-tree/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Determine if an undirected graph of n nodes is a valid tree.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>A tree must have exactly n-1 edges and be fully connected with no cycles.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS cycle and connectivity check.</p></div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Naive Python Solution (DFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def validTree(self, n, edges):
+        if len(edges) != n - 1:
+            return False
+
+        graph = [[] for _ in range(n)]
+
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
+
+        visited = set()
+
+        def dfs(node, parent):
+            if node in visited:
+                return False
+
+            visited.add(node)
+
+            for neighbor in graph[node]:
+                if neighbor == parent:
+                    continue
+
+                if not dfs(neighbor, node):
+                    return False
+
+            return True
+
+        return dfs(0, -1) and len(visited) == n</code></pre>
+        </div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Union-Find with path compression and rank optimization.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>If len(edges) != n-1 return False.</li><li>Initialize parent array [0..n-1].</li><li>Union endpoints of each edge; if find(a) == find(b), cycle detected &rarr; return False.</li><li>Return True.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Union-Find)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def validTree(self, n, edges):
+        if len(edges) != n - 1:
+            return False
+
+        parent = list(range(n))
+        rank = [1] * n
+
+        def find(x):
+            while x != parent[x]:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+
+            return x
+
+        def union(a, b):
+            root_a = find(a)
+            root_b = find(b)
+
+            if root_a == root_b:
+                return False
+
+            if rank[root_a] < rank[root_b]:
+                root_a, root_b = root_b, root_a
+
+            parent[root_b] = root_a
+            rank[root_a] += rank[root_b]
+
+            return True
+
+        for a, b in edges:
+            if not union(a, b):
+                return False
+
+        return True</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(E &alpha;(V))</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-323">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 323 &bull; 2B. Graphs</span>
+          <h2>Number of Connected Components</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given n nodes and edges list, return number of connected components.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Start with n components and decrement by 1 on every successful union of disjoint sets.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS component counting.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V + E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Union-Find tracking component count (<code>components -= 1</code> on successful union).</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize parent = list(range(n)) and components = n.</li><li>For each edge (a, b), call union. If merged, decrement components.</li><li>Return components count.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Union-Find)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def countComponents(self, n, edges):
+        parent = list(range(n))
+        rank = [1] * n
+        components = n
+
+        def find(x):
+            while x != parent[x]:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+
+            return x
+
+        def union(a, b):
+            nonlocal components
+
+            root_a = find(a)
+            root_b = find(b)
+
+            if root_a == root_b:
+                return
+
+            if rank[root_a] < rank[root_b]:
+                root_a, root_b = root_b, root_a
+
+            parent[root_b] = root_a
+            rank[root_a] += rank[root_b]
+
+            components -= 1
+
+        for a, b in edges:
+            union(a, b)
+
+        return components</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(E &alpha;(V))</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="problem-card" id="lc-684">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 684 &bull; 2B. Graphs</span>
+          <h2>Redundant Connection</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/redundant-connection/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return edge that can be removed so graph becomes a valid tree. If multiple, return edge that appears last in input.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>An edge is redundant if its endpoints are ALREADY connected in the Union-Find structure.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>DFS cycle check after adding each edge.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V^2)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Union-Find returning first edge where <code>find(u) == find(v)</code>.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Initialize parent = list(range(n + 1)).</li><li>Loop edges (u, v). If find(u) == find(v), return [u, v]. Else union(u, v).</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Union-Find)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def findRedundantConnection(self, edges):
+        n = len(edges)
+        parent = list(range(n + 1))
+        rank = [1] * (n + 1)
+
+        def find(x):
+            while x != parent[x]:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+
+            return x
+
+        def union(a, b):
+            root_a = find(a)
+            root_b = find(b)
+
+            if root_a == root_b:
+                return False
+
+            if rank[root_a] < rank[root_b]:
+                root_a, root_b = root_b, root_a
+
+            parent[root_b] = root_a
+            rank[root_a] += rank[root_b]
+
+            return True
+
+        for u, v in edges:
+            if not union(u, v):
+                return [u, v]
+
+        return []</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N &alpha;(N))</span>
+          <span class="c-badge c-space">Aux Space: O(N)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-127">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 127 &bull; 2B. Graphs</span>
+          <h2>Word Ladder</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/word-ladder/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return length of shortest transformation sequence from <code>beginWord</code> to <code>endWord</code> using <code>wordList</code>.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Unweighted shortest path problem solved via BFS with pattern wildcard matching.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Compare all pairs of words for 1-char difference to build graph.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2 &times; L)</span>
+          <span class="c-badge c-space">Aux Space: O(N^2)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Group words into pattern dict <code>neighbors['*ot'] = ['hot', 'dot', 'lot']</code> to reduce edge lookup to O(L^2 &times; N).</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Build wildcard pattern map for wordList.</li><li>Queue with (beginWord, 1), visited set with beginWord.</li><li>BFS layer-by-layer: for current word, generate patterns, visit unvisited neighbor words, push to queue with dist+1.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (BFS)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import defaultdict, deque
+
+class Solution:
+    def ladderLength(self, beginWord, endWord, wordList):
+        if endWord not in wordList:
+            return 0
+
+        patterns = defaultdict(list)
+
+        for word in wordList:
+            for i in range(len(word)):
+                pattern = word[:i] + "*" + word[i + 1:]
+                patterns[pattern].append(word)
+
+        visited = {beginWord}
+        queue = deque([(beginWord, 1)])
+
+        while queue:
+            word, distance = queue.popleft()
+
+            if word == endWord:
+                return distance
+
+            for i in range(len(word)):
+                pattern = word[:i] + "*" + word[i + 1:]
+
+                for neighbor in patterns[pattern]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append((neighbor, distance + 1))
+
+                patterns[pattern] = []
+
+        return 0</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N &times; L^2)</span>
+          <span class="c-badge c-space">Aux Space: O(N &times; L^2)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-332">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 332 &bull; 2C. Advanced Graphs</span>
+          <h2>Reconstruct Itinerary</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/reconstruct-itinerary/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Reconstruct airline itinerary starting from <code>JFK</code> using all tickets exactly once. Return lexicographically smallest itinerary.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Eulerian Path problem on directed graph. Hierholzer's Algorithm builds post-order itinerary traversing sorted neighbors.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Standard DFS backtracking exploring all paths.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(E!)</span>
+          <span class="c-badge c-space">Aux Space: O(E)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Hierholzer's algorithm: sort destination lists reverse-alphabetically, pop destinations during DFS, append node post-order, then reverse result.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Sort tickets reverse alphabetically so pop() gives smallest destination.</li><li>DFS starting from JFK: while neighbors exist, dfs(neighbors.pop()).</li><li>Append airport to result post-order. Return reverse of result.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Hierholzer's)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import defaultdict
+
+class Solution:
+    def findItinerary(self, tickets):
+        graph = defaultdict(list)
+
+        tickets.sort(reverse=True)
+
+        for src, dst in tickets:
+            graph[src].append(dst)
+
+        itinerary = []
+
+        def dfs(airport):
+            while graph[airport]:
+                next_airport = graph[airport].pop()
+                dfs(next_airport)
+
+            itinerary.append(airport)
+
+        dfs("JFK")
+        return itinerary[::-1]</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(E log E)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-1584">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 1584 &bull; 2C. Advanced Graphs</span>
+          <h2>Min Cost to Connect All Points</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/min-cost-to-connect-all-points/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return minimum cost to connect all points (Manhattan distance <code>|x1-x2| + |y1-y2|</code>).</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Minimum Spanning Tree (MST) problem on complete graph using Prim's algorithm.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Kruskal's algorithm building and sorting all N^2 edges.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2 log N)</span>
+          <span class="c-badge c-space">Aux Space: O(N^2)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Prim's algorithm with min-heap dynamically tracks minimum edge cost from current MST tree to unvisited nodes.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Min-heap [(0, 0)], visited set, total_cost = 0.</li><li>Pop (cost, node). If visited continue. Add to visited, add cost.</li><li>For all unvisited points: compute distance, push to min-heap.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Prim's)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>import heapq
+
+class Solution:
+    def minCostConnectPoints(self, points):
+        n = len(points)
+        visited = set()
+        min_heap = [(0, 0)]  # (cost, point_index)
+
+        total_cost = 0
+
+        while len(visited) < n:
+            cost, u = heapq.heappop(min_heap)
+
+            if u in visited:
+                continue
+
+            visited.add(u)
+            total_cost += cost
+
+            x1, y1 = points[u]
+
+            for v in range(n):
+                if v not in visited:
+                    x2, y2 = points[v]
+                    dist = abs(x1 - x2) + abs(y1 - y2)
+                    heapq.heappush(min_heap, (dist, v))
+
+        return total_cost</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N^2 log N)</span>
+          <span class="c-badge c-space">Aux Space: O(N^2)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-743">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 743 &bull; 2C. Advanced Graphs</span>
+          <h2>Network Delay Time</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/network-delay-time/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return minimum time for all <code>n</code> nodes to receive signal from source node <code>k</code>. Return -1 if impossible.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Single-source shortest path on weighted directed graph with non-negative edge weights &rarr; Dijkstra's Algorithm!</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Bellman-Ford algorithm relaxing edges N-1 times.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(V &times; E)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Dijkstra's with Min-Heap pops minimum distance node greedily. Maximum distance in final visited map is total time.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Build graph adjacency list (neighbor, weight).</li><li>Min-heap [(0, k)], distances map = {}.</li><li>Pop (time, node). If node visited continue. Save distances[node] = time.</li><li>Push unvisited neighbors with time + weight.</li><li>Return max(distances.values()) if len(distances) == n else -1.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Dijkstra's)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>from collections import defaultdict
+import heapq
+
+class Solution:
+    def networkDelayTime(self, times, n, k):
+        graph = defaultdict(list)
+
+        for u, v, w in times:
+            graph[u].append((v, w))
+
+        min_heap = [(0, k)]
+        distances = {}
+
+        while min_heap:
+            time, node = heapq.heappop(min_heap)
+
+            if node in distances:
+                continue
+
+            distances[node] = time
+
+            for neighbor, weight in graph[node]:
+                if neighbor not in distances:
+                    heapq.heappush(
+                        min_heap,
+                        (time + weight, neighbor)
+                    )
+
+        if len(distances) == n:
+            return max(distances.values())
+
+        return -1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(E log V)</span>
+          <span class="c-badge c-space">Aux Space: O(V + E)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-778">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 778 &bull; 2C. Advanced Graphs</span>
+          <h2>Swim in Rising Water</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/swim-in-rising-water/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return minimum time t to reach bottom-right <code>(n-1, n-1)</code> from <code>(0,0)</code> in grid of water elevations.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Shortest path where path cost is <code>max(elevation along path)</code>. Solved via Modified Dijkstra.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Binary search on time t with BFS check.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(N^2 log(N^2))</span>
+          <span class="c-badge c-space">Aux Space: O(N^2)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Dijkstra's Algorithm with Min-Heap pops grid cells ordered by <code>max_elevation</code> along path.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Min-heap [(grid[0][0], 0, 0)], visited = {(0,0)}.</li><li>Pop (time, r, c). If (r, c) == (n-1, n-1), return time.</li><li>Push unvisited neighbors with max(time, grid[nr][nc]).</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Dijkstra's)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>import heapq
+
+class Solution:
+    def swimInWater(self, grid):
+        n = len(grid)
+
+        min_heap = [(grid[0][0], 0, 0)]
+        visited = {(0, 0)}
+
+        while min_heap:
+            time, r, c = heapq.heappop(min_heap)
+
+            if r == n - 1 and c == n - 1:
+                return time
+
+            for dr, dc in [
+                (1, 0), (-1, 0),
+                (0, 1), (0, -1)
+            ]:
+                nr, nc = r + dr, c + dc
+
+                if (
+                    0 <= nr < n and
+                    0 <= nc < n and
+                    (nr, nc) not in visited
+                ):
+                    visited.add((nr, nc))
+                    heapq.heappush(
+                        min_heap,
+                        (max(time, grid[nr][nc]), nr, nc)
+                    )
+
+        return -1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(N^2 log N)</span>
+          <span class="c-badge c-space">Aux Space: O(N^2)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-269">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 269 &bull; 2C. Advanced Graphs</span>
+          <h2>Alien Dictionary</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-hard">Hard</span>
+          <a href="https://leetcode.com/problems/alien-dictionary/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Given sorted dictionary of alien language words, return valid ordering of letters in alien alphabet. If invalid return <code>""</code>.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Topological Sort on DAG formed by directed edges comparing adjacent words in dictionary.</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Character permutation brute force.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(26!)</span>
+          <span class="c-badge c-space">Aux Space: O(1)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Compare adjacent words to extract directed character edges. Post-order DFS topological sort with cycle detection.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Compare adjacent words w1, w2. If w1 starts with w2 and len(w1) > len(w2) return "".</li><li>Find first differing char and add edge w1[j] -> w2[j].</li><li>Post-order DFS with cycle detection. Return reversed post-order list.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Topological Sort)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def alienOrder(self, words):
+        graph = {
+            char: set()
+            for word in words
+            for char in word
+        }
+
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            min_length = min(len(w1), len(w2))
+
+            if len(w1) > len(w2) and w1[:min_length] == w2[:min_length]:
+                return ""
+
+            for j in range(min_length):
+                if w1[j] != w2[j]:
+                    graph[w1[j]].add(w2[j])
+                    break
+
+        visited = {}
+        result = []
+
+        def dfs(char):
+            if char in visited:
+                return visited[char]
+
+            visited[char] = True
+
+            for neighbor in graph[char]:
+                if dfs(neighbor):
+                    return True
+
+            visited[char] = False
+            result.append(char)
+
+            return False
+
+        for char in graph:
+            if dfs(char):
+                return ""
+
+        return "".join(result[::-1])</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(C) total characters</span>
+          <span class="c-badge c-space">Aux Space: O(1) bounded by 26 letters</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="problem-card" id="lc-787">
+      <div class="problem-header">
+        <div class="problem-title-area">
+          <span class="problem-tag">#LC 787 &bull; 2C. Advanced Graphs</span>
+          <h2>Cheapest Flights Within K Stops</h2>
+        </div>
+        <div class="problem-meta">
+          <span class="diff-badge diff-medium">Medium</span>
+          <a href="https://leetcode.com/problems/cheapest-flights-within-k-stops/" target="_blank" rel="noopener" class="lc-link">
+            LeetCode <i class="ti ti-external-link"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 1. Problem Statement -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-file-text"></i> 1. Problem Statement</div>
+        <div class="desc-box"><p>Return cheapest price from <code>src</code> to <code>dst</code> with at most <code>k</code> stops. If no path, return -1.</p></div>
+      </div>
+
+      <!-- 2. Understanding -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-bulb"></i> 2. Understanding &amp; Key Observations</div>
+        <div class="desc-box"><p>Shortest path with step limit constraint (at most K+1 edges). Ideal for Bellman-Ford algorithm!</p></div>
+      </div>
+
+      <!-- 3. Naive Solution -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-baseline"></i> 3. Naive Solution</div>
+        <div class="naive-box"><p>Standard Dijkstra without stop constraint check.</p></div>
+      </div>
+
+      <!-- 4. Naive Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-clock-pause"></i> 4. Time &amp; Space Complexity Analysis (Naive)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-naive">Time: O(E log V)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+
+      <!-- 5. Intuition for Optimization -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-sparkles"></i> 5. Intuition — For Optimization</div>
+        <div class="intuition-box"><p>Bellman-Ford algorithm run K+1 iterations using a copy of previous distances array.</p></div>
+      </div>
+
+      <!-- 6. Approach Algorithm -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-list-check"></i> 6. Approach — Step-by-Step Algorithm</div>
+        <div class="approach-box"><ol class="step-list"><li>Distance array prices = [inf] * n, prices[src] = 0.</li><li>Loop k + 1 times: copy tmp = list(prices). For u, v, w in flights: if prices[u] != inf, update tmp[v] = min(tmp[v], prices[u] + w).</li><li>Set prices = tmp. Return prices[dst] if prices[dst] != inf else -1.</li></ol></div>
+      </div>
+
+      <!-- 7. Optimized Code -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-code"></i> 7. Optimized Code (Python 3)</div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optimized Python Solution (Bellman-Ford)</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.querySelector('code').innerText)">
+              <i class="ti ti-copy"></i> Copy
+            </button>
+          </div>
+          <pre><code>class Solution:
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        prices = [float("inf")] * n
+        prices[src] = 0
+
+        for _ in range(k + 1):
+            tmp = list(prices)
+
+            for u, v, price in flights:
+                if prices[u] == float("inf"):
+                    continue
+
+                if prices[u] + price < tmp[v]:
+                    tmp[v] = prices[u] + price
+
+            prices = tmp
+
+        if prices[dst] != float("inf"):
+            return prices[dst]
+
+        return -1</code></pre>
+        </div>
+      </div>
+
+      <!-- 8. Optimized Complexity -->
+      <div class="sec-block">
+        <div class="sec-title"><i class="ti ti-chart-dots"></i> 8. Time and Space Complexity Analysis (Optimized)</div>
+        <div class="complexity-row">
+          <span class="c-badge c-time">Time: O(K &times; E)</span>
+          <span class="c-badge c-space">Aux Space: O(V)</span>
+        </div>
+      </div>
+    </div>
+    
+    </main>
+  </div>
+
+  <script>
+    const filterInput = document.getElementById('filterInput');
+    const navItems = document.querySelectorAll('.nav-item');
+    const cards = document.querySelectorAll('.problem-card');
+
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

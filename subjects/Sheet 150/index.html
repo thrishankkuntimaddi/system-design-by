@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Sheet 150 — Master DSA Interview Notes</title>
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" type="image/png" href="../../app-icon.png">
+  <link rel="apple-touch-icon" href="../../app-icon.png">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sheet 150">
+  <meta name="description" content="Complete 150 LeetCode master solution breakdown with Naive & Optimized approaches, Time/Space complexities, Intuition, and clean Python implementations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d14;
+      --bg2: #111520;
+      --bg3: #161d2e;
+      --bg4: #1d263b;
+      --border: #1f2d48;
+      --border2: #2d3f64;
+      --text: #edf0f7;
+      --text2: #8a96b0;
+      --text3: #5a6480;
+      --accent: #38bdf8;
+      --purple: #a855f7;
+      --pink: #f472b6;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --radius: 14px;
+      --mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--accent); color: #000; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color .15s;
+    }
+    .back-btn:hover { color: var(--accent); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 32px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--text2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 15.5px;
+      color: var(--text2);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+
+    .stats-bar {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 12px 32px;
+      margin-bottom: 40px;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text2);
+    }
+    .stat-item i { font-size: 17px; color: var(--accent); }
+    .stat-item strong { color: var(--text); }
+
+    .search-box {
+      max-width: 600px;
+      margin: 0 auto 48px;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px 14px 44px;
+      font-size: 14.5px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 18px;
+    }
+
+    .grid-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-color, var(--accent));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    .card-num {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text3);
+      opacity: 0.25;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--card-color, var(--accent)) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--card-color, var(--accent)) 25%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--card-color, var(--accent));
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .card-meta {
+      font-size: 11.5px;
+      font-family: var(--mono);
+      color: var(--card-color, var(--accent));
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--text3);
+      transition: color .15s;
+    }
+    .card:hover .card-footer {
+      color: var(--card-color, var(--accent));
+    }
+    .card-footer i { transition: transform .15s; }
+    .card:hover .card-footer i { transform: translateX(4px); }
+
+    @media (max-width: 900px) {
+      .grid-container { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .grid-container { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 28px; }
+      .topbar { padding: 14px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="../../index.html" class="back-btn">
+      <i class="ti ti-arrow-left"></i> Home Hub
+    </a>
+    <div class="brand">
+      <div class="brand-icon"><i class="ti ti-list-check"></i></div>
+      <div class="brand-title">Sheet 150</div>
+    </div>
+    <div style="width: 80px;"></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge"><i class="ti ti-flame"></i> Top 150 LeetCode Essentials</div>
+    <h1>Sheet 150 — Master Interview Notes</h1>
+    <p>A comprehensive 150-problem master roadmap. Each problem features a clear Problem Statement, Naive Solution, Intuition, Algorithmic Approach, Optimized Code, and Time/Space complexity analysis.</p>
+
+    <div class="stats-bar">
+      <div class="stat-item"><i class="ti ti-checkup-list"></i> <strong>150</strong> Problems</div>
+      <div class="stat-item"><i class="ti ti-folders"></i> <strong>12</strong> Modules</div>
+      <div class="stat-item"><i class="ti ti-code"></i> <strong>Python</strong> Clean Solns</div>
+      <div class="stat-item"><i class="ti ti-chart-bar"></i> <strong>Full</strong> Complexity Analysis</div>
+    </div>
+
+    <div class="search-box">
+      <i class="ti ti-search"></i>
+      <input type="text" id="searchInput" placeholder="Search topic or problem name (e.g. Subsets, LRU Cache, Trapping Rain Water)...">
+    </div>
+  </section>
+
+  <main class="grid-container" id="cardsGrid">
+
+    <a href="./01_recursion_backtracking.html" class="card" style="--card-color: #f472b6;">
+      <span class="card-num">01</span>
+      <div class="card-icon"><i class="ti ti-git-fork"></i></div>
+      <div class="card-title">Recursion & Backtracking</div>
+      <div class="card-meta">9 PROBLEMS</div>
+      <div class="card-desc">Decision trees, state space search, subsets, combinations, permutations, word search, and N-Queens.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./02_trees_graphs.html" class="card" style="--card-color: #38bdf8;">
+      <span class="card-num">02</span>
+      <div class="card-icon"><i class="ti ti-topology-star-ring"></i></div>
+      <div class="card-title">Trees & Graphs</div>
+      <div class="card-meta">34 PROBLEMS (Binary Trees, Graphs, Adv. Graphs)</div>
+      <div class="card-desc">BST validation, level order, LCA, DFS/BFS, Union-Find, topological sort, Dijkstra, and Kruskal algorithms.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./03_dynamic_programming.html" class="card" style="--card-color: #a855f7;">
+      <span class="card-num">03</span>
+      <div class="card-icon"><i class="ti ti-cpu"></i></div>
+      <div class="card-title">Dynamic Programming</div>
+      <div class="card-meta">23 PROBLEMS (1-D & 2-D DP)</div>
+      <div class="card-desc">Memoization, tabulation, subproblems, LIS, LCS, Knapsack variants, edit distance, matrix DP, and balloon burst.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./04_arrays_strings_linkedlists.html" class="card" style="--card-color: #34d399;">
+      <span class="card-num">04</span>
+      <div class="card-icon"><i class="ti ti-array"></i></div>
+      <div class="card-title">Arrays, Strings & Linked Lists</div>
+      <div class="card-meta">31 PROBLEMS (Hashing, 2P, Sliding Window, LL)</div>
+      <div class="card-desc">Frequency hashing, two-pointer techniques, dynamic windowing, fast/slow pointer, LRU cache, and list reordering.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./05_heap_hash.html" class="card" style="--card-color: #f59e0b;">
+      <span class="card-num">05</span>
+      <div class="card-icon"><i class="ti ti-heap"></i></div>
+      <div class="card-title">Heap & Hash</div>
+      <div class="card-meta">7 PROBLEMS</div>
+      <div class="card-desc">Min-heaps, max-heaps, streaming median, Kth element queries, task scheduling, and Twitter timeline feed design.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./06_stack_queue.html" class="card" style="--card-color: #ec4899;">
+      <span class="card-num">06</span>
+      <div class="card-icon"><i class="ti ti-stack-2"></i></div>
+      <div class="card-title">Stack & Queue</div>
+      <div class="card-meta">7 PROBLEMS</div>
+      <div class="card-desc">LIFO/FIFO mechanics, monotonic stack patterns, RPN expression evaluation, car fleet, and largest rectangle in histogram.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./07_searching_sorting.html" class="card" style="--card-color: #22d3ee;">
+      <span class="card-num">07</span>
+      <div class="card-icon"><i class="ti ti-search"></i></div>
+      <div class="card-title">Searching & Sorting</div>
+      <div class="card-meta">7 PROBLEMS</div>
+      <div class="card-desc">Binary search variants, rotated sorted arrays, binary search on answers (Koko bananas), and median of two arrays.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./08_tries.html" class="card" style="--card-color: #8b5cf6;">
+      <span class="card-num">08</span>
+      <div class="card-icon"><i class="ti ti-row-insert-bottom"></i></div>
+      <div class="card-title">Tries</div>
+      <div class="card-meta">3 PROBLEMS</div>
+      <div class="card-desc">Prefix trees, wildcard word search with dot matching, and 2D grid Word Search II combining Trie + DFS.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./09_greedy.html" class="card" style="--card-color: #10b981;">
+      <span class="card-num">09</span>
+      <div class="card-icon"><i class="ti ti-chart-arrows"></i></div>
+      <div class="card-title">Greedy</div>
+      <div class="card-meta">8 PROBLEMS</div>
+      <div class="card-desc">Local optimal choices, Kadane's algorithm, jump games, gas station circuit, hand of straights, and partition labels.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./10_intervals.html" class="card" style="--card-color: #eab308;">
+      <span class="card-num">10</span>
+      <div class="card-icon"><i class="ti ti-timeline"></i></div>
+      <div class="card-title">Intervals</div>
+      <div class="card-meta">6 PROBLEMS</div>
+      <div class="card-desc">Interval merging, insertion, non-overlapping subsets, meeting rooms room counting, and min interval queries.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./11_math_geometry.html" class="card" style="--card-color: #6366f1;">
+      <span class="card-num">11</span>
+      <div class="card-icon"><i class="ti ti-math"></i></div>
+      <div class="card-title">Math & Geometry</div>
+      <div class="card-meta">8 PROBLEMS</div>
+      <div class="card-desc">In-place matrix rotation, spiral traversal, set matrix zeroing, happy numbers, Pow(x,n), string multiplication, and square detection.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+    <a href="./12_bit_manipulation.html" class="card" style="--card-color: #ef4444;">
+      <span class="card-num">12</span>
+      <div class="card-icon"><i class="ti ti-binary"></i></div>
+      <div class="card-title">Bit Manipulation</div>
+      <div class="card-meta">7 PROBLEMS</div>
+      <div class="card-desc">XOR tricks, Hamming weight counting, bit reverse, missing number identification, fast adder logic without +, and overflow checks.</div>
+      <div class="card-footer">
+        <span>Explore Module</span>
+        <i class="ti ti-arrow-right"></i>
+      </div>
+    </a>
+
+  </main>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
