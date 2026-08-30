@@ -7,27 +7,42 @@
   <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/png" href="../../app-icon.png">
   <link rel="apple-touch-icon" href="../../app-icon.png">
-  <meta name="theme-color" content="#0f1117">
+  <meta name="theme-color" content="#F7F4ED">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Sheet 150">
   <meta name="description" content="Complete 150 LeetCode master solution breakdown with Naive & Optimized approaches, Time/Space complexities, Intuition, and clean Python implementations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="../../css/c-note-theme.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('cnote_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('cnote_theme', next);
+      updateThemeIcon(next);
+    }
+    function updateThemeIcon(theme) {
+      const icons = document.querySelectorAll('.themeToggleIcon, #themeToggleIcon');
+      icons.forEach(icon => {
+        icon.className = theme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      updateThemeIcon(theme);
+    });
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0d14;
-      --bg2: #111520;
-      --bg3: #161d2e;
-      --bg4: #1d263b;
-      --border: #1f2d48;
-      --border2: #2d3f64;
-      --text: #edf0f7;
-      --text2: #8a96b0;
-      --text3: #5a6480;
       --accent: #38bdf8;
       --purple: #a855f7;
       --pink: #f472b6;
@@ -35,8 +50,6 @@
       --amber: #f59e0b;
       --red: #ef4444;
       --radius: 14px;
-      --mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
@@ -332,7 +345,11 @@
       <div class="brand-icon"><i class="ti ti-list-check"></i></div>
       <div class="brand-title">Sheet 150</div>
     </div>
-    <div style="width: 80px;"></div>
+    <div style="display:flex; align-items:center;">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="ti ti-sun" id="themeToggleIcon"></i>
+      </button>
+    </div>
   </header>
 
   <section class="hero">

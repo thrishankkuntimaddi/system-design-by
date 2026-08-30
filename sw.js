@@ -1,8 +1,9 @@
-const CACHE_NAME = 'cs-notes-v14';
+const CACHE_NAME = 'cs-notes-v17';
 
 const ASSETS = [
   './',
   './index.html',
+  './css/c-note-theme.css',
   './manifest.json',
   './app-icon.png',
   './icon-192.png',
@@ -18,6 +19,8 @@ const ASSETS = [
   './subjects/machine_learning_ai/index.html',
   './subjects/dbms/index.html',
   './subjects/cryptography/index.html',
+  './subjects/genai_fluency/index.html',
+  './subjects/Sheet 150/index.html',
 ];
 
 // Install — pre-cache all pages

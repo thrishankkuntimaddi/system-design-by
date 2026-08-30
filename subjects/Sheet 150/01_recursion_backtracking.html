@@ -7,23 +7,38 @@
   <link rel="manifest" href="../../manifest.json">
   <link rel="icon" type="image/png" href="../../app-icon.png">
   <link rel="apple-touch-icon" href="../../app-icon.png">
-  <meta name="theme-color" content="#0f1117">
+  <meta name="theme-color" content="#F7F4ED">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="../../css/c-note-theme.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('cnote_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('cnote_theme', next);
+      updateThemeIcon(next);
+    }
+    function updateThemeIcon(theme) {
+      const icons = document.querySelectorAll('.themeToggleIcon, #themeToggleIcon');
+      icons.forEach(icon => {
+        icon.className = theme === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      updateThemeIcon(theme);
+    });
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0d14;
-      --bg2: #111520;
-      --bg3: #161d2e;
-      --bg4: #1d263b;
-      --border: #1f2d48;
-      --border2: #2d3f64;
-      --text: #edf0f7;
-      --text2: #8a96b0;
-      --text3: #5a6480;
       --accent: #38bdf8;
       --green: #34d399;
       --amber: #f59e0b;
@@ -31,8 +46,6 @@
       --cyan: #22d3ee;
       --purple: #a855f7;
       --radius: 12px;
-      --mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     html {
       scroll-behavior: smooth;
@@ -891,16 +904,6 @@
   </style>
 </head>
 <body>
-  <!-- Mobile Top Navbar -->
-  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleNav()" aria-label="Toggle navigation menu">
-      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
-    </button>
-    <span class="mobile-nav-logo">Sheet 150</span>
-    <span class="mobile-nav-title" id="mobileNavTitle">Recursion & Backtracking</span>
-  </nav>
-  <!-- Sidebar Overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
   <!-- Mobile Top Navbar -->
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
@@ -909,14 +912,22 @@
     </button>
     <span class="mobile-nav-logo">Sheet 150</span>
     <span class="mobile-nav-title" id="mobileNavTitle">Recursion & Backtracking</span>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme" style="margin-left:auto;">
+      <i class="ti ti-sun" id="themeToggleIcon"></i>
+    </button>
   </nav>
   <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
+        <div style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-bottom:4px;">
+          <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
+          <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="ti ti-sun" id="themeToggleIcon"></i>
+          </button>
+        </div>
         <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar"><i class="ti ti-x"></i></button>
-        <a href="./index.html" class="back-link"><i class="ti ti-arrow-left"></i> Sheet 150 Hub</a>
         <span class="module-badge">MODULE 01</span>
         <div class="module-title-side">1. Recursion & Backtracking — 9</div>
       </div>
