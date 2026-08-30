@@ -3,107 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>C-Note — Study Hub</title>
+  <title>C-Note — Computer Science &amp; System Design Hub</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" href="./app-icon.png">
   <link rel="apple-touch-icon" href="./app-icon.png">
-  <meta name="theme-color" content="#0f1117">
+  <meta name="theme-color" content="#06080e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="C-Note">
-  <meta name="description" content="Your CS interview prep hub — System Design, OOP, DSA, Computer Networks, OS, and more.">
+  <meta name="description" content="Your CS interview prep hub — System Design, OOP, DSA, Computer Networks, OS, Cryptography, AI & ML, Sheet 150, and more.">
   <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Modern Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
     .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0 }
 
-
     :root {
-      --bg:     #0a0d14;
-      --bg2:    #111520;
-      --bg3:    #161d2e;
-      --border: #1f2d48;
-      --border2:#2a3a5c;
-      --text:   #edf0f7;
-      --text2:  #8a96b0;
-      --text3:  #5a6480;
-      --blue:   #4f8ef7;
-      --purple: #7c6af5;
-      --green:  #34d399;
-      --amber:  #f59e0b;
-      --pink:   #f472b6;
-      --cyan:   #22d3ee;
-      --radius: 16px;
+      --bg:        #06080e;
+      --bg2:       rgba(15, 20, 32, 0.75);
+      --bg3:       #141c2e;
+      --border:    rgba(255, 255, 255, 0.08);
+      --border2:   rgba(255, 255, 255, 0.16);
+      --text:      #edf2f7;
+      --text2:     #94a3b8;
+      --text3:     #64748b;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --blue:      #3b82f6;
+      --purple:    #8b5cf6;
+      --green:     #10b981;
+      --amber:     #f59e0b;
+      --pink:      #ec4899;
+      --cyan:      #06b6d4;
+      --red:       #ef4444;
+      --radius:    18px;
     }
 
     html { scroll-behavior: smooth }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-sans);
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
     }
 
-    /* ── Topbar ──────────────────────────────────────────────── */
+    /* ── Topbar Navigation ────────────────────────────────────── */
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 32px;
+      padding: 16px 36px;
       border-bottom: 1px solid var(--border);
-      background: var(--bg2);
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      text-decoration: none;
     }
     .logo-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+      display: block;
       flex-shrink: 0;
+      transition: transform .2s ease;
     }
-    .logo-text { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.01em }
-    .logo-sub  { font-size: 11px; color: var(--text3); font-weight: 500; margin-top: 1px }
+    .logo:hover .logo-icon { transform: scale(1.05); }
+
+    .logo-text-area { display: flex; flex-direction: column; }
+    .logo-text {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.02em;
+      line-height: 1.1;
+    }
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
 
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+    }
+    .status-badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 12px;
-      color: var(--text3);
+      font-weight: 600;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 30px;
     }
-    .topbar-right i { font-size: 15px }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse-glow 2s infinite;
+    }
+    @keyframes pulse-glow {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
 
-    /* ── Page content ────────────────────────────────────────── */
+    /* ── Main Container ───────────────────────────────────────── */
     .page {
-      max-width: 1060px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 36px 24px 64px;
+      padding: 32px 24px 72px;
     }
 
+    /* ── Hero Banner ─────────────────────────────────────────── */
+    .hero-container {
+      position: relative;
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px 44px;
+      margin-bottom: 36px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+    }
+    .hero-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      border-radius: 50%;
+    }
 
-    /* Continue learning row (shown only when there's saved progress) */
-    .section-label {
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: .1em;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text2);
+      max-width: 760px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      flex-wrap: wrap;
+    }
+    .stat-item { display: flex; flex-direction: column; gap: 2px; }
+    .stat-num {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: #f1f5f9;
+      letter-spacing: -.02em;
+    }
+    .stat-lbl {
+      font-size: 11.5px;
+      color: var(--text3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ── Continue Learning Row ───────────────────────────────── */
+    .section-label {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--text3);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -118,193 +261,191 @@
     .continue-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 40px;
+      gap: 14px;
+      margin-bottom: 36px;
     }
     .continue-card {
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 18px;
+      border-radius: 14px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
       color: inherit;
-      transition: border-color .15s, background .15s;
+      transition: all .2s ease;
+      backdrop-filter: blur(12px);
     }
-    .continue-card:hover { border-color: var(--border2); background: var(--bg3) }
-    .continue-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0 }
-    .continue-info { flex: 1; min-width: 0 }
-    .continue-subject { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 3px }
-    .continue-topic   { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
-    .continue-hint    { font-size: 10px; color: var(--text3); margin-top: 2px }
-    .continue-arrow   { color: var(--text3); font-size: 15px; flex-shrink: 0 }
+    .continue-card:hover {
+      border-color: var(--border2);
+      background: var(--bg3);
+      transform: translateY(-2px);
+    }
+    .continue-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 10px currentColor; }
+    .continue-info { flex: 1; min-width: 0; }
+    .continue-subject { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+    .continue-topic { font-size: 13.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .continue-hint { font-size: 11px; color: var(--text3); margin-top: 2px; }
+    .continue-arrow { color: var(--text3); font-size: 16px; flex-shrink: 0; transition: transform .2s; }
+    .continue-card:hover .continue-arrow { transform: translateX(4px); color: var(--text); }
 
-    /* ── Subject Grid ────────────────────────────────────────── */
-    .subject-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+    /* ── Controls & Search Toolbar ──────────────────────────── */
+    .controls-wrapper {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .subject-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
+    .search-box {
       position: relative;
-      overflow: hidden;
-      transition: transform .2s, border-color .2s, box-shadow .2s;
-      -webkit-tap-highlight-color: transparent;
+      width: 100%;
     }
-    .subject-card::before {
-      content: '';
+    .search-icon {
       position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity .2s;
-      border-radius: inherit;
-      background: var(--cg);
-    }
-    .subject-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--c);
-      box-shadow: 0 12px 40px rgba(0,0,0,.3);
-    }
-    .subject-card:hover::before { opacity: 1 }
-
-    /* Card accent colours */
-    .card-sd   { --c: var(--blue);   --cg: rgba(79,142,247,.05) }
-    .card-oop  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
-    .card-cn   { --c: var(--cyan);   --cg: rgba(34,211,238,.05) }
-    .card-os   { --c: var(--green);  --cg: rgba(52,211,153,.05) }
-    .card-dsab { --c: var(--amber);  --cg: rgba(245,158,11,.05) }
-    .card-dsaa { --c: var(--pink);   --cg: rgba(244,114,182,.05) }
-    .card-api  { --c: var(--purple); --cg: rgba(124,106,245,.05) }
-    .card-git  { --c: #f05032;   --cg: rgba(240,80,50,.05) }
-    .card-ml   { --c: #a855f7;   --cg: rgba(168,85,247,.05) }
-    .card-genai { --c: #6366f1;   --cg: rgba(99,102,241,.05) }
-    .card-dbms { --c: #f97316;   --cg: rgba(249,115,22,.05) }
-    .card-crypto { --c: #e11d48;   --cg: rgba(225,29,72,.05) }
-    .card-s150  { --c: #34d399;   --cg: rgba(52,211,153,.05) }
-
-    /* Status badge */
-    .card-status {
-      position: absolute;
-      top: 14px; right: 14px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .05em;
-      padding: 3px 9px;
-      border-radius: 20px;
-    }
-    .status-live {
-      background: rgba(52,211,153,.12);
-      color: var(--green);
-      border: 1px solid rgba(52,211,153,.25);
-    }
-    .status-soon {
-      background: rgba(90,100,128,.1);
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
       color: var(--text3);
-      border: 1px solid var(--border);
+      pointer-events: none;
     }
+    .search-box input {
+      width: 100%;
+      background: rgba(15, 21, 32, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 44px 14px 48px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: all .2s ease;
+      backdrop-filter: blur(12px);
+    }
+    .search-box input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+      background: rgba(15, 21, 32, 0.95);
+    }
+    .search-box input::placeholder { color: var(--text3); }
 
-    /* Icon */
-    .card-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
+    .clear-search-btn {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 21px;
-      color: var(--c);
-      background: color-mix(in srgb, var(--c) 13%, transparent);
-      border: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
-      margin-bottom: 14px;
-      transition: transform .2s;
     }
-    .subject-card:hover .card-icon { transform: scale(1.07) }
+    .clear-search-btn:hover { color: var(--text); }
 
-    .card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -.01em }
-    .card-desc  { font-size: 12.5px; color: var(--text2); line-height: 1.6; margin-bottom: 16px }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .card-tags { display: flex; flex-wrap: wrap; gap: 5px }
-    .tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .03em;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: color-mix(in srgb, var(--c) 13%, transparent);
-      color: var(--c);
-      border: 1px solid color-mix(in srgb, var(--c) 20%, transparent);
-    }
-    .card-arrow {
-      font-size: 15px;
+    .kbd-hint {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text3);
-      transition: color .2s, transform .2s;
-    }
-    .subject-card:hover .card-arrow { color: var(--c); transform: translateX(3px) }
-
-    /* ── Scrollbar ───────────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 5px }
-    ::-webkit-scrollbar-track { background: var(--bg) }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px }
-
-    /* ── Responsive ──────────────────────────────────────────── */
-    @media (max-width: 860px) {
-      .subject-grid  { grid-template-columns: repeat(2, 1fr) }
-      .topbar        { padding: 16px 20px }
-    }
-    @media (max-width: 560px) {
-      .subject-grid  { grid-template-columns: 1fr; gap: 10px }
-      .continue-row  { grid-template-columns: 1fr }
-      .page          { padding: 24px 16px 48px }
-      .topbar        { padding: 14px 16px }
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      pointer-events: none;
     }
 
-    /* ── Grid Rearrange System ── */
-    .grid-header-row {
+    .filter-rearrange-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 18px;
+      flex-wrap: wrap;
     }
-    .grid-header-row .section-label {
-      margin-bottom: 0;
-      flex: 1;
+
+    .category-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      -webkit-overflow-scrolling: touch;
     }
+    .category-filter-bar::-webkit-scrollbar { display: none; }
+
+    .cat-pill {
+      background: rgba(15, 21, 32, 0.7);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all .2s ease;
+      outline: none;
+      backdrop-filter: blur(8px);
+    }
+    .cat-pill:hover {
+      background: var(--bg3);
+      border-color: var(--border2);
+      color: var(--text);
+    }
+    .cat-pill.active {
+      background: rgba(59, 130, 246, 0.14);
+      border-color: rgba(59, 130, 246, 0.5);
+      color: #60a5fa;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
+    }
+    .cat-count {
+      font-size: 10px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.08);
+      color: inherit;
+      padding: 2px 7px;
+      border-radius: 12px;
+    }
+    .cat-pill.active .cat-count {
+      background: rgba(59, 130, 246, 0.25);
+    }
+
     .rearrange-actions {
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .rearrange-toggle-btn, .rearrange-reset-btn {
-      background: var(--bg2);
+      background: rgba(15, 21, 32, 0.7);
       border: 1px solid var(--border);
       color: var(--text2);
       font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
+      padding: 8px 16px;
+      border-radius: 25px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all .15s ease;
+      transition: all .2s ease;
       outline: none;
+      backdrop-filter: blur(8px);
     }
     .rearrange-toggle-btn:hover, .rearrange-reset-btn:hover {
       background: var(--bg3);
@@ -312,9 +453,10 @@
       color: var(--text);
     }
     .rearrange-mode-active .rearrange-toggle-btn {
-      background: rgba(52, 211, 153, 0.12);
-      border-color: rgba(52, 211, 153, 0.4);
-      color: var(--green);
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
     }
     .rearrange-reset-btn {
       background: rgba(239, 68, 68, 0.08);
@@ -327,60 +469,208 @@
       color: #ef4444;
     }
 
+    /* ── Subject Grid ────────────────────────────────────────── */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .subject-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
+      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(16px);
+      min-height: 230px;
+    }
+    .subject-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .3s ease;
+      border-radius: inherit;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--cg), transparent 40%);
+      pointer-events: none;
+    }
+    .subject-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--c);
+      box-shadow: 0 16px 40px -10px rgba(0,0,0,0.5), 0 0 20px -5px var(--cg);
+    }
+    .subject-card:hover::before { opacity: 1; }
+
+    /* Theme Accents */
+    .card-sd    { --c: var(--blue);   --cg: rgba(59, 130, 246, 0.15); }
+    .card-oop   { --c: var(--purple); --cg: rgba(139, 92, 246, 0.15); }
+    .card-cn    { --c: var(--cyan);   --cg: rgba(6, 182, 212, 0.15); }
+    .card-os    { --c: var(--green);  --cg: rgba(16, 185, 129, 0.15); }
+    .card-dsab  { --c: var(--amber);  --cg: rgba(245, 158, 11, 0.15); }
+    .card-dsaa  { --c: var(--pink);   --cg: rgba(236, 72, 153, 0.15); }
+    .card-api   { --c: #a855f7;       --cg: rgba(168, 85, 247, 0.15); }
+    .card-git   { --c: #f97316;       --cg: rgba(249, 115, 22, 0.15); }
+    .card-ml    { --c: #6366f1;       --cg: rgba(99, 102, 241, 0.15); }
+    .card-genai { --c: #38bdf8;       --cg: rgba(56, 189, 248, 0.15); }
+    .card-dbms  { --c: #eab308;       --cg: rgba(234, 179, 8, 0.15); }
+    .card-crypto{ --c: #ef4444;       --cg: rgba(239, 68, 68, 0.15); }
+    .card-s150  { --c: #10b981;       --cg: rgba(16, 185, 129, 0.15); }
+
+    /* Card Top Row */
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--c);
+      transition: transform .25s ease, background .25s ease;
+    }
+    .subject-card:hover .card-icon {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .card-status {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+    .status-live {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.01em;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.55;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .card-arrow-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text2);
+      font-size: 15px;
+      flex-shrink: 0;
+      transition: all .2s ease;
+    }
+    .subject-card:hover .card-arrow-btn {
+      background: var(--c);
+      color: #000;
+      border-color: var(--c);
+      transform: translateX(2px);
+    }
+
+    /* Card Rearrange Mode Overlay */
     .rearrange-mode .subject-card {
       cursor: grab;
       user-select: none;
       border-style: dashed !important;
-      border-color: var(--accent) !important;
+      border-color: var(--c) !important;
       background: var(--bg3) !important;
     }
-    .rearrange-mode .subject-card:active {
-      cursor: grabbing;
-    }
+    .rearrange-mode .subject-card:active { cursor: grabbing; }
     .rearrange-mode .subject-card.dragging {
-      opacity: 0.35;
+      opacity: 0.3;
       transform: scale(0.97);
-      border-color: var(--green) !important;
     }
     .drag-badge {
       display: none;
       position: absolute;
-      top: 12px;
-      left: 12px;
-      background: var(--bg2);
+      top: 14px;
+      left: 14px;
+      background: rgba(10, 14, 23, 0.9);
       border: 1px solid var(--border2);
-      color: var(--accent);
+      color: var(--text);
       font-size: 11px;
       font-weight: 700;
-      font-family: var(--mono);
-      padding: 3px 8px;
-      border-radius: 6px;
+      font-family: var(--font-mono);
+      padding: 4px 9px;
+      border-radius: 8px;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       z-index: 10;
       pointer-events: none;
     }
-    .rearrange-mode .drag-badge {
-      display: flex;
-    }
+    .rearrange-mode .drag-badge { display: flex; }
+
     .rearrange-controls {
       display: none;
       position: absolute;
-      bottom: 12px;
-      right: 12px;
+      bottom: 14px;
+      right: 14px;
       z-index: 20;
       gap: 4px;
     }
-    .rearrange-mode .rearrange-controls {
-      display: flex;
-    }
+    .rearrange-mode .rearrange-controls { display: flex; }
     .rearrange-btn-move {
-      background: var(--bg2);
+      background: rgba(15, 21, 32, 0.9);
       border: 1px solid var(--border2);
       color: var(--text);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -389,219 +679,148 @@
       transition: all .15s ease;
     }
     .rearrange-btn-move:hover {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .subject-card.is-hidden { display: none !important; }
+
+    /* ── No Search Results ───────────────────────────────────── */
+    .no-results {
+      grid-column: 1 / -1;
+      padding: 48px 24px;
+      text-align: center;
+      background: var(--bg2);
+      border: 1px dashed var(--border2);
+      border-radius: var(--radius);
+      color: var(--text2);
+    }
+    .no-results i { font-size: 36px; color: var(--text3); margin-bottom: 12px; }
+    .no-results h3 { font-family: var(--font-heading); font-size: 18px; color: var(--text); margin-bottom: 6px; }
+    .no-results p { font-size: 13.5px; color: var(--text3); }
+
+    /* ── Responsive Layout ──────────────────────────────────── */
+    @media (max-width: 960px) {
+      .subject-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-container { padding: 32px; }
+      .hero-title { font-size: 30px; }
+    }
+    @media (max-width: 640px) {
+      .subject-grid { grid-template-columns: 1fr; gap: 12px; }
+      .continue-row { grid-template-columns: 1fr; }
+      .page { padding: 20px 16px 56px; }
+      .topbar { padding: 14px 18px; }
+      .hero-container { display: none; }
+      .filter-rearrange-bar { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Topbar -->
+  <!-- Top Navigation Bar -->
   <header class="topbar">
-    <div class="logo">
-      <img src="./app-icon.png" class="logo-icon" alt="C-Note" width="36" height="36" style="border-radius:10px;display:block;flex-shrink:0">
-      <div>
-        <div class="logo-text">C-Note</div>
-        <div class="logo-sub">Interview Mastery Hub</div>
+    <a href="./index.html" class="logo">
+      <img src="./app-icon.png" class="logo-icon" alt="C-Note Logo" width="40" height="40">
+      <div class="logo-text-area">
+        <span class="logo-text">C-Note</span>
+        <span class="logo-sub">Computer Science &amp; System Design Hub</span>
       </div>
-    </div>
+    </a>
     <div class="topbar-right">
-      <i class="ti ti-bolt"></i> 13 subjects
+      <div class="status-badge-top">
+        <span class="pulse-dot"></span>
+        <span>13 Subjects Live</span>
+      </div>
     </div>
   </header>
 
   <div class="page">
     <h1 class="visually-hidden">C-Note — Computer Science &amp; System Design Study Hub</h1>
 
-    <!-- Continue Learning (shown only when localStorage has data) -->
+    <!-- Hero Header Banner -->
+    <div class="hero-container">
+      <div class="hero-badge">
+        <i class="ti ti-sparkles"></i> INTERVIEW MASTERY PLATFORM
+      </div>
+      <h1 class="hero-title">
+        Master Computer Science &amp; <span class="gradient-text">System Design</span>
+      </h1>
+      <p class="hero-subtitle">
+        Production-grade notes, interactive architecture blueprints, reusable algorithm patterns, and 150 curated LeetCode solutions across 13 core CS domains.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">13</span><span class="stat-lbl">Core Subjects</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num">150</span><span class="stat-lbl">Sheet 150 Problems</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num">12</span><span class="stat-lbl">DSA Modules</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num">10+</span><span class="stat-lbl">HLD Case Studies</span></div>
+      </div>
+    </div>
+
+    <!-- Continue Learning Section -->
     <div id="continueSection" style="display:none">
       <div class="section-label"><i class="ti ti-history"></i> Continue Learning</div>
       <div class="continue-row" id="continueRow"></div>
     </div>
 
-    <!-- Subject Grid Header with Custom Rearrange Options -->
-    <div class="grid-header-row">
-      <div class="section-label"><i class="ti ti-layout-grid"></i> All Subjects</div>
-      <div class="rearrange-actions">
-        <button id="toggleRearrangeBtn" class="rearrange-toggle-btn" onclick="toggleRearrangeMode()">
-          <i class="ti ti-arrows-sort"></i> <span id="rearrangeBtnText">Rearrange Grid</span>
-        </button>
-        <button id="resetOrderBtn" class="rearrange-reset-btn" onclick="resetGridOrder()" style="display: none;">
-          <i class="ti ti-rotate-clockwise"></i> Reset Order
-        </button>
+    <!-- Search & Smart Filter Toolbar -->
+    <div class="controls-wrapper">
+      <div class="search-box">
+        <i class="ti ti-search search-icon"></i>
+        <input type="text" id="globalSearchInput" placeholder="Search subjects, topics, or tags (e.g. Kafka, Dynamic Programming, ACID, REST, Sheet 150)..." oninput="handleGlobalSearch(this.value)">
+        <button id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()" style="display:none;"><i class="ti ti-x"></i></button>
+        <span class="kbd-hint">/</span>
+      </div>
+
+      <div class="filter-rearrange-bar">
+        <div class="category-filter-bar" id="categoryFilterBar">
+          <button class="cat-pill active" data-cat="all" onclick="filterCategory('all')">
+            <i class="ti ti-layout-grid"></i> All <span class="cat-count">13</span>
+          </button>
+          <button class="cat-pill" data-cat="core" onclick="filterCategory('core')">
+            <i class="ti ti-cpu"></i> Core CS <span class="cat-count">6</span>
+          </button>
+          <button class="cat-pill" data-cat="dsa" onclick="filterCategory('dsa')">
+            <i class="ti ti-binary-tree"></i> DSA <span class="cat-count">3</span>
+          </button>
+          <button class="cat-pill" data-cat="ai" onclick="filterCategory('ai')">
+            <i class="ti ti-sparkles"></i> AI &amp; ML <span class="cat-count">2</span>
+          </button>
+          <button class="cat-pill" data-cat="extra" onclick="filterCategory('extra')">
+            <i class="ti ti-tools"></i> Tools &amp; APIs <span class="cat-count">2</span>
+          </button>
+        </div>
+
+        <div class="rearrange-actions">
+          <button id="toggleRearrangeBtn" class="rearrange-toggle-btn" onclick="toggleRearrangeMode()">
+            <i class="ti ti-arrows-sort"></i> <span id="rearrangeBtnText">Rearrange</span>
+          </button>
+          <button id="resetOrderBtn" class="rearrange-reset-btn" onclick="resetGridOrder()" style="display: none;">
+            <i class="ti ti-rotate-clockwise"></i> Reset Order
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- Subject Grid Section -->
+    <div class="section-label"><i class="ti ti-layout-grid"></i> Subjects &amp; Roadmaps</div>
+
     <div class="subject-grid" id="subjectGrid">
 
-      <a href="./subjects/system_design/index.html" class="subject-card card-sd" data-id="sd" data-default-index="0">
+      <!-- DSA — Basics -->
+      <a href="./subjects/dsa_basics/index.html" class="subject-card card-dsab" data-id="dsab" data-default-index="0" data-category="dsa" data-keywords="dsa basics data structures algorithms arrays linked list stack queue hash table binary search linear search big o complexity recursion space time">
         <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
         <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
         </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-topology-ring"></i></div>
-        <div class="card-title">System Design</div>
-        <div class="card-desc">Distributed consensus, LSM/B+ Trees, MVCC, Caching, Messaging (Kafka/SQS), Security/OAuth2, Observability, AWS, & 10 HLD Case Studies.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">HLD</span>
-            <span class="tag">Distributed Systems</span>
-            <span class="tag">10 Case Studies</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-binary-tree"></i></div>
+          <span class="card-status status-live">LIVE</span>
         </div>
-      </a>
-
-      <a href="./subjects/oops/index.html" class="subject-card card-oop" data-id="oops" data-default-index="1">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-box"></i></div>
-        <div class="card-title">OOPs</div>
-        <div class="card-desc">Classes, objects, inheritance, polymorphism, encapsulation, and abstraction with C++ examples.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">4 Pillars</span>
-            <span class="tag">C++</span>
-            <span class="tag">LLD</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/api_design/index.html" class="subject-card card-api" data-id="api" data-default-index="2">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-api"></i></div>
-        <div class="card-title">API Design</div>
-        <div class="card-desc">REST, GraphQL, gRPC, versioning, rate limiting, pagination, auth, and OpenAPI specs.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">REST</span>
-            <span class="tag">GraphQL</span>
-            <span class="tag">gRPC</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/computer_networks/index.html" class="subject-card card-cn" data-id="cn" data-default-index="3">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-network"></i></div>
-        <div class="card-title">Computer Networks</div>
-        <div class="card-desc">OSI model, TCP/IP, DNS, HTTP, TLS, routing, congestion control, and WebSockets.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">TCP/IP</span>
-            <span class="tag">HTTP/S</span>
-            <span class="tag">DNS</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/git_github/index.html" class="subject-card card-git" data-id="git" data-default-index="4">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-brand-git"></i></div>
-        <div class="card-title">Git & GitHub</div>
-        <div class="card-desc">Version control, tracking history, staging area, branching, merging, PRs, pull/push, conflicts, and resetting.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">Git</span>
-            <span class="tag">GitHub</span>
-            <span class="tag">VCS</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/operating_systems/index.html" class="subject-card card-os" data-id="os" data-default-index="5">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-cpu"></i></div>
-        <div class="card-title">Operating Systems</div>
-        <div class="card-desc">Processes, threads, scheduling algorithms, memory management, deadlocks, and file systems.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">Threads</span>
-            <span class="tag">Memory</span>
-            <span class="tag">Deadlocks</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml" data-id="ml" data-default-index="6">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-brain"></i></div>
-        <div class="card-title">Machine Learning & AI</div>
-        <div class="card-desc">Supervised & unsupervised learning, evaluation metrics, statistical significance, feature engineering, and pipeline design.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">AI / ML</span>
-            <span class="tag">Statistics</span>
-            <span class="tag">Pipelines</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/genai_fluency/index.html" class="subject-card card-genai" data-id="genai" data-default-index="7">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-sparkles"></i></div>
-        <div class="card-title">GenAI Fluency</div>
-        <div class="card-desc">Comprehensive reference covering GenAI concepts, Transformers, RAG architecture, LLM APIs, Agents, optimizations, and interview prep.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">Transformers</span>
-            <span class="tag">RAG & Agents</span>
-            <span class="tag">LLMOps</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/dsa_basics/index.html" class="subject-card card-dsab" data-id="dsab" data-default-index="8">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-binary-tree"></i></div>
         <div class="card-title">DSA — Basics</div>
         <div class="card-desc">Arrays, linked lists, stacks, queues, hashmaps, sorting, searching, and Big O analysis.</div>
         <div class="card-footer">
@@ -610,18 +829,21 @@
             <span class="tag">Trees</span>
             <span class="tag">Sorting</span>
           </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
         </div>
       </a>
 
-      <a href="./subjects/dsa_advanced/index.html" class="subject-card card-dsaa" data-id="dsaa" data-default-index="9">
+      <!-- DSA — Advanced -->
+      <a href="./subjects/dsa_advanced/index.html" class="subject-card card-dsaa" data-id="dsaa" data-default-index="1" data-category="dsa" data-keywords="dsa advanced dynamic programming dp graphs dijkstra segment tree trie backtracking union find segment tree max flow min cut greedy bellman ford">
         <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
         <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
         </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-topology-star-ring"></i></div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-topology-star-ring"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
         <div class="card-title">DSA — Advanced</div>
         <div class="card-desc">Dynamic programming, graphs, segment trees, tries, backtracking, and competitive patterns.</div>
         <div class="card-footer">
@@ -630,58 +852,21 @@
             <span class="tag">Graphs</span>
             <span class="tag">Tries</span>
           </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
         </div>
       </a>
 
-      <a href="./subjects/dbms/index.html" class="subject-card card-dbms" data-id="dbms" data-default-index="10">
+      <!-- Sheet 150 -->
+      <a href="./subjects/Sheet 150/index.html" class="subject-card card-s150" data-id="s150" data-default-index="2" data-category="dsa" data-keywords="sheet 150 neetcode 150 leetcode dsa recursion backtracking trees graphs binary search dynamic programming intervals greedy tries bit manipulation 12 modules">
         <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
         <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
         </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-database"></i></div>
-        <div class="card-title">DBMS</div>
-        <div class="card-desc">Relational databases, SQL queries, normalization, indexing, transaction ACID properties, and concurrency control.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">SQL</span>
-            <span class="tag">Indexing</span>
-            <span class="tag">ACID</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-list-numbers"></i></div>
+          <span class="card-status status-live">LIVE</span>
         </div>
-      </a>
-
-      <a href="./subjects/cryptography/index.html" class="subject-card card-crypto" data-id="crypto" data-default-index="11">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-lock"></i></div>
-        <div class="card-title">Cryptography</div>
-        <div class="card-desc">End-to-end encryption lifecycles, asymmetric/symmetric ciphers, key management, socket security, and threat modeling.</div>
-        <div class="card-footer">
-          <div class="card-tags">
-            <span class="tag">E2EE</span>
-            <span class="tag">AES-GCM</span>
-            <span class="tag">Roadmap</span>
-          </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
-        </div>
-      </a>
-
-      <a href="./subjects/Sheet 150/index.html" class="subject-card card-s150" data-id="s150" data-default-index="12">
-        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
-        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left / Earlier"><i class="ti ti-arrow-left"></i></button>
-          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right / Later"><i class="ti ti-arrow-right"></i></button>
-        </div>
-        <span class="card-status status-live">LIVE</span>
-        <div class="card-icon"><i class="ti ti-list-numbers"></i></div>
         <div class="card-title">Sheet 150</div>
         <div class="card-desc">All 150 NeetCode problems with problem statements, naive approaches, optimized solutions, and complexity analysis across 12 modules.</div>
         <div class="card-footer">
@@ -690,351 +875,337 @@
             <span class="tag">12 Modules</span>
             <span class="tag">LeetCode</span>
           </div>
-          <i class="ti ti-arrow-right card-arrow"></i>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
         </div>
       </a>
 
-    </div>
+      <!-- OOPs -->
+      <a href="./subjects/oops/index.html" class="subject-card card-oop" data-id="oops" data-default-index="3" data-category="core" data-keywords="oops object oriented programming cpp c++ classes inheritance polymorphism encapsulation abstraction solid principles lld design patterns">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-box"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">OOPs</div>
+        <div class="card-desc">Classes, objects, inheritance, polymorphism, encapsulation, and abstraction with C++ examples.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">4 Pillars</span>
+            <span class="tag">C++</span>
+            <span class="tag">LLD</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
 
+      <!-- Operating Systems -->
+      <a href="./subjects/operating_systems/index.html" class="subject-card card-os" data-id="os" data-default-index="4" data-category="core" data-keywords="operating systems os threads processes scheduling cpu virtual memory paging deadlocks mutex semaphore file systems inter process communication">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-cpu"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">Operating Systems</div>
+        <div class="card-desc">Processes, threads, scheduling algorithms, memory management, deadlocks, and file systems.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">Threads</span>
+            <span class="tag">Memory</span>
+            <span class="tag">Deadlocks</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Computer Networks -->
+      <a href="./subjects/computer_networks/index.html" class="subject-card card-cn" data-id="cn" data-default-index="5" data-category="core" data-keywords="computer networks osi model tcp ip dns http https tls routing sockets congestion control web sockets wire protocol">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-network"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">Computer Networks</div>
+        <div class="card-desc">OSI model, TCP/IP, DNS, HTTP, TLS, routing, congestion control, and WebSockets.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">TCP/IP</span>
+            <span class="tag">HTTP/S</span>
+            <span class="tag">DNS</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- DBMS -->
+      <a href="./subjects/dbms/index.html" class="subject-card card-dbms" data-id="dbms" data-default-index="6" data-category="core" data-keywords="dbms database management systems sql relational indexing b-tree acid transactions isolation levels normalization concurrency control query optimization postgres mysql">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-database"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">DBMS</div>
+        <div class="card-desc">Relational databases, SQL queries, normalization, indexing, transaction ACID properties, and concurrency control.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">SQL</span>
+            <span class="tag">Indexing</span>
+            <span class="tag">ACID</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- System Design -->
+      <a href="./subjects/system_design/index.html" class="subject-card card-sd" data-id="sd" data-default-index="7" data-category="core" data-keywords="system design hld lsd kafka load balancer caching cap sharding replication consistent hashing rate limiter microservices redis sqs autoscale zero downtime">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-topology-ring"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">System Design</div>
+        <div class="card-desc">Distributed consensus, LSM/B+ Trees, MVCC, Caching, Messaging (Kafka/SQS), Security/OAuth2, Observability, AWS, &amp; 10 HLD Case Studies.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">HLD</span>
+            <span class="tag">Distributed Systems</span>
+            <span class="tag">10 Case Studies</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Cryptography -->
+      <a href="./subjects/cryptography/index.html" class="subject-card card-crypto" data-id="crypto" data-default-index="8" data-category="core" data-keywords="cryptography encryption aes rsa e2ee asymmetric symmetric hash key management diffie hellman tls digital signature pki security threat model">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-lock"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">Cryptography</div>
+        <div class="card-desc">End-to-end encryption lifecycles, asymmetric/symmetric ciphers, key management, socket security, and threat modeling.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">E2EE</span>
+            <span class="tag">AES-GCM</span>
+            <span class="tag">Roadmap</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Machine Learning & AI -->
+      <a href="./subjects/machine_learning_ai/index.html" class="subject-card card-ml" data-id="ml" data-default-index="9" data-category="ai" data-keywords="machine learning ai artificial intelligence supervised unsupervised regression classification neural networks feature engineering statistics cross validation model evaluation">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-brain"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">Machine Learning &amp; AI</div>
+        <div class="card-desc">Supervised &amp; unsupervised learning, evaluation metrics, statistical significance, feature engineering, and pipeline design.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">AI / ML</span>
+            <span class="tag">Statistics</span>
+            <span class="tag">Pipelines</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- GenAI Fluency -->
+      <a href="./subjects/genai_fluency/index.html" class="subject-card card-genai" data-id="genai" data-default-index="10" data-category="ai" data-keywords="genai generative ai llm transformers rag retrieval augmented generation prompt engineering vector database embeddings fine tuning agents attention mechanism">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-sparkles"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">GenAI Fluency</div>
+        <div class="card-desc">Comprehensive reference covering GenAI concepts, Transformers, RAG architecture, LLM APIs, Agents, optimizations, and interview prep.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">Transformers</span>
+            <span class="tag">RAG &amp; Agents</span>
+            <span class="tag">LLMOps</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- API Design -->
+      <a href="./subjects/api_design/index.html" class="subject-card card-api" data-id="api" data-default-index="11" data-category="extra" data-keywords="api design rest graphql grpc openapi swagger rate limiting versioning authentication jwt pagination idempotency">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-api"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">API Design</div>
+        <div class="card-desc">REST, GraphQL, gRPC, versioning, rate limiting, pagination, auth, and OpenAPI specs.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">REST</span>
+            <span class="tag">GraphQL</span>
+            <span class="tag">gRPC</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Git & GitHub -->
+      <a href="./subjects/git_github/index.html" class="subject-card card-git" data-id="git" data-default-index="12" data-category="extra" data-keywords="git github version control vcs branching merging pull request rebase stash cherry pick commit reflog conflicts">
+        <div class="drag-badge"><i class="ti ti-grip-vertical"></i> Drag</div>
+        <div class="rearrange-controls" onclick="event.preventDefault(); event.stopPropagation();">
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, -1)" title="Move Left"><i class="ti ti-arrow-left"></i></button>
+          <button type="button" class="rearrange-btn-move" onclick="moveCard(this, 1)" title="Move Right"><i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="card-top">
+          <div class="card-icon"><i class="ti ti-brand-git"></i></div>
+          <span class="card-status status-live">LIVE</span>
+        </div>
+        <div class="card-title">Git &amp; GitHub</div>
+        <div class="card-desc">Version control, tracking history, staging area, branching, merging, PRs, pull/push, conflicts, and resetting.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">VCS</span>
+          </div>
+          <div class="card-arrow-btn"><i class="ti ti-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- No Results State -->
+      <div id="noResults" class="no-results" style="display:none;">
+        <i class="ti ti-search-off"></i>
+        <h3>No subjects match your search</h3>
+        <p>Try searching for "Kafka", "Dynamic Programming", "SQL", "ACID", or "Sheet 150"</p>
+      </div>
+
+    </div>
   </div>
 
   <script>
-    // Continue Learning — read localStorage
-    const SUBJECTS = [
-      {
-        key: 'sd_topic',
-        href: './subjects/system_design/index.html',
-        name: 'System Design',
-        color: '#4f8ef7',
-        labels: {
-          intro:'Introduction', scaling:'Scaling', latency:'Latency Numbers', cap:'CAP Theorem',
-          lb:'Load Balancing', hashing:'Consistent Hashing', caching:'Caching',
-          msgqueue:'Message Queues', pubsub:'Pub / Sub', sharding:'DB Sharding',
-          replication:'Replication', cdn:'CDN', microservices:'Microservices',
-          eventdriven:'Event-Driven Arch', spof:'Single Point of Failure',
-          api:'API Design', dbinternals:'DB Internals', nosqlsql:'SQL vs NoSQL',
-          location:'Location Systems', instagram:'Instagram', whatsapp:'WhatsApp',
-          youtube:'YouTube', tinder:'Tinder', netflix:'Netflix',
-          estimation:'Back-of-Envelope', interview:'Interview Tips'
-        }
-      },
-      {
-        key: 'oops_topic',
-        href: './subjects/oops/index.html',
-        name: 'OOP',
-        color: '#7c6af5',
-        labels: {
-          intro:'Overview', classes:'Classes & Objects', access:'Access Modifiers',
-          encap:'Encapsulation', ctor:'Constructors', dtor:'Destructors',
-          ptr:'this Pointer', inh:'Inheritance', poly:'Polymorphism',
-          abs:'Abstraction', static:'Static Keyword', friend:'Friend',
-          pillars:'4 Pillars', copy:'Deep vs Shallow'
-        }
-      },
-      {
-        key: 'api_topic',
-        href: './subjects/api_design/index.html',
-        name: 'API Design',
-        color: '#7c6af5',
-        labels: {
-          intro:'Overview', styles:'API Styles', principles:'4 Key Principles',
-          netstack:'Network Stack', http:'HTTP / HTTPS', tcpudp:'TCP vs UDP',
-          ws:'WebSockets', amqp:'AMQP', grpc:'gRPC', choose:'Choosing a Protocol',
-          rest:'RESTful APIs', methods:'HTTP Methods', status:'Status Codes',
-          graphql:'GraphQL', versioning:'Versioning', pagination:'Pagination',
-          caching:'Caching', ratelimit:'Rate Limiting', gateway:'API Gateway',
-          webhooks:'Webhooks', openapi:'OpenAPI / Swagger',
-          authn:'Authentication', authz:'Authorization', security:'Security', checklist:'Design Checklist'
-        }
-      },
-      {
-        key: 'cn_topic',
-        href: './subjects/computer_networks/index.html',
-        name: 'Computer Networks',
-        color: '#5ee0c0',
-        labels: {
-          intro: 'What is a Network',
-          protocols: 'Protocols & Core Terms',
-          topology: 'Network Topologies',
-          structure: 'LAN / MAN / WAN & Structure',
-          osi: 'OSI Model — Overview',
-          l7: 'Layer 7 — Application',
-          l6: 'Layer 6 — Presentation',
-          l5: 'Layer 5 — Session',
-          l4: 'Layer 4 — Transport',
-          l3: 'Layer 3 — Network',
-          l2: 'Layer 2 — Data Link',
-          l1: 'Layer 1 — Physical',
-          tcpip: 'TCP/IP Model',
-          http: 'HTTP & the Web',
-          dns: 'DNS Resolution',
-          email: 'Email — SMTP/POP3/IMAP',
-          tcpudp: 'TCP vs UDP, Deep Dive',
-          ip: 'IP Addressing & Subnetting',
-          nat: 'NAT & Private Addressing',
-          datalink: 'MAC, ARP & Framing',
-          devices: 'Networking Devices',
-          commands: 'Command-Line Reference',
-          bits: 'Bits, Bytes & Number Reference'
-        }
-      },
-      {
-        key: 'git_topic',
-        href: './subjects/git_github/index.html',
-        name: 'Git & GitHub',
-        color: '#f05032',
-        labels: {
-          intro: 'Version Control Systems',
-          overview: 'Git vs GitHub',
-          setup: 'Installation & Configuration',
-          lifecycle: 'Git Lifecycle & Status',
-          clone: 'Repository & Cloning',
-          add: 'Staging Area & Adding',
-          commit: 'Committing Changes',
-          remote: 'Initializing & Remotes',
-          push: 'Pushing Code',
-          branch: 'Branching & Checkout',
-          merge: 'Merging & PRs',
-          pull: 'Pulling & Syncing',
-          conflict: 'Resolving Conflicts',
-          reset: 'Undoing Changes',
-          fork: 'Forking Repositories'
-        }
-      },
-      {
-        key: 'ml_topic',
-        href: './subjects/machine_learning_ai/index.html',
-        name: 'Machine Learning & AI',
-        color: '#a855f7',
-        labels: {
-          data_modeling: 'Data-Driven Modeling',
-          train_test: 'Train/Test Protocols',
-          error_analysis: 'Error Analysis',
-          stat_significance: 'Statistical Significance',
-          problem_formulation: 'Problem Formulation',
-          data_collection: 'Data Collection & Annotation',
-          modeling_approaches: 'Modeling Approaches',
-          evaluation_metrics: 'Model Evaluation Metrics',
-          common_pitfalls: 'Common Pitfalls',
-          ai_ethics: 'AI Ethics & Responsible AI',
-          ml_pipeline: 'End-to-End ML Pipeline',
-          interview_scenarios: 'Scenario-Based Interview Questions'
-        }
-      },
-      {
-        key: 'genai_topic',
-        href: './subjects/genai_fluency/index.html',
-        name: 'GenAI Fluency',
-        color: '#6366f1',
-        labels: {
-          intro: 'Roadmap & Goals',
-          ai_basics: 'Module 1: AI Basics',
-          trad_ml: 'Module 2: Traditional ML',
-          nlp_basics: 'Module 3: NLP Basics',
-          llm_basics: 'Module 4: LLM Basics',
-          l1_qa: 'L1: Interview Q&A',
-          transformer: 'Transformer Architecture',
-          gpt_bert: 'GPT vs BERT Deep Dive',
-          embeddings: 'Embeddings & Vector Search',
-          rag_pipeline: 'RAG Architecture & Pipeline',
-          prompt_eng: 'Prompt Engineering & System Prompts',
-          fine_tuning: 'Fine-Tuning, LoRA & PEFT',
-          l2_qa: 'L2: Interview Q&A',
-          ai_arch: 'AI Architecture & Latency',
-          agents: 'Agents & Multi-Agent Systems',
-          vector_dbs: 'Vector DBs & Indexing',
-          gen_models: 'Diffusion & GANs',
-          llm_opt: 'LLM Optimization',
-          eval_prod: 'Model Evaluation & Production',
-          l3_qa: 'L3: Interview Q&A'
-        }
-      },
-      {
-        key: 'os_topic',
-        href: './subjects/operating_systems/index.html',
-        name: 'Operating Systems',
-        color: '#34d399',
-        labels: {
-          basic_intro: 'Basic Introduction',
-          process_scheduling: 'Process Scheduling',
-          process_synchronization: 'Process Synchronization',
-          deadlocks_threads: 'Deadlocks & Threads',
-          memory_management: 'Memory Management',
-          disk_scheduling: 'Disk Scheduling',
-          unix_commands: 'UNIX Commands',
-          file_management: 'File Management & Security'
-        }
-      },
-      {
-        key: 'dbms_topic',
-        href: './subjects/dbms/index.html',
-        name: 'DBMS',
-        color: '#f97316',
-        labels: {
-          intro: 'Introduction to DBMS',
-          er_model: 'ER Model',
-          relational_model: 'Relational Algebra & Calculus',
-          sql: 'SQL Masterclass',
-          nosql: 'NoSQL Databases',
-          normalization: 'Normalization',
-          transactions: 'Transaction & Concurrency',
-          indexing: 'Indexing',
-          interview: 'Interview Prep'
-        }
-      },
-      {
-        key: 'dsab_topic',
-        href: './subjects/dsa_basics/index.html',
-        name: 'DSA Basics',
-        color: '#f59e0b',
-        labels: {
-          intro: 'Overview',
-          analysis: 'Analysis of Algorithms',
-          math: 'Mathematics',
-          list: 'List',
-          recursion: 'Recursion',
-          searching: 'Searching',
-          sorting: 'Sorting',
-          hashing: 'Hashing',
-          set: 'Set',
-          dictionary: 'Dictionary',
-          string: 'String (Immutable)',
-          singly_linked: 'Linked List',
-          circular_linked: 'Circular Linked List',
-          doubly_linked: 'Doubly Linked List',
-          stack: 'Stack',
-          queue: 'Queue',
-          deque: 'Deque',
-          trees: 'Tree Data Structures',
-          bst: 'Binary Search Tree',
-          heap: 'Binary Heap'
-        }
-      },
-      {
-        key: 'dsaa_topic',
-        href: './subjects/dsa_advanced/index.html',
-        name: 'DSA Advanced',
-        color: '#f472b6',
-        labels: {
-          intro: 'Overview',
-          bit_magic: 'Bit Magic',
-          list: 'List',
-          recursion: 'Recursion',
-          searching: 'Searching',
-          matrix: 'Matrix',
-          sorting: 'Sorting',
-          hashing: 'Hashing',
-          string: 'String',
-          linked_list: 'LinkedList',
-          stack: 'Stack',
-          infix_postfix: 'Infix, Postfix, Prefix',
-          queue_deque: 'Queue & Deque',
-          trees: 'Tree Data Structure',
-          bst: 'Binary Search Tree',
-          heap: 'Heap',
-          graph: 'Graph Data Structure',
-          greedy: 'Greedy Algorithms',
-          backtracking: 'Backtracking',
-          dp: 'Dynamic Programming',
-          trie: 'Trie Data Structure',
-          disjoint_set: 'Disjoint Set',
-          segment_tree: 'Segment Tree',
-          binary_indexed_tree: 'Binary Indexed Tree'
-        }
-      },
-      {
-        key: 'crypto_topic',
-        href: './subjects/cryptography/index.html',
-        name: 'Cryptography',
-        color: '#e11d48',
-        labels: {
-          intro: 'High-Level Overview',
-          lifecycle: 'E2E Encryption Flow',
-          files: 'File Level Breakdown',
-          sockets: 'Socket Architecture',
-          crypto_analysis: 'Cryptographic Analysis',
-          threat_model: 'Threat Model Evaluation',
-          journey: 'Message Journey',
-          weaknesses: 'Weaknesses & Refactoring',
-          diagrams: 'Architecture Diagrams',
-          ch1: '01. Fundamentals',
-          ch2: '02. Goals of Cryptography',
-          ch3: '03. Classical Cryptography',
-          ch4: '04. Symmetric Key Crypto',
-          ch5: '05. Asymmetric Crypto',
-          ch6: '06. Hash Functions',
-          ch7: '07. Digital Signatures',
-          ch8: '08. Certificates & PKI',
-          ch9: '09. TLS / SSL',
-          ch10: '10. Message Auth Code',
-          ch11: '11. Key Management',
-          ch12: '12. Diffie-Hellman',
-          ch13: '13. Elliptic Curves (ECC)',
-          ch14: '14. Password Security',
-          ch15: '15. Cryptographic Attacks',
-          ch16: '16. Random Numbers (RNG)',
-          ch17: '17. Modern Applications'
-        }
-      },
-      {
-        key: 's150_topic',
-        href: './subjects/Sheet 150/index.html',
-        name: 'Sheet 150',
-        color: '#34d399',
-        labels: {
-          m01: 'Recursion & Backtracking',
-          m02: 'Trees & Graphs',
-          m03: 'Dynamic Programming',
-          m04: 'Arrays, Strings & Linked Lists',
-          m05: 'Heap & Hash',
-          m06: 'Stack & Queue',
-          m07: 'Searching & Sorting',
-          m08: 'Tries',
-          m09: 'Greedy',
-          m10: 'Intervals',
-          m11: 'Math & Geometry',
-          m12: 'Bit Manipulation'
-        }
+    // ── Mouse Spotlight Cursor Effect on Cards ──
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.subject-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // ── Global Search Filter Logic ──
+    let searchQuery = '';
+
+    function handleGlobalSearch(query) {
+      searchQuery = query.trim().toLowerCase();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) clearBtn.style.display = searchQuery ? 'flex' : 'none';
+      applyFilters();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('globalSearchInput');
+      if (input) {
+        input.value = '';
+        handleGlobalSearch('');
       }
-    ];
+    }
 
-    function buildContinue() {
-      const cards = [];
-      SUBJECTS.forEach(s => {
-        let topicId;
-        let updateTime = 0;
-        try {
-          topicId = localStorage.getItem(s.key);
-          const t = localStorage.getItem(s.key + '_time');
-          if (t) updateTime = parseInt(t, 10);
-        } catch(e) {}
-        if (!topicId) return;
-        const label = s.labels[topicId] || topicId;
-        cards.push({ href: s.href, name: s.name, color: s.color, topic: label, time: updateTime });
+    // ── Category Filter System ──
+    let currentCategory = 'all';
+
+    function initCategoryFilter() {
+      try {
+        const savedCat = localStorage.getItem('cnote_selected_category') || 'all';
+        filterCategory(savedCat);
+      } catch(e) {
+        filterCategory('all');
+      }
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      try {
+        localStorage.setItem('cnote_selected_category', cat);
+      } catch(e) {}
+
+      const pills = document.querySelectorAll('.cat-pill');
+      pills.forEach(p => {
+        if (p.getAttribute('data-cat') === cat) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
       });
-      if (!cards.length) return;
+      applyFilters();
+    }
 
-      // Sort by updateTime descending, then slice to get only the 2 most recent
-      cards.sort((a, b) => b.time - a.time);
-      const recentCards = cards.slice(0, 2);
+    function applyFilters() {
+      const cards = document.querySelectorAll('.subject-card');
+      let visibleCount = 0;
 
-      document.getElementById('continueSection').style.display = '';
-      const row = document.getElementById('continueRow');
-      row.innerHTML = ''; // Clear existing cards before rendering
-      recentCards.forEach(c => {
-        const el = document.createElement('a');
-        el.href = c.href;
-        el.className = 'continue-card';
-        el.innerHTML = `
-          <div class="continue-dot" style="background:${c.color}"></div>
-          <div class="continue-info">
-            <div class="continue-subject" style="color:${c.color}">${c.name}</div>
-            <div class="continue-topic">${c.topic}</div>
-            <div class="continue-hint">Continue where you left off</div>
-          </div>
-          <i class="ti ti-arrow-right continue-arrow"></i>`;
-        row.appendChild(el);
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        const cardTitle = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+        const cardDesc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+        const keywords = card.getAttribute('data-keywords') || '';
+
+        const matchesCat = (currentCategory === 'all' || cardCat === currentCategory);
+        const matchesQuery = !searchQuery || 
+                             cardTitle.includes(searchQuery) || 
+                             cardDesc.includes(searchQuery) || 
+                             keywords.includes(searchQuery);
+
+        if (matchesCat && matchesQuery) {
+          card.classList.remove('is-hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('is-hidden');
+        }
       });
+
+      const noResults = document.getElementById('noResults');
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
     }
 
     // ── Grid Rearrange System ──
@@ -1043,7 +1214,15 @@
     function initGridOrder() {
       const grid = document.getElementById('subjectGrid');
       if (!grid) return;
+      const GRID_VERSION = 'v2'; // bump this whenever default order changes
       try {
+        const savedVersion = localStorage.getItem('cnote_grid_version');
+        if (savedVersion !== GRID_VERSION) {
+          // Default order changed — clear old saved order
+          localStorage.removeItem('cnote_grid_order');
+          localStorage.setItem('cnote_grid_version', GRID_VERSION);
+          return; // use HTML order as-is
+        }
         const savedOrderStr = localStorage.getItem('cnote_grid_order');
         if (savedOrderStr) {
           const savedOrder = JSON.parse(savedOrderStr);
@@ -1087,7 +1266,7 @@
       } else {
         grid.classList.remove('rearrange-mode');
         body.classList.remove('rearrange-mode-active');
-        btnText.textContent = 'Rearrange Grid';
+        btnText.textContent = 'Rearrange';
         btn.querySelector('i').className = 'ti ti-arrows-sort';
         resetBtn.style.display = 'none';
         makeCardsDraggable(false);
@@ -1172,7 +1351,7 @@
     }
 
     function getDragAfterElement(container, x, y) {
-      const draggableElements = [...container.querySelectorAll('.subject-card:not(.dragging)')];
+      const draggableElements = [...container.querySelectorAll('.subject-card:not(.dragging):not(.is-hidden)')];
 
       return draggableElements.reduce((closest, child) => {
         const box = child.getBoundingClientRect();
@@ -1188,8 +1367,271 @@
       }, { distance: Number.POSITIVE_INFINITY }).element;
     }
 
+    // ── Continue Learning Data ──
+    const SUBJECTS = [
+      {
+        key: 'sd_topic',
+        href: './subjects/system_design/index.html',
+        name: 'System Design',
+        color: '#3b82f6',
+        labels: {
+          intro:'Introduction', scaling:'Scaling', latency:'Latency Numbers', cap:'CAP Theorem',
+          lb:'Load Balancing', hashing:'Consistent Hashing', caching:'Caching',
+          msgqueue:'Message Queues', pubsub:'Pub / Sub', sharding:'DB Sharding',
+          replication:'Replication', cdn:'CDN', microservices:'Microservices',
+          eventdriven:'Event-Driven Arch', spof:'Single Point of Failure',
+          api:'API Design', dbinternals:'DB Internals', nosqlsql:'SQL vs NoSQL',
+          location:'Location Systems', instagram:'Instagram', whatsapp:'WhatsApp',
+          youtube:'YouTube', 'rate-limiter':'Rate Limiter', 'url-shortener':'URL Shortener',
+          newsfeed:'News Feed', 'search-autocomplete':'Search Autocomplete',
+          payment:'Payment System', notification:'Notification Service'
+        }
+      },
+      {
+        key: 'oop_topic',
+        href: './subjects/oops/index.html',
+        name: 'OOPs',
+        color: '#8b5cf6',
+        labels: {
+          intro: '01. Fundamentals & Paradigm',
+          classes: '02. Classes, Objects & Lifecycle',
+          encapsulation: '03. Encapsulation & Access',
+          inheritance: '04. Inheritance & Vtables',
+          polymorphism: '05. Polymorphism & Binding',
+          abstraction: '06. Abstraction & Interfaces',
+          solid: '07. SOLID Principles',
+          design_patterns: '08. Creational Patterns',
+          structural_patterns: '09. Structural Patterns',
+          behavioral_patterns: '10. Behavioral Patterns',
+          memory_cpp: '11. C++ Object Memory Layout',
+          concurrency_oop: '12. Object-Oriented Concurrency',
+          lld_case_studies: '13. LLD Case Studies'
+        }
+      },
+      {
+        key: 'cn_topic',
+        href: './subjects/computer_networks/index.html',
+        name: 'Computer Networks',
+        color: '#06b6d4',
+        labels: {
+          osi: 'OSI & TCP/IP Stack',
+          ip_routing: 'IP Addressing & Subnetting',
+          tcp_udp: 'TCP vs UDP Deep-Dive',
+          dns: 'DNS Architecture',
+          http: 'HTTP/1.1 to HTTP/3',
+          tls: 'TLS 1.3 Handshake',
+          websockets: 'WebSockets & Long Polling',
+          network_sec: 'Firewalls, NAT, VPNs',
+          performance: 'CDN & BGP Routing'
+        }
+      },
+      {
+        key: 'os_topic',
+        href: './subjects/operating_systems/index.html',
+        name: 'Operating Systems',
+        color: '#10b981',
+        labels: {
+          processes: 'Process vs Thread Memory',
+          scheduling: 'CPU Scheduling Algorithms',
+          synchronization: 'Mutex, Semaphore & Lock Free',
+          deadlocks: 'Deadlock Detection & Banker\'s',
+          virtual_memory: 'Paging & TLB Architecture',
+          storage: 'Page Replacement & Disk I/O'
+        }
+      },
+      {
+        key: 'dsab_topic',
+        href: './subjects/dsa_basics/index.html',
+        name: 'DSA — Basics',
+        color: '#f59e0b',
+        labels: {
+          bigo: 'Big O Time & Space',
+          arrays: 'Arrays & Dynamic Strings',
+          linkedlist: 'Singly & Doubly Linked List',
+          stacks: 'Stack Applications & Monotonic',
+          queues: 'Queues & Circular Buffers',
+          hashing: 'Hash Table Collisions'
+        }
+      },
+      {
+        key: 'dsaa_topic',
+        href: './subjects/dsa_advanced/index.html',
+        name: 'DSA — Advanced',
+        color: '#ec4899',
+        labels: {
+          trees: 'Binary Search Trees & AVL',
+          heaps: 'Min/Max Heap & Priority Queue',
+          graphs: 'BFS, DFS & Topological Sort',
+          dp: '1D & 2D Dynamic Programming',
+          tries: 'Prefix Tries & Autocomplete',
+          segment_trees: 'Segment & Fenwick Trees'
+        }
+      },
+      {
+        key: 'api_topic',
+        href: './subjects/api_design/index.html',
+        name: 'API Design',
+        color: '#a855f7',
+        labels: {
+          rest: 'RESTful API Conventions',
+          graphql: 'GraphQL Schema & N+1 Problem',
+          grpc: 'gRPC Protobuf Serialization',
+          versioning: 'API Versioning Strategies',
+          rate_limit: 'Token Bucket & Leaky Bucket',
+          auth: 'OAuth2, JWT & Mutual TLS'
+        }
+      },
+      {
+        key: 'git_topic',
+        href: './subjects/git_github/index.html',
+        name: 'Git & GitHub',
+        color: '#f97316',
+        labels: {
+          objects: 'Git DAG Objects & Blob Layout',
+          branching: 'Branching & Merge Conflicts',
+          rebase: 'Interactive Rebase & Reflog',
+          actions: 'GitHub Actions CI/CD'
+        }
+      },
+      {
+        key: 'ml_topic',
+        href: './subjects/machine_learning_ai/index.html',
+        name: 'Machine Learning & AI',
+        color: '#6366f1',
+        labels: {
+          supervised: 'Supervised Learning & Regression',
+          unsupervised: 'Clustering & Dimensionality',
+          eval: 'Precision, Recall, ROC-AUC',
+          pipelines: 'Feature Engineering & Leakage'
+        }
+      },
+      {
+        key: 'genai_topic',
+        href: './subjects/genai_fluency/index.html',
+        name: 'GenAI Fluency',
+        color: '#38bdf8',
+        labels: {
+          transformers: 'Self-Attention & Transformer Arch',
+          rag: 'RAG Vector Store & Embeddings',
+          agents: 'Autonomous AI Agents & Tools',
+          eval: 'LLM Fine-Tuning & Quantization'
+        }
+      },
+      {
+        key: 'dbms_topic',
+        href: './subjects/dbms/index.html',
+        name: 'DBMS',
+        color: '#eab308',
+        labels: {
+          relational: 'Relational Model & Normalization',
+          indexing: 'B+ Tree & Hash Indexing',
+          acid: 'ACID Properties & WAL Logs',
+          concurrency: '2PL & MVCC Isolation'
+        }
+      },
+      {
+        key: 'crypto_topic',
+        href: './subjects/cryptography/index.html',
+        name: 'Cryptography',
+        color: '#ef4444',
+        labels: {
+          ch1: '01. Fundamentals',
+          ch2: '02. Goals of Cryptography',
+          ch3: '03. Classical Cryptography',
+          ch4: '04. Symmetric Key Crypto',
+          ch5: '05. Asymmetric Crypto',
+          ch6: '06. Hash Functions',
+          ch7: '07. Digital Signatures',
+          ch8: '08. Certificates & PKI',
+          ch9: '09. TLS / SSL',
+          ch10: '10. Message Auth Code',
+          ch11: '11. Key Management',
+          ch12: '12. Diffie-Hellman',
+          ch13: '13. Elliptic Curves (ECC)',
+          ch14: '14. Password Security',
+          ch15: '15. Cryptographic Attacks',
+          ch16: '16. Random Numbers (RNG)',
+          ch17: '17. Modern Applications'
+        }
+      },
+      {
+        key: 's150_topic',
+        href: './subjects/Sheet 150/index.html',
+        name: 'Sheet 150',
+        color: '#10b981',
+        labels: {
+          m01: 'Recursion & Backtracking',
+          m02: 'Trees & Graphs',
+          m03: 'Dynamic Programming',
+          m04: 'Arrays, Strings & Linked Lists',
+          m05: 'Heap & Hash',
+          m06: 'Stack & Queue',
+          m07: 'Searching & Sorting',
+          m08: 'Tries',
+          m09: 'Greedy',
+          m10: 'Intervals',
+          m11: 'Math & Geometry',
+          m12: 'Bit Manipulation'
+        }
+      }
+    ];
+
+    function buildContinue() {
+      const cards = [];
+      SUBJECTS.forEach(s => {
+        let topicId;
+        let updateTime = 0;
+        try {
+          topicId = localStorage.getItem(s.key);
+          const t = localStorage.getItem(s.key + '_time');
+          if (t) updateTime = parseInt(t, 10);
+        } catch(e) {}
+        if (!topicId) return;
+        const label = s.labels[topicId] || topicId;
+        cards.push({ href: s.href, name: s.name, color: s.color, topic: label, time: updateTime });
+      });
+      if (!cards.length) return;
+
+      cards.sort((a, b) => b.time - a.time);
+      const recentCards = cards.slice(0, 2);
+
+      const section = document.getElementById('continueSection');
+      const row = document.getElementById('continueRow');
+      if (section && row) {
+        section.style.display = 'block';
+        row.innerHTML = '';
+        recentCards.forEach(c => {
+          const el = document.createElement('a');
+          el.href = c.href;
+          el.className = 'continue-card';
+          el.innerHTML = `
+            <div class="continue-dot" style="background:${c.color}; color:${c.color};"></div>
+            <div class="continue-info">
+              <div class="continue-subject" style="color:${c.color}">${c.name}</div>
+              <div class="continue-topic">${c.topic}</div>
+              <div class="continue-hint">Continue where you left off</div>
+            </div>
+            <i class="ti ti-arrow-right continue-arrow"></i>`;
+          row.appendChild(el);
+        });
+      }
+    }
+
+    // Keyboard shortcut / to search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+        e.preventDefault();
+        const searchInput = document.getElementById('globalSearchInput');
+        if (searchInput) searchInput.focus();
+      } else if (e.key === 'Escape') {
+        clearSearch();
+        if (isRearrangeMode) toggleRearrangeMode();
+      }
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
       initGridOrder();
+      initCategoryFilter();
       buildContinue();
       setupDragAndDrop();
     });
