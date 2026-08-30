@@ -24,42 +24,91 @@
       --text: #edf0f7;
       --text2: #8a96b0;
       --text3: #5a6480;
-      --accent: #f472b6;
+      --accent: #38bdf8;
       --green: #34d399;
       --amber: #f59e0b;
       --red: #ef4444;
       --cyan: #22d3ee;
+      --purple: #a855f7;
       --radius: 12px;
       --mono: 'JetBrains Mono', monospace;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; height: 100%; scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
     ::selection { background: var(--accent); color: #000; }
+    
+    /* Custom Sleek Dark Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text3);
+    }
+
     body {
       font-family: var(--font-sans);
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       font-size: 15px;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .layout { display: flex; min-height: 100vh; }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+    }
     
     /* Sidebar */
     .sidebar {
-      width: 310px;
+      width: 300px;
       flex-shrink: 0;
       background: var(--bg2);
       border-right: 1px solid var(--border);
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      bottom: 0;
       height: 100vh;
+      height: 100dvh;
       overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
+      z-index: 100;
+      overscroll-behavior: contain;
+      box-sizing: border-box;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border2) transparent;
     }
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
     .sidebar-header {
       padding: 20px 20px 16px;
       border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
     .back-link {
       display: inline-flex;
@@ -95,6 +144,7 @@
       padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       position: relative;
+      flex-shrink: 0;
     }
     .sidebar-search input {
       width: 100%;
@@ -105,6 +155,7 @@
       font-size: 12.5px;
       color: var(--text);
       outline: none;
+      transition: border-color .15s;
     }
     .sidebar-search input:focus { border-color: var(--accent); }
     .sidebar-search i {
@@ -118,8 +169,9 @@
     .nav-list { padding: 12px 8px 40px; list-style: none; flex-grow: 1; }
     .nav-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
+      gap: 8px;
       padding: 8px 12px;
       border-radius: 8px;
       font-size: 12.5px;
@@ -127,9 +179,17 @@
       text-decoration: none;
       margin-bottom: 2px;
       transition: all .15s;
+      word-break: break-word;
     }
     .nav-item:hover { background: var(--bg3); color: var(--text); }
     .nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 600; }
+    .nav-item span:first-child {
+      flex: 1;
+      min-width: 0;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.35;
+    }
     .diff-badge {
       font-size: 9.5px;
       font-family: var(--mono);
@@ -137,6 +197,9 @@
       padding: 2px 6px;
       border-radius: 4px;
       text-transform: uppercase;
+      flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 2px;
     }
     .diff-easy { background: rgba(52, 211, 153, 0.12); color: var(--green); }
     .diff-medium { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
@@ -145,9 +208,12 @@
     /* Main Content */
     .main-content {
       flex: 1;
-      max-width: 960px;
-      margin: 0 auto;
+      margin-left: 300px;
+      width: calc(100% - 300px);
+      max-width: 1000px;
+      min-width: 0;
       padding: 40px 48px 120px;
+      box-sizing: border-box;
     }
 
     .topic-header {
@@ -182,7 +248,10 @@
       border-radius: var(--radius);
       padding: 32px;
       margin-bottom: 48px;
-      scroll-margin-top: 20px;
+      scroll-margin-top: 24px;
+      width: 100%;
+      box-sizing: border-box;
+      display: block;
     }
     .problem-header {
       display: flex;
@@ -224,7 +293,13 @@
     }
     .lc-link:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 
-    .sec-block { margin-bottom: 24px; }
+    .sec-block {
+      margin-bottom: 24px;
+      width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
+    }
     .sec-title {
       font-size: 13.5px;
       font-weight: 700;
@@ -246,6 +321,11 @@
       font-size: 14px;
       color: var(--text2);
       line-height: 1.65;
+      width: 100%;
+      box-sizing: border-box;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      display: block;
     }
     .intuition-box {
       background: rgba(56, 189, 248, 0.04);
@@ -311,6 +391,11 @@
       border-radius: 8px;
       overflow: hidden;
       background: #06080e;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      clear: both;
     }
     .code-header {
       display: flex;
@@ -343,124 +428,210 @@
       padding: 16px;
       margin: 0;
       overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
       font-family: var(--mono);
       font-size: 13px;
       color: #bbf7e6;
       line-height: 1.65;
+      white-space: pre;
+    }
+    .code-container pre code {
+      display: block;
+      white-space: pre;
+      min-width: 0;
     }
 
-    @media (max-width: 800px) {
-      .layout { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: static; }
-      .main-content { padding: 24px 16px 60px; }
-      .problem-card { padding: 20px; }
-    }
-
-  
-    /* ── LAYOUT FIX PATCH v2 ── */
-    html, body {
-      overflow-x: hidden;
-      max-width: 100vw;
-    }
-    .layout {
-      display: flex !important;
-      min-height: 100vh !important;
-      width: 100% !important;
-      /* clip: doesn't create a scroll container, so sticky still works */
-      overflow-x: clip !important;
-      max-width: 100vw;
-    }
-    .sidebar {
-      width: 280px !important;
-      min-width: 220px;
-      max-width: 310px;
-      flex-shrink: 0 !important;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      overscroll-behavior: contain;
-      height: 100vh !important;
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 10;
-    }
-    .main-content {
-      flex: 1 !important;
-      min-width: 0 !important;
-      /* clip doesn't create scroll container */
-      overflow-x: clip !important;
-      max-width: calc(100% - 280px) !important;
-      box-sizing: border-box !important;
-    }
-    /* Problem cards — always full width, no overflow */
-    .problem-card,
+    /* Summary & Special Cards */
     .summary-card {
-      width: 100% !important;
-      max-width: 100% !important;
-      overflow-x: hidden !important;
-      box-sizing: border-box !important;
-      display: block !important;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      width: 100%;
+      box-sizing: border-box;
+      display: block;
     }
-    /* Section blocks — always stack vertically */
-    .sec-block {
-      width: 100% !important;
-      max-width: 100% !important;
-      clear: both !important;
-      display: block !important;
-      overflow-x: hidden !important;
-      box-sizing: border-box !important;
+    .summary-header {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
     }
-    /* Code blocks scroll internally, never push layout */
-    .code-container {
-      width: 100% !important;
-      max-width: 100% !important;
-      display: block !important;
-      clear: both !important;
-      overflow: hidden !important;
-      box-sizing: border-box !important;
+    .summary-header h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .code-container pre {
-      overflow-x: auto !important;
-      white-space: pre !important;
-      max-width: 100% !important;
-      box-sizing: border-box !important;
+    .summary-header p {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
     }
-    /* Text boxes never overflow */
-    .desc-box, .naive-box, .intuition-box, .approach-box {
-      width: 100% !important;
-      max-width: 100% !important;
-      box-sizing: border-box !important;
-      overflow-x: hidden !important;
-      word-break: break-word !important;
-      display: block !important;
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
     }
-    .complexity-row {
-      flex-wrap: wrap !important;
+    .pattern-item-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
     }
-    /* Nav items — truncate long text */
-    .nav-item {
-      overflow: hidden !important;
+    .pattern-item-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .nav-item span:first-child {
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-      min-width: 0 !important;
-      flex: 1 !important;
+    .pattern-item-card p {
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.6;
     }
-    /* Mobile */
+    .pattern-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    .pattern-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+    .pattern-table th {
+      background: var(--bg3);
+      padding: 12px 16px;
+      color: var(--text);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .pattern-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2);
+    }
+    .diagram-box {
+      background: #06080e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--cyan);
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .cheat-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .cheat-item code {
+      display: block;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .cheat-item p {
+      font-size: 12.5px;
+      color: var(--text2);
+    }
+    .cheatsheet-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .cheatsheet-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cheatsheet-row:last-child { border-bottom: none; }
+    .cs-trigger {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+      border-radius: 6px;
+      padding: 6px 12px;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .cs-arrow { color: var(--text3); font-size: 18px; align-self: center; }
+    .cs-answer { font-size: 13.5px; color: var(--text2); }
+    .cs-answer strong { color: var(--text); }
+    .group-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin: 24px 0 10px;
+    }
+
+    /* Responsive Breakpoints */
     @media (max-width: 900px) {
-      .layout { flex-direction: column !important; }
+      .layout {
+        flex-direction: column;
+      }
       .sidebar {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        position: static !important;
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: 350px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
       }
       .main-content {
-        max-width: 100% !important;
-        padding: 20px 14px 60px !important;
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 24px 16px 60px;
+      }
+      .problem-card, .summary-card {
+        padding: 20px;
+        margin-bottom: 32px;
+      }
+      .cheatsheet-row {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cheat-grid {
+        grid-template-columns: 1fr;
       }
     }
-
   </style>
 </head>
 <body>
@@ -1887,22 +2058,46 @@ class Solution:
     </main>
   </div>
 
-  <script>
+    <script>
     const filterInput = document.getElementById('filterInput');
     const navItems = document.querySelectorAll('.nav-item');
     const cards = document.querySelectorAll('.problem-card');
 
-    filterInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(q) ? 'flex' : 'none';
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        navItems.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          item.style.display = text.includes(q) ? 'flex' : 'none';
+        });
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(q) ? 'block' : 'none';
+        });
       });
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(q) ? 'block' : 'none';
-      });
-    });
+    }
+
+    if ('IntersectionObserver' in window && cards.length > 0) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            if (id) {
+              navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === `#${id}`) {
+                  item.classList.add('active');
+                } else {
+                  item.classList.remove('active');
+                }
+              });
+            }
+          }
+        });
+      }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+
+      cards.forEach(card => observer.observe(card));
+    }
   </script>
 </body>
 </html>
