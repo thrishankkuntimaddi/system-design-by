@@ -291,33 +291,416 @@
       .card, .def-card { padding: 12px; }
     }
   </style>
+
+  <!-- ── Grid View Styles (Sheet 150-inspired) ────────────────── -->
+  <style>
+    .grid-view { min-height: 100vh; }
+    .split-view { display: none; }
+
+    .gv-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px; border-bottom: 1px solid var(--border);
+      background: var(--bg2); position: sticky; top: 0; z-index: 100;
+    }
+    .gv-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text2); text-decoration: none; font-size: 13px;
+      font-weight: 600; transition: color .15s;
+    }
+    .gv-back-btn:hover { color: var(--accent); }
+    .gv-brand { display: flex; align-items: center; gap: 10px; }
+    .gv-brand-title { font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
+
+    .gv-hero { max-width: 1100px; margin: 0 auto; padding: 48px 24px 28px; text-align: center; }
+    .gv-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(124,106,245,0.1); border: 1px solid rgba(124,106,245,0.25);
+      border-radius: 20px; padding: 6px 16px; font-size: 11px;
+      color: var(--accent); font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .gv-hero h1 { font-size: 36px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; color: var(--text); }
+    .gv-hero p { font-size: 15.5px; color: var(--text2); max-width: 680px; margin: 0 auto 32px; line-height: 1.65; }
+    .gv-stats {
+      display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 28px; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 40px; padding: 12px 32px; margin-bottom: 40px;
+    }
+    .gv-stat { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; color: var(--text2); }
+    .gv-stat i { font-size: 17px; color: var(--accent); }
+
+    .gv-grid {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+    .gv-section-label {
+      grid-column: 1 / -1; padding: 12px 4px 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text3);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .gv-section-label i { font-size: 12px; }
+    .gv-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .gv-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .gv-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gv-color, var(--accent));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .gv-card-num {
+      position: absolute; top: 20px; right: 20px;
+      font-family: var(--font-mono); font-size: 16px;
+      font-weight: 800; color: var(--text3); opacity: 0.25;
+    }
+    .gv-card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: color-mix(in srgb, var(--gv-color, var(--accent)) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--gv-color, var(--accent)) 25%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: var(--gv-color, var(--accent)); margin-bottom: 18px;
+      transition: transform .2s;
+    }
+    .gv-card:hover .gv-card-icon { transform: scale(1.08); }
+    .gv-card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .gv-card-meta { font-size: 11px; font-family: var(--font-mono); color: var(--gv-color, var(--accent)); font-weight: 700; letter-spacing: .05em; margin-bottom: 12px; }
+    .gv-card-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+    .gv-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 1px solid var(--border);
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .04em; color: var(--text3); transition: color .15s;
+    }
+    .gv-card:hover .gv-card-footer { color: var(--gv-color, var(--accent)); }
+    .gv-card-footer i { transition: transform .15s; }
+    .gv-card:hover .gv-card-footer i { transform: translateX(4px); }
+
+    /* sidebar back btn as button */
+    button.home-back-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; padding: 3px 0;
+    }
+
+    @media(max-width: 960px) {
+      .gv-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .gv-topbar { padding: 14px 20px; }
+    }
+    @media(max-width: 600px) {
+      .gv-grid { grid-template-columns: 1fr; padding: 0 14px 48px; gap: 12px; }
+    }
+    @media(max-width: 480px) {
+      .gv-topbar { padding: 10px 12px; }
+      .gv-hero h1 { font-size: 26px; }
+      .gv-hero p { font-size: 14px; }
+      .gv-stats { padding: 10px 18px; gap: 16px; }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Mobile Top Navbar -->
-  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
-    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
-      <i class="ti ti-menu-2" id="hamburgerIcon"></i>
-    </button>
-    <img src="../../app-icon.png" class="mobile-nav-logo" alt="C-Note" style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
-    <span class="mobile-nav-title" id="mobileNavTitle">Overview</span>
-    <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme" style="margin-left:auto;">
-      <i class="ti ti-sun" id="themeToggleIcon"></i>
-    </button>
-  </nav>
-  <!-- Sidebar overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-  <div class="shell">
+  <!-- ========================================================= -->
+  <!-- GRID LANDING VIEW (Sheet 150-inspired)                     -->
+  <!-- ========================================================= -->
+  <div class="grid-view" id="gridView">
+    <header class="gv-topbar">
+      <a href="../../index.html" class="gv-back-btn"><i class="ti ti-arrow-left"></i> Home Hub</a>
+      <div class="gv-brand">
+        <img src="../../app-icon.png" alt="C-Note" style="width:32px;height:32px;object-fit:cover;border-radius:8px;">
+        <div class="gv-brand-title">API Design</div>
+      </div>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="ti ti-sun" id="themeToggleIcon"></i>
+      </button>
+    </header>
+
+    <div class="gv-hero">
+      <div class="gv-badge"><i class="ti ti-api"></i>&nbsp; Reference Guide</div>
+      <h1>API Design Mastery</h1>
+      <p>A complete reference covering REST, GraphQL, gRPC, authentication, rate limiting, caching, versioning, and security — 25 essential topics.</p>
+      <div class="gv-stats">
+        <div class="gv-stat"><i class="ti ti-layers"></i> <span>25 Topics</span></div>
+        <div class="gv-stat"><i class="ti ti-route"></i> <span>REST &amp; GraphQL</span></div>
+        <div class="gv-stat"><i class="ti ti-shield-lock"></i> <span>Security Patterns</span></div>
+      </div>
+    </div>
+
+    <main class="gv-grid">
+
+      <!-- FOUNDATIONS -->
+      <div class="gv-section-label"><i class="ti ti-rocket"></i> Foundations</div>
+
+      <div class="gv-card" onclick="openTopic('intro')" style="--gv-color:#7c6af5;">
+        <span class="gv-card-num">01</span>
+        <div class="gv-card-icon"><i class="ti ti-home"></i></div>
+        <div class="gv-card-title">Overview</div>
+        <div class="gv-card-meta">START HERE</div>
+        <div class="gv-card-desc">What is an API, why design matters, API contracts, consumers, and the quality spectrum from bad to great.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('styles')" style="--gv-color:#a855f7;">
+        <span class="gv-card-num">02</span>
+        <div class="gv-card-icon"><i class="ti ti-layout-grid"></i></div>
+        <div class="gv-card-title">API Styles</div>
+        <div class="gv-card-meta">4 PARADIGMS</div>
+        <div class="gv-card-desc">REST, GraphQL, gRPC, and WebSockets — when to use which and why. Full side-by-side comparison matrix.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('principles')" style="--gv-color:#c084fc;">
+        <span class="gv-card-num">03</span>
+        <div class="gv-card-icon"><i class="ti ti-stars"></i></div>
+        <div class="gv-card-title">4 Key Principles</div>
+        <div class="gv-card-meta">DESIGN FOUNDATION</div>
+        <div class="gv-card-desc">Consistency, Simplicity, Security, Performance — the four pillars every great API decision traces back to.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <!-- PROTOCOLS -->
+      <div class="gv-section-label"><i class="ti ti-network"></i> Protocols</div>
+
+      <div class="gv-card" onclick="openTopic('netstack')" style="--gv-color:#38bdf8;">
+        <span class="gv-card-num">04</span>
+        <div class="gv-card-icon"><i class="ti ti-stack-2"></i></div>
+        <div class="gv-card-title">Network Stack</div>
+        <div class="gv-card-meta">OSI LAYERS</div>
+        <div class="gv-card-desc">Application, Transport, Network, and Data Link layers. How API protocol choice maps to the network stack.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('http')" style="--gv-color:#22d3ee;">
+        <span class="gv-card-num">05</span>
+        <div class="gv-card-icon"><i class="ti ti-world"></i></div>
+        <div class="gv-card-title">HTTP / HTTPS</div>
+        <div class="gv-card-meta">FOUNDATION PROTOCOL</div>
+        <div class="gv-card-desc">Request/response anatomy, HTTPS with TLS, key headers, and HTTP versions 1.1, 2, and 3 compared.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('tcpudp')" style="--gv-color:#06b6d4;">
+        <span class="gv-card-num">06</span>
+        <div class="gv-card-icon"><i class="ti ti-network"></i></div>
+        <div class="gv-card-title">TCP vs UDP</div>
+        <div class="gv-card-meta">TRANSPORT LAYER</div>
+        <div class="gv-card-desc">Reliable vs fast transport. 3-way handshake, ordering guarantees, and when to choose each protocol.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('ws')" style="--gv-color:#34d399;">
+        <span class="gv-card-num">07</span>
+        <div class="gv-card-icon"><i class="ti ti-plug"></i></div>
+        <div class="gv-card-title">WebSockets</div>
+        <div class="gv-card-meta">REAL-TIME</div>
+        <div class="gv-card-desc">Persistent bidirectional connections. HTTP upgrade handshake, SSE comparison, and real-time use cases.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('amqp')" style="--gv-color:#10b981;">
+        <span class="gv-card-num">08</span>
+        <div class="gv-card-icon"><i class="ti ti-list"></i></div>
+        <div class="gv-card-title">AMQP</div>
+        <div class="gv-card-meta">MESSAGE QUEUING</div>
+        <div class="gv-card-desc">Advanced Message Queuing Protocol. Exchanges, queues, routing keys, RabbitMQ patterns, and durability.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('grpc')" style="--gv-color:#6366f1;">
+        <span class="gv-card-num">09</span>
+        <div class="gv-card-icon"><i class="ti ti-bolt"></i></div>
+        <div class="gv-card-title">gRPC</div>
+        <div class="gv-card-meta">BINARY PROTOCOL</div>
+        <div class="gv-card-desc">Protocol Buffers over HTTP/2. Unary, server streaming, client streaming, and bidirectional streaming.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('choose')" style="--gv-color:#818cf8;">
+        <span class="gv-card-num">10</span>
+        <div class="gv-card-icon"><i class="ti ti-help"></i></div>
+        <div class="gv-card-title">Choosing a Protocol</div>
+        <div class="gv-card-meta">DECISION FRAMEWORK</div>
+        <div class="gv-card-desc">Decision matrix for REST vs GraphQL vs gRPC vs WebSockets based on your use case and constraints.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <!-- API DESIGN -->
+      <div class="gv-section-label"><i class="ti ti-route"></i> API Design</div>
+
+      <div class="gv-card" onclick="openTopic('rest')" style="--gv-color:#f59e0b;">
+        <span class="gv-card-num">11</span>
+        <div class="gv-card-icon"><i class="ti ti-route"></i></div>
+        <div class="gv-card-title">RESTful APIs</div>
+        <div class="gv-card-meta">RESOURCE DESIGN</div>
+        <div class="gv-card-desc">URL naming, resource hierarchy, nested routes, HATEOAS, idempotency, and RESTful design best practices.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('methods')" style="--gv-color:#eab308;">
+        <span class="gv-card-num">12</span>
+        <div class="gv-card-icon"><i class="ti ti-arrows-exchange"></i></div>
+        <div class="gv-card-title">HTTP Methods</div>
+        <div class="gv-card-meta">CRUD SEMANTICS</div>
+        <div class="gv-card-desc">GET, POST, PUT, PATCH, DELETE — idempotency, safe methods, and choosing the right verb for each operation.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('status')" style="--gv-color:#f97316;">
+        <span class="gv-card-num">13</span>
+        <div class="gv-card-icon"><i class="ti ti-alert-circle"></i></div>
+        <div class="gv-card-title">Status Codes</div>
+        <div class="gv-card-meta">RESPONSE SEMANTICS</div>
+        <div class="gv-card-desc">2xx, 3xx, 4xx, 5xx codes explained. Error response shape, 401 vs 403, 400 vs 422, and best practices.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('graphql')" style="--gv-color:#e879f9;">
+        <span class="gv-card-num">14</span>
+        <div class="gv-card-icon"><i class="ti ti-circle-dot"></i></div>
+        <div class="gv-card-title">GraphQL</div>
+        <div class="gv-card-meta">QUERY LANGUAGE API</div>
+        <div class="gv-card-desc">Single endpoint, client-defined queries, mutations, subscriptions. N+1 problem, DataLoader, and pitfalls.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('versioning')" style="--gv-color:#a855f7;">
+        <span class="gv-card-num">15</span>
+        <div class="gv-card-icon"><i class="ti ti-versions"></i></div>
+        <div class="gv-card-title">Versioning</div>
+        <div class="gv-card-meta">EVOLUTION STRATEGY</div>
+        <div class="gv-card-desc">URL path, header, and query-param strategies. Breaking vs non-breaking changes and deprecation policy.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('pagination')" style="--gv-color:#d946ef;">
+        <span class="gv-card-num">16</span>
+        <div class="gv-card-icon"><i class="ti ti-layout-grid"></i></div>
+        <div class="gv-card-title">Pagination</div>
+        <div class="gv-card-meta">LARGE DATASETS</div>
+        <div class="gv-card-desc">Offset, cursor, and keyset pagination. Performance tradeoffs, stability under inserts, and response shapes.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('caching')" style="--gv-color:#fb923c;">
+        <span class="gv-card-num">17</span>
+        <div class="gv-card-icon"><i class="ti ti-database"></i></div>
+        <div class="gv-card-title">Caching</div>
+        <div class="gv-card-meta">PERFORMANCE</div>
+        <div class="gv-card-desc">Cache-Control, ETag, Vary headers. CDN caching, Redis, and what to cache vs what to never cache.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('ratelimit')" style="--gv-color:#ef4444;">
+        <span class="gv-card-num">18</span>
+        <div class="gv-card-icon"><i class="ti ti-traffic-cone"></i></div>
+        <div class="gv-card-title">Rate Limiting</div>
+        <div class="gv-card-meta">ABUSE PREVENTION</div>
+        <div class="gv-card-desc">Token bucket, leaky bucket, sliding window, and fixed window. Headers, 429 responses, and Redis patterns.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('gateway')" style="--gv-color:#f43f5e;">
+        <span class="gv-card-num">19</span>
+        <div class="gv-card-icon"><i class="ti ti-topology-star"></i></div>
+        <div class="gv-card-title">API Gateway</div>
+        <div class="gv-card-meta">CENTRALIZED ROUTING</div>
+        <div class="gv-card-desc">Single entry point, auth enforcement, rate limiting, load balancing, and service mesh patterns.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('webhooks')" style="--gv-color:#ec4899;">
+        <span class="gv-card-num">20</span>
+        <div class="gv-card-icon"><i class="ti ti-webhook"></i></div>
+        <div class="gv-card-title">Webhooks</div>
+        <div class="gv-card-meta">EVENT-DRIVEN</div>
+        <div class="gv-card-desc">HTTP callbacks, event delivery, retry logic, HMAC signature verification, and idempotency keys.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('openapi')" style="--gv-color:#f59e0b;">
+        <span class="gv-card-num">21</span>
+        <div class="gv-card-icon"><i class="ti ti-file-description"></i></div>
+        <div class="gv-card-title">OpenAPI / Swagger</div>
+        <div class="gv-card-meta">CONTRACT-FIRST DOCS</div>
+        <div class="gv-card-desc">YAML/JSON spec structure, Swagger UI, code generation, and API-first design workflow.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="gv-section-label"><i class="ti ti-shield-lock"></i> Security</div>
+
+      <div class="gv-card" onclick="openTopic('authn')" style="--gv-color:#ef4444;">
+        <span class="gv-card-num">22</span>
+        <div class="gv-card-icon"><i class="ti ti-user-check"></i></div>
+        <div class="gv-card-title">Authentication</div>
+        <div class="gv-card-meta">WHO ARE YOU?</div>
+        <div class="gv-card-desc">API keys, JWT, OAuth 2.0 flows, session tokens, and mTLS. When to use each mechanism in production.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('authz')" style="--gv-color:#dc2626;">
+        <span class="gv-card-num">23</span>
+        <div class="gv-card-icon"><i class="ti ti-shield"></i></div>
+        <div class="gv-card-title">Authorization</div>
+        <div class="gv-card-meta">WHAT CAN YOU DO?</div>
+        <div class="gv-card-desc">RBAC, ABAC, OAuth scopes, and field-level authorization. Least privilege and resource ownership patterns.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('security')" style="--gv-color:#b91c1c;">
+        <span class="gv-card-num">24</span>
+        <div class="gv-card-icon"><i class="ti ti-lock"></i></div>
+        <div class="gv-card-title">Security Techniques</div>
+        <div class="gv-card-meta">ATTACK PREVENTION</div>
+        <div class="gv-card-desc">CORS, SQL injection, XSS, CSRF, SSRF, and input sanitization. The OWASP API Security Top 10.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+
+      <div class="gv-card" onclick="openTopic('checklist')" style="--gv-color:#991b1b;">
+        <span class="gv-card-num">25</span>
+        <div class="gv-card-icon"><i class="ti ti-list-check"></i></div>
+        <div class="gv-card-title">Design Checklist</div>
+        <div class="gv-card-meta">PRE-LAUNCH AUDIT</div>
+        <div class="gv-card-desc">The complete API design checklist covering naming, security, performance, documentation, and error handling.</div>
+        <div class="gv-card-footer"><span>Explore Topic</span><i class="ti ti-arrow-right"></i></div>
+      </div>
+    </main>
+  </div><!-- end grid-view -->
+
+  <!-- ========================================================= -->
+  <!-- SPLIT CONTENT VIEW                                        -->
+  <!-- ========================================================= -->
+  <div class="split-view" id="splitView">
+    <!-- Mobile Top Navbar -->
+    <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+        <i class="ti ti-menu-2" id="hamburgerIcon"></i>
+      </button>
+      <img src="../../app-icon.png" class="mobile-nav-logo" alt="C-Note" style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
+      <span class="mobile-nav-title" id="mobileNavTitle">Overview</span>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme" style="margin-left:auto;">
+        <i class="ti ti-sun"></i>
+      </button>
+    </nav>
+    <!-- Sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <div class="shell">
     <!-- Sidebar (outer shell) -->
     <div class="sidebar" id="sidebar" role="navigation" aria-label="Topics">
       <div class="sidebar-header">
         <div style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-bottom:4px;">
-          <a href="../../index.html" class="home-back-btn">
-            <i class="ti ti-arrow-left"></i> Home
-          </a>
+          <button class="home-back-btn" onclick="showGrid()">
+            <i class="ti ti-arrow-left"></i> All Topics
+          </button>
           <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-            <i class="ti ti-sun" id="themeToggleIcon"></i>
+            <i class="ti ti-sun"></i>
           </button>
         </div>
         <img src="../../app-icon.png" alt="C-Note" style="width:24px;height:24px;object-fit:cover;border-radius:5px;flex-shrink:0;"><h1>API Design</h1>
@@ -1424,6 +1807,23 @@
     });
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+
+    // ── View switching ─────────────────────────────────────────
+    function openTopic(id) {
+      document.getElementById('gridView').style.display = 'none';
+      document.getElementById('splitView').style.display = 'block';
+      go(id);
+      // sync all theme icons
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      updateThemeIcon(theme);
+    }
+
+    function showGrid() {
+      document.getElementById('splitView').style.display = 'none';
+      document.getElementById('gridView').style.display = 'block';
+      closeSidebar();
+    }
   </script>
+  </div><!-- end split-view -->
 </body>
 </html>
