@@ -68,13 +68,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 36px;
+      padding: 14px 36px;
       border-bottom: 1px solid var(--border);
-      background: rgba(10, 14, 23, 0.85);
+      background: rgba(10, 14, 23, 0.90);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 100;
+      gap: 12px;
+      min-width: 0;
     }
 
     .logo {
@@ -82,10 +85,12 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
+      min-width: 0;
+      flex-shrink: 1;
     }
     .logo-icon {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
       display: block;
@@ -94,7 +99,7 @@
     }
     .logo:hover .logo-icon { transform: scale(1.05); }
 
-    .logo-text-area { display: flex; flex-direction: column; }
+    .logo-text-area { display: flex; flex-direction: column; min-width: 0; }
     .logo-text {
       font-family: var(--font-heading);
       font-size: 17px;
@@ -102,18 +107,25 @@
       color: var(--text);
       letter-spacing: -.02em;
       line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .logo-sub {
       font-size: 11px;
       color: var(--text3);
       font-weight: 600;
       letter-spacing: .02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .topbar-right {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-shrink: 0;
     }
     .status-badge-top {
       display: inline-flex;
@@ -706,13 +718,58 @@
       .hero-container { padding: 32px; }
       .hero-title { font-size: 30px; }
     }
+
+    /* Tablet portrait */
+    @media (max-width: 768px) {
+      .subject-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .topbar { padding: 12px 20px; }
+      .page { padding: 20px 16px 64px; }
+      .hero-container { padding: 28px 24px; }
+      .hero-title { font-size: 26px; }
+      .hero-subtitle { font-size: 14px; }
+      .hero-stats { gap: 16px; }
+      .stat-num { font-size: 18px; }
+    }
+
+    /* Mobile — 640px and below */
     @media (max-width: 640px) {
-      .subject-grid { grid-template-columns: 1fr; gap: 12px; }
+      .subject-grid { grid-template-columns: 1fr; gap: 10px; }
+      .subject-card { min-height: 200px; padding: 20px; }
       .continue-row { grid-template-columns: 1fr; }
-      .page { padding: 20px 16px 56px; }
-      .topbar { padding: 14px 18px; }
+      .page { padding: 16px 14px 72px; }
+      .topbar { padding: 11px 16px; }
       .hero-container { display: none; }
-      .filter-rearrange-bar { flex-direction: column; align-items: stretch; }
+      .filter-rearrange-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+      .category-filter-bar { gap: 6px; }
+      .cat-pill { font-size: 12px; padding: 7px 13px; }
+      .kbd-hint { display: none; }
+      .search-box input { padding: 13px 44px 13px 44px; font-size: 14px; }
+      .rearrange-toggle-btn, .rearrange-reset-btn { font-size: 12px; padding: 7px 13px; }
+      .section-label { font-size: 11px; }
+    }
+
+    /* Small mobile — 480px and below */
+    @media (max-width: 480px) {
+      .topbar { padding: 10px 12px; gap: 8px; }
+      .logo-icon { width: 32px; height: 32px; border-radius: 9px; }
+      .logo-text { font-size: 15px; }
+      .logo-sub { display: none; }
+      .status-badge-top { font-size: 11px; padding: 5px 10px; }
+      .page { padding: 14px 12px 72px; }
+      .card-title { font-size: 16px; }
+      .card-desc { font-size: 12.5px; }
+      .continue-card { padding: 13px 15px; gap: 10px; }
+      .continue-topic { font-size: 13px; }
+      .search-box input { padding: 12px 40px 12px 42px; font-size: 13.5px; border-radius: 12px; }
+    }
+
+    /* Very small mobile — 380px and below */
+    @media (max-width: 380px) {
+      .topbar { padding: 9px 10px; }
+      .logo-text { font-size: 14px; }
+      .status-badge-top span:not(.pulse-dot) { display: none; }
+      .subject-card { padding: 16px; min-height: 180px; }
+      .card-icon { width: 40px; height: 40px; font-size: 18px; }
     }
   </style>
 </head>

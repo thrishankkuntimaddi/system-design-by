@@ -471,6 +471,22 @@
       .dia-pipeline { flex-direction: column; align-items: stretch }
       .dia-arrow { transform: rotate(90deg); margin: 4px 0 }
     }
+
+    @media(max-width:480px) {
+      .mobile-nav { padding: 0 12px; height: 48px; }
+      .mobile-nav-title { font-size: 12px; max-width: 140px; }
+      .ct { padding: 12px; }
+      .page-title, h1 { font-size: 20px !important; }
+      .card, .def-card { padding: 14px; }
+      .code-block { font-size: 11.5px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    }
+
+    @media(max-width:380px) {
+      .mobile-nav { padding: 0 10px; }
+      .ct { padding: 10px; }
+      .page-title, h1 { font-size: 18px !important; }
+      .card, .def-card { padding: 12px; }
+    }
   </style>
 </head>
 

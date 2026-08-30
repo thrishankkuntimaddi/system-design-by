@@ -303,6 +303,24 @@
       .stats-bar { gap: 10px; padding: 10px 14px; border-radius: 16px; }
       .stat-item { font-size: 12.5px; }
     }
+    @media (max-width: 480px) {
+      .topbar { padding: 10px 12px; gap: 8px; }
+      .brand-title { font-size: 14px; }
+      .back-btn { font-size: 12px; }
+      .hero { padding: 32px 16px 24px; }
+      .hero h1 { font-size: clamp(20px, 6vw, 26px); }
+      .hero p { font-size: 13.5px; }
+      .grid-container { padding: 0 12px 40px; gap: 12px; }
+      .module-card { padding: 18px; }
+      .stats-bar { flex-wrap: wrap; gap: 8px; border-radius: 14px; padding: 10px 12px; }
+    }
+    @media (max-width: 380px) {
+      .topbar { padding: 9px 10px; }
+      .brand-title { font-size: 13px; }
+      .hero { padding: 24px 12px 18px; }
+      .grid-container { padding: 0 10px 36px; }
+      .module-card { padding: 14px; }
+    }
   </style>
 </head>
 <body>
