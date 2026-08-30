@@ -118,6 +118,96 @@
       .problem-card { padding: 20px; }
       .cheatsheet-row { flex-direction: column; gap: 8px; }
     }
+  
+    /* ── LAYOUT FIX PATCH ── */
+    .layout {
+      display: flex !important;
+      min-height: 100vh;
+      width: 100% !important;
+      overflow-x: hidden !important;
+      max-width: 100vw;
+    }
+    .sidebar {
+      width: 280px !important;
+      min-width: 220px;
+      max-width: 310px;
+      flex-shrink: 0 !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      overscroll-behavior: contain;
+      height: 100vh !important;
+      position: sticky !important;
+      top: 0 !important;
+    }
+    .main-content {
+      flex: 1 !important;
+      min-width: 0 !important;
+      overflow-x: hidden !important;
+      max-width: calc(100% - 280px) !important;
+      box-sizing: border-box !important;
+    }
+    /* Problem cards — always full width, no overflow */
+    .problem-card,
+    .summary-card {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box !important;
+    }
+    /* Section blocks — always stack vertically */
+    .sec-block {
+      width: 100% !important;
+      max-width: 100% !important;
+      clear: both !important;
+      display: block !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box !important;
+    }
+    /* Code blocks — scroll internally, never push layout */
+    .code-container {
+      width: 100% !important;
+      max-width: 100% !important;
+      display: block !important;
+      clear: both !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+    .code-container pre {
+      overflow-x: auto !important;
+      white-space: pre !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    /* Description / approach / intuition / naive boxes */
+    .desc-box, .naive-box, .intuition-box, .approach-box {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      word-break: break-word !important;
+    }
+    /* Complexity row */
+    .complexity-row {
+      flex-wrap: wrap !important;
+    }
+    /* Nav items in sidebar should not overflow */
+    .nav-item {
+      overflow: hidden !important;
+      word-break: break-word !important;
+    }
+    .nav-item span:first-child {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      min-width: 0 !important;
+      flex: 1 !important;
+    }
+    /* Mobile */
+    @media (max-width: 900px) {
+      .layout { flex-direction: column !important; }
+      .sidebar { width: 100% !important; max-width: 100% !important; height: auto !important; position: static !important; }
+      .main-content { max-width: 100% !important; padding: 20px 14px 60px !important; }
+    }
+
   </style>
 </head>
 <body>
