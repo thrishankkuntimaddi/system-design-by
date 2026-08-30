@@ -1,10 +1,12 @@
-const CACHE_NAME = 'cs-notes-v13';
+const CACHE_NAME = 'cs-notes-v14';
 
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './favicon.svg',
+  './app-icon.png',
+  './icon-192.png',
+  './icon-512.png',
   './subjects/system_design/index.html',
   './subjects/oops/index.html',
   './subjects/computer_networks/index.html',
